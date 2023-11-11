@@ -4,10 +4,10 @@
 CEETimerCSharpWinForms，适用于 Windows 系统的高考倒计时，自 v1.6 起不再只是高考倒计时，你可以自定义考试名称。
 > 开发环境：Visual Studio 2022，C#，WinForms，.NET Framework 4.7.2
 ## 运行截图
-1. 主窗口 (可右键显示更多选项)<br>![主窗口](./ReadmeImgs/MainForm.png)<br>当还没有到考试开始时间时<br>![](./ReadmeImgs/MainForm_1.png)<br>当过了考试开始时间时<br>![](./ReadmeImgs/MainForm_2.png)<br>当过了考试结束时间时<br>![](./ReadmeImgs/MainForm_3.png)
-2. 设置窗口<br>![设置窗口](./ReadmeImgs/FormSettings.png)
-3. 关于窗口<br>![关于窗口](./ReadmeImgs/FormAbout.png)
-4. 当你手贱尝试 Alt+F4 关闭时<br>![关闭警告](./ReadmeImgs/MsgBoxClose.png)
+1. 主窗口 (可右键显示更多选项)<details><summary>查看图片</summary>![主窗口](./ReadmeImgs/MainForm.png)</details>当还没有到考试开始时间时<details><summary>查看图片</summary>![](./ReadmeImgs/MainForm_1.png)</details>当过了考试开始时间时<details><summary>查看图片</summary>![](./ReadmeImgs/MainForm_2.png)</details>当过了考试结束时间时<details><summary>查看图片</summary>![](./ReadmeImgs/MainForm_3.png)</details>
+2. 设置窗口<details><summary>查看图片</summary>![设置窗口](./ReadmeImgs/FormSettings.png)</details>
+3. 关于窗口<details><summary>查看图片</summary>![关于窗口](./ReadmeImgs/FormAbout.png)</details>
+4. 当你手贱尝试 Alt+F4 关闭时<details><summary>查看图片</summary>![关闭警告](./ReadmeImgs/MsgBoxClose.png)</details>
 ## 主要特征和功能
 > 说明：✅ 已推出的功能、⭕ 正在开发的功能、❌ 不会被考虑的功能
 
