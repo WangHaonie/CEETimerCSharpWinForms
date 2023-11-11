@@ -1,0 +1,2 @@
+# CEETimerCSharpWinForms
+CEETimerCSharpWinForms，适用于 Windows 系统的高考倒计时
