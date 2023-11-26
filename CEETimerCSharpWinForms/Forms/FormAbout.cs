@@ -7,12 +7,12 @@ namespace CEETimerCSharpWinForms.Forms
     {
         public FormAbout()
         {
-            InitializeComponent();
+            InitializeComponent(); 
         }
 
         private void FormAbout_Load(object sender, EventArgs e)
         {
-
+            
         }
 
         private void FormAboutBottonGH_Click(object sender, EventArgs e)
@@ -29,7 +29,7 @@ namespace CEETimerCSharpWinForms.Forms
         private void FormAboutLicenseButton_Click(object sender, EventArgs e)
         {
             FormLicense formLicense = new FormLicense();
-            formLicense.Show();
+            formLicense.ShowDialog();
         }
     }
 }

@@ -29,11 +29,12 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CEETimerCSharpWinForms));
             this.labelCountdown = new System.Windows.Forms.Label();
             this.Context = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.ContextSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextAbout = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.ContextOpenDir = new System.Windows.Forms.ToolStripMenuItem();
             this.Context.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -42,27 +43,28 @@
             this.labelCountdown.AutoSize = true;
             this.labelCountdown.BackColor = System.Drawing.Color.Transparent;
             this.labelCountdown.ContextMenuStrip = this.Context;
-            this.labelCountdown.Font = new System.Drawing.Font("微软雅黑", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.labelCountdown.Font = new System.Drawing.Font("微软雅黑", 17.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.labelCountdown.ForeColor = System.Drawing.Color.Red;
             this.labelCountdown.Location = new System.Drawing.Point(1, 0);
             this.labelCountdown.Name = "labelCountdown";
-            this.labelCountdown.Size = new System.Drawing.Size(429, 28);
+            this.labelCountdown.Size = new System.Drawing.Size(472, 31);
             this.labelCountdown.TabIndex = 0;
             this.labelCountdown.Text = "欢迎使用高考倒计时，程序加载中，请稍候...";
-            //this.labelCountdown.Click += new System.EventHandler(this.label1_Click);
             // 
             // Context
             // 
             this.Context.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ContextSettings,
-            this.ContextAbout});
+            this.ContextAbout,
+            this.toolStripSeparator1,
+            this.ContextOpenDir});
             this.Context.Name = "Context";
-            this.Context.Size = new System.Drawing.Size(101, 48);
+            this.Context.Size = new System.Drawing.Size(166, 76);
             // 
             // ContextSettings
             // 
             this.ContextSettings.Name = "ContextSettings";
-            this.ContextSettings.Size = new System.Drawing.Size(100, 22);
+            this.ContextSettings.Size = new System.Drawing.Size(165, 22);
             this.ContextSettings.Text = "设置";
             this.ContextSettings.Click += new System.EventHandler(this.ContextSettings_Click);
             // 
@@ -70,9 +72,21 @@
             // 
             this.ContextAbout.Name = "ContextAbout";
             this.ContextAbout.ShowShortcutKeys = false;
-            this.ContextAbout.Size = new System.Drawing.Size(100, 22);
+            this.ContextAbout.Size = new System.Drawing.Size(165, 22);
             this.ContextAbout.Text = "关于";
             this.ContextAbout.Click += new System.EventHandler(this.ContextAbout_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(162, 6);
+            // 
+            // ContextOpenDir
+            // 
+            this.ContextOpenDir.Name = "ContextOpenDir";
+            this.ContextOpenDir.Size = new System.Drawing.Size(165, 22);
+            this.ContextOpenDir.Text = "打开程序文件夹";
+            this.ContextOpenDir.Click += new System.EventHandler(this.ContextOpenDir_Click);
             // 
             // CEETimerCSharpWinForms
             // 
@@ -89,7 +103,6 @@
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.ImeMode = System.Windows.Forms.ImeMode.Off;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -113,6 +126,8 @@
         private System.Windows.Forms.ContextMenuStrip Context;
         private System.Windows.Forms.ToolStripMenuItem ContextAbout;
         private System.Windows.Forms.ToolStripMenuItem ContextSettings;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem ContextOpenDir;
     }
 }
 

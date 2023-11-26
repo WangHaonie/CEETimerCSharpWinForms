@@ -217,7 +217,7 @@
             this.FormSettingsSetStartupCheck.Name = "FormSettingsSetStartupCheck";
             this.FormSettingsSetStartupCheck.Size = new System.Drawing.Size(434, 23);
             this.FormSettingsSetStartupCheck.TabIndex = 18;
-            this.FormSettingsSetStartupCheck.Text = "随 Windows 开机自启动";
+            this.FormSettingsSetStartupCheck.Text = "开机自动启动倒计时";
             this.FormSettingsSetStartupCheck.UseVisualStyleBackColor = true;
             this.FormSettingsSetStartupCheck.CheckedChanged += new System.EventHandler(this.FormSettingsSetStartupCheck_CheckedChanged);
             // 

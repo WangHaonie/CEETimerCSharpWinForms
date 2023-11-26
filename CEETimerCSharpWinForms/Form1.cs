@@ -1,5 +1,6 @@
 ﻿using CEETimerCSharpWinForms.Forms;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
 
@@ -7,7 +8,7 @@ namespace CEETimerCSharpWinForms
 {
     public partial class CEETimerCSharpWinForms : Form
     {
-        private string ConfigFile = "CEETimerCSharpWinFormsConfig.db";
+        private string ConfigFile = AppDomain.CurrentDomain.BaseDirectory + "CEETimerCSharpWinFormsConfig.db";
         private DateTime targetDateTime = new DateTime(2024, 6, 7, 9, 0, 0);
         private DateTime targetDateTimeEnd = new DateTime(2024, 6, 8, 17, 0, 0);
         private string examName = "高考";
@@ -34,9 +35,9 @@ namespace CEETimerCSharpWinForms
         public CEETimerCSharpWinForms()
         {
             InitializeComponent();
+
             formSettings = new FormSettings(this);
 
-            this.FormBorderStyle = FormBorderStyle.None;
             this.StartPosition = FormStartPosition.Manual;
             this.Location = new System.Drawing.Point(0, 0);
             this.TopMost = true;
@@ -58,20 +59,21 @@ namespace CEETimerCSharpWinForms
             if (DateTime.Now < TargetDateTime)
             {
                 TimeSpan timeLeft = TargetDateTime - DateTime.Now;
+                labelCountdown.ForeColor = System.Drawing.Color.Red;
                 labelCountdown.Text = $"距离{ExamName}还有{timeLeft.Days}天{timeLeft.Hours:00}时{timeLeft.Minutes:00}分{timeLeft.Seconds:00}秒";
             }
             else if (DateTime.Now >= TargetDateTime && DateTime.Now < TargetDateTimeEnd)
             {
                 TimeSpan timeLeftPast = TargetDateTimeEnd - DateTime.Now;
+                labelCountdown.ForeColor = System.Drawing.Color.Green;
                 labelCountdown.Text = $"{ExamName}正在进行中，距离结束还有{timeLeftPast.Days}天{timeLeftPast.Hours:00}时{timeLeftPast.Minutes:00}分{timeLeftPast.Seconds:00}秒";
             }
             else if (DateTime.Now >= TargetDateTimeEnd)
             {
                 TimeSpan timePast = DateTime.Now - TargetDateTimeEnd;
+                labelCountdown.ForeColor = System.Drawing.Color.Black;
                 labelCountdown.Text = $"倒计时结束，距离{ExamName}已经过去了{timePast.Days}天{timePast.Hours:00}时{timePast.Minutes:00}分{timePast.Seconds:00}秒";
             }
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
         }
 
         private void CEETimerCSharpWinForms_FormClosing(object sender, FormClosingEventArgs e)
@@ -82,7 +84,6 @@ namespace CEETimerCSharpWinForms
             }
             else
             {
-                DialogResult result = MessageBox.Show("考试这么重要，你还想关闭倒计时？\n\n若此窗口真的妨碍到了你，你可以运行以下命令来关闭此窗口，谢谢。\n\ntaskkill /f /im CEETimerCSharpWinForms.exe (结束进程)", "错误：无法关闭此窗口 - 高考倒计时", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 e.Cancel = true;
             }
         }
@@ -95,7 +96,7 @@ namespace CEETimerCSharpWinForms
         private void ContextAbout_Click(object sender, EventArgs e)
         {
             FormAbout formAbout = new FormAbout();
-            formAbout.Show();
+            formAbout.ShowDialog();
         }
 
         private void ContextSettings_Click(object sender, EventArgs e)
@@ -199,8 +200,14 @@ namespace CEETimerCSharpWinForms
             string DateTimeLine = $"DateTime=({formSettings.n}, {formSettings.y}, {formSettings.r}, {formSettings.s}, {formSettings.f}, {formSettings.m})";
             string DateTimeLineEnd = $"DateTimeEnd=({formSettings.ne}, {formSettings.ye}, {formSettings.re}, {formSettings.se}, {formSettings.fe}, {formSettings.me})";
             string ExamNameLine = $"ExamName=[{formSettings.examName}]";
-            string[] lines = new string[] { DateTimeLine, DateTimeLineEnd, ExamNameLine };
+            string InstPathLine = $"InstallPath={AppDomain.CurrentDomain.BaseDirectory}";
+            string[] lines = new string[] { DateTimeLine, DateTimeLineEnd, ExamNameLine, InstPathLine };
             File.WriteAllLines(ConfigFile, lines);
+        }
+
+        private void ContextOpenDir_Click(object sender, EventArgs e)
+        {
+            Process.Start(AppDomain.CurrentDomain.BaseDirectory);
         }
     }
 }

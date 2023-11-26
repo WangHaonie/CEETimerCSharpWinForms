@@ -1,7 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
-using System.Threading;
 using System.Diagnostics;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace CEETimerCSharpWinForms.Forms
@@ -111,7 +111,6 @@ namespace CEETimerCSharpWinForms.Forms
                 return examName;
             }
         }
-
         public FormSettings(CEETimerCSharpWinForms mainForm)
         {
             InitializeComponent();
@@ -226,7 +225,7 @@ namespace CEETimerCSharpWinForms.Forms
         {
             ProcessStartInfo process1Info = new ProcessStartInfo();
             process1Info.FileName = @"cmd.exe";
-            process1Info.Arguments = "/c w32tm /config /manualpeerlist:ntp1.aliyun.com /syncfromflags:manual /reliable:YES /update && net stop w32time && net start w32time && sc config w32time start= auto && w32tm /resync && w32tm /resync";
+            process1Info.Arguments = "/c w32tm /config /manualpeerlist:ntp1.aliyun.com /syncfromflags:manual /reliable:YES /update & net stop w32time & net start w32time & sc config w32time start= auto & w32tm /resync & w32tm /resync";
             process1Info.Verb = "runas";
             process1Info.CreateNoWindow = true;
             process1Info.WindowStyle = ProcessWindowStyle.Hidden;
@@ -256,8 +255,6 @@ namespace CEETimerCSharpWinForms.Forms
             }
         }
 
-        
-
         private void FormSettingsApply_Click(object sender, EventArgs e)
         {
             if (!ValidateInput() || !ValidateEndDate())
@@ -279,6 +276,27 @@ namespace CEETimerCSharpWinForms.Forms
             se = int.Parse(FormSettingsSetEndTextS.Text);
             fe = int.Parse(FormSettingsSetEndTextF.Text);
             me = int.Parse(FormSettingsSetEndTextM.Text);
+
+            DateTime _startTime = new DateTime(n, y, r, s, f, m);
+            DateTime _endTime = new DateTime(ne, ye, re, se, fe, me);
+
+            if (_startTime >= _endTime)
+            {
+                MessageBox.Show("考试开始时间必须在结束时间之前！", "错误 - 高考倒计时", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            TimeSpan _timeDistance = _endTime - _startTime;
+            int _dayDistance = _timeDistance.Days;
+
+            if (_dayDistance > 4)
+            {
+                DialogResult _result = MessageBox.Show("你可能输入了错误的考试时间，应该没有持续超过4天的考试吧？如果你确定当前输入的是正确的考试时间，请点击确定；若不是，请点击取消。", "警告 - 高考倒计时", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+                if (_result == DialogResult.Cancel)
+                {
+                    return;
+                }
+            }
 
             examName = FormSettingsSetExamNameText.Text;
 
@@ -381,7 +399,6 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void FormSettings_FormClosing(object sender, FormClosingEventArgs e)
         {
-
             if (startSyncTime != null && startSyncTime.IsAlive)
             {
                 e.Cancel = true;

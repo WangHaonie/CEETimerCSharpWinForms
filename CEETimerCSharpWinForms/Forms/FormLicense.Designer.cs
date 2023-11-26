@@ -35,9 +35,11 @@
             // FormLicenseContent
             // 
             this.FormLicenseContent.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.FormLicenseContent.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.FormLicenseContent.DetectUrls = false;
             this.FormLicenseContent.Dock = System.Windows.Forms.DockStyle.Fill;
             this.FormLicenseContent.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FormLicenseContent.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.FormLicenseContent.Location = new System.Drawing.Point(0, 0);
             this.FormLicenseContent.Name = "FormLicenseContent";
             this.FormLicenseContent.ReadOnly = true;

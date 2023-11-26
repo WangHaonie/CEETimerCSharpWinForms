@@ -4,10 +4,7 @@
 CEETimerCSharpWinForms，适用于 Windows 系统的高考倒计时，自 v1.6 起不再只是高考倒计时，你可以自定义考试名称。
 > 开发环境：Visual Studio 2022，C#，WinForms，.NET Framework 4.7.2
 ## 运行截图
-1. 主窗口 (可右键显示更多选项)<details><summary>查看图片</summary>![主窗口](./ReadmeImgs/MainForm.png)</details>当还没有到考试开始时间时<details><summary>查看图片</summary>![](./ReadmeImgs/MainForm_1.png)</details>当过了考试开始时间时<details><summary>查看图片</summary>![](./ReadmeImgs/MainForm_2.png)</details>当过了考试结束时间时<details><summary>查看图片</summary>![](./ReadmeImgs/MainForm_3.png)</details>
-2. 设置窗口<details><summary>查看图片</summary>![设置窗口](./ReadmeImgs/FormSettings.png)</details>
-3. 关于窗口<details><summary>查看图片</summary>![关于窗口](./ReadmeImgs/FormAbout.png)</details>
-4. 当你手贱尝试 Alt+F4 关闭时<details><summary>查看图片</summary>![关闭警告](./ReadmeImgs/MsgBoxClose.png)</details>
+![主窗口](./ReadmeImgs/MainForm.png)
 ## 主要特征和功能
 > 说明：✅ 已推出的功能、⭕ 正在开发的功能、❌ 不会被考虑的功能
 
@@ -20,7 +17,7 @@ CEETimerCSharpWinForms，适用于 Windows 系统的高考倒计时，自 v1.6 �
 + ✅ 适配高分辨率以及各种缩放的屏幕；
 + ⭕ 实时监测系统分辨率/缩放更改，并自动调整程序自身的缩放以确保不会模糊 (目前为止只能重启程序才不会出现模糊)；
 + ⭕ 代码优化，目前屎山和设计缺陷太多了；
-+ ⭕ 检查更新功能，但只能检查不能下载，需要跳转手动下载；
++ ✅ 检查更新功能，但只能检查不能下载，需要跳转手动下载；
 + ❌ 更改倒计时字体；
 + ❌ 更改倒计时文字颜色、大小；
 + ❌ 更改倒计时背景颜色；
@@ -30,7 +27,7 @@ CEETimerCSharpWinForms，适用于 Windows 系统的高考倒计时，自 v1.6 �
 2. .NET Framework 4.7.2 (高版本 Windows 10/11 可能预装了 4.8 或更高版本，可以不用安装。但如果你正在使用 Windows 7/8/8.1 或者虽然是 Windows 10/11 但却无法运行，请点击[此链接](https://dotnet.microsoft.com/zh-cn/download/dotnet-framework/thank-you/net472-offline-installer)下载并安装 .NET Framework 4.7.2)
 ## 食用方法
 1. 安装运行库，详见上方 "系统要求"
-2. 到[ Releases ](https://github.com/WangHaonie/CEETimerCSharpWinForms/releases/latest)下载 CEETimerCSharpWinForms_vX.X_x64.7z
+2. 到[ Releases ](https://github.com/WangHaonie/CEETimerCSharpWinForms/releases/latest)下载 CEETimerCSharpWinForms_X.X_x64.7z
 3. 解压到你喜欢的文件夹
 4. 双击 CEETimerCSharpWinForms.exe 就可以运行了
 5. 如果你设置过考试名称、日期、时间，程序会在自身文件夹生成一个文件 CEETimerCSharpWinFormsConfig.db 用来存放配置，请不要删除，更不要随意修改其中的数据；
