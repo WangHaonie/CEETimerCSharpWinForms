@@ -15,9 +15,14 @@ namespace CEETimerCSharpWinForms.Modules
             {
                 Environment.Exit(3);
             }
-            else
+            try
             {
                 LaunchManager.MainThread();
+            }
+            finally
+            {
+                defaultMutex.ReleaseMutex();
+                defaultMutex.Dispose();
             }
         }
     }

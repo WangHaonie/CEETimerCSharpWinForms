@@ -1,4 +1,6 @@
-﻿namespace CEETimerCSharpWinForms.Forms
+﻿using CEETimerCSharpWinForms.Modules;
+
+namespace CEETimerCSharpWinForms.Forms
 {
     partial class FormAbout
     {
@@ -65,13 +67,14 @@
             // FormAboutLabelVersion
             // 
             this.FormAboutLabelVersion.AutoSize = true;
+            this.FormAboutLabelVersion.Cursor = System.Windows.Forms.Cursors.Hand;
             this.FormAboutLabelVersion.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.FormAboutLabelVersion.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormAboutLabelVersion.Location = new System.Drawing.Point(0, 5);
             this.FormAboutLabelVersion.Name = "FormAboutLabelVersion";
-            this.FormAboutLabelVersion.Size = new System.Drawing.Size(86, 15);
+            this.FormAboutLabelVersion.Size = new System.Drawing.Size(0, 15);
             this.FormAboutLabelVersion.TabIndex = 2;
-            this.FormAboutLabelVersion.Text = "版本 v1.7 (x64)";
+            this.FormAboutLabelVersion.Click += new System.EventHandler(this.FormAboutLabelVersion_Click);
             // 
             // FormAboutLabelAuthor
             // 
@@ -212,7 +215,7 @@
             this.panel5.Location = new System.Drawing.Point(3, 3);
             this.panel5.Name = "panel5";
             this.tableLayoutPanel1.SetRowSpan(this.panel5, 2);
-            this.panel5.Size = new System.Drawing.Size(75, 46);
+            this.panel5.Size = new System.Drawing.Size(74, 46);
             this.panel5.TabIndex = 7;
             // 
             // pictureBox1

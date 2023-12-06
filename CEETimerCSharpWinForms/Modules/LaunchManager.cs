@@ -5,6 +5,7 @@ namespace CEETimerCSharpWinForms.Modules
 {
     public class LaunchManager
     {
+        public const string AppVersion = "1.8";
         public static void MainThread()
         {
             Application.EnableVisualStyles();

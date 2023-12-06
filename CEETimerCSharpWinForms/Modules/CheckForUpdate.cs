@@ -1,15 +1,27 @@
 ﻿using System;
 using System.Net.Http;
 using System.Windows.Forms;
+using CEETimerCSharpWinForms.Forms;
 using Newtonsoft.Json.Linq;
 
 namespace CEETimerCSharpWinForms.Modules
 {
     public class CheckForUpdate
     {
-        public const string GitHubAPI = "https://api.github.com/repos/WangHaonie/CEETimerCSharpWinForms/releases/latest";
-        private const string CurrentVersion = "1.7";
+        public static string LatestVersion
+        {
+            get;
+            private set;
+        }
+
         public static void checkForUpdate()
+        {
+            Start(true);
+        }
+
+        public const string GitHubAPI = "https://api.github.com/repos/WangHaonie/CEETimerCSharpWinForms/releases/latest";
+
+        public static void Start(bool isProgramStart)
         {
             using (HttpClient updateCheck = new HttpClient())
             {
@@ -20,22 +32,39 @@ namespace CEETimerCSharpWinForms.Modules
                     response.EnsureSuccessStatusCode();
                     string apiRes = response.Content.ReadAsStringAsync().Result;
                     JObject release = JObject.Parse(apiRes);
-                    string lV = release["name"].ToString();
-                    if (Version.Parse(lV) > Version.Parse(CurrentVersion))
+                    LatestVersion = release["name"].ToString();
+                    if (Version.Parse(LatestVersion) > Version.Parse(LaunchManager.AppVersion))
                     {
-                        DialogResult result = MessageBox.Show("检测到新版本，是否跳转下载？", "发现新版本 - 高考倒计时", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                        DialogResult result = DialogResult.Yes;
+
+                        if (isProgramStart || !isProgramStart)
+                        {
+                            result = MessageBox.Show("检测到新版本，是否下载并安装？\n\n当前版本: v" + LaunchManager.AppVersion + "\n新版本: v" + LatestVersion, "发现新版本 - 高考倒计时", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                        }
+
                         if (result == DialogResult.Yes)
                         {
-                            System.Diagnostics.Process.Start("https://github.com/WangHaonie/CEETimerCSharpWinForms/releases/latest");
+                            Application.Run(new FormDownloader());
                         }
                     }
+                    else if (!isProgramStart)
+                    {
+                        MessageBox.Show("当前已是最新版本。", "检查更新 - 高考倒计时", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
                 }
-                catch
+                catch (Exception ex)
                 {
-
+                    if (!isProgramStart)
+                    {
+                        MessageBox.Show("检查更新时发生错误! \n\n系统信息：\n" + ex.Message, "错误 - 高考倒计时", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+                finally
+                {
+                    updateCheck.Dispose();
                 }
             }
         }
-        
+
     }
 }
