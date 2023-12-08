@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using CEETimerCSharpWinForms.Modules;
@@ -28,15 +29,20 @@ namespace CEETimerCSharpWinForms.Forms
                 latestVersion = CheckForUpdate.LatestVersion;
 
                 downloadUrl = $"https://github.com/WangHaonie/CEETimerCSharpWinForms/releases/download/v{latestVersion}/CEETimerCSharpWinForms_{latestVersion}_x64_Setup.exe";
+                // 测试用 downloadUrl = "https://github.com/WangHaonie/CEETimerCSharpWinForms/releases/download/v1.8/Setup.exe";
 
                 downloadPath = Path.Combine(Path.GetTempPath(), $"{latestVersion}.exe");
 
                 await DownloadFile(downloadUrl, downloadPath);
             }
+            catch (OperationCanceledException)
+            {
+                MessageBox.Show($"你已取消下载！", "警告 - 高考倒计时", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
             catch (Exception ex)
             {
                 MessageBox.Show($"更新文件下载失败! \n\n系统信息: \n{ex.Message}", "错误 - 高考倒计时", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                FrmDlL1.Text = "检测到下载失败，你可以点击 链接 跳转到浏览器进行手动下载。";
+                FrmDlL1.Text = "下载失败，你可以点击 链接 跳转到浏览器进行手动下载。";
                 FrmDlBtnR.Enabled = true; 
                 return;
             }
@@ -46,10 +52,12 @@ namespace CEETimerCSharpWinForms.Forms
             }
         }
 
+        private CancellationTokenSource cancelRequest;
         private async Task DownloadFile(string url, string filePath)
         {
+            cancelRequest = new CancellationTokenSource();
             httpClient.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36 Edg/119.0.0.0");
-            using (var response = await httpClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead))
+            using (var response = await httpClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, cancelRequest.Token))
             {
                 response.EnsureSuccessStatusCode();
 
@@ -70,29 +78,38 @@ namespace CEETimerCSharpWinForms.Forms
                         var progressPercentage = (int)(totalBytesRead * 100 / totalBytes);
                         FrmDlL2.Text = $"{progressPercentage}%";
                         FrmDlL3.Text = $"{totalBytesRead / 1024} KB / {totalBytes / 1024} KB";
-                        FrmDlL4.Text = $"{totalBytesRead / sw.Elapsed.TotalSeconds / 1024:N2} KB/s";
+                        FrmDlL4.Text = $"{totalBytesRead / sw.Elapsed.TotalSeconds / 1024 / 1024:N2} MB/s";
                         FrmDlPb.Value = progressPercentage;
 
-                        if (cancelRequested)
+                        if (cancelRequest.Token.IsCancellationRequested)
                         {
                             fileStream.Close();
-                            File.Delete(filePath);
-                            this.Close();
-                            return;
+                            if (File.Exists(filePath))
+                            {
+                                File.Delete(filePath);
+                            }
+                            throw new OperationCanceledException(cancelRequest.Token);
                         }
                     }
                 }
             }
 
-            Process.Start(filePath);
+            ProcessStartInfo processStartInfo = new ProcessStartInfo();
+            processStartInfo.FileName = "cmd.exe";
+            processStartInfo.Arguments = "/c start " + "\"\" \"" + filePath + "\" /S";
+            processStartInfo.CreateNoWindow = true;
+            processStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            Process.Start(processStartInfo);
+
             this.Close();
         }
 
-        private bool cancelRequested = false;
-
         private void FrmDlBtnC_Click(object sender, EventArgs e)
         {
-            cancelRequested = true;
+            if (cancelRequest != null)
+            {
+                cancelRequest.Cancel();
+            }
             this.Close();
         }
 

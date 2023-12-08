@@ -1,6 +1,7 @@
 ﻿using CEETimerCSharpWinForms.Forms;
 using System;
 using System.Diagnostics;
+// 未启用 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
@@ -9,9 +10,9 @@ namespace CEETimerCSharpWinForms
     public partial class CEETimerCSharpWinForms : Form
     {
         private string ConfigFile = AppDomain.CurrentDomain.BaseDirectory + "CEETimerCSharpWinFormsConfig.db";
-        private DateTime targetDateTime = new DateTime(2024, 6, 7, 9, 0, 0);
-        private DateTime targetDateTimeEnd = new DateTime(2024, 6, 8, 17, 0, 0);
-        private string examName = "高考";
+        private DateTime targetDateTime = new DateTime();
+        private DateTime targetDateTimeEnd = new DateTime();
+        private string examName = "";
 
         public DateTime TargetDateTime
         {
@@ -36,7 +37,7 @@ namespace CEETimerCSharpWinForms
         {
             InitializeComponent();
 
-            formSettings = new FormSettings(this);
+            formSettings = new FormSettings();
 
             this.StartPosition = FormStartPosition.Manual;
             this.Location = new System.Drawing.Point(0, 0);
@@ -54,9 +55,41 @@ namespace CEETimerCSharpWinForms
             timer.Start();
         }
 
+        // 未启用 private float FontSize = 17f;
         private void Timer_Tick(object sender, EventArgs e)
         {
-            if (DateTime.Now < TargetDateTime)
+            // 未启用 FormSettings formSettings = new FormSettings(this);
+            // 未启用 string FontID = formSettings.FontIDE;
+            // 未启用 float FontSize = labelCountdown.Font.Size;
+            // 未启用 if (FontID == "57c1228f-bb20-4ef1-ab63-3907b9ec8b63")
+            // 未启用 {
+            // 未启用 FontSize = 15f;
+            // 未启用 }
+            // 未启用 else if (FontID == "b994bf0b-48c1-4675-aa5a-b166ab27ffd1")
+            // 未启用 {
+            // 未启用     FontSize = 16f;
+            // 未启用 }
+            // 未启用 else if (FontID == "2412781d-654b-4e7e-a698-00bddacfec2f")
+            // 未启用 {
+            // 未启用     FontSize = 17f;
+            // 未启用 }
+            // 未启用 else if (FontID == "66d27f44-5311-4abe-8508-e0599e6544db")
+            // 未启用 {
+            // 未启用     FontSize = 18f;
+            // 未启用 }
+            // 未启用 else if (FontID == "cd49a9a2-3eaf-4ec8-84dd-fe333f5ea28e")
+            // 未启用 {
+            // 未启用     FontSize = 19f;
+            // 未启用 }
+
+            // 未启用 labelCountdown.Font = new Font(labelCountdown.Font.FontFamily, FontSize, labelCountdown.Font.Style);
+
+            if (!File.Exists(ConfigFile))
+            {
+                labelCountdown.ForeColor = System.Drawing.Color.Black;
+                labelCountdown.Text = $"未检测到考试信息，请右键点击此处到设置里添加相应信息";
+            }
+            else if (DateTime.Now < TargetDateTime)
             {
                 TimeSpan timeLeft = TargetDateTime - DateTime.Now;
                 labelCountdown.ForeColor = System.Drawing.Color.Red;
@@ -86,11 +119,6 @@ namespace CEETimerCSharpWinForms
             {
                 e.Cancel = true;
             }
-        }
-
-        private void CEETimerCSharpWinForms_DpiChanged(object sender, DpiChangedEventArgs e)
-        {
-
         }
 
         private void ContextAbout_Click(object sender, EventArgs e)
@@ -200,8 +228,7 @@ namespace CEETimerCSharpWinForms
             string DateTimeLine = $"DateTime=({formSettings.n}, {formSettings.y}, {formSettings.r}, {formSettings.s}, {formSettings.f}, {formSettings.m})";
             string DateTimeLineEnd = $"DateTimeEnd=({formSettings.ne}, {formSettings.ye}, {formSettings.re}, {formSettings.se}, {formSettings.fe}, {formSettings.me})";
             string ExamNameLine = $"ExamName=[{formSettings.examName}]";
-            string InstPathLine = $"InstallPath={AppDomain.CurrentDomain.BaseDirectory}";
-            string[] lines = new string[] { DateTimeLine, DateTimeLineEnd, ExamNameLine, InstPathLine };
+            string[] lines = new string[] { DateTimeLine, DateTimeLineEnd, ExamNameLine };
             File.WriteAllLines(ConfigFile, lines);
         }
 

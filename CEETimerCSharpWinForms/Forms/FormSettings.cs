@@ -1,13 +1,22 @@
-﻿using Microsoft.Win32;
+﻿using CEETimerCSharpWinForms.Modules;
+using Microsoft.Win32;
 using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
+using static CEETimerCSharpWinForms.Forms.FormSettings;
 
 namespace CEETimerCSharpWinForms.Forms
 {
     public partial class FormSettings : Form
     {
+        // 未启用 private string FontID;
+        // 未启用 public string FontIDE
+        // 未启用 {
+        // 未启用 get { return FontID; }
+        // 未启用 set { FontID = value; }
+        // 未启用 }
         public string en
         {
             get { return FormSettingsSetExamNameText.Text; }
@@ -87,7 +96,7 @@ namespace CEETimerCSharpWinForms.Forms
 
         public int n, y, r, s, f, m;
         public int ne, ye, re, se, fe, me;
-        public string examName = "高考";
+        public string examName = "";
 
 
         public DateTime TargetDateTime
@@ -111,17 +120,24 @@ namespace CEETimerCSharpWinForms.Forms
                 return examName;
             }
         }
-        public FormSettings(CEETimerCSharpWinForms mainForm)
+
+        private ToolTip BtnRestartTip;
+
+        public FormSettings()
         {
             InitializeComponent();
-            this.mainForm = mainForm;
 
-            n = 2024;
-            y = 6;
-            r = 7;
-            s = 9;
-            f = 0;
-            m = 0;
+            BtnRestartTip = new ToolTip();
+            BtnRestartTip.AutoPopDelay = 30000;
+            BtnRestartTip.SetToolTip(BtnRestart, "如果你更改了屏幕分辨率或者缩放，可以点击此按钮来重启倒计时以确保显示的文字不会变模糊");
+            BtnRestart.MouseLeave += BtnRestart_MouseLeave;
+
+            //n = 2024;
+            //y = 6;
+            //r = 7;
+            //s = 9;
+            //f = 0;
+            //m = 0;
 
             FormSettingsSetCEETextN.Text = n.ToString();
             FormSettingsSetCEETextY.Text = y.ToString();
@@ -130,12 +146,12 @@ namespace CEETimerCSharpWinForms.Forms
             FormSettingsSetCEETextF.Text = f.ToString();
             FormSettingsSetCEETextM.Text = m.ToString();
 
-            ne = 2024;
-            ye = 6;
-            re = 8;
-            se = 17;
-            fe = 0;
-            me = 0;
+            //ne = 2024;
+            //ye = 6;
+            //re = 8;
+            //se = 17;
+            //fe = 0;
+            //me = 0;
 
             FormSettingsSetEndTextN.Text = ne.ToString();
             FormSettingsSetEndTextY.Text = ne.ToString();
@@ -145,6 +161,11 @@ namespace CEETimerCSharpWinForms.Forms
             FormSettingsSetEndTextM.Text = ne.ToString();
 
             FormSettingsSetExamNameText.Text = examName;
+        }
+
+        private void BtnRestart_MouseLeave(object sender, EventArgs e)
+        {
+            BtnRestartTip.Hide(BtnRestart);
         }
 
         private void FormSettings_Load(object sender, EventArgs e)
@@ -212,6 +233,67 @@ namespace CEETimerCSharpWinForms.Forms
 
         public Label LabelCountdown { get; set; }
 
+        private void FormSettingsRB1_CheckedChanged(object sender, EventArgs e)
+        {
+            // 未启用 if (FormSettingsRB1.Checked)
+            // 未启用 {
+            // 未启用 FontID = "57c1228f-bb20-4ef1-ab63-3907b9ec8b63";
+            // 未启用 }
+        }
+
+        private void FormSettingsRB2_CheckedChanged(object sender, EventArgs e)
+        {
+            // 未启用 if (FormSettingsRB2.Checked)
+            // 未启用 {
+            // 未启用 FontID = "b994bf0b-48c1-4675-aa5a-b166ab27ffd1";
+            // 未启用 }
+        }
+
+        private void FormSettingsRB3_CheckedChanged(object sender, EventArgs e)
+        {
+            // 未启用 if (FormSettingsRB3.Checked)
+            // 未启用 {
+            // 未启用     FontID = "2412781d-654b-4e7e-a698-00bddacfec2f";
+            // 未启用 }
+        }
+
+        private void FormSettingsRB4_CheckedChanged(object sender, EventArgs e)
+        {
+            // 未启用 if (FormSettingsRB4.Checked)
+            // 未启用 {
+            // 未启用 FontID = "66d27f44-5311-4abe-8508-e0599e6544db";
+            // 未启用 }
+        }
+
+        private void FormSettingsRB5_CheckedChanged(object sender, EventArgs e)
+        {
+            // 未启用 if (FormSettingsRB5.Checked)
+            // 未启用 {
+            // 未启用 FontID = "cd49a9a2-3eaf-4ec8-84dd-fe333f5ea28e";
+            // 未启用 }
+        }
+
+        private void BtnRestart_Click(object sender, EventArgs e)
+        {
+            RestartMyself.RestartNow();
+        }
+        private void BtnRestartFunny_Click(object sender, EventArgs e)
+        {
+            RestartMyself.KillMeNow();
+        }
+
+        private void BtnRestart_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                BtnRestart.Click -= BtnRestart_Click;
+                BtnRestart.Click += BtnRestartFunny_Click;
+                LblRestart.Text = "立即关闭倒计时: ";
+                BtnRestart.Text = "点击关闭";
+                BtnRestartTip.SetToolTip(BtnRestart, "恭喜你发现了惊天大秘密，彳亍，那你关吧~");
+            }
+        }
+
         private Thread startSyncTime;
         private void FormSettingsSyncTimeButton_Click(object sender, EventArgs e)
         {
@@ -257,6 +339,14 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void FormSettingsApply_Click(object sender, EventArgs e)
         {
+            string input = FormSettingsSetExamNameText.Text;
+            string output = new string(input.Trim().Replace(" ", "").Where(c => char.IsLetterOrDigit(c) || (c >= ' ' && c <= byte.MaxValue)).ToArray());
+            if (string.IsNullOrWhiteSpace(output))
+            {
+                MessageBox.Show("输入的考试名称有误！", "错误 - 高考倒计时", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             if (!ValidateInput() || !ValidateEndDate())
             {
                 MessageBox.Show("输入的日期时间格式有误！", "错误 - 高考倒计时", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -297,9 +387,7 @@ namespace CEETimerCSharpWinForms.Forms
                     return;
                 }
             }
-
-            examName = FormSettingsSetExamNameText.Text;
-
+            examName = output;
             mainForm.WriteConfig();
             DialogResult = DialogResult.OK;
         }

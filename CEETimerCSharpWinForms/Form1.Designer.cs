@@ -59,33 +59,33 @@
             this.toolStripSeparator1,
             this.ContextOpenDir});
             this.Context.Name = "Context";
-            this.Context.Size = new System.Drawing.Size(166, 76);
+            this.Context.Size = new System.Drawing.Size(183, 76);
             // 
             // ContextSettings
             // 
             this.ContextSettings.Name = "ContextSettings";
-            this.ContextSettings.Size = new System.Drawing.Size(165, 22);
-            this.ContextSettings.Text = "设置";
+            this.ContextSettings.Size = new System.Drawing.Size(182, 22);
+            this.ContextSettings.Text = "设置(&S)";
             this.ContextSettings.Click += new System.EventHandler(this.ContextSettings_Click);
             // 
             // ContextAbout
             // 
             this.ContextAbout.Name = "ContextAbout";
             this.ContextAbout.ShowShortcutKeys = false;
-            this.ContextAbout.Size = new System.Drawing.Size(165, 22);
-            this.ContextAbout.Text = "关于";
+            this.ContextAbout.Size = new System.Drawing.Size(182, 22);
+            this.ContextAbout.Text = "关于(&A)";
             this.ContextAbout.Click += new System.EventHandler(this.ContextAbout_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(162, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(179, 6);
             // 
             // ContextOpenDir
             // 
             this.ContextOpenDir.Name = "ContextOpenDir";
-            this.ContextOpenDir.Size = new System.Drawing.Size(165, 22);
-            this.ContextOpenDir.Text = "打开程序文件夹";
+            this.ContextOpenDir.Size = new System.Drawing.Size(182, 22);
+            this.ContextOpenDir.Text = "打开程序文件夹(&O)";
             this.ContextOpenDir.Click += new System.EventHandler(this.ContextOpenDir_Click);
             // 
             // CEETimerCSharpWinForms
@@ -113,7 +113,6 @@
             this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CEETimerCSharpWinForms_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
-            this.DpiChanged += new System.Windows.Forms.DpiChangedEventHandler(this.CEETimerCSharpWinForms_DpiChanged);
             this.Context.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();

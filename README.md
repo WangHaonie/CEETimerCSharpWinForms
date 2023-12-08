@@ -17,7 +17,8 @@ CEETimerCSharpWinForms，适用于 Windows 系统的高考倒计时，自 v1.6 �
 + ✅ 适配高分辨率以及各种缩放的屏幕；
 + ⭕ 实时监测系统分辨率/缩放更改，并自动调整程序自身的缩放以确保不会模糊 (目前为止只能重启程序才不会出现模糊)；
 + ⭕ 代码优化，目前屎山和设计缺陷太多了；
-+ ✅ 检查更新功能，但只能检查不能下载，需要跳转手动下载；
++ ✅ 检查更新功能，自动下载并更新；
++ ⭕ 有限制地更改字体大小
 + ❌ 更改倒计时字体；
 + ❌ 更改倒计时文字颜色、大小；
 + ❌ 更改倒计时背景颜色；
@@ -30,7 +31,7 @@ CEETimerCSharpWinForms，适用于 Windows 系统的高考倒计时，自 v1.6 �
 2. 到[ Releases ](https://github.com/WangHaonie/CEETimerCSharpWinForms/releases/latest)下载 CEETimerCSharpWinForms_X.X_x64.7z
 3. 解压到你喜欢的文件夹
 4. 双击 CEETimerCSharpWinForms.exe 就可以运行了
-5. 如果你设置过考试名称、日期、时间，程序会在自身文件夹生成一个文件 CEETimerCSharpWinFormsConfig.db 用来存放配置，请不要删除，更不要随意修改其中的数据；
-> 因能力有限，设置中的 设置开机启动 以及 同步网络时钟 点击后立即生效，不需要额外点击保存，当然这些设置也不会保存到配置文件中。
+5. 如果你设置过考试名称、日期、时间，程序会在自身文件夹生成一个文件 CEETimerCSharpWinFormsConfig.db (不是数据库，只是一个文本文件而已) 用来存放配置，请不要删除，更不要随意修改其中的数据；
+> 因能力有限，设置中的 设置开机启动 以及 同步网络时钟 等点击后立即生效，不需要额外点击保存，当然这些设置也不会保存到配置文件中。
 ## 开源许可证
 CEETimerCSharpWinForms is licensed under the GNU General Public License v3.0 (GPL-3.0).

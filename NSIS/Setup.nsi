@@ -2,10 +2,9 @@
 
 ; 安装程序初始定义常量
 !define PRODUCT_NAME "高考倒计时"
-!define PRODUCT_VERSION "v1.8"
+!define PRODUCT_VERSION "v1.9"
 !define PRODUCT_PUBLISHER "WangHaonie"
 !define PRODUCT_WEB_SITE "https://github.com/WangHaonie/CEETimerCSharpWinForms"
-!define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\CEETimerCSharpWinForms.exe"
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
 !define PRODUCT_UNINST_ROOT_KEY "HKCU"
 
@@ -44,7 +43,7 @@ SetCompressor lzma
 
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
 OutFile "Setup.exe"
-InstallDir "$PROFILE\CEETimerCSharpWinForms"
+InstallDir "$PROFILE\AppData\Local\CEETimerCSharpWinForms"
 InstallDirRegKey HKCU "${PRODUCT_UNINST_KEY}" "UninstallString"
 ShowInstDetails show
 ShowUnInstDetails show
@@ -69,7 +68,6 @@ SectionEnd
 
 Section -Post
   WriteUninstaller "$INSTDIR\uninst.exe"
-  WriteRegStr HKCU "${PRODUCT_DIR_REGKEY}" "" "$INSTDIR\CEETimerCSharpWinForms.exe"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayName" "$(^Name)"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "UninstallString" "$INSTDIR\uninst.exe"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayIcon" "$INSTDIR\CEETimerCSharpWinForms.exe"
@@ -99,23 +97,24 @@ Section Uninstall
   RMDir "$INSTDIR"
 
   DeleteRegKey ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}"
-  DeleteRegKey HKCU "${PRODUCT_DIR_REGKEY}"
   SetAutoClose true
 SectionEnd
 
 #-- 根据 NSIS 脚本编辑规则，所有 Function 区段必须放置在 Section 区段之后编写，以避免安装程序出现未可预知的问题。--#
 
 Function un.onInit
-  Exec '"taskkill" /F /IM "CEETimerCSharpWinForms.exe"'
-  MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "您确实要完全移除 $(^Name) ，及其所有的组件？" IDYES +2
-  Abort
+  ExecWait '"taskkill" /F /IM "CEETimerCSharpWinForms.exe"'
 FunctionEnd
 
 Function un.onUninstSuccess
   HideWindow
-  MessageBox MB_ICONINFORMATION|MB_OK "$(^Name) 已成功地从您的计算机移除。"
 FunctionEnd
 
 Function .onInit
-  Exec '"taskkill" /F /IM "CEETimerCSharpWinForms.exe"'
+  ExecWait '"taskkill" /F /IM "CEETimerCSharpWinForms.exe"'
+  ExecWait '"$INSTDIR\uninstaller.exe" /S _?=$INSTDIR'
+FunctionEnd
+
+Function .onInstSuccess
+  Exec "$INSTDIR\CEETimerCSharpWinForms.exe"
 FunctionEnd

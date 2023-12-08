@@ -5,7 +5,7 @@ namespace CEETimerCSharpWinForms.Modules
 {
     public class SetMutex
     {
-        static Mutex defaultMutex;
+        public static Mutex defaultMutex;
         public static void setMutex()
         {
             bool isNewProcess;
