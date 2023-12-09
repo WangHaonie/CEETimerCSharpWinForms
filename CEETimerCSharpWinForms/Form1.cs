@@ -1,7 +1,7 @@
 ﻿using CEETimerCSharpWinForms.Forms;
 using System;
 using System.Diagnostics;
-// 未启用 using System.Drawing;
+using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
@@ -30,6 +30,13 @@ namespace CEETimerCSharpWinForms
             set { examName = value; }
         }
 
+        // 功能 更改倒计时字体大小 相关代码 string fontSize = "17";
+        // 功能 更改倒计时字体大小 相关代码 public string FontSize
+        // 功能 更改倒计时字体大小 相关代码 {
+        // 功能 更改倒计时字体大小 相关代码 get { return fontSize; }
+        // 功能 更改倒计时字体大小 相关代码 set { fontSize = value; }
+        // 功能 更改倒计时字体大小 相关代码 }
+
         private System.Windows.Forms.Timer timer;
         private FormSettings formSettings;
 
@@ -39,9 +46,14 @@ namespace CEETimerCSharpWinForms
 
             formSettings = new FormSettings();
 
+            // 功能 更改倒计时字体大小 相关代码 Label label = new Label();
+            // 功能 更改倒计时字体大小 相关代码 string fontSize = labelCountdown.Font.Size.ToString();
+
             this.StartPosition = FormStartPosition.Manual;
             this.Location = new System.Drawing.Point(0, 0);
             this.TopMost = true;
+
+            labelCountdown.Font = this.labelCountdown.Font = new System.Drawing.Font("微软雅黑", 18.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
 
             timer = new System.Windows.Forms.Timer();
             timer.Interval = 1000;
@@ -58,33 +70,33 @@ namespace CEETimerCSharpWinForms
         // 未启用 private float FontSize = 17f;
         private void Timer_Tick(object sender, EventArgs e)
         {
-            // 未启用 FormSettings formSettings = new FormSettings(this);
-            // 未启用 string FontID = formSettings.FontIDE;
-            // 未启用 float FontSize = labelCountdown.Font.Size;
-            // 未启用 if (FontID == "57c1228f-bb20-4ef1-ab63-3907b9ec8b63")
-            // 未启用 {
-            // 未启用 FontSize = 15f;
-            // 未启用 }
-            // 未启用 else if (FontID == "b994bf0b-48c1-4675-aa5a-b166ab27ffd1")
-            // 未启用 {
-            // 未启用     FontSize = 16f;
-            // 未启用 }
-            // 未启用 else if (FontID == "2412781d-654b-4e7e-a698-00bddacfec2f")
-            // 未启用 {
-            // 未启用     FontSize = 17f;
-            // 未启用 }
-            // 未启用 else if (FontID == "66d27f44-5311-4abe-8508-e0599e6544db")
-            // 未启用 {
-            // 未启用     FontSize = 18f;
-            // 未启用 }
-            // 未启用 else if (FontID == "cd49a9a2-3eaf-4ec8-84dd-fe333f5ea28e")
-            // 未启用 {
-            // 未启用     FontSize = 19f;
-            // 未启用 }
+            FormSettings formSettings = new FormSettings();
+            //string FontID = formSettings.FontId;
+            //fontSize = "17";
+            //if (FontID == "57c1228f-bb20-4ef1-ab63-3907b9ec8b63")
+            //{
+            //    fontSize = "15";
+            //}
+            //else if (FontID == "b994bf0b-48c1-4675-aa5a-b166ab27ffd1")
+            //{
+            //    fontSize = "16";
+            //}
+            //else if (FontID == "2412781d-654b-4e7e-a698-00bddacfec2f")
+            //{
+            //    fontSize = "17";
+            //}
+            //else if (FontID == "66d27f44-5311-4abe-8508-e0599e6544db")
+            //{
+            //    fontSize = "18";
+            //}
+            //else if (FontID == "cd49a9a2-3eaf-4ec8-84dd-fe333f5ea28e")
+            //{
+            //    fontSize = "19";
+            //}
 
-            // 未启用 labelCountdown.Font = new Font(labelCountdown.Font.FontFamily, FontSize, labelCountdown.Font.Style);
+            // 功能 更改倒计时字体大小 相关代码 labelCountdown.Font = new Font(labelCountdown.Font.FontFamily, float.Parse(fontSize), labelCountdown.Font.Style);
 
-            if (!File.Exists(ConfigFile))
+            if (!isValidConfigDate())
             {
                 labelCountdown.ForeColor = System.Drawing.Color.Black;
                 labelCountdown.Text = $"未检测到考试信息，请右键点击此处到设置里添加相应信息";
@@ -107,6 +119,15 @@ namespace CEETimerCSharpWinForms
                 labelCountdown.ForeColor = System.Drawing.Color.Black;
                 labelCountdown.Text = $"倒计时结束，距离{ExamName}已经过去了{timePast.Days}天{timePast.Hours:00}时{timePast.Minutes:00}分{timePast.Seconds:00}秒";
             }
+        }
+
+        private bool isValidConfigDate()
+        {
+            if (!formSettings.ValidateInput() || !formSettings.ValidateEndDate())
+            {
+                return false;
+            }
+            return true;
         }
 
         private void CEETimerCSharpWinForms_FormClosing(object sender, FormClosingEventArgs e)
@@ -219,6 +240,15 @@ namespace CEETimerCSharpWinForms
                         formSettings.en = ExamNameA;
                         examName = ExamNameA;
                     }
+                    // 功能 更改倒计时字体大小 相关代码 if (line.StartsWith("FontSize="))
+                    // 功能 更改倒计时字体大小 相关代码 {
+                    // 功能 更改倒计时字体大小 相关代码 string FontId = line.Substring("FontSize=".Length);
+                    // 功能 更改倒计时字体大小 相关代码 int FontIdStart = FontId.IndexOf('[') + 1;
+                    // 功能 更改倒计时字体大小 相关代码 int FontIdEnd = FontId.LastIndexOf(']');
+                    // 功能 更改倒计时字体大小 相关代码 string FontIdA = FontId.Substring(FontIdStart, FontIdEnd - FontIdStart);
+                    // 功能 更改倒计时字体大小 相关代码 formSettings.FontId = FontIdA;
+                    //FontId = FontIdA;
+                    // 功能 更改倒计时字体大小 相关代码 }
                 }
             }
         }
@@ -228,7 +258,9 @@ namespace CEETimerCSharpWinForms
             string DateTimeLine = $"DateTime=({formSettings.n}, {formSettings.y}, {formSettings.r}, {formSettings.s}, {formSettings.f}, {formSettings.m})";
             string DateTimeLineEnd = $"DateTimeEnd=({formSettings.ne}, {formSettings.ye}, {formSettings.re}, {formSettings.se}, {formSettings.fe}, {formSettings.me})";
             string ExamNameLine = $"ExamName=[{formSettings.examName}]";
+            // 功能 更改倒计时字体大小 相关代码 string FontSizeLine = $"FontSize=[{formSettings.FontId}]";
             string[] lines = new string[] { DateTimeLine, DateTimeLineEnd, ExamNameLine };
+            // 功能 更改倒计时字体大小 相关代码 string[] lines = new string[] { DateTimeLine, DateTimeLineEnd, ExamNameLine, FontSizeLine };
             File.WriteAllLines(ConfigFile, lines);
         }
 

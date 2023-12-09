@@ -95,10 +95,6 @@
             this.panel27 = new System.Windows.Forms.Panel();
             this.panel28 = new System.Windows.Forms.Panel();
             this.panel29 = new System.Windows.Forms.Panel();
-            this.panel30 = new System.Windows.Forms.Panel();
-            this.panel31 = new System.Windows.Forms.Panel();
-            this.panel32 = new System.Windows.Forms.Panel();
-            this.panel33 = new System.Windows.Forms.Panel();
             this.panel34 = new System.Windows.Forms.Panel();
             this.panel35 = new System.Windows.Forms.Panel();
             this.panel36 = new System.Windows.Forms.Panel();
@@ -133,10 +129,6 @@
             this.panel27.SuspendLayout();
             this.panel28.SuspendLayout();
             this.panel29.SuspendLayout();
-            this.panel30.SuspendLayout();
-            this.panel31.SuspendLayout();
-            this.panel32.SuspendLayout();
-            this.panel33.SuspendLayout();
             this.panel34.SuspendLayout();
             this.panel35.SuspendLayout();
             this.panel36.SuspendLayout();
@@ -429,21 +421,19 @@
             this.LblSetSize.Enabled = false;
             this.LblSetSize.Location = new System.Drawing.Point(3, 0);
             this.LblSetSize.Name = "LblSetSize";
-            this.LblSetSize.Size = new System.Drawing.Size(98, 15);
+            this.LblSetSize.Size = new System.Drawing.Size(72, 15);
             this.LblSetSize.TabIndex = 0;
-            this.LblSetSize.Text = "倒计时字体大小";
+            this.LblSetSize.Text = "未开放功能";
             // 
             // FormSettingsRB5
             // 
             this.FormSettingsRB5.AutoSize = true;
             this.FormSettingsRB5.Cursor = System.Windows.Forms.Cursors.Hand;
             this.FormSettingsRB5.Enabled = false;
-            this.FormSettingsRB5.Location = new System.Drawing.Point(3, 3);
+            this.FormSettingsRB5.Location = new System.Drawing.Point(352, 1);
             this.FormSettingsRB5.Name = "FormSettingsRB5";
-            this.FormSettingsRB5.Size = new System.Drawing.Size(77, 19);
+            this.FormSettingsRB5.Size = new System.Drawing.Size(14, 13);
             this.FormSettingsRB5.TabIndex = 0;
-            this.FormSettingsRB5.TabStop = true;
-            this.FormSettingsRB5.Text = "再大一点";
             this.FormSettingsRB5.UseVisualStyleBackColor = true;
             this.FormSettingsRB5.CheckedChanged += new System.EventHandler(this.FormSettingsRB5_CheckedChanged);
             // 
@@ -452,12 +442,10 @@
             this.FormSettingsRB4.AutoSize = true;
             this.FormSettingsRB4.Cursor = System.Windows.Forms.Cursors.Hand;
             this.FormSettingsRB4.Enabled = false;
-            this.FormSettingsRB4.Location = new System.Drawing.Point(3, 3);
+            this.FormSettingsRB4.Location = new System.Drawing.Point(264, 1);
             this.FormSettingsRB4.Name = "FormSettingsRB4";
-            this.FormSettingsRB4.Size = new System.Drawing.Size(64, 19);
+            this.FormSettingsRB4.Size = new System.Drawing.Size(14, 13);
             this.FormSettingsRB4.TabIndex = 0;
-            this.FormSettingsRB4.TabStop = true;
-            this.FormSettingsRB4.Text = "大一点";
             this.FormSettingsRB4.UseVisualStyleBackColor = true;
             this.FormSettingsRB4.CheckedChanged += new System.EventHandler(this.FormSettingsRB4_CheckedChanged);
             // 
@@ -466,12 +454,10 @@
             this.FormSettingsRB3.AutoSize = true;
             this.FormSettingsRB3.Cursor = System.Windows.Forms.Cursors.Hand;
             this.FormSettingsRB3.Enabled = false;
-            this.FormSettingsRB3.Location = new System.Drawing.Point(3, 3);
+            this.FormSettingsRB3.Location = new System.Drawing.Point(176, 1);
             this.FormSettingsRB3.Name = "FormSettingsRB3";
-            this.FormSettingsRB3.Size = new System.Drawing.Size(77, 19);
+            this.FormSettingsRB3.Size = new System.Drawing.Size(14, 13);
             this.FormSettingsRB3.TabIndex = 0;
-            this.FormSettingsRB3.TabStop = true;
-            this.FormSettingsRB3.Text = "不大不小";
             this.FormSettingsRB3.UseVisualStyleBackColor = true;
             this.FormSettingsRB3.CheckedChanged += new System.EventHandler(this.FormSettingsRB3_CheckedChanged);
             // 
@@ -480,12 +466,10 @@
             this.FormSettingsRB2.AutoSize = true;
             this.FormSettingsRB2.Cursor = System.Windows.Forms.Cursors.Hand;
             this.FormSettingsRB2.Enabled = false;
-            this.FormSettingsRB2.Location = new System.Drawing.Point(3, 3);
+            this.FormSettingsRB2.Location = new System.Drawing.Point(88, 1);
             this.FormSettingsRB2.Name = "FormSettingsRB2";
-            this.FormSettingsRB2.Size = new System.Drawing.Size(64, 19);
+            this.FormSettingsRB2.Size = new System.Drawing.Size(14, 13);
             this.FormSettingsRB2.TabIndex = 0;
-            this.FormSettingsRB2.TabStop = true;
-            this.FormSettingsRB2.Text = "小一点";
             this.FormSettingsRB2.UseVisualStyleBackColor = true;
             this.FormSettingsRB2.CheckedChanged += new System.EventHandler(this.FormSettingsRB2_CheckedChanged);
             // 
@@ -494,12 +478,10 @@
             this.FormSettingsRB1.AutoSize = true;
             this.FormSettingsRB1.Cursor = System.Windows.Forms.Cursors.Hand;
             this.FormSettingsRB1.Enabled = false;
-            this.FormSettingsRB1.Location = new System.Drawing.Point(3, 3);
+            this.FormSettingsRB1.Location = new System.Drawing.Point(0, 1);
             this.FormSettingsRB1.Name = "FormSettingsRB1";
-            this.FormSettingsRB1.Size = new System.Drawing.Size(77, 19);
+            this.FormSettingsRB1.Size = new System.Drawing.Size(14, 13);
             this.FormSettingsRB1.TabIndex = 0;
-            this.FormSettingsRB1.TabStop = true;
-            this.FormSettingsRB1.Text = "再小一点";
             this.FormSettingsRB1.UseVisualStyleBackColor = true;
             this.FormSettingsRB1.CheckedChanged += new System.EventHandler(this.FormSettingsRB1_CheckedChanged);
             // 
@@ -571,10 +553,6 @@
             this.tableLayoutPanel1.Controls.Add(this.panel27, 11, 6);
             this.tableLayoutPanel1.Controls.Add(this.panel28, 0, 7);
             this.tableLayoutPanel1.Controls.Add(this.panel29, 1, 8);
-            this.tableLayoutPanel1.Controls.Add(this.panel30, 3, 8);
-            this.tableLayoutPanel1.Controls.Add(this.panel31, 5, 8);
-            this.tableLayoutPanel1.Controls.Add(this.panel32, 7, 8);
-            this.tableLayoutPanel1.Controls.Add(this.panel33, 9, 8);
             this.tableLayoutPanel1.Controls.Add(this.panel34, 0, 9);
             this.tableLayoutPanel1.Controls.Add(this.panel35, 3, 9);
             this.tableLayoutPanel1.Controls.Add(this.panel36, 0, 10);
@@ -858,53 +836,17 @@
             // 
             // panel29
             // 
-            this.tableLayoutPanel1.SetColumnSpan(this.panel29, 2);
+            this.tableLayoutPanel1.SetColumnSpan(this.panel29, 10);
             this.panel29.Controls.Add(this.FormSettingsRB1);
+            this.panel29.Controls.Add(this.FormSettingsRB5);
+            this.panel29.Controls.Add(this.FormSettingsRB2);
+            this.panel29.Controls.Add(this.FormSettingsRB3);
+            this.panel29.Controls.Add(this.FormSettingsRB4);
             this.panel29.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel29.Location = new System.Drawing.Point(47, 235);
             this.panel29.Name = "panel29";
-            this.panel29.Size = new System.Drawing.Size(82, 23);
+            this.panel29.Size = new System.Drawing.Size(434, 23);
             this.panel29.TabIndex = 29;
-            // 
-            // panel30
-            // 
-            this.tableLayoutPanel1.SetColumnSpan(this.panel30, 2);
-            this.panel30.Controls.Add(this.FormSettingsRB2);
-            this.panel30.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel30.Location = new System.Drawing.Point(135, 235);
-            this.panel30.Name = "panel30";
-            this.panel30.Size = new System.Drawing.Size(82, 23);
-            this.panel30.TabIndex = 30;
-            // 
-            // panel31
-            // 
-            this.tableLayoutPanel1.SetColumnSpan(this.panel31, 2);
-            this.panel31.Controls.Add(this.FormSettingsRB3);
-            this.panel31.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel31.Location = new System.Drawing.Point(223, 235);
-            this.panel31.Name = "panel31";
-            this.panel31.Size = new System.Drawing.Size(82, 23);
-            this.panel31.TabIndex = 31;
-            // 
-            // panel32
-            // 
-            this.tableLayoutPanel1.SetColumnSpan(this.panel32, 2);
-            this.panel32.Controls.Add(this.FormSettingsRB4);
-            this.panel32.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel32.Location = new System.Drawing.Point(311, 235);
-            this.panel32.Name = "panel32";
-            this.panel32.Size = new System.Drawing.Size(82, 23);
-            this.panel32.TabIndex = 32;
-            // 
-            // panel33
-            // 
-            this.tableLayoutPanel1.SetColumnSpan(this.panel33, 2);
-            this.panel33.Controls.Add(this.FormSettingsRB5);
-            this.panel33.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel33.Location = new System.Drawing.Point(399, 235);
-            this.panel33.Name = "panel33";
-            this.panel33.Size = new System.Drawing.Size(82, 23);
-            this.panel33.TabIndex = 33;
             // 
             // panel34
             // 
@@ -1039,14 +981,6 @@
             this.panel28.PerformLayout();
             this.panel29.ResumeLayout(false);
             this.panel29.PerformLayout();
-            this.panel30.ResumeLayout(false);
-            this.panel30.PerformLayout();
-            this.panel31.ResumeLayout(false);
-            this.panel31.PerformLayout();
-            this.panel32.ResumeLayout(false);
-            this.panel32.PerformLayout();
-            this.panel33.ResumeLayout(false);
-            this.panel33.PerformLayout();
             this.panel34.ResumeLayout(false);
             this.panel34.PerformLayout();
             this.panel35.ResumeLayout(false);
@@ -1132,10 +1066,6 @@
         private System.Windows.Forms.Panel panel27;
         private System.Windows.Forms.Panel panel28;
         private System.Windows.Forms.Panel panel29;
-        private System.Windows.Forms.Panel panel30;
-        private System.Windows.Forms.Panel panel31;
-        private System.Windows.Forms.Panel panel32;
-        private System.Windows.Forms.Panel panel33;
         private System.Windows.Forms.Panel panel34;
         private System.Windows.Forms.Panel panel35;
         private System.Windows.Forms.Panel panel36;

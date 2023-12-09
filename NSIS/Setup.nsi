@@ -2,7 +2,7 @@
 
 ; 安装程序初始定义常量
 !define PRODUCT_NAME "高考倒计时"
-!define PRODUCT_VERSION "v1.9"
+!define PRODUCT_VERSION "v1.9.1"
 !define PRODUCT_PUBLISHER "WangHaonie"
 !define PRODUCT_WEB_SITE "https://github.com/WangHaonie/CEETimerCSharpWinForms"
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
@@ -112,7 +112,6 @@ FunctionEnd
 
 Function .onInit
   ExecWait '"taskkill" /F /IM "CEETimerCSharpWinForms.exe"'
-  ExecWait '"$INSTDIR\uninstaller.exe" /S _?=$INSTDIR'
 FunctionEnd
 
 Function .onInstSuccess
