@@ -4,7 +4,7 @@
 CEETimerCSharpWinForms，适用于 Windows 系统的高考倒计时，自 v1.6 起不再只是高考倒计时，你可以自定义考试名称。
 > 开发环境：Visual Studio 2022，C#，WinForms，.NET Framework 4.7.2
 ## 运行截图
-![主窗口](./ReadmeImgs/MainForm.png)
+![主窗口](https://github.com/WangHaonie/CEETimerCSharpWinForms/assets/68315280/e0dd2e13-b0c3-487e-9dfd-ea7608814613)
 ## 主要特征和功能
 > 说明：✅ 已推出的功能、⭕ 正在开发的功能、❌ 不会被考虑的功能
 
