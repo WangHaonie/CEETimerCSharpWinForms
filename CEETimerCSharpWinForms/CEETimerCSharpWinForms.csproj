@@ -164,6 +164,27 @@
     <Compile Include="Modules\LaunchManager.cs" />
     <Compile Include="Modules\RestartMyself.cs" />
     <Compile Include="Modules\SetMutex.cs" />
+    <Compile Include="Partial\CEETimerCSharpWinForms\StartupSimpleCheck.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Partial\FormSettings\CheckStartupSetting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Partial\FormSettings\GetSet.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Partial\FormSettings\InputValidator.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Partial\CEETimerCSharpWinForms\ConfigHandler.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Partial\CEETimerCSharpWinForms\GetSet.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Partial\FormSettings\StartSyncTime.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">

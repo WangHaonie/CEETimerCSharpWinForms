@@ -1,29 +1,26 @@
 !include "MUI2.nsh"
+
 !define PRODUCT_NAME "高考倒计时"
-!define PRODUCT_VERSION "v1.9.1"
-!define SETUP_FILENAME_NO_V "1.9.1"
+!define PRODUCT_VERSION "v1.9.2"
+!define SETUP_FILENAME_NO_V "1.9.2"
 !define PRODUCT_PUBLISHER "WangHaonie"
 !define PRODUCT_WEB_SITE "https://github.com/WangHaonie/CEETimerCSharpWinForms"
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
 !define PRODUCT_UNINST_ROOT_KEY "HKCU"
-SetCompressor lzma
 !define MUI_ABORTWARNING
 !define MUI_ICON "..\CEETimerCSharpWinForms\AppIcon.ico"
 !define MUI_UNICON "${NSISDIR}\Contrib\Graphics\Icons\modern-uninstall.ico"
+!define MUI_LICENSEPAGE_CHECKBOX
+
+SetCompressor lzma
 
 !insertmacro MUI_PAGE_WELCOME
-!define MUI_LICENSEPAGE_CHECKBOX
 !insertmacro MUI_PAGE_LICENSE "..\LICENSE"
 !insertmacro MUI_PAGE_DIRECTORY
 !insertmacro MUI_PAGE_INSTFILES
-#!define MUI_FINISHPAGE_RUN "$INSTDIR\CEETimerCSharpWinForms.exe"
 !insertmacro MUI_PAGE_FINISH
-
 !insertmacro MUI_UNPAGE_INSTFILES
-
 !insertmacro MUI_LANGUAGE "SimpChinese"
-
-; ------ MUI 现代界面定义结束 ------
 
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
 OutFile "CEETimerCSharpWinForms_${SETUP_FILENAME_NO_V}_x64_Setup.exe"
@@ -33,11 +30,6 @@ ShowInstDetails show
 ShowUnInstDetails show
 BrandingText "Copyright (C) 2023 WangHaonie"
 
-#Section "MainSection" SEC01
-#SectionEnd
-
-#Section -AdditionalIcons
-#SectionEnd
 Section -POST
   SetOverwrite on
   SetOutPath "$INSTDIR"
@@ -87,15 +79,6 @@ Section Uninstall
   SetAutoClose true
 SectionEnd
 
-#Function un.onInit
-#FunctionEnd
-
-#Function un.onUninstSuccess
-#  HideWindow
-#FunctionEnd
-
-#Function .onInit
-#FunctionEnd
 Function .onInstSuccess
   Exec "$INSTDIR\CEETimerCSharpWinForms.exe"
 FunctionEnd

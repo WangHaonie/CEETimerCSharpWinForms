@@ -8,11 +8,7 @@ namespace CEETimerCSharpWinForms.Modules
 {
     public class CheckForUpdate
     {
-        public static string LatestVersion
-        {
-            get;
-            private set;
-        }
+        public static string LatestVersion { get; private set; }
 
         public static void checkForUpdate()
         {
@@ -39,7 +35,7 @@ namespace CEETimerCSharpWinForms.Modules
 
                         if (isProgramStart || !isProgramStart)
                         {
-                            result = MessageBox.Show("检测到新版本，是否下载并安装？\n\n当前版本: v" + LaunchManager.AppVersion + "\n新版本: v" + LatestVersion, "发现新版本 - 高考倒计时", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                            result = MessageBox.Show($"检测到新版本，是否下载并安装？\n当前版本: v{LaunchManager.AppVersion}\n新版本: v{LatestVersion}", "发现新版本 - 高考倒计时", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
                         }
 
                         if (result == DialogResult.Yes)
@@ -49,7 +45,7 @@ namespace CEETimerCSharpWinForms.Modules
                     }
                     else if (!isProgramStart)
                     {
-                        MessageBox.Show("当前已是最新版本。", "检查更新 - 高考倒计时", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show($"当前 v{LaunchManager.AppVersion} 已是最新版本。", "检查更新 - 高考倒计时", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                 }
                 catch (Exception ex)
