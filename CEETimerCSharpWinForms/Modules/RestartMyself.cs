@@ -17,7 +17,6 @@ namespace CEETimerCSharpWinForms.Modules
             processStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
             Process.Start(processStartInfo);
         }
-
         public static void KillMeNow()
         {
             ProcessStartInfo processStartInfo = new ProcessStartInfo();

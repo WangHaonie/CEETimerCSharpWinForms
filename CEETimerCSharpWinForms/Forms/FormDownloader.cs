@@ -15,24 +15,18 @@ namespace CEETimerCSharpWinForms.Forms
         private HttpClient httpClient;
         private string downloadUrl;
         private string downloadPath;
-
         public FormDownloader()
         {
             InitializeComponent();
         }
-
         private async void FormDownloader_Load(object sender, EventArgs e)
         {
             httpClient = new HttpClient();
             try
             {
                 latestVersion = CheckForUpdate.LatestVersion;
-
                 downloadUrl = $"https://github.com/WangHaonie/CEETimerCSharpWinForms/releases/download/v{latestVersion}/CEETimerCSharpWinForms_{latestVersion}_x64_Setup.exe";
-                // 测试用 downloadUrl = "https://github.com/WangHaonie/CEETimerCSharpWinForms/releases/download/v1.8/Setup.exe";
-
                 downloadPath = Path.Combine(Path.GetTempPath(), $"{latestVersion}.exe");
-
                 await DownloadFile(downloadUrl, downloadPath);
             }
             catch (OperationCanceledException)
@@ -51,7 +45,6 @@ namespace CEETimerCSharpWinForms.Forms
                 httpClient.Dispose();
             }
         }
-
         private CancellationTokenSource cancelRequest;
         private async Task DownloadFile(string url, string filePath)
         {
@@ -93,30 +86,26 @@ namespace CEETimerCSharpWinForms.Forms
                     }
                 }
             }
-
             ProcessStartInfo processStartInfo = new ProcessStartInfo();
             processStartInfo.FileName = "cmd.exe";
             processStartInfo.Arguments = "/c start " + "\"\" \"" + filePath + "\" /S";
             processStartInfo.CreateNoWindow = true;
             processStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
             Process.Start(processStartInfo);
-
-            this.Close();
+            Close();
         }
-
         private void FrmDlBtnC_Click(object sender, EventArgs e)
         {
             if (cancelRequest != null)
             {
                 cancelRequest.Cancel();
             }
-            this.Close();
+            Close();
         }
-
         private void FrmDlBtnR_Click(object sender, EventArgs e)
         {
             Process.Start(downloadUrl);
-            this.Close();
+            Close();
         }
     }
 }

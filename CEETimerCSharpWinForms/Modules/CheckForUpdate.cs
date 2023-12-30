@@ -9,14 +9,11 @@ namespace CEETimerCSharpWinForms.Modules
     public class CheckForUpdate
     {
         public static string LatestVersion { get; private set; }
-
         public static void checkForUpdate()
         {
             Start(true);
         }
-
         public const string GitHubAPI = "https://api.github.com/repos/WangHaonie/CEETimerCSharpWinForms/releases/latest";
-
         public static void Start(bool isProgramStart)
         {
             using (HttpClient updateCheck = new HttpClient())
@@ -45,7 +42,7 @@ namespace CEETimerCSharpWinForms.Modules
                     }
                     else if (!isProgramStart)
                     {
-                        MessageBox.Show($"当前 v{LaunchManager.AppVersion} 已是最新版本。", "检查更新 - 高考倒计时", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show($"当前 v{LaunchManager.AppVersion} 已是最新版本。\n\n获取到的版本：v{LatestVersion}。", "检查更新 - 高考倒计时", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                 }
                 catch (Exception ex)

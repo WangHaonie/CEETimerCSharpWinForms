@@ -8,50 +8,41 @@ namespace CEETimerCSharpWinForms.Forms
     public partial class FormAbout : Form
     {
         private ToolTip checkUpdateTip;
-
+        private bool isCheckingUpdate = false;
         public FormAbout()
         {
             InitializeComponent();
-
-            this.FormAboutLabelVersion.Text = "版本 v" + LaunchManager.AppVersion + " (x64)";
-
+        }
+        private void FormAboutLabelVersion_MouseLeave(object sender, EventArgs e)
+        {
+            checkUpdateTip.Hide(FormAboutLabelVersion);
+        }
+        private void FormAbout_Load(object sender, EventArgs e)
+        {
+            this.FormAboutLabelVersion.Text = $"版本 v{LaunchManager.AppVersion} (x64)";
             checkUpdateTip = new ToolTip();
             checkUpdateTip.AutoPopDelay = 10000;
             checkUpdateTip.SetToolTip(FormAboutLabelVersion, "是的你没有看错，点击这里可以检查是否有新版本。");
             FormAboutLabelVersion.MouseLeave += FormAboutLabelVersion_MouseLeave;
         }
-
-        private void FormAboutLabelVersion_MouseLeave(object sender, EventArgs e)
-        {
-            checkUpdateTip.Hide(FormAboutLabelVersion);
-        }
-
-        private void FormAbout_Load(object sender, EventArgs e)
-        {
-            
-        }
-
         private void FormAboutBottonGH_Click(object sender, EventArgs e)
         {
             System.Diagnostics.Process.Start("https://github.com/WangHaonie/CEETimerCSharpWinForms");
         }
-
         private void FormAboutBottonClose_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
-
         private void FormAboutLicenseButton_Click(object sender, EventArgs e)
         {
             System.Diagnostics.Process.Start("https://github.com/WangHaonie/CEETimerCSharpWinForms/blob/main/LICENSE");
         }
-
         private async void FormAboutLabelVersion_Click(object sender, EventArgs e)
         {
             FormAboutLabelVersion.Enabled = false;
-
             try
             {
+                isCheckingUpdate = true;
                 await Task.Run(() => CheckForUpdate.Start(false));
             }
             catch (Exception ex)
@@ -60,7 +51,15 @@ namespace CEETimerCSharpWinForms.Forms
             }
             finally
             {
+                isCheckingUpdate = false;
                 FormAboutLabelVersion.Enabled = true;
+            }
+        }
+        private void FormAbout_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (isCheckingUpdate)
+            {
+                e.Cancel = true;
             }
         }
     }

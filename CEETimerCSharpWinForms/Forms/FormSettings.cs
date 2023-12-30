@@ -1,70 +1,29 @@
-﻿using System;
+﻿using CEETimerCSharpWinForms.Modules;
+using Microsoft.Win32;
+using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
-using CEETimerCSharpWinForms.Modules;
 
 namespace CEETimerCSharpWinForms.Forms
 {
     public partial class FormSettings : Form
     {
-        // 功能 更改倒计时字体大小 相关代码 private string FontID;
-        // 功能 更改倒计时字体大小 相关代码 
-        // 功能 更改倒计时字体大小 相关代码 public string FontId
-        // 功能 更改倒计时字体大小 相关代码 {
-        // 功能 更改倒计时字体大小 相关代码 get { return FontID; }
-        // 功能 更改倒计时字体大小 相关代码 set { FontID = value; }
-        // 功能 更改倒计时字体大小 相关代码 }
-
-        public int n, y, r, s, f, m;
-        public int ne, ye, re, se, fe, me;
-        public string examName = "";
-        private ToolTip BtnRestartTip;
+        private string ExamName;
+        private DateTime ExamStartTime = new DateTime();
+        private DateTime ExamEndTime = new DateTime();
         private Thread startSyncTime;
-        private CEETimerCSharpWinForms mainForm;
-
+        public delegate void ConfigChangedHandler(object sender, EventArgs e);
+        public ConfigChangedHandler ConfigChanged;
         public FormSettings()
         {
             InitializeComponent();
-            BtnRestartTip = new ToolTip();
-            BtnRestartTip.AutoPopDelay = 30000;
-            BtnRestartTip.SetToolTip(BtnRestart, "如果你更改了屏幕分辨率或者缩放，可以点击此按钮来重启倒计时以确保显示的文字不会变模糊");
-            BtnRestart.MouseLeave += BtnRestart_MouseLeave;
-            //n = 2024;
-            //y = 6;
-            //r = 7;
-            //s = 9;
-            //f = 0;
-            //m = 0;
-            FormSettingsSetCEETextN.Text = n.ToString();
-            FormSettingsSetCEETextY.Text = y.ToString();
-            FormSettingsSetCEETextR.Text = r.ToString();
-            FormSettingsSetCEETextS.Text = s.ToString();
-            FormSettingsSetCEETextF.Text = f.ToString();
-            FormSettingsSetCEETextM.Text = m.ToString();
-            //ne = 2024;
-            //ye = 6;
-            //re = 8;
-            //se = 17;
-            //fe = 0;
-            //me = 0;
-            FormSettingsSetEndTextN.Text = ne.ToString();
-            FormSettingsSetEndTextY.Text = ne.ToString();
-            FormSettingsSetEndTextR.Text = ne.ToString();
-            FormSettingsSetEndTextS.Text = ne.ToString();
-            FormSettingsSetEndTextF.Text = ne.ToString();
-            FormSettingsSetEndTextM.Text = ne.ToString();
-            FormSettingsSetExamNameText.Text = examName;
-        }
-        private void BtnRestart_MouseLeave(object sender, EventArgs e)
-        {
-            BtnRestartTip.Hide(BtnRestart);
         }
         private void FormSettings_Load(object sender, EventArgs e)
         {
-            mainForm.ReadConfig();
             CheckStartupSetting();
-            // 功能 更改倒计时字体大小 相关代码 CheckRBStatus();
+            RefreshSettings();
         }
         private void FormSettingsSetStartupCheck_CheckedChanged(object sender, EventArgs e)
         {
@@ -76,74 +35,6 @@ namespace CEETimerCSharpWinForms.Forms
             {
                 UpdateStartupSetting(false);
             }
-        }
-
-        // 功能 更改倒计时字体大小 相关代码 private void CheckRBStatus()
-        // 功能 更改倒计时字体大小 相关代码 {
-        // 功能 更改倒计时字体大小 相关代码     if (FontId == "57c1228f-bb20-4ef1-ab63-3907b9ec8b63")
-        // 功能 更改倒计时字体大小 相关代码     {
-        // 功能 更改倒计时字体大小 相关代码 FormSettingsRB1.Checked = true;
-        // 功能 更改倒计时字体大小 相关代码 }
-        // 功能 更改倒计时字体大小 相关代码     else if (FontId == "b994bf0b-48c1-4675-aa5a-b166ab27ffd1")
-        // 功能 更改倒计时字体大小 相关代码     {
-        // 功能 更改倒计时字体大小 相关代码 FormSettingsRB2.Checked = true;
-        // 功能 更改倒计时字体大小 相关代码 }
-        // 功能 更改倒计时字体大小 相关代码     else if (FontId == "2412781d-654b-4e7e-a698-00bddacfec2f")
-        // 功能 更改倒计时字体大小 相关代码     {
-        // 功能 更改倒计时字体大小 相关代码 FormSettingsRB3.Checked = true;
-        // 功能 更改倒计时字体大小 相关代码 }
-        // 功能 更改倒计时字体大小 相关代码     else if (FontId == "66d27f44-5311-4abe-8508-e0599e6544db")
-        // 功能 更改倒计时字体大小 相关代码     {
-        // 功能 更改倒计时字体大小 相关代码 FormSettingsRB4.Checked = true;
-        // 功能 更改倒计时字体大小 相关代码 }
-        // 功能 更改倒计时字体大小 相关代码     else if (FontId == "cd49a9a2-3eaf-4ec8-84dd-fe333f5ea28e")
-        // 功能 更改倒计时字体大小 相关代码     {
-        // 功能 更改倒计时字体大小 相关代码 FormSettingsRB5.Checked = true;
-        // 功能 更改倒计时字体大小 相关代码 }
-        // 功能 更改倒计时字体大小 相关代码     else
-        // 功能 更改倒计时字体大小 相关代码     {
-        // 功能 更改倒计时字体大小 相关代码 FormSettingsRB3.Checked = true;
-        // 功能 更改倒计时字体大小 相关代码    }
-        // 功能 更改倒计时字体大小 相关代码 }
-        private void FormSettingsRB1_CheckedChanged(object sender, EventArgs e)
-        {
-            // 功能 更改倒计时字体大小 相关代码 if (FormSettingsRB1.Checked)
-            // 功能 更改倒计时字体大小 相关代码 {
-            // 功能 更改倒计时字体大小 相关代码 mainForm.FontSize = "15.1";
-            // 功能 更改倒计时字体大小 相关代码 FontID = "57c1228f-bb20-4ef1-ab63-3907b9ec8b63";
-            // 功能 更改倒计时字体大小 相关代码 }
-        }
-        private void FormSettingsRB2_CheckedChanged(object sender, EventArgs e)
-        {
-        // 功能 更改倒计时字体大小 相关代码 if (FormSettingsRB2.Checked)
-        // 功能 更改倒计时字体大小 相关代码 {
-        // 功能 更改倒计时字体大小 相关代码 mainForm.FontSize = "16.15";
-        // 功能 更改倒计时字体大小 相关代码 FontID = "b994bf0b-48c1-4675-aa5a-b166ab27ffd1";
-        // 功能 更改倒计时字体大小 相关代码 }
-        }
-        private void FormSettingsRB3_CheckedChanged(object sender, EventArgs e)
-        {
-            // 功能 更改倒计时字体大小 相关代码 if (FormSettingsRB3.Checked)
-            // 功能 更改倒计时字体大小 相关代码 {
-            // 功能 更改倒计时字体大小 相关代码 mainForm.FontSize = "17.25";
-            // 功能 更改倒计时字体大小 相关代码 FontID = "2412781d-654b-4e7e-a698-00bddacfec2f";
-            // 功能 更改倒计时字体大小 相关代码 }
-        }
-        private void FormSettingsRB4_CheckedChanged(object sender, EventArgs e)
-        {
-            // 功能 更改倒计时字体大小 相关代码 if (FormSettingsRB4.Checked)
-            // 功能 更改倒计时字体大小 相关代码 {
-            // 功能 更改倒计时字体大小 相关代码 mainForm.FontSize = "18.35";
-            // 功能 更改倒计时字体大小 相关代码 FontID = "66d27f44-5311-4abe-8508-e0599e6544db";
-            // 功能 更改倒计时字体大小 相关代码 }
-        }
-        private void FormSettingsRB5_CheckedChanged(object sender, EventArgs e)
-        {
-            // 功能 更改倒计时字体大小 相关代码 if (FormSettingsRB5.Checked)
-            // 功能 更改倒计时字体大小 相关代码 {
-            // 功能 更改倒计时字体大小 相关代码 mainForm.FontSize = "19.45";
-            // 功能 更改倒计时字体大小 相关代码 FontID = "cd49a9a2-3eaf-4ec8-84dd-fe333f5ea28e";
-            // 功能 更改倒计时字体大小 相关代码 }
         }
         private void BtnRestart_Click(object sender, EventArgs e)
         {
@@ -159,9 +50,10 @@ namespace CEETimerCSharpWinForms.Forms
             {
                 BtnRestart.Click -= BtnRestart_Click;
                 BtnRestart.Click += BtnRestartFunny_Click;
-                LblRestart.Text = "立即关闭倒计时: ";
-                BtnRestart.Text = "点击关闭";
-                BtnRestartTip.SetToolTip(BtnRestart, "恭喜你发现了惊天大秘密，彳亍，那你关吧~");
+                groupBox3.Text = "关闭倒计时";
+                LblRestart.Text = "如果你由于某些原因需要关闭这个倒计时，那你现在就可以选择";
+                label1.Text = "关闭它了。";
+                BtnRestart.Text = "点击关闭(&C)";
             }
         }
         private void FormSettingsSyncTimeButton_Click(object sender, EventArgs e)
@@ -171,82 +63,129 @@ namespace CEETimerCSharpWinForms.Forms
             startSyncTime = new Thread(StartSyncTime);
             startSyncTime.Start();
         }
-        // 功能 更改倒计时字体大小 相关代码 bool isNormalClose = false;
         private void FormSettingsApply_Click(object sender, EventArgs e)
         {
-            // 功能 更改倒计时字体大小 相关代码 isNormalClose = true;
-
-            string input = FormSettingsSetExamNameText.Text;
-            string output = new string(input.Trim().Replace(" ", "").Where(c => char.IsLetterOrDigit(c) || (c >= ' ' && c <= byte.MaxValue)).ToArray());
-
-            if (string.IsNullOrWhiteSpace(output) || (output.Length < 2))
+            if (ValidateInput())
             {
-                MessageBox.Show("输入的考试名称有误或太短！", "错误 - 高考倒计时", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
+                SaveSettings();
+                OnConfigChanged();
+                Close();
             }
-
-            if (!ValidateInput() || !ValidateEndDate())
-            {
-                MessageBox.Show("输入的日期时间格式有误！", "错误 - 高考倒计时", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            n = int.Parse(FormSettingsSetCEETextN.Text);
-            y = int.Parse(FormSettingsSetCEETextY.Text);
-            r = int.Parse(FormSettingsSetCEETextR.Text);
-            s = int.Parse(FormSettingsSetCEETextS.Text);
-            f = int.Parse(FormSettingsSetCEETextF.Text);
-            m = int.Parse(FormSettingsSetCEETextM.Text);
-
-            ne = int.Parse(FormSettingsSetEndTextN.Text);
-            ye = int.Parse(FormSettingsSetEndTextY.Text);
-            re = int.Parse(FormSettingsSetEndTextR.Text);
-            se = int.Parse(FormSettingsSetEndTextS.Text);
-            fe = int.Parse(FormSettingsSetEndTextF.Text);
-            me = int.Parse(FormSettingsSetEndTextM.Text);
-
-            DateTime _startTime = new DateTime(n, y, r, s, f, m);
-            DateTime _endTime = new DateTime(ne, ye, re, se, fe, me);
-
-            if (_startTime >= _endTime)
-            {
-                MessageBox.Show("考试开始时间必须在结束时间之前！", "错误 - 高考倒计时", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            TimeSpan _timeDistance = _endTime - _startTime;
-            int _dayDistance = _timeDistance.Days;
-
-            if (_dayDistance > 4)
-            {
-                DialogResult _result = MessageBox.Show($"你可能输入了错误的考试时间，应该没有持续超过4天的考试吧？\n\n你刚刚设置了一个持续{_dayDistance}天的考试。\n\n如果你确定当前输入的是正确的考试时间，请点击确定；若不是，请点击取消。", "警告 - 高考倒计时", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
-                if (_result == DialogResult.Cancel)
-                {
-                    return;
-                }
-            }
-            examName = output;
-            mainForm.WriteConfig();
-            DialogResult = DialogResult.OK;
         }
         private void FormSettingsCloseMain_Click(object sender, EventArgs e)
         {
-            // 功能 更改倒计时字体大小 相关代码 isNormalClose = false;
-            this.Close();
+            Close();
         }
         private void FormSettings_FormClosing(object sender, FormClosingEventArgs e)
         {
-            // 功能 更改倒计时字体大小 相关代码 isNormalClose = false;
             if (startSyncTime != null && startSyncTime.IsAlive)
             {
                 e.Cancel = true;
                 MessageBox.Show("请等待网络时钟同步完毕，然后再关闭此窗口。", "错误：无法关闭窗口 - 高考倒计时", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            // 功能 更改倒计时字体大小 相关代码 if (!isNormalClose)
-            // 功能 更改倒计时字体大小 相关代码 {
-            // 功能 更改倒计时字体大小 相关代码 mainForm.FontSize = "17.25";
-            // 功能 更改倒计时字体大小 相关代码 FontID = "2412781d-654b-4e7e-a698-00bddacfec2f";
-            // 功能 更改倒计时字体大小 相关代码 }
+            groupBox3.Text = "重启倒计时";
+            LblRestart.Text = "如果你更改了屏幕分辨率或者缩放，可以点击此按钮来重启倒计";
+            label1.Text = "时以确保显示的文字不会变模糊。";
+            BtnRestart.Text = "点击重启(&R)";
+            BtnRestart.Click -= BtnRestartFunny_Click;
+            BtnRestart.Click += BtnRestart_Click;
+        }
+        public bool ValidateInput()
+        {
+            ExamName = new string(FormSettingsSetExamNameText.Text.Trim().Replace(" ", "").Where(c => char.IsLetterOrDigit(c) || (c >= ' ' && c <= byte.MaxValue)).ToArray());
+
+            if (string.IsNullOrWhiteSpace(ExamName) || (ExamName.Length < 2))
+            {
+                MessageBox.Show("输入的考试名称有误或太短！", "错误 - 高考倒计时", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+
+            if (StartTimePicker.Value >= EndTimePicker.Value)
+            {
+                MessageBox.Show("考试开始时间必须在结束时间之前！", "错误 - 高考倒计时", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+
+            TimeSpan timeSpan = EndTimePicker.Value - StartTimePicker.Value;
+            int daySpan = timeSpan.Days;
+
+            if (daySpan > 4)
+            {
+                DialogResult _result = MessageBox.Show($"你可能输入了错误的考试时间，应该没有持续超过4天的考试吧？\n\n你刚刚设置了一个持续{daySpan}天的考试。\n\n如果你确定当前输入的是正确的考试时间，请点击确定；若不是，请点击取消。", "警告 - 高考倒计时", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+                if (_result == DialogResult.Cancel)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+        private void StartSyncTime()
+        {
+            ProcessStartInfo process1Info = new ProcessStartInfo();
+            process1Info.FileName = @"cmd.exe";
+            process1Info.Arguments = "/c w32tm /config /manualpeerlist:ntp1.aliyun.com /syncfromflags:manual /reliable:YES /update & net stop w32time & net start w32time & sc config w32time start= auto & w32tm /resync & w32tm /resync";
+            process1Info.Verb = "runas";
+            process1Info.CreateNoWindow = true;
+            process1Info.WindowStyle = ProcessWindowStyle.Hidden;
+            Process process1 = Process.Start(process1Info);
+            process1.WaitForExit();
+            MessageBox.Show("命令执行完成，当前系统时间已与网络同步", "时间同步成功 - 高考倒计时", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            if (FormSettingsSyncTimeButton.InvokeRequired)
+            {
+                FormSettingsSyncTimeButton.Invoke(new Action(() => FormSettingsSyncTimeButton.Enabled = true));
+                FormSettingsSyncTimeButton.Invoke(new Action(() => FormSettingsSyncTimeButton.Text = "立即同步(&S)"));
+            }
+        }
+        private void CheckStartupSetting()
+        {
+            RegistryKey reg = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+            string regvalue = reg.GetValue("CEETimerCSharpWinForms") as string;
+            if (regvalue != null)
+            {
+                if (regvalue.Equals(Application.ExecutablePath, StringComparison.OrdinalIgnoreCase))
+                {
+                    FormSettingsSetStartupCheck.Checked = true;
+                }
+                else
+                {
+                    FormSettingsSetStartupCheck.Checked = false;
+                }
+            }
+            else
+            {
+                FormSettingsSetStartupCheck.Checked = false;
+            }
+        }
+        private void UpdateStartupSetting(bool enableStartup)
+        {
+            RegistryKey reg = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+            if (enableStartup)
+            {
+                reg.SetValue("CEETimerCSharpWinForms", Application.ExecutablePath);
+            }
+            else
+            {
+                reg.DeleteValue("CEETimerCSharpWinForms", false);
+            }
+        }
+        private void RefreshSettings()
+        {
+            ExamName = ConfigManager.ReadConfig("ExamName");
+            DateTime.TryParseExact(ConfigManager.ReadConfig("ExamStartTime"), "yyyyMMddHHmmss", null, System.Globalization.DateTimeStyles.None, out ExamStartTime);
+            DateTime.TryParseExact(ConfigManager.ReadConfig("ExamEndTime"), "yyyyMMddHHmmss", null, System.Globalization.DateTimeStyles.None, out ExamEndTime);
+            FormSettingsSetExamNameText.Text = ExamName;
+            StartTimePicker.Value = ExamStartTime;
+            EndTimePicker.Value = ExamEndTime;
+        }
+        private void SaveSettings()
+        {
+            ConfigManager.WriteConfig("ExamName", ExamName);
+            ConfigManager.WriteConfig("ExamStartTime", StartTimePicker.Value.ToString("yyyyMMddHHmmss"));
+            ConfigManager.WriteConfig("ExamEndTime", EndTimePicker.Value.ToString("yyyyMMddHHmmss"));
+        }
+        protected virtual void OnConfigChanged()
+        {
+            ConfigChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }
