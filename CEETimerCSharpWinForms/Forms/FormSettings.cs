@@ -13,12 +13,14 @@ namespace CEETimerCSharpWinForms.Forms
         private string ExamName;
         private DateTime ExamStartTime = new DateTime();
         private DateTime ExamEndTime = new DateTime();
+        private DateTime JustTmp = new DateTime();
         private Thread startSyncTime;
         public delegate void ConfigChangedHandler(object sender, EventArgs e);
         public ConfigChangedHandler ConfigChanged;
         public FormSettings()
         {
             InitializeComponent();
+            SimpleValidator();
         }
         private void FormSettings_Load(object sender, EventArgs e)
         {
@@ -92,7 +94,17 @@ namespace CEETimerCSharpWinForms.Forms
         }
         public bool ValidateInput()
         {
-            ExamName = new string(FormSettingsSetExamNameText.Text.Trim().Replace(" ", "").Where(c => char.IsLetterOrDigit(c) || (c >= ' ' && c <= byte.MaxValue)).ToArray());
+            #region 来自网络
+            /*
+            
+            移除 ExamName 里不可见的空格 (Unicode 控制字符) 参考：
+
+            c# - Removing hidden characters from within strings - Stack Overflow
+            https://stackoverflow.com/a/40888424/21094697
+
+            */
+            ExamName = new string(FormSettingsSetExamNameText.Text.Trim().Replace(" ", "").Where(c => char.IsLetterOrDigit(c) || (c >= ' ' && c <= byte.MaxValue)).ToArray()); //移除 ExamName 里不可见的空格，参考：
+            #endregion
 
             if (string.IsNullOrWhiteSpace(ExamName) || (ExamName.Length < 2))
             {
@@ -170,12 +182,16 @@ namespace CEETimerCSharpWinForms.Forms
         }
         private void RefreshSettings()
         {
-            ExamName = ConfigManager.ReadConfig("ExamName");
-            DateTime.TryParseExact(ConfigManager.ReadConfig("ExamStartTime"), "yyyyMMddHHmmss", null, System.Globalization.DateTimeStyles.None, out ExamStartTime);
-            DateTime.TryParseExact(ConfigManager.ReadConfig("ExamEndTime"), "yyyyMMddHHmmss", null, System.Globalization.DateTimeStyles.None, out ExamEndTime);
-            FormSettingsSetExamNameText.Text = ExamName;
-            StartTimePicker.Value = ExamStartTime;
-            EndTimePicker.Value = ExamEndTime;
+            try
+            {
+                ExamName = ConfigManager.ReadConfig("ExamName");
+                DateTime.TryParseExact(ConfigManager.ReadConfig("ExamStartTime"), "yyyyMMddHHmmss", null, System.Globalization.DateTimeStyles.None, out ExamStartTime);
+                DateTime.TryParseExact(ConfigManager.ReadConfig("ExamEndTime"), "yyyyMMddHHmmss", null, System.Globalization.DateTimeStyles.None, out ExamEndTime);
+                FormSettingsSetExamNameText.Text = ExamName;
+                StartTimePicker.Value = ExamStartTime;
+                EndTimePicker.Value = ExamEndTime;
+            }
+            catch (Exception) { }
         }
         private void SaveSettings()
         {
@@ -186,6 +202,19 @@ namespace CEETimerCSharpWinForms.Forms
         protected virtual void OnConfigChanged()
         {
             ConfigChanged?.Invoke(this, EventArgs.Empty);
+        }
+        private void SimpleValidator()
+        {
+            if (
+                ExamStartTime < new DateTime(1753, 1, 1) &&
+                ExamEndTime < new DateTime(1753, 1, 1) &&
+                !DateTime.TryParse(ExamStartTime.ToString("yyyyMMddHHmmss"), out JustTmp) &&
+                !DateTime.TryParse(ExamEndTime.ToString("yyyyMMddHHmmss"), out JustTmp)
+                )
+            {
+                StartTimePicker.Value = DateTime.Now;
+                EndTimePicker.Value = DateTime.Now;
+            }
         }
     }
 }

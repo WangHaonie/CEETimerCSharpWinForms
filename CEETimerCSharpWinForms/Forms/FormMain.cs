@@ -11,6 +11,7 @@ namespace CEETimerCSharpWinForms
         private string ExamName;
         private DateTime ExamStartTime = new DateTime();
         private DateTime ExamEndTime = new DateTime();
+        private DateTime JustTmp = new DateTime();
         private Timer timer;
         private static FormSettings formSettings;
         private static FormAbout formAbout;
@@ -38,7 +39,18 @@ namespace CEETimerCSharpWinForms
         }
         private void Timer_Tick(object sender, EventArgs e)
         {
-            if (DateTime.Now < ExamStartTime)
+            if (
+                ExamStartTime < new DateTime(1753, 1, 1) && 
+                ExamEndTime < new DateTime(1753, 1, 1) && 
+                string.IsNullOrEmpty(ExamName.Replace(" ","").Trim()) &&
+                !DateTime.TryParse(ExamStartTime.ToString("yyyyMMddHHmmss"), out JustTmp) &&
+                !DateTime.TryParse(ExamEndTime.ToString("yyyyMMddHHmmss"), out JustTmp)
+                )
+            {
+                labelCountdown.ForeColor = System.Drawing.Color.Black;
+                labelCountdown.Text = $"未检测到考试信息，请右键点击此处到设置里添加相应信息";
+            }
+            else if (DateTime.Now < ExamStartTime)
             {
                 TimeSpan timeLeft = ExamStartTime - DateTime.Now;
                 labelCountdown.ForeColor = System.Drawing.Color.Red;
@@ -56,7 +68,6 @@ namespace CEETimerCSharpWinForms
                 labelCountdown.ForeColor = System.Drawing.Color.Black;
                 labelCountdown.Text = $"倒计时结束，距离{ExamName}已经过去了{timePast.Days}天{timePast.Hours:00}时{timePast.Minutes:00}分{timePast.Seconds:00}秒";
             }
-
         }
         private void CEETimerCSharpWinForms_FormClosing(object sender, FormClosingEventArgs e)
         {

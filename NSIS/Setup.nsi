@@ -33,7 +33,7 @@ BrandingText "Copyright (C) 2023 WangHaonie"
 Section -POST
   SetOverwrite on
   SetOutPath "$INSTDIR"
-  nsExec::Exec '"taskkill" /f /im "CEETimerCSharpWinForms.exe"'
+  nsExec::Exec '"taskkill" /F /IM "CEETimerCSharpWinForms.exe"'
   Delete "$INSTDIR\CEETimerCSharpWinForms.exe"
   Delete "$INSTDIR\${PRODUCT_NAME}.url"
   Delete "$INSTDIR\uninst.exe"
@@ -54,7 +54,6 @@ Section -POST
   WriteIniStr "$INSTDIR\${PRODUCT_NAME}.url" "InternetShortcut" "URL" "${PRODUCT_WEB_SITE}"
   File "..\CEETimerCSharpWinForms\bin\x64\Debug\Newtonsoft.Json.dll"
   File "..\CEETimerCSharpWinForms\bin\x64\Debug\CEETimerCSharpWinForms.exe"
-  File "..\CEETimerCSharpWinForms\bin\x64\Debug\CEETimerCSharpWinForms.dll"
   CreateShortCut "$SMPROGRAMS\高考倒计时\GitHub.lnk" "$INSTDIR\${PRODUCT_NAME}.url"
   CreateShortCut "$SMPROGRAMS\高考倒计时\卸载 高考倒计时.lnk" "$INSTDIR\uninst.exe"
 SectionEnd
