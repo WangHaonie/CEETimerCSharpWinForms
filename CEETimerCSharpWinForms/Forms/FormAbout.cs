@@ -47,7 +47,7 @@ namespace CEETimerCSharpWinForms.Forms
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "错误 - 高考倒计时", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, $"{LaunchManager.ErrMsg}", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
             }
             finally
             {

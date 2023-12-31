@@ -1,8 +1,8 @@
-﻿using System;
+﻿using CEETimerCSharpWinForms.Forms;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Net.Http;
 using System.Windows.Forms;
-using CEETimerCSharpWinForms.Forms;
-using Newtonsoft.Json.Linq;
 
 namespace CEETimerCSharpWinForms.Modules
 {
@@ -32,7 +32,7 @@ namespace CEETimerCSharpWinForms.Modules
 
                         if (isProgramStart || !isProgramStart)
                         {
-                            result = MessageBox.Show($"检测到新版本，是否下载并安装？\n当前版本: v{LaunchManager.AppVersion}\n新版本: v{LatestVersion}", "发现新版本 - 高考倒计时", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                            result = MessageBox.Show($"检测到新版本，是否下载并安装？\n当前版本: v{LaunchManager.AppVersion}\n新版本: v{LatestVersion}", $"{LaunchManager.InfoMsg}", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
                         }
 
                         if (result == DialogResult.Yes)
@@ -42,14 +42,14 @@ namespace CEETimerCSharpWinForms.Modules
                     }
                     else if (!isProgramStart)
                     {
-                        MessageBox.Show($"当前 v{LaunchManager.AppVersion} 已是最新版本。\n\n获取到的版本：v{LatestVersion}。", "检查更新 - 高考倒计时", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show($"当前 v{LaunchManager.AppVersion} 已是最新版本。\n\n获取到的版本：v{LatestVersion}。", $"{LaunchManager.InfoMsg}", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                 }
                 catch (Exception ex)
                 {
                     if (!isProgramStart)
                     {
-                        MessageBox.Show("检查更新时发生错误! \n\n系统信息：\n" + ex.Message, "错误 - 高考倒计时", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("检查更新时发生错误! \n\n系统信息：\n" + ex.Message, $"{LaunchManager.ErrMsg}", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
                 finally

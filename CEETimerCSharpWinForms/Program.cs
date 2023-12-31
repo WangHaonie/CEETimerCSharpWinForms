@@ -1,5 +1,5 @@
-﻿using System;
-using CEETimerCSharpWinForms.Modules;
+﻿using CEETimerCSharpWinForms.Modules;
+using System;
 
 namespace CEETimerCSharpWinForms
 {

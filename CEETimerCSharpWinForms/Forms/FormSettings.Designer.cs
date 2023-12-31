@@ -43,6 +43,7 @@
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.LblCounter = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -68,7 +69,7 @@
             // 
             this.FormSettingsCloseMain.AutoSize = true;
             this.FormSettingsCloseMain.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.FormSettingsCloseMain.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.FormSettingsCloseMain.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.FormSettingsCloseMain.Location = new System.Drawing.Point(340, 278);
             this.FormSettingsCloseMain.Name = "FormSettingsCloseMain";
             this.FormSettingsCloseMain.Size = new System.Drawing.Size(59, 25);
@@ -80,7 +81,6 @@
             // FormSettingsSetStartupCheck
             // 
             this.FormSettingsSetStartupCheck.AutoSize = true;
-            this.FormSettingsSetStartupCheck.Cursor = System.Windows.Forms.Cursors.Hand;
             this.FormSettingsSetStartupCheck.Location = new System.Drawing.Point(6, 22);
             this.FormSettingsSetStartupCheck.Name = "FormSettingsSetStartupCheck";
             this.FormSettingsSetStartupCheck.Size = new System.Drawing.Size(184, 19);
@@ -93,7 +93,6 @@
             // 
             this.FormSettingsSyncTimeButton.AutoSize = true;
             this.FormSettingsSyncTimeButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.FormSettingsSyncTimeButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.FormSettingsSyncTimeButton.Location = new System.Drawing.Point(9, 112);
             this.FormSettingsSyncTimeButton.Name = "FormSettingsSyncTimeButton";
             this.FormSettingsSyncTimeButton.Size = new System.Drawing.Size(83, 25);
@@ -114,10 +113,11 @@
             // FormSettingsSetExamNameText
             // 
             this.FormSettingsSetExamNameText.Location = new System.Drawing.Point(6, 22);
-            this.FormSettingsSetExamNameText.MaxLength = 28;
+            this.FormSettingsSetExamNameText.MaxLength = 99;
             this.FormSettingsSetExamNameText.Name = "FormSettingsSetExamNameText";
-            this.FormSettingsSetExamNameText.Size = new System.Drawing.Size(379, 23);
+            this.FormSettingsSetExamNameText.Size = new System.Drawing.Size(343, 23);
             this.FormSettingsSetExamNameText.TabIndex = 34;
+            this.FormSettingsSetExamNameText.TextChanged += new System.EventHandler(this.FormSettingsSetExamNameText_TextChanged);
             // 
             // LblRestart
             // 
@@ -132,7 +132,6 @@
             // 
             this.BtnRestart.AutoSize = true;
             this.BtnRestart.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.BtnRestart.Cursor = System.Windows.Forms.Cursors.Hand;
             this.BtnRestart.Location = new System.Drawing.Point(9, 51);
             this.BtnRestart.Name = "BtnRestart";
             this.BtnRestart.Size = new System.Drawing.Size(84, 25);
@@ -144,31 +143,29 @@
             // 
             // StartTimePicker
             // 
-            this.StartTimePicker.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.StartTimePicker.Checked = false;
             this.StartTimePicker.CustomFormat = "yyyy-MM-dd dddd HH:mm:ss";
             this.StartTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.StartTimePicker.Location = new System.Drawing.Point(6, 22);
             this.StartTimePicker.Name = "StartTimePicker";
             this.StartTimePicker.Size = new System.Drawing.Size(379, 23);
             this.StartTimePicker.TabIndex = 38;
-            this.StartTimePicker.Value = new System.DateTime(2024, 6, 7, 9, 0, 0, 0);
+            this.StartTimePicker.Value = new System.DateTime(2024, 1, 1, 0, 0, 0, 0);
             // 
             // EndTimePicker
             // 
-            this.EndTimePicker.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.EndTimePicker.CustomFormat = "yyyy-MM-dd dddd HH:mm:ss";
             this.EndTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.EndTimePicker.Location = new System.Drawing.Point(6, 22);
             this.EndTimePicker.Name = "EndTimePicker";
             this.EndTimePicker.Size = new System.Drawing.Size(379, 23);
             this.EndTimePicker.TabIndex = 39;
-            this.EndTimePicker.Value = new System.DateTime(2024, 6, 8, 17, 0, 0, 0);
+            this.EndTimePicker.Value = new System.DateTime(2024, 1, 1, 0, 0, 0, 0);
             // 
             // FormSettingsApply
             // 
             this.FormSettingsApply.AutoSize = true;
             this.FormSettingsApply.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.FormSettingsApply.Cursor = System.Windows.Forms.Cursors.Hand;
             this.FormSettingsApply.Location = new System.Drawing.Point(277, 278);
             this.FormSettingsApply.Name = "FormSettingsApply";
             this.FormSettingsApply.Size = new System.Drawing.Size(57, 25);
@@ -225,13 +222,24 @@
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.LblCounter);
             this.groupBox4.Controls.Add(this.FormSettingsSetExamNameText);
             this.groupBox4.Location = new System.Drawing.Point(8, 6);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(391, 58);
             this.groupBox4.TabIndex = 40;
             this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "考试名称 (不超过28字)";
+            this.groupBox4.Text = "考试名称 (不超过15字)";
+            // 
+            // LblCounter
+            // 
+            this.LblCounter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.LblCounter.AutoSize = true;
+            this.LblCounter.Location = new System.Drawing.Point(349, 25);
+            this.LblCounter.Name = "LblCounter";
+            this.LblCounter.Size = new System.Drawing.Size(30, 15);
+            this.LblCounter.TabIndex = 35;
+            this.LblCounter.Text = "0/15";
             // 
             // tabPage2
             // 
@@ -348,12 +356,14 @@
             // 
             // FormSettings
             // 
+            this.AcceptButton = this.FormSettingsApply;
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(415, 339);
             this.Controls.Add(this.tabControl1);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.KeyPreview = true;
             this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.Name = "FormSettings";
@@ -361,7 +371,9 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "设置 - 高考倒计时";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormSettings_FormClosing);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormSettings_FormClosed);
             this.Load += new System.EventHandler(this.FormSettings_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FormSettings_KeyDown);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
@@ -406,5 +418,6 @@
         private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.Label LblCounter;
     }
 }

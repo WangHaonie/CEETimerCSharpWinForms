@@ -31,11 +31,11 @@ namespace CEETimerCSharpWinForms.Forms
             }
             catch (OperationCanceledException)
             {
-                MessageBox.Show($"你已取消下载！", "警告 - 高考倒计时", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show($"你已取消下载！", $"{LaunchManager.WarnMsg}", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"更新文件下载失败! \n\n系统信息: \n{ex.Message}", "错误 - 高考倒计时", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"更新文件下载失败! \n\n系统信息: \n{ex.Message}", $"{LaunchManager.ErrMsg}", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 FrmDlL1.Text = "下载失败，你可以点击 链接 跳转到浏览器进行手动下载。";
                 FrmDlBtnR.Enabled = true; 
                 return;

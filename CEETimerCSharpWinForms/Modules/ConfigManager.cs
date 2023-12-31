@@ -53,5 +53,21 @@ namespace CEETimerCSharpWinForms.Modules
             File.WriteAllText(ConfigFile, Config);
         }
         #endregion
+        public static bool IsValidData(string ExamName)
+        {
+            if (string.IsNullOrEmpty(ExamName) || ExamName.Length > 15)
+            {
+                return false;
+            }
+            return true;
+        }
+        public static bool IsValidData(DateTime ExamTime)
+        {
+            if (ExamTime < new DateTime(1753, 1, 1))
+            {
+                return false;
+            }
+            return true;
+        }
     }
 }
