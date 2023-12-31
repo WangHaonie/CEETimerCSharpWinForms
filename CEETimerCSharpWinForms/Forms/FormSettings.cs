@@ -142,25 +142,25 @@ namespace CEETimerCSharpWinForms.Forms
             string hint2 = "你刚刚设置了一个";
             string hint3 = "的考试。\n\n如果你确定当前设置的是正确的考试时间，请点击确定；否则请点击取消。";
 
-            if (timeSpan.Days > 4)
+            if (timeSpan.TotalDays > 4)
             {
-                DialogResult _result = MessageBox.Show($"{hint1}持续超过4天的考试吧？\n\n{hint2}持续{timeSpan.Days}天{hint3}", $"{LaunchManager.WarnMsg}", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+                DialogResult _result = MessageBox.Show($"{hint1}持续超过4天的考试吧？\n\n{hint2}持续{timeSpan.TotalDays}天{hint3}", $"{LaunchManager.WarnMsg}", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
                 if (_result == DialogResult.Cancel)
                 {
                     return false;
                 }
             }
-            else if (timeSpan.Minutes < 40 && timeSpan.Seconds > 60)
+            else if (timeSpan.TotalMinutes < 40 && timeSpan.TotalSeconds > 60)
             {
-                DialogResult _result = MessageBox.Show($"{hint1}哪个考试连40分钟都没有吧？\n\n呃{hint2}只有短短{timeSpan.Minutes}分钟{hint3}", $"{LaunchManager.WarnMsg}", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+                DialogResult _result = MessageBox.Show($"{hint1}哪个考试连40分钟都没有吧？\n\n呃{hint2}只有短短{timeSpan.TotalMinutes}分钟{hint3}", $"{LaunchManager.WarnMsg}", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
                 if (_result == DialogResult.Cancel)
                 {
                     return false;
                 }
             }
-            else if (timeSpan.Seconds < 60)
+            else if (timeSpan.TotalSeconds < 60)
             {
-                DialogResult _result = MessageBox.Show($"{hint1}哪个考试连40分钟都没有吧？\n\n呃{hint2}只有短短{timeSpan.Seconds}秒{hint3}", $"{LaunchManager.WarnMsg}", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+                DialogResult _result = MessageBox.Show($"{hint1}哪个考试连40分钟都没有吧？\n\n呃{hint2}只有短短{timeSpan.TotalSeconds}秒{hint3}", $"{LaunchManager.WarnMsg}", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
                 if (_result == DialogResult.Cancel)
                 {
                     return false;
