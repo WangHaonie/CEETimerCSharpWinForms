@@ -17,12 +17,12 @@ namespace CEETimerCSharpWinForms.Modules
 
         */
         private static Dictionary<string, string> JsonConfig = new Dictionary<string, string>();
-        private static string ConfigFile = $"{AppDomain.CurrentDomain.BaseDirectory}CEETimerCSharpWinForms.dll";
+        private static string ConfigFile = $"{LaunchManager.CurrentExecutablePath}CEETimerCSharpWinForms.dll";
         public static string ReadConfig(string key)
         {
             if (!File.Exists(ConfigFile))
             {
-                FileStream fileStream = File.Create(ConfigFile);
+                File.Create(ConfigFile).Close();
             }
             try
             {

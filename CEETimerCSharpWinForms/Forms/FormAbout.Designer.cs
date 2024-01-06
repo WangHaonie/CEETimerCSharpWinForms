@@ -57,9 +57,9 @@ namespace CEETimerCSharpWinForms.Forms
             this.FormAboutLabelAuthor.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormAboutLabelAuthor.Location = new System.Drawing.Point(6, 64);
             this.FormAboutLabelAuthor.Name = "FormAboutLabelAuthor";
-            this.FormAboutLabelAuthor.Size = new System.Drawing.Size(173, 15);
+            this.FormAboutLabelAuthor.Size = new System.Drawing.Size(205, 15);
             this.FormAboutLabelAuthor.TabIndex = 3;
-            this.FormAboutLabelAuthor.Text = "Copyright © 2023 WangHaonie";
+            this.FormAboutLabelAuthor.Text = "Copyright (c) 2023-2024 WangHaonie";
             // 
             // FormAboutBottonGH
             // 

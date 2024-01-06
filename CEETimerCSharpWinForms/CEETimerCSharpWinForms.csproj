@@ -166,7 +166,7 @@
     <Compile Include="Modules\CheckForUpdate.cs" />
     <Compile Include="Modules\ConfigManager.cs" />
     <Compile Include="Modules\LaunchManager.cs" />
-    <Compile Include="Modules\RestartMyself.cs" />
+    <Compile Include="Modules\MemoryManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Forms\FormMain.resx">

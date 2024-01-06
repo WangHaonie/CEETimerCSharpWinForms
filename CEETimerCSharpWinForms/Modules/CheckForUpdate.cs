@@ -9,10 +9,6 @@ namespace CEETimerCSharpWinForms.Modules
     public class CheckForUpdate
     {
         public static string LatestVersion { get; private set; }
-        public static void checkForUpdate()
-        {
-            Start(true);
-        }
         public const string GitHubAPI = "https://api.github.com/repos/WangHaonie/CEETimerCSharpWinForms/releases/latest";
         public static void Start(bool isProgramStart)
         {
@@ -49,7 +45,7 @@ namespace CEETimerCSharpWinForms.Modules
                 {
                     if (!isProgramStart)
                     {
-                        MessageBox.Show("检查更新时发生错误! \n\n系统信息：\n" + ex.Message, $"{LaunchManager.ErrMsg}", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show($"检查更新时发生错误! \n\n系统信息：\n" + ex.Message, $"{LaunchManager.ErrMsg}", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
                 finally
