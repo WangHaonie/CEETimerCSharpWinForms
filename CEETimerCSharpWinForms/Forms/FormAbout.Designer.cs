@@ -57,16 +57,16 @@ namespace CEETimerCSharpWinForms.Forms
             this.FormAboutLabelAuthor.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormAboutLabelAuthor.Location = new System.Drawing.Point(6, 64);
             this.FormAboutLabelAuthor.Name = "FormAboutLabelAuthor";
-            this.FormAboutLabelAuthor.Size = new System.Drawing.Size(205, 15);
+            this.FormAboutLabelAuthor.Size = new System.Drawing.Size(133, 15);
             this.FormAboutLabelAuthor.TabIndex = 3;
-            this.FormAboutLabelAuthor.Text = "Copyright (c) 2023-2024 WangHaonie";
+            this.FormAboutLabelAuthor.Text = "FormAboutLabelAuthor";
             // 
             // FormAboutBottonGH
             // 
             this.FormAboutBottonGH.AutoSize = true;
             this.FormAboutBottonGH.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.FormAboutBottonGH.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FormAboutBottonGH.Location = new System.Drawing.Point(87, 82);
+            this.FormAboutBottonGH.Location = new System.Drawing.Point(85, 82);
             this.FormAboutBottonGH.Name = "FormAboutBottonGH";
             this.FormAboutBottonGH.Size = new System.Drawing.Size(85, 25);
             this.FormAboutBottonGH.TabIndex = 4;
@@ -80,7 +80,7 @@ namespace CEETimerCSharpWinForms.Forms
             this.FormAboutBottonClose.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.FormAboutBottonClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.FormAboutBottonClose.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FormAboutBottonClose.Location = new System.Drawing.Point(178, 82);
+            this.FormAboutBottonClose.Location = new System.Drawing.Point(176, 82);
             this.FormAboutBottonClose.Name = "FormAboutBottonClose";
             this.FormAboutBottonClose.Size = new System.Drawing.Size(59, 25);
             this.FormAboutBottonClose.TabIndex = 5;
@@ -93,7 +93,7 @@ namespace CEETimerCSharpWinForms.Forms
             this.FormAboutLicenseButton.AutoSize = true;
             this.FormAboutLicenseButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.FormAboutLicenseButton.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FormAboutLicenseButton.Location = new System.Drawing.Point(11, 82);
+            this.FormAboutLicenseButton.Location = new System.Drawing.Point(9, 82);
             this.FormAboutLicenseButton.Name = "FormAboutLicenseButton";
             this.FormAboutLicenseButton.Size = new System.Drawing.Size(70, 25);
             this.FormAboutLicenseButton.TabIndex = 6;
@@ -127,14 +127,14 @@ namespace CEETimerCSharpWinForms.Forms
             // 
             this.groupBox1.Controls.Add(this.FormAboutLabelInfo);
             this.groupBox1.Controls.Add(this.FormAboutLicenseButton);
+            this.groupBox1.Controls.Add(this.FormAboutLabelVersion);
             this.groupBox1.Controls.Add(this.FormAboutBottonGH);
             this.groupBox1.Controls.Add(this.FormAboutBottonClose);
-            this.groupBox1.Controls.Add(this.FormAboutLabelVersion);
             this.groupBox1.Controls.Add(this.FormAboutLicenseHint);
             this.groupBox1.Controls.Add(this.FormAboutLabelAuthor);
-            this.groupBox1.Location = new System.Drawing.Point(1, 6);
+            this.groupBox1.Location = new System.Drawing.Point(2, 2);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(243, 112);
+            this.groupBox1.Size = new System.Drawing.Size(243, 114);
             this.groupBox1.TabIndex = 8;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "关于此程序";
@@ -146,7 +146,7 @@ namespace CEETimerCSharpWinForms.Forms
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.CancelButton = this.FormAboutBottonClose;
-            this.ClientSize = new System.Drawing.Size(247, 119);
+            this.ClientSize = new System.Drawing.Size(247, 117);
             this.Controls.Add(this.groupBox1);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;

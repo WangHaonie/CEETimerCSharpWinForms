@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.FrmDlL1 = new System.Windows.Forms.Label();
-            this.FrmDlL2 = new System.Windows.Forms.Label();
             this.FrmDlL3 = new System.Windows.Forms.Label();
             this.FrmDlL4 = new System.Windows.Forms.Label();
             this.FrmDlPb = new System.Windows.Forms.ProgressBar();
@@ -47,43 +46,33 @@
             this.FrmDlL1.TabIndex = 0;
             this.FrmDlL1.Text = "正在下载更新文件，请稍侯...";
             // 
-            // FrmDlL2
-            // 
-            this.FrmDlL2.AutoSize = true;
-            this.FrmDlL2.Location = new System.Drawing.Point(11, 50);
-            this.FrmDlL2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.FrmDlL2.Name = "FrmDlL2";
-            this.FrmDlL2.Size = new System.Drawing.Size(29, 15);
-            this.FrmDlL2.TabIndex = 0;
-            this.FrmDlL2.Text = "N/A";
-            // 
             // FrmDlL3
             // 
             this.FrmDlL3.AutoSize = true;
-            this.FrmDlL3.Location = new System.Drawing.Point(11, 65);
+            this.FrmDlL3.Location = new System.Drawing.Point(11, 50);
             this.FrmDlL3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.FrmDlL3.Name = "FrmDlL3";
-            this.FrmDlL3.Size = new System.Drawing.Size(29, 15);
+            this.FrmDlL3.Size = new System.Drawing.Size(146, 15);
             this.FrmDlL3.TabIndex = 0;
-            this.FrmDlL3.Text = "N/A";
+            this.FrmDlL3.Text = "已下载/总共：(获取中...)";
             this.FrmDlL3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // FrmDlL4
             // 
             this.FrmDlL4.AutoSize = true;
-            this.FrmDlL4.Location = new System.Drawing.Point(11, 80);
+            this.FrmDlL4.Location = new System.Drawing.Point(11, 65);
             this.FrmDlL4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.FrmDlL4.Name = "FrmDlL4";
-            this.FrmDlL4.Size = new System.Drawing.Size(29, 15);
+            this.FrmDlL4.Size = new System.Drawing.Size(128, 15);
             this.FrmDlL4.TabIndex = 0;
-            this.FrmDlL4.Text = "N/A";
+            this.FrmDlL4.Text = "下载速度：(获取中...)";
             // 
             // FrmDlPb
             // 
             this.FrmDlPb.Location = new System.Drawing.Point(14, 26);
             this.FrmDlPb.Margin = new System.Windows.Forms.Padding(2);
             this.FrmDlPb.Name = "FrmDlPb";
-            this.FrmDlPb.Size = new System.Drawing.Size(237, 22);
+            this.FrmDlPb.Size = new System.Drawing.Size(332, 22);
             this.FrmDlPb.TabIndex = 0;
             // 
             // FrmDlBtnR
@@ -91,7 +80,7 @@
             this.FrmDlBtnR.AutoSize = true;
             this.FrmDlBtnR.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.FrmDlBtnR.Enabled = false;
-            this.FrmDlBtnR.Location = new System.Drawing.Point(103, 79);
+            this.FrmDlBtnR.Location = new System.Drawing.Point(226, 60);
             this.FrmDlBtnR.Margin = new System.Windows.Forms.Padding(2);
             this.FrmDlBtnR.Name = "FrmDlBtnR";
             this.FrmDlBtnR.Size = new System.Drawing.Size(57, 25);
@@ -104,7 +93,7 @@
             // 
             this.FrmDlBtnC.AutoSize = true;
             this.FrmDlBtnC.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.FrmDlBtnC.Location = new System.Drawing.Point(179, 79);
+            this.FrmDlBtnC.Location = new System.Drawing.Point(287, 60);
             this.FrmDlBtnC.Margin = new System.Windows.Forms.Padding(2);
             this.FrmDlBtnC.Name = "FrmDlBtnC";
             this.FrmDlBtnC.Size = new System.Drawing.Size(59, 25);
@@ -118,19 +107,17 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(262, 114);
+            this.ClientSize = new System.Drawing.Size(357, 91);
             this.Controls.Add(this.FrmDlBtnC);
             this.Controls.Add(this.FrmDlBtnR);
             this.Controls.Add(this.FrmDlPb);
             this.Controls.Add(this.FrmDlL4);
             this.Controls.Add(this.FrmDlL3);
-            this.Controls.Add(this.FrmDlL2);
             this.Controls.Add(this.FrmDlL1);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximizeBox = false;
-            this.MinimizeBox = false;
             this.Name = "FormDownloader";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -143,7 +130,6 @@
 
         #endregion
         private System.Windows.Forms.Label FrmDlL1;
-        private System.Windows.Forms.Label FrmDlL2;
         private System.Windows.Forms.Label FrmDlL3;
         private System.Windows.Forms.Label FrmDlL4;
         private System.Windows.Forms.ProgressBar FrmDlPb;

@@ -41,7 +41,14 @@ namespace CEETimerCSharpWinForms.Forms
         }
         private void BtnRestartFunny_Click(object sender, EventArgs e)
         {
-            LaunchManager.KillMeNow();
+            if (isSyncingTime)
+            {
+                MessageBox.Show("请等待网络时钟同步完毕，然后再关闭此窗口。", $"{LaunchManager.ErrMsg}", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+            {
+                LaunchManager.KillMeNow();
+            }
         }
         private void BtnRestart_MouseDown(object sender, MouseEventArgs e)
         {

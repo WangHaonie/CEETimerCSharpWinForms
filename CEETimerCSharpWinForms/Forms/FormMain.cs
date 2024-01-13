@@ -9,8 +9,8 @@ namespace CEETimerCSharpWinForms
     public partial class CEETimerCSharpWinForms : Form
     {
         private string ExamName;
-        private DateTime ExamStartTime = new DateTime();
-        private DateTime ExamEndTime = new DateTime();
+        private DateTime ExamStartTime = new();
+        private DateTime ExamEndTime = new();
         private Timer timer;
         private int i;
         private string isTopMost;
@@ -52,8 +52,10 @@ namespace CEETimerCSharpWinForms
             }
             else
             {
-                timer = new Timer();
-                timer.Interval = 1000;
+                timer = new Timer
+                {
+                    Interval = 1000
+                };
                 timer.Tick += Timer_Tick;
                 timer.Start();
             }

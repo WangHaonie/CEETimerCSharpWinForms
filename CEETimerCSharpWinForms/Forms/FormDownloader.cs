@@ -1,11 +1,11 @@
-﻿using System;
+﻿using CEETimerCSharpWinForms.Modules;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using CEETimerCSharpWinForms.Modules;
 
 namespace CEETimerCSharpWinForms.Forms
 {
@@ -15,6 +15,7 @@ namespace CEETimerCSharpWinForms.Forms
         private HttpClient httpClient;
         private string downloadUrl;
         private string downloadPath;
+        private bool isCancelled = false;
         public FormDownloader()
         {
             InitializeComponent();
@@ -25,19 +26,15 @@ namespace CEETimerCSharpWinForms.Forms
             try
             {
                 latestVersion = CheckForUpdate.LatestVersion;
-                downloadUrl = $"https://github.com/WangHaonie/CEETimerCSharpWinForms/releases/download/v{latestVersion}/CEETimerCSharpWinForms_{latestVersion}_x64_Setup.exe";
-                downloadPath = Path.Combine(Path.GetTempPath(), $"{latestVersion}.exe");
+                downloadUrl = $"https://wanghaonie.github.io/file-storages/github-repos/CEETimerCSharpWinForms/CEETimerCSharpWinForms_{latestVersion}_x64_Setup.exe";
+                downloadPath = Path.Combine(Path.GetTempPath(), $"CEETimerCSharpWinForms_{latestVersion}_x64_Setup.exe");
                 await DownloadFile(downloadUrl, downloadPath);
-            }
-            catch (OperationCanceledException)
-            {
-                MessageBox.Show($"你已取消下载！", $"{LaunchManager.WarnMsg}", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"更新文件下载失败! \n\n系统信息: \n{ex.Message}", $"{LaunchManager.ErrMsg}", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 FrmDlL1.Text = "下载失败，你可以点击 链接 跳转到浏览器进行手动下载。";
-                FrmDlBtnR.Enabled = true; 
+                FrmDlBtnR.Enabled = true;
                 return;
             }
             finally
@@ -54,51 +51,55 @@ namespace CEETimerCSharpWinForms.Forms
             {
                 response.EnsureSuccessStatusCode();
 
-                using (var stream = await response.Content.ReadAsStreamAsync())
-                using (var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None))
+                using var stream = await response.Content.ReadAsStreamAsync();
+                using var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None);
+                var buffer = new byte[8192];
+                var totalBytesRead = 0L;
+                var totalBytes = response.Content.Headers.ContentLength ?? -1L;
+                var bytesRead = 0L;
+                var sw = Stopwatch.StartNew();
+
+                while ((bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length)) > 0)
                 {
-                    var buffer = new byte[8192];
-                    var totalBytesRead = 0L;
-                    var totalBytes = response.Content.Headers.ContentLength ?? -1L;
-                    var bytesRead = 0L;
-                    var sw = Stopwatch.StartNew();
+                    await fileStream.WriteAsync(buffer, 0, (int)bytesRead);
+                    totalBytesRead += bytesRead;
 
-                    while ((bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length)) > 0)
+                    var progressPercentage = (int)(totalBytesRead * 100 / totalBytes);
+                    FrmDlL3.Text = $"已下载/总共：{totalBytesRead / 1024} KB / {totalBytes / 1024} KB";
+                    FrmDlL4.Text = $"下载速度：{totalBytesRead / sw.Elapsed.TotalSeconds / 1024 :N2} KB/s";
+                    FrmDlPb.Value = progressPercentage;
+
+                    if (cancelRequest.Token.IsCancellationRequested)
                     {
-                        await fileStream.WriteAsync(buffer, 0, (int)bytesRead);
-                        totalBytesRead += bytesRead;
-
-                        var progressPercentage = (int)(totalBytesRead * 100 / totalBytes);
-                        FrmDlL2.Text = $"{progressPercentage}%";
-                        FrmDlL3.Text = $"{totalBytesRead / 1024} KB / {totalBytes / 1024} KB";
-                        FrmDlL4.Text = $"{totalBytesRead / sw.Elapsed.TotalSeconds / 1024 / 1024:N2} MB/s";
-                        FrmDlPb.Value = progressPercentage;
-
-                        if (cancelRequest.Token.IsCancellationRequested)
+                        isCancelled = true;
+                        fileStream.Close();
+                        if (File.Exists(filePath))
                         {
-                            fileStream.Close();
-                            if (File.Exists(filePath))
-                            {
-                                File.Delete(filePath);
-                            }
-                            throw new OperationCanceledException(cancelRequest.Token);
+                            File.Delete(filePath);
                         }
+                        return;
                     }
                 }
             }
-            ProcessStartInfo processStartInfo = new ProcessStartInfo();
-            processStartInfo.FileName = "cmd.exe";
-            processStartInfo.Arguments = "/c start " + "\"\" \"" + filePath + "\" /S";
-            processStartInfo.CreateNoWindow = true;
-            processStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            Process.Start(processStartInfo);
-            Close();
+            if (!isCancelled)
+            {
+                ProcessStartInfo processStartInfo = new()
+                {
+                    FileName = "cmd.exe",
+                    Arguments = "/c start " + "\"\" \"" + filePath + "\" /S",
+                    CreateNoWindow = true,
+                    WindowStyle = ProcessWindowStyle.Hidden
+                };
+                Process.Start(processStartInfo);
+                Close();
+            }
         }
         private void FrmDlBtnC_Click(object sender, EventArgs e)
         {
-            if (cancelRequest != null)
+            if (cancelRequest != null && !cancelRequest.Token.IsCancellationRequested)
             {
-                cancelRequest.Cancel();
+                cancelRequest?.Cancel();
+                MessageBox.Show($"你已取消下载！\n\n你稍后可以在 关于 窗口点击版本号来再次检查更新。", $"{LaunchManager.WarnMsg}", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             Close();
         }

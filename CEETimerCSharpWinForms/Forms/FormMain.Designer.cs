@@ -43,7 +43,7 @@
             this.labelCountdown.AutoSize = true;
             this.labelCountdown.BackColor = System.Drawing.Color.Transparent;
             this.labelCountdown.ContextMenuStrip = this.Context;
-            this.labelCountdown.Font = new System.Drawing.Font("微软雅黑", 17.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.labelCountdown.Font = new System.Drawing.Font("微软雅黑", 17.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelCountdown.ForeColor = System.Drawing.Color.Red;
             this.labelCountdown.Location = new System.Drawing.Point(1, 0);
             this.labelCountdown.Name = "labelCountdown";
@@ -101,7 +101,7 @@
             this.ControlBox = false;
             this.Controls.Add(this.labelCountdown);
             this.DoubleBuffered = true;
-            this.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.ImeMode = System.Windows.Forms.ImeMode.Off;
             this.MaximizeBox = false;
