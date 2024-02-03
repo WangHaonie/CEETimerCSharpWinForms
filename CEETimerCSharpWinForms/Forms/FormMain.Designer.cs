@@ -44,12 +44,12 @@
             this.labelCountdown.BackColor = System.Drawing.Color.Transparent;
             this.labelCountdown.ContextMenuStrip = this.Context;
             this.labelCountdown.Font = new System.Drawing.Font("微软雅黑", 17.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelCountdown.ForeColor = System.Drawing.Color.Red;
+            this.labelCountdown.ForeColor = System.Drawing.Color.Black;
             this.labelCountdown.Location = new System.Drawing.Point(1, 0);
             this.labelCountdown.Name = "labelCountdown";
             this.labelCountdown.Size = new System.Drawing.Size(472, 31);
             this.labelCountdown.TabIndex = 0;
-            this.labelCountdown.Text = "欢迎使用高考倒计时，程序加载中，请稍候...";
+            this.labelCountdown.Text = "欢迎使用高考倒计时，正在加载中，请稍候...";
             // 
             // Context
             // 
@@ -96,7 +96,7 @@
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(431, 23);
+            this.ClientSize = new System.Drawing.Size(472, 30);
             this.ContextMenuStrip = this.Context;
             this.ControlBox = false;
             this.Controls.Add(this.labelCountdown);

@@ -6,9 +6,6 @@ namespace CEETimerCSharpWinForms
     static class Program
     {
         [STAThread]
-        static void Main()
-        {
-            LaunchManager.StartProgram();
-        }
+        static void Main() => LaunchManager.StartProgram();
     }
 }

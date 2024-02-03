@@ -37,7 +37,7 @@ namespace CEETimerCSharpWinForms.Forms
         }
         private void BtnRestart_Click(object sender, EventArgs e)
         {
-            LaunchManager.RestartNow();
+            LaunchManager.Restart();
         }
         private void BtnRestartFunny_Click(object sender, EventArgs e)
         {
@@ -47,7 +47,7 @@ namespace CEETimerCSharpWinForms.Forms
             }
             else
             {
-                LaunchManager.KillMeNow();
+                LaunchManager.Shutdown();
             }
         }
         private void BtnRestart_MouseDown(object sender, MouseEventArgs e)

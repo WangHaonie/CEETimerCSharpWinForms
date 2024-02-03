@@ -11,7 +11,7 @@ namespace CEETimerCSharpWinForms
         private string ExamName;
         private DateTime ExamStartTime = new();
         private DateTime ExamEndTime = new();
-        private Timer timer;
+        private Timer CountdownTimer;
         private int i;
         private string isTopMost;
         private bool isTopMostBool;
@@ -44,7 +44,7 @@ namespace CEETimerCSharpWinForms
             {
                 TopMost = true;
             }
-            //MessageBox.Show($"{ExamName}，{ExamStartTime}，{ExamEndTime}");
+            // MessageBox.Show($"{ExamName}，{ExamStartTime}，{ExamEndTime}");
             if (!ConfigManager.IsValidData(ExamName) || !ConfigManager.IsValidData(ExamStartTime) || !ConfigManager.IsValidData(ExamEndTime))
             {
                 labelCountdown.ForeColor = System.Drawing.Color.Black;
@@ -52,41 +52,38 @@ namespace CEETimerCSharpWinForms
             }
             else
             {
-                timer = new Timer
+                CountdownTimer = new Timer()
                 {
                     Interval = 1000
                 };
-                timer.Tick += Timer_Tick;
-                timer.Start();
+                CountdownTimer.Tick += Timer_Tick;
+                CountdownTimer.Start();
             }
         }
         private void Timer_Tick(object sender, EventArgs e)
         {
             i++;
-            if (i % 300 == 0)/*&& MemoryManager.IsMemoryExceeded()*/
+            if (i % 300 == 0 || i == 5)
             {
                 MemoryManager.Optimize();
             }
-            else
+            if (DateTime.Now < ExamStartTime)
             {
-                if (DateTime.Now < ExamStartTime)
-                {
-                    TimeSpan timeLeft = ExamStartTime - DateTime.Now;
-                    labelCountdown.ForeColor = System.Drawing.Color.Red;
-                    labelCountdown.Text = $"距离{ExamName}还有{timeLeft.Days}天{timeLeft.Hours:00}时{timeLeft.Minutes:00}分{timeLeft.Seconds:00}秒";
-                }
-                else if (DateTime.Now >= ExamStartTime && DateTime.Now < ExamEndTime)
-                {
-                    TimeSpan timeLeftPast = ExamEndTime - DateTime.Now;
-                    labelCountdown.ForeColor = System.Drawing.Color.Green;
-                    labelCountdown.Text = $"距离{ExamName}结束还有{timeLeftPast.Days}天{timeLeftPast.Hours:00}时{timeLeftPast.Minutes:00}分{timeLeftPast.Seconds:00}秒";
-                }
-                else if (DateTime.Now >= ExamEndTime)
-                {
-                    TimeSpan timePast = DateTime.Now - ExamEndTime;
-                    labelCountdown.ForeColor = System.Drawing.Color.Black;
-                    labelCountdown.Text = $"倒计时结束，距离{ExamName}已经过去了{timePast.Days}天{timePast.Hours:00}时{timePast.Minutes:00}分{timePast.Seconds:00}秒";
-                }
+                TimeSpan timeLeft = ExamStartTime - DateTime.Now;
+                labelCountdown.ForeColor = System.Drawing.Color.Red;
+                labelCountdown.Text = $"距离{ExamName}还有{timeLeft.Days}天{timeLeft.Hours:00}时{timeLeft.Minutes:00}分{timeLeft.Seconds:00}秒";
+            }
+            else if (DateTime.Now >= ExamStartTime && DateTime.Now < ExamEndTime)
+            {
+                TimeSpan timeLeftPast = ExamEndTime - DateTime.Now;
+                labelCountdown.ForeColor = System.Drawing.Color.Green;
+                labelCountdown.Text = $"距离{ExamName}结束还有{timeLeftPast.Days}天{timeLeftPast.Hours:00}时{timeLeftPast.Minutes:00}分{timeLeftPast.Seconds:00}秒";
+            }
+            else if (DateTime.Now >= ExamEndTime)
+            {
+                TimeSpan timePast = DateTime.Now - ExamEndTime;
+                labelCountdown.ForeColor = System.Drawing.Color.Black;
+                labelCountdown.Text = $"倒计时结束，距离{ExamName}已经过去了{timePast.Days}天{timePast.Hours:00}时{timePast.Minutes:00}分{timePast.Seconds:00}秒";
             }
         }
         private void CEETimerCSharpWinForms_FormClosing(object sender, FormClosingEventArgs e)

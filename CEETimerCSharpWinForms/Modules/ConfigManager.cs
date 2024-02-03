@@ -55,7 +55,7 @@ namespace CEETimerCSharpWinForms.Modules
         #endregion
         public static bool IsValidData(string ExamName)
         {
-            if (string.IsNullOrEmpty(ExamName) || ExamName.Length > 15)
+            if (string.IsNullOrEmpty(ExamName) || ExamName.Length < 2 || ExamName.Length > 15)
             {
                 return false;
             }

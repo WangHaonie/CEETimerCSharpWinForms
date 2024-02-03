@@ -1,9 +1,11 @@
 ManifestDPIAware true
-SetFont "Segoe UI" 8
+
+SetFont "Segoe UI" 9
+
 !include "MUI2.nsh"
 !define PRODUCT_NAME "高考倒计时"
-!define PRODUCT_VERSION "v2.3"
-!define SETUP_FILENAME_NO_V "2.3"
+!define PRODUCT_VERSION "v2.4"
+!define SETUP_FILENAME_NO_V "2.4"
 !define PRODUCT_PUBLISHER "WangHaonie"
 !define PRODUCT_WEB_SITE "https://github.com/WangHaonie/CEETimerCSharpWinForms"
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
@@ -29,7 +31,7 @@ InstallDir "$PROFILE\AppData\Local\CEETimerCSharpWinForms"
 InstallDirRegKey HKCU "${PRODUCT_UNINST_KEY}" "UninstallString"
 ShowInstDetails show
 ShowUnInstDetails show
-BrandingText "Copyright (C) 2023 WangHaonie"
+BrandingText "Copyright (C) 2023-2024 WangHaonie"
 
 Section -POST
   SetOverwrite on
@@ -39,8 +41,6 @@ Section -POST
   Delete "$INSTDIR\${PRODUCT_NAME}.url"
   Delete "$INSTDIR\uninst.exe"
   Delete "$INSTDIR\Newtonsoft.Json.dll"
-  Delete "$INSTDIR\CEETimerCSharpWinForms.exe.config"
-  Delete "$INSTDIR\CEETimerCSharpWinFormsConfig.db"
   Delete "$INSTDIR\CEETimerCSharpWinForms.exe"
   WriteUninstaller "$INSTDIR\uninst.exe"
   CreateDirectory "$SMPROGRAMS\高考倒计时"
@@ -53,8 +53,8 @@ Section -POST
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "URLInfoAbout" "${PRODUCT_WEB_SITE}"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Publisher" "${PRODUCT_PUBLISHER}"
   WriteIniStr "$INSTDIR\GitHub.url" "InternetShortcut" "URL" "${PRODUCT_WEB_SITE}"
-  File "..\CEETimerCSharpWinForms\bin\x64\Debug\Newtonsoft.Json.dll"
-  File "..\CEETimerCSharpWinForms\bin\x64\Debug\CEETimerCSharpWinForms.exe"
+  File "..\CEETimerCSharpWinForms\bin\x64\Release\Newtonsoft.Json.dll"
+  File "..\CEETimerCSharpWinForms\bin\x64\Release\CEETimerCSharpWinForms.exe"
   CreateShortCut "$SMPROGRAMS\高考倒计时\GitHub.lnk" "$INSTDIR\${PRODUCT_NAME}.url"
   CreateShortCut "$SMPROGRAMS\高考倒计时\卸载 高考倒计时.lnk" "$INSTDIR\uninst.exe"
 SectionEnd
@@ -64,7 +64,6 @@ Section Uninstall
   Delete "$INSTDIR\${PRODUCT_NAME}.url"
   Delete "$INSTDIR\uninst.exe"
   Delete "$INSTDIR\Newtonsoft.Json.dll"
-  Delete "$INSTDIR\CEETimerCSharpWinForms.exe.config"
   Delete "$INSTDIR\CEETimerCSharpWinForms.exe"
   Delete "$INSTDIR\CEETimerCSharpWinForms.dll"
   Delete "$SMPROGRAMS\高考倒计时\卸载 高考倒计时.lnk"

@@ -10,10 +10,11 @@ namespace CEETimerCSharpWinForms.Modules
     {
         public static string LatestVersion { get; private set; }
         public const string GitHubAPI = "https://wanghaonie.github.io/static-pages/api/software-update/CEETimerCSharpWinForms/get/";
+        private static FormDownloader formDownloader;
         public static void Start(bool isProgramStart)
         {
-            using HttpClient updateCheck = new();
-            updateCheck.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36 Edg/119.0.0.0");
+            using var updateCheck = new HttpClient();
+            updateCheck.DefaultRequestHeaders.UserAgent.ParseAdd(LaunchManager.RequestUa);
             try
             {
                 HttpResponseMessage response = updateCheck.GetAsync(GitHubAPI).Result;
@@ -32,7 +33,17 @@ namespace CEETimerCSharpWinForms.Modules
 
                     if (result == DialogResult.Yes)
                     {
-                        Application.Run(new FormDownloader());
+                        CEETimerCSharpWinForms MainForm = Application.OpenForms[0] as CEETimerCSharpWinForms;
+                        MainForm.Invoke(new Action(() =>
+                        {
+                            if (formDownloader == null || formDownloader.IsDisposed)
+                            {
+                                formDownloader = new FormDownloader();
+                            }
+                            formDownloader.WindowState = FormWindowState.Normal;
+                            formDownloader.Show();
+                            formDownloader.Activate();
+                        }));
                     }
                 }
                 else if (!isProgramStart)
@@ -44,12 +55,8 @@ namespace CEETimerCSharpWinForms.Modules
             {
                 if (!isProgramStart)
                 {
-                    MessageBox.Show($"检查更新时发生错误! \n\n系统信息：\n" + ex.Message, $"{LaunchManager.ErrMsg}", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"检查更新时发生错误! \n\n错误信息：\n{ex.Message}", $"{LaunchManager.ErrMsg}", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-            }
-            finally
-            {
-                updateCheck.Dispose();
             }
         }
     }

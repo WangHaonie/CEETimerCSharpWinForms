@@ -37,35 +37,33 @@
             this.FormSettingsApply = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.chkSetTopMost = new System.Windows.Forms.CheckBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.FormSettingsSetStartupCheck = new System.Windows.Forms.CheckBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.LblCounter = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.FormSettingsSetStartupCheck = new System.Windows.Forms.CheckBox();
-            this.groupBox7 = new System.Windows.Forms.GroupBox();
-            this.chkSetTopMost = new System.Windows.Forms.CheckBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.groupBox7.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.groupBox6.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
-            this.groupBox1.SuspendLayout();
-            this.groupBox7.SuspendLayout();
             this.SuspendLayout();
             // 
             // FormSettingsCloseMain
@@ -85,7 +83,7 @@
             // 
             this.FormSettingsSyncTimeButton.AutoSize = true;
             this.FormSettingsSyncTimeButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.FormSettingsSyncTimeButton.Location = new System.Drawing.Point(9, 112);
+            this.FormSettingsSyncTimeButton.Location = new System.Drawing.Point(9, 82);
             this.FormSettingsSyncTimeButton.Name = "FormSettingsSyncTimeButton";
             this.FormSettingsSyncTimeButton.Size = new System.Drawing.Size(83, 25);
             this.FormSettingsSyncTimeButton.TabIndex = 19;
@@ -176,6 +174,48 @@
             this.tabPage1.Text = "基本";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // groupBox7
+            // 
+            this.groupBox7.Controls.Add(this.chkSetTopMost);
+            this.groupBox7.Location = new System.Drawing.Point(217, 6);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(196, 54);
+            this.groupBox7.TabIndex = 45;
+            this.groupBox7.TabStop = false;
+            this.groupBox7.Text = "顶置显示";
+            // 
+            // chkSetTopMost
+            // 
+            this.chkSetTopMost.AutoSize = true;
+            this.chkSetTopMost.Checked = true;
+            this.chkSetTopMost.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkSetTopMost.Location = new System.Drawing.Point(6, 22);
+            this.chkSetTopMost.Name = "chkSetTopMost";
+            this.chkSetTopMost.Size = new System.Drawing.Size(183, 19);
+            this.chkSetTopMost.TabIndex = 0;
+            this.chkSetTopMost.Text = "允许倒计时显示到最上层(&T)";
+            this.chkSetTopMost.UseVisualStyleBackColor = true;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.FormSettingsSetStartupCheck);
+            this.groupBox1.Location = new System.Drawing.Point(8, 6);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(202, 54);
+            this.groupBox1.TabIndex = 44;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "开机自启动";
+            // 
+            // FormSettingsSetStartupCheck
+            // 
+            this.FormSettingsSetStartupCheck.AutoSize = true;
+            this.FormSettingsSetStartupCheck.Location = new System.Drawing.Point(6, 22);
+            this.FormSettingsSetStartupCheck.Name = "FormSettingsSetStartupCheck";
+            this.FormSettingsSetStartupCheck.Size = new System.Drawing.Size(184, 19);
+            this.FormSettingsSetStartupCheck.TabIndex = 18;
+            this.FormSettingsSetStartupCheck.Text = "允许开机自动启动倒计时(&B)";
+            this.FormSettingsSetStartupCheck.UseVisualStyleBackColor = true;
+            // 
             // groupBox6
             // 
             this.groupBox6.Controls.Add(this.EndTimePicker);
@@ -205,7 +245,7 @@
             this.groupBox4.Size = new System.Drawing.Size(405, 58);
             this.groupBox4.TabIndex = 40;
             this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "考试名称 (不超过15字)";
+            this.groupBox4.Text = "考试名称 (2-15字)";
             // 
             // LblCounter
             // 
@@ -234,128 +274,21 @@
             this.groupBox3.Controls.Add(this.label8);
             this.groupBox3.Controls.Add(this.label7);
             this.groupBox3.Controls.Add(this.BtnRestart);
-            this.groupBox3.Location = new System.Drawing.Point(6, 155);
+            this.groupBox3.Location = new System.Drawing.Point(6, 125);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(407, 85);
             this.groupBox3.TabIndex = 45;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "重启倒计时";
             // 
-            // groupBox2
+            // label8
             // 
-            this.groupBox2.Controls.Add(this.label6);
-            this.groupBox2.Controls.Add(this.label5);
-            this.groupBox2.Controls.Add(this.label4);
-            this.groupBox2.Controls.Add(this.label3);
-            this.groupBox2.Controls.Add(this.label2);
-            this.groupBox2.Controls.Add(this.label1);
-            this.groupBox2.Controls.Add(this.FormSettingsSyncTimeButton);
-            this.groupBox2.Location = new System.Drawing.Point(6, 6);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(407, 143);
-            this.groupBox2.TabIndex = 44;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "同步网络时钟";
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.FormSettingsSetStartupCheck);
-            this.groupBox1.Location = new System.Drawing.Point(8, 6);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(202, 54);
-            this.groupBox1.TabIndex = 44;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "开机自启动";
-            // 
-            // FormSettingsSetStartupCheck
-            // 
-            this.FormSettingsSetStartupCheck.AutoSize = true;
-            this.FormSettingsSetStartupCheck.Location = new System.Drawing.Point(6, 22);
-            this.FormSettingsSetStartupCheck.Name = "FormSettingsSetStartupCheck";
-            this.FormSettingsSetStartupCheck.Size = new System.Drawing.Size(184, 19);
-            this.FormSettingsSetStartupCheck.TabIndex = 18;
-            this.FormSettingsSetStartupCheck.Text = "允许开机自动启动倒计时(&B)";
-            this.FormSettingsSetStartupCheck.UseVisualStyleBackColor = true;
-            // 
-            // groupBox7
-            // 
-            this.groupBox7.Controls.Add(this.chkSetTopMost);
-            this.groupBox7.Location = new System.Drawing.Point(217, 6);
-            this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(196, 54);
-            this.groupBox7.TabIndex = 45;
-            this.groupBox7.TabStop = false;
-            this.groupBox7.Text = "顶置显示";
-            // 
-            // chkSetTopMost
-            // 
-            this.chkSetTopMost.AutoSize = true;
-            this.chkSetTopMost.Checked = true;
-            this.chkSetTopMost.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkSetTopMost.Location = new System.Drawing.Point(6, 22);
-            this.chkSetTopMost.Name = "chkSetTopMost";
-            this.chkSetTopMost.Size = new System.Drawing.Size(183, 19);
-            this.chkSetTopMost.TabIndex = 0;
-            this.chkSetTopMost.Text = "允许倒计时显示到最上层(&T)";
-            this.chkSetTopMost.UseVisualStyleBackColor = true;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 19);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(390, 15);
-            this.label1.TabIndex = 20;
-            this.label1.Text = "如果你发现当前系统时间与实际有所差异, 可以点击此按钮来同步网";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 34);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(59, 15);
-            this.label2.TabIndex = 21;
-            this.label2.Text = "络时间。";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.ForeColor = System.Drawing.Color.Red;
-            this.label3.Location = new System.Drawing.Point(6, 49);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(383, 15);
-            this.label3.TabIndex = 22;
-            this.label3.Text = "注意: 此项会将系统的 NTP 服务器永久设置为 ntp1.aliyun.com, 相较";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.ForeColor = System.Drawing.Color.Red;
-            this.label4.Location = new System.Drawing.Point(6, 64);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(354, 15);
-            this.label4.TabIndex = 23;
-            this.label4.Text = "于系统自带的 time.windows.com 拥有更低的延迟, 并且还会将";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.ForeColor = System.Drawing.Color.Red;
-            this.label5.Location = new System.Drawing.Point(6, 79);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(389, 15);
-            this.label5.TabIndex = 24;
-            this.label5.Text = "Windows Time 服务设置为 自动, 请谨慎操作, 或者你也可以到控制面";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.ForeColor = System.Drawing.Color.Red;
-            this.label6.Location = new System.Drawing.Point(6, 94);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(124, 15);
-            this.label6.TabIndex = 25;
-            this.label6.Text = "板手动设置并同步。";
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(6, 36);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(176, 15);
+            this.label8.TabIndex = 38;
+            this.label8.Text = "确保显示的文字不会变模糊。";
             // 
             // label7
             // 
@@ -366,14 +299,58 @@
             this.label7.TabIndex = 37;
             this.label7.Text = "如果你更改了屏幕缩放或者分辨率, 可以点击此按钮来重启倒计时以";
             // 
-            // label8
+            // groupBox2
             // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(6, 36);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(176, 15);
-            this.label8.TabIndex = 38;
-            this.label8.Text = "确保显示的文字不会变模糊。";
+            this.groupBox2.Controls.Add(this.label5);
+            this.groupBox2.Controls.Add(this.label4);
+            this.groupBox2.Controls.Add(this.label3);
+            this.groupBox2.Controls.Add(this.label1);
+            this.groupBox2.Controls.Add(this.FormSettingsSyncTimeButton);
+            this.groupBox2.Location = new System.Drawing.Point(6, 6);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(407, 113);
+            this.groupBox2.TabIndex = 44;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "同步网络时钟";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.ForeColor = System.Drawing.Color.Red;
+            this.label5.Location = new System.Drawing.Point(6, 64);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(189, 15);
+            this.label5.TabIndex = 24;
+            this.label5.Text = "服务器的操作可自行上网查阅。";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.ForeColor = System.Drawing.Color.Red;
+            this.label4.Location = new System.Drawing.Point(6, 49);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(382, 15);
+            this.label4.TabIndex = 23;
+            this.label4.Text = "将 Windows Time 服务设置为自动启动, 请谨慎操作。有关修改 NTP";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.ForeColor = System.Drawing.Color.Red;
+            this.label3.Location = new System.Drawing.Point(6, 34);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(383, 15);
+            this.label3.TabIndex = 22;
+            this.label3.Text = "注意: 此项会将系统的 NTP 服务器设置为 ntp1.aliyun.com, 并且还会";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 19);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(371, 15);
+            this.label1.TabIndex = 20;
+            this.label1.Text = "通过运行外部命令将当前系统时间与网络同步以确保准确无误。";
             // 
             // FormSettings
             // 
@@ -398,6 +375,10 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
+            this.groupBox7.ResumeLayout(false);
+            this.groupBox7.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.groupBox6.ResumeLayout(false);
             this.groupBox5.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
@@ -407,10 +388,6 @@
             this.groupBox3.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
-            this.groupBox7.ResumeLayout(false);
-            this.groupBox7.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -438,11 +415,9 @@
         private System.Windows.Forms.CheckBox chkSetTopMost;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label5;
     }
 }

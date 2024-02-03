@@ -72,7 +72,7 @@
             this.FrmDlPb.Location = new System.Drawing.Point(14, 26);
             this.FrmDlPb.Margin = new System.Windows.Forms.Padding(2);
             this.FrmDlPb.Name = "FrmDlPb";
-            this.FrmDlPb.Size = new System.Drawing.Size(332, 22);
+            this.FrmDlPb.Size = new System.Drawing.Size(344, 22);
             this.FrmDlPb.TabIndex = 0;
             // 
             // FrmDlBtnR
@@ -80,12 +80,12 @@
             this.FrmDlBtnR.AutoSize = true;
             this.FrmDlBtnR.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.FrmDlBtnR.Enabled = false;
-            this.FrmDlBtnR.Location = new System.Drawing.Point(226, 60);
+            this.FrmDlBtnR.Location = new System.Drawing.Point(237, 60);
             this.FrmDlBtnR.Margin = new System.Windows.Forms.Padding(2);
             this.FrmDlBtnR.Name = "FrmDlBtnR";
-            this.FrmDlBtnR.Size = new System.Drawing.Size(57, 25);
+            this.FrmDlBtnR.Size = new System.Drawing.Size(58, 25);
             this.FrmDlBtnR.TabIndex = 7;
-            this.FrmDlBtnR.Text = "链接(&L)";
+            this.FrmDlBtnR.Text = "重试(&R)";
             this.FrmDlBtnR.UseVisualStyleBackColor = true;
             this.FrmDlBtnR.Click += new System.EventHandler(this.FrmDlBtnR_Click);
             // 
@@ -93,7 +93,7 @@
             // 
             this.FrmDlBtnC.AutoSize = true;
             this.FrmDlBtnC.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.FrmDlBtnC.Location = new System.Drawing.Point(287, 60);
+            this.FrmDlBtnC.Location = new System.Drawing.Point(299, 60);
             this.FrmDlBtnC.Margin = new System.Windows.Forms.Padding(2);
             this.FrmDlBtnC.Name = "FrmDlBtnC";
             this.FrmDlBtnC.Size = new System.Drawing.Size(59, 25);
@@ -107,7 +107,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(357, 91);
+            this.ClientSize = new System.Drawing.Size(369, 91);
             this.Controls.Add(this.FrmDlBtnC);
             this.Controls.Add(this.FrmDlBtnR);
             this.Controls.Add(this.FrmDlPb);
@@ -122,6 +122,7 @@
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "更新进度 - 高考倒计时";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormDownloader_FormClosing);
             this.Load += new System.EventHandler(this.FormDownloader_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

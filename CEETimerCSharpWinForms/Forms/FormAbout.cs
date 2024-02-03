@@ -1,6 +1,5 @@
 ﻿using CEETimerCSharpWinForms.Modules;
 using System;
-using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -20,8 +19,8 @@ namespace CEETimerCSharpWinForms.Forms
         }
         private void FormAbout_Load(object sender, EventArgs e)
         {
-            FormAboutLabelVersion.Text = $"版本 v{LaunchManager.AppVersion} (x64) ({File.GetLastWriteTime(GetType().Assembly.Location):yyyy-MM-dd ddd HH:mm:ss})";
-            FormAboutLabelAuthor.Text = $"{LaunchManager.CopyrightInfo}";
+            FormAboutLabelVersion.Text = LaunchManager.AppVersionText;
+            FormAboutLabelAuthor.Text = LaunchManager.CopyrightInfo;
             checkUpdateTip = new ToolTip
             {
                 AutoPopDelay = 10000
