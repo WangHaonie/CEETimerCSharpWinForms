@@ -48,10 +48,6 @@ namespace CEETimerCSharpWinForms.Forms
                 isCheckingUpdate = true;
                 await Task.Run(() => CheckForUpdate.Start(false));
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, $"{LaunchManager.ErrMsg}", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
-            }
             finally
             {
                 isCheckingUpdate = false;

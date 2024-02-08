@@ -28,14 +28,14 @@ namespace CEETimerCSharpWinForms.Modules
                 WindowStyle = ProcessWindowStyle.Hidden,
                 CreateNoWindow = true,
                 RedirectStandardOutput = true,
-                UseShellExecute = false,
+                UseShellExecute = false
             };
             Process ProcessGetCurrentMemory = Process.Start(processStartInfo);
             var Output = ProcessGetCurrentMemory.StandardOutput.ReadToEnd().Trim().Split('"');
             ProcessGetCurrentMemory.WaitForExit();
             int MemoryUsage = int.Parse(Output[9].Replace(",", "").Replace("K", "").Trim());
             // Console.WriteLine($"{Output[9]} :: {MemoryUsage}");
-            if (MemoryUsage > 28000)
+            if (MemoryUsage > 22000)
             {
                 EmptyWorkingSet(Process.GetCurrentProcess().Handle);
             }

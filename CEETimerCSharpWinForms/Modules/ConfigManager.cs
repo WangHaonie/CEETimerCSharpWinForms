@@ -16,7 +16,7 @@ namespace CEETimerCSharpWinForms.Modules
         https://www.cnblogs.com/baozi789654/p/15645897.html
 
         */
-        private static Dictionary<string, string> JsonConfig = new Dictionary<string, string>();
+        private static Dictionary<string, string> JsonConfig = [];
         private static string ConfigFile = $"{LaunchManager.CurrentExecutablePath}CEETimerCSharpWinForms.dll";
         public static string ReadConfig(string key)
         {
@@ -30,7 +30,7 @@ namespace CEETimerCSharpWinForms.Modules
             }
             catch
             {
-                JsonConfig = new Dictionary<string, string>();
+                JsonConfig = [];
             }
 
             if (JsonConfig != null && JsonConfig.ContainsKey(key))
@@ -44,10 +44,7 @@ namespace CEETimerCSharpWinForms.Modules
         }
         public static void WriteConfig(string key, string value)
         {
-            if (JsonConfig == null)
-            {
-                JsonConfig = new Dictionary<string, string>();
-            }
+            JsonConfig ??= [];
             JsonConfig[key] = value;
             string Config = JsonConvert.SerializeObject(JsonConfig);
             File.WriteAllText(ConfigFile, Config);

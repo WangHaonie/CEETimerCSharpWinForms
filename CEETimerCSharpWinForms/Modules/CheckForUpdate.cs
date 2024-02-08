@@ -24,13 +24,7 @@ namespace CEETimerCSharpWinForms.Modules
                 LatestVersion = release["v"].ToString();
                 if (Version.Parse(LatestVersion) > Version.Parse(LaunchManager.AppVersion))
                 {
-                    DialogResult result = DialogResult.Yes;
-
-                    if (isProgramStart || !isProgramStart)
-                    {
-                        result = MessageBox.Show($"检测到新版本，是否下载并安装？\n当前版本: v{LaunchManager.AppVersion}\n新版本: v{LatestVersion}", $"{LaunchManager.InfoMsg}", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
-                    }
-
+                    DialogResult result = MessageBox.Show($"检测到新版本，是否下载并安装？\n当前版本: v{LaunchManager.AppVersion}\n新版本: v{LatestVersion}", LaunchManager.InfoMsg, MessageBoxButtons.YesNo, MessageBoxIcon.Information);
                     if (result == DialogResult.Yes)
                     {
                         CEETimerCSharpWinForms MainForm = Application.OpenForms[0] as CEETimerCSharpWinForms;
@@ -48,14 +42,14 @@ namespace CEETimerCSharpWinForms.Modules
                 }
                 else if (!isProgramStart)
                 {
-                    MessageBox.Show($"当前 v{LaunchManager.AppVersion} 已是最新版本。\n\n获取到的版本：v{LatestVersion}。", $"{LaunchManager.InfoMsg}", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show($"当前 v{LaunchManager.AppVersion} 已是最新版本。\n\n获取到的版本：v{LatestVersion}。", LaunchManager.InfoMsg, MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
             catch (Exception ex)
             {
                 if (!isProgramStart)
                 {
-                    MessageBox.Show($"检查更新时发生错误! \n\n错误信息：\n{ex.Message}", $"{LaunchManager.ErrMsg}", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"检查更新时发生错误! \n\n错误信息：\n{ex.Message}", LaunchManager.ErrMsg, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }

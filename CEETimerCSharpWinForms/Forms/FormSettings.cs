@@ -11,27 +11,43 @@ namespace CEETimerCSharpWinForms.Forms
     public partial class FormSettings : Form
     {
         private string ExamName;
-        private DateTime ExamStartTime = new DateTime();
-        private DateTime ExamEndTime = new DateTime();
+        private DateTime ExamStartTime = new();
+        private DateTime ExamEndTime = new();
         private string isTopMost;
         private bool isTopMostBool;
         private bool isSyncingTime = false;
+        private bool isChanged;
+        private const string groupBoxTitleOriginal = "重启倒计时";
+        private const string label7TextOriginal = "如果你更改了屏幕缩放或者分辨率, 可以点击此按钮来重启倒计时以";
+        private const string label8TextOriginal = "确保显示的文字不会变模糊。";
+        private const string btnTextOriginal = "点击重启(&R)";
+        private const string groupBoxTitle = "关闭倒计时";
+        private const string label7Text = "如果你由于某些原因需要临时关闭这个倒计时, 那你现在就可以选择";
+        private const string label8Text = "关闭它了。";
+        private const string btnText = "点击关闭(&C)";
         public delegate void ConfigChangedHandler(object sender, EventArgs e);
         public ConfigChangedHandler ConfigChanged;
         public FormSettings()
         {
             InitializeComponent();
-            /*LaunchManager.UseImmersiveDarkMode(Handle, true);
-            LaunchManager.SetDarkControls(this);*/
         }
         private void FormSettings_Load(object sender, EventArgs e)
         {
+            RestoreFunny();
             CheckStartupSetting();
             RefreshSettings();
+            isChanged = false;
+            FormSettingsApply.Enabled = false;
+        }
+        private void SettingsChanged(object sender, EventArgs e)
+        {
+            isChanged = true;
+            FormSettingsApply.Enabled = true;
         }
         private void FormSettingsSetExamNameText_TextChanged(object sender, EventArgs e)
         {
-            int CharCount = FormSettingsSetExamNameText.Text.Trim().Replace(" ", "").Where(c => char.IsLetterOrDigit(c) || (c >= ' ' && c <= byte.MaxValue)).ToArray().Length;
+            SettingsChanged(sender, e);
+            int CharCount = FormSettingsSetExamNameText.Text.RemoveAllBadChars().Length;
             LblCounter.Text = $"{CharCount}/15";
             LblCounter.ForeColor = CharCount > 15 ? System.Drawing.Color.Red : System.Drawing.Color.Black;
         }
@@ -41,11 +57,7 @@ namespace CEETimerCSharpWinForms.Forms
         }
         private void BtnRestartFunny_Click(object sender, EventArgs e)
         {
-            if (isSyncingTime)
-            {
-                MessageBox.Show("请等待网络时钟同步完毕，然后再关闭此窗口。", $"{LaunchManager.ErrMsg}", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            else
+            if (!isSyncingTime)
             {
                 LaunchManager.Shutdown();
             }
@@ -56,10 +68,10 @@ namespace CEETimerCSharpWinForms.Forms
             {
                 BtnRestart.Click -= BtnRestart_Click;
                 BtnRestart.Click += BtnRestartFunny_Click;
-                groupBox3.Text = "关闭倒计时";
-                label7.Text = "如果你由于某些原因需要临时关闭这个倒计时, 那你现在就可以选择";
-                label8.Text = "关闭它了。";
-                BtnRestart.Text = "点击关闭(&C)";
+                groupBox3.Text = groupBoxTitle;
+                label7.Text = label7Text;
+                label8.Text = label8Text;
+                BtnRestart.Text = btnText;
             }
         }
         private async void FormSettingsSyncTimeButton_Click(object sender, EventArgs e)
@@ -76,6 +88,7 @@ namespace CEETimerCSharpWinForms.Forms
         {
             if (ValidateInput())
             {
+                isChanged = false;
                 SaveSettings();
                 OnConfigChanged();
                 Close();
@@ -86,15 +99,24 @@ namespace CEETimerCSharpWinForms.Forms
             if (isSyncingTime)
             {
                 e.Cancel = true;
-                MessageBox.Show("请等待网络时钟同步完毕，然后再关闭此窗口。", $"{LaunchManager.ErrMsg}", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (isChanged)
+            {
+                DialogResult result = MessageBox.Show("检测到设置被更改但没有被保存，是否立即进行保存？", LaunchManager.WarnMsg, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                if (result == DialogResult.Yes)
+                {
+                    FormSettingsApply_Click(sender, e);
+                }
+                else
+                {
+                    isChanged = false;
+                    Close();
+                }
             }
         }
         private void FormSettings_FormClosed(object sender, FormClosedEventArgs e)
         {
-            groupBox3.Text = "重启倒计时";
-            label7.Text = "如果你更改了屏幕缩放或者分辨率, 可以点击此按钮来重启倒计时以";
-            label8.Text = "确保显示的文字不会变模糊。";
-            BtnRestart.Text = "点击重启(&R)";
+            RestoreFunny();
             BtnRestart.Click -= BtnRestartFunny_Click;
             BtnRestart.Click += BtnRestart_Click;
         }
@@ -111,55 +133,40 @@ namespace CEETimerCSharpWinForms.Forms
         }
         public bool ValidateInput()
         {
-            #region 来自网络
-            /*
-            
-            移除 ExamName 里不可见的空格 (Unicode 控制字符) 参考：
-
-            c# - Removing hidden characters from within strings - Stack Overflow
-            https://stackoverflow.com/a/40888424/21094697
-
-            */
-            ExamName = new string(FormSettingsSetExamNameText.Text.Trim().Replace(" ", "").Where(c => char.IsLetterOrDigit(c) || (c >= ' ' && c <= byte.MaxValue)).ToArray());
-            #endregion
+            ExamName = FormSettingsSetExamNameText.Text.RemoveAllBadChars();
             if (string.IsNullOrWhiteSpace(ExamName) || (ExamName.Length < 2) || (ExamName.Length > 15))
             {
-                MessageBox.Show("输入的考试名称有误！\n\n请检查输入的考试名称是否太短 (<2) 或太长 (>15)！", $"{LaunchManager.ErrMsg}", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("输入的考试名称有误！\n\n请检查输入的考试名称是否太长或太短！", LaunchManager.ErrMsg, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
-
             if (StartTimePicker.Value >= EndTimePicker.Value)
             {
-                MessageBox.Show("考试开始时间必须在结束时间之前！", $"{LaunchManager.ErrMsg}", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("考试开始时间必须在结束时间之前！", LaunchManager.ErrMsg, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
-
             TimeSpan timeSpan = EndTimePicker.Value - StartTimePicker.Value;
-
-            string hint1 = "你可能输入了错误的考试时间，应该没有";
-            string hint2 = "你刚刚设置了一个";
-            string hint3 = "的考试。\n\n如果你确定当前设置的是正确的考试时间，请点击确定；否则请点击取消。";
-
+            string UniMsg = "";
+            string TimeMsg = "";
             if (timeSpan.TotalDays > 4)
             {
-                DialogResult _result = MessageBox.Show($"{hint1}持续超过4天的考试吧？\n\n{hint2}持续{timeSpan.TotalDays}天{hint3}", $"{LaunchManager.WarnMsg}", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
-                if (_result == DialogResult.Cancel)
-                {
-                    return false;
-                }
+                TimeMsg = $"{timeSpan.TotalDays:0.0} 天";
             }
             else if (timeSpan.TotalMinutes < 40 && timeSpan.TotalSeconds > 60)
             {
-                DialogResult _result = MessageBox.Show($"{hint1}哪个考试连40分钟都没有吧？\n\n{hint2}只有短短{timeSpan.TotalMinutes}分钟{hint3}", $"{LaunchManager.WarnMsg}", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
-                if (_result == DialogResult.Cancel)
-                {
-                    return false;
-                }
+                TimeMsg = $"{timeSpan.TotalMinutes:0.0} 分钟";
             }
             else if (timeSpan.TotalSeconds < 60)
             {
-                DialogResult _result = MessageBox.Show($"{hint1}哪个考试连40分钟都没有吧？\n\n{hint2}只有短短{timeSpan.TotalSeconds}秒{hint3}", $"{LaunchManager.WarnMsg}", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
-                if (_result == DialogResult.Cancel)
+                TimeMsg = $"{timeSpan.TotalSeconds:0.0} 秒";
+            }
+            if (!string.IsNullOrEmpty(TimeMsg))
+            {
+                UniMsg = $"检测到设置的考试时长太长或太短！\n\n当前考试时长: {TimeMsg}。\n\n如果你确定当前设置的是正确的考试时间，请点击确定，否则请点击取消。";
+            }
+            if (!string.IsNullOrEmpty(UniMsg))
+            {
+                DialogResult result = MessageBox.Show(UniMsg, LaunchManager.WarnMsg, MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+                if (result == DialogResult.Cancel)
                 {
                     return false;
                 }
@@ -168,7 +175,7 @@ namespace CEETimerCSharpWinForms.Forms
         }
         private void StartSyncTime()
         {
-            ProcessStartInfo process1Info = new()
+            ProcessStartInfo processStartInfo = new()
             {
                 FileName = @"cmd.exe",
                 Arguments = "/c w32tm /config /manualpeerlist:ntp1.aliyun.com /syncfromflags:manual /reliable:YES /update & net stop w32time & net start w32time & sc config w32time start= auto & w32tm /resync & w32tm /resync",
@@ -176,9 +183,9 @@ namespace CEETimerCSharpWinForms.Forms
                 CreateNoWindow = true,
                 WindowStyle = ProcessWindowStyle.Hidden
             };
-            Process syncTimeProcess = Process.Start(process1Info);
+            Process syncTimeProcess = Process.Start(processStartInfo);
             syncTimeProcess.WaitForExit();
-            MessageBox.Show("命令执行完成，当前系统时间已与网络同步", $"{LaunchManager.InfoMsg}", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("命令执行完成，当前系统时间已与网络同步", LaunchManager.InfoMsg, MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         private void CheckStartupSetting()
         {
@@ -216,7 +223,6 @@ namespace CEETimerCSharpWinForms.Forms
                 }
                 DateTime.TryParseExact(ConfigManager.ReadConfig("ExamStartTime"), "yyyyMMddHHmmss", null, System.Globalization.DateTimeStyles.None, out ExamStartTime);
                 DateTime.TryParseExact(ConfigManager.ReadConfig("ExamEndTime"), "yyyyMMddHHmmss", null, System.Globalization.DateTimeStyles.None, out ExamEndTime);
-                //MessageBox.Show($"{ExamName}，{ExamStartTime}，{ExamEndTime}");
                 FormSettingsSetExamNameText.Text = ConfigManager.IsValidData(ExamName) ? ExamName : "";
                 StartTimePicker.Value = ConfigManager.IsValidData(ExamStartTime) ? ExamStartTime : DateTime.Now;
                 EndTimePicker.Value = ConfigManager.IsValidData(ExamEndTime) ? ExamEndTime : DateTime.Now;
@@ -239,9 +245,33 @@ namespace CEETimerCSharpWinForms.Forms
             ConfigManager.WriteConfig("ExamStartTime", StartTimePicker.Value.ToString("yyyyMMddHHmmss"));
             ConfigManager.WriteConfig("ExamEndTime", EndTimePicker.Value.ToString("yyyyMMddHHmmss"));
         }
+        private void RestoreFunny()
+        {
+            groupBox3.Text = groupBoxTitleOriginal;
+            label7.Text = label7TextOriginal;
+            label8.Text = label8TextOriginal;
+            BtnRestart.Text = btnTextOriginal;
+        }
         protected virtual void OnConfigChanged()
         {
             ConfigChanged?.Invoke(this, EventArgs.Empty);
+        }
+    }
+    public static class SomeExtensions
+    {
+        public static string RemoveAllBadChars(this string text)
+        {
+            #region 来自网络
+            /*
+            
+            移除字符串里不可见的空格 (Unicode 控制字符) 参考：
+
+            c# - Removing hidden characters from within strings - Stack Overflow
+            https://stackoverflow.com/a/40888424/21094697
+
+            */
+            return new string(text.Trim().Replace(" ", "").Where(c => char.IsLetterOrDigit(c) || (c >= ' ' && c <= byte.MaxValue)).ToArray());
+            #endregion
         }
     }
 }

@@ -106,9 +106,9 @@
             this.BtnRestart.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BtnRestart.Location = new System.Drawing.Point(9, 54);
             this.BtnRestart.Name = "BtnRestart";
-            this.BtnRestart.Size = new System.Drawing.Size(84, 25);
+            this.BtnRestart.Size = new System.Drawing.Size(71, 25);
             this.BtnRestart.TabIndex = 36;
-            this.BtnRestart.Text = "点击重启(&R)";
+            this.BtnRestart.Text = "BtnRestart";
             this.BtnRestart.UseVisualStyleBackColor = true;
             this.BtnRestart.Click += new System.EventHandler(this.BtnRestart_Click);
             this.BtnRestart.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BtnRestart_MouseDown);
@@ -122,17 +122,18 @@
             this.StartTimePicker.Name = "StartTimePicker";
             this.StartTimePicker.Size = new System.Drawing.Size(357, 23);
             this.StartTimePicker.TabIndex = 38;
-            this.StartTimePicker.Value = new System.DateTime(2024, 1, 1, 0, 0, 0, 0);
+            this.StartTimePicker.ValueChanged += new System.EventHandler(this.SettingsChanged);
             // 
             // EndTimePicker
             // 
+            this.EndTimePicker.Checked = false;
             this.EndTimePicker.CustomFormat = "yyyy-MM-dd dddd HH:mm:ss";
             this.EndTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.EndTimePicker.Location = new System.Drawing.Point(6, 22);
             this.EndTimePicker.Name = "EndTimePicker";
             this.EndTimePicker.Size = new System.Drawing.Size(357, 23);
             this.EndTimePicker.TabIndex = 39;
-            this.EndTimePicker.Value = new System.DateTime(2024, 1, 1, 0, 0, 0, 0);
+            this.EndTimePicker.ValueChanged += new System.EventHandler(this.SettingsChanged);
             // 
             // FormSettingsApply
             // 
@@ -195,6 +196,7 @@
             this.chkSetTopMost.TabIndex = 0;
             this.chkSetTopMost.Text = "允许倒计时显示到最上层(&T)";
             this.chkSetTopMost.UseVisualStyleBackColor = true;
+            this.chkSetTopMost.CheckedChanged += new System.EventHandler(this.SettingsChanged);
             // 
             // groupBox1
             // 
@@ -215,6 +217,7 @@
             this.FormSettingsSetStartupCheck.TabIndex = 18;
             this.FormSettingsSetStartupCheck.Text = "允许开机自动启动倒计时(&B)";
             this.FormSettingsSetStartupCheck.UseVisualStyleBackColor = true;
+            this.FormSettingsSetStartupCheck.CheckedChanged += new System.EventHandler(this.SettingsChanged);
             // 
             // groupBox6
             // 
@@ -245,7 +248,7 @@
             this.groupBox4.Size = new System.Drawing.Size(405, 58);
             this.groupBox4.TabIndex = 40;
             this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "考试名称 (2-15字)";
+            this.groupBox4.Text = "考试名称 (2~15字)";
             // 
             // LblCounter
             // 
@@ -279,25 +282,25 @@
             this.groupBox3.Size = new System.Drawing.Size(407, 85);
             this.groupBox3.TabIndex = 45;
             this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "重启倒计时";
+            this.groupBox3.Text = "groupBox3";
             // 
             // label8
             // 
             this.label8.AutoSize = true;
             this.label8.Location = new System.Drawing.Point(6, 36);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(176, 15);
+            this.label8.Size = new System.Drawing.Size(38, 15);
             this.label8.TabIndex = 38;
-            this.label8.Text = "确保显示的文字不会变模糊。";
+            this.label8.Text = "label8";
             // 
             // label7
             // 
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(6, 19);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(390, 15);
+            this.label7.Size = new System.Drawing.Size(38, 15);
             this.label7.TabIndex = 37;
-            this.label7.Text = "如果你更改了屏幕缩放或者分辨率, 可以点击此按钮来重启倒计时以";
+            this.label7.Text = "label7";
             // 
             // groupBox2
             // 

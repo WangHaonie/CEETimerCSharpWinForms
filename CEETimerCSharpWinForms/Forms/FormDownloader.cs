@@ -67,6 +67,7 @@ namespace CEETimerCSharpWinForms.Forms
                 }
                 if (!isCancelled)
                 {
+                    FrmDlBtnC.Enabled = false;
                     isWaiting = true;
                     FrmDlPb.Style = ProgressBarStyle.Marquee;
                     FrmDlPb.MarqueeAnimationSpeed = 20;
@@ -89,7 +90,7 @@ namespace CEETimerCSharpWinForms.Forms
                 FrmDlL1.Text = "下载失败，你可以点击 重试 重新启动下载。";
                 FrmDlL3.Text = "已下载/总共：N/A";
                 FrmDlL4.Text = "下载速度：N/A";
-                MessageBox.Show($"无法下载更新文件! \n\n错误信息: \n{ex.Message}", $"{LaunchManager.ErrMsg}", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"无法下载更新文件! \n\n错误信息: \n{ex.Message}", LaunchManager.ErrMsg, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 FrmDlBtnR.Enabled = true;
                 return;
             }
@@ -100,7 +101,7 @@ namespace CEETimerCSharpWinForms.Forms
             {
                 cancelRequest?.Cancel();
                 FrmDlL1.Text = "用户已取消下载。";
-                MessageBox.Show($"你已取消下载！\n\n你稍后可以在 关于 窗口点击版本号来再次检查更新。", $"{LaunchManager.WarnMsg}", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show($"你已取消下载！\n\n你稍后可以在 关于 窗口点击版本号来再次检查更新。", LaunchManager.WarnMsg, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             Close();
         }

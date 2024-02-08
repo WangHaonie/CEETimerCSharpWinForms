@@ -21,15 +21,7 @@ namespace CEETimerCSharpWinForms
         {
             InitializeComponent();
         }
-        private void FormSettings_ConfigChanged(object sender, EventArgs e)
-        {
-            RefreshSettings();
-        }
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            RefreshSettings();
-        }
-        private void RefreshSettings()
+        private void RefreshSettings(object sender, EventArgs e)
         {
             ExamName = ConfigManager.ReadConfig("ExamName");
             isTopMost = ConfigManager.ReadConfig("TopMost");
@@ -83,7 +75,7 @@ namespace CEETimerCSharpWinForms
             {
                 TimeSpan timePast = DateTime.Now - ExamEndTime;
                 labelCountdown.ForeColor = System.Drawing.Color.Black;
-                labelCountdown.Text = $"倒计时结束，距离{ExamName}已经过去了{timePast.Days}天{timePast.Hours:00}时{timePast.Minutes:00}分{timePast.Seconds:00}秒";
+                labelCountdown.Text = $"距离{ExamName}已经过去了{timePast.Days}天{timePast.Hours:00}时{timePast.Minutes:00}分{timePast.Seconds:00}秒";
             }
         }
         private void CEETimerCSharpWinForms_FormClosing(object sender, FormClosingEventArgs e)
@@ -114,7 +106,7 @@ namespace CEETimerCSharpWinForms
                 formSettings = new FormSettings();
             }
             formSettings.WindowState = FormWindowState.Normal;
-            formSettings.ConfigChanged += FormSettings_ConfigChanged;
+            formSettings.ConfigChanged += RefreshSettings;
             formSettings.Show();
             formSettings.Activate();
         }
