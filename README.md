@@ -30,10 +30,9 @@ CEETimerCSharpWinForms，适用于 Windows 系统的高考倒计时，自 v1.6 �
 2. 到 [Releases](https://github.com/WangHaonie/CEETimerCSharpWinForms/releases/latest) 下载 CEETimerCSharpWinForms_X.X_x64_Setup.exe；
 3. 按照提示安装就行；
 4. 初次使用需要右键主窗口，选择 设置，然后设置考试名称、开始/结束日期和时间，点击应用；
-## 效果展示
-1. 当考试未开始时，倒计时会显示红色的 "距离...还有...天...时...分...秒"：<br><span style="color: red; background-color: white; font-size: calc(1rem + 8px); font-weight: bold">距离考试还有0天0时0分0秒</span>
-2. 当考试正在进行时，会显示绿色的 "距离...结束还有...天...时...分...秒"：<br><span style="color: green; background-color: white; font-size: calc(1rem + 8px); font-weight: bold">距离考试结束还有0天0时0分0秒</span>
-3. 当考试结束后，会显示黑色的 "距离...已经过去了...天...时...分...秒"：<br><span style="color: black; background-color: white; font-size: calc(1rem + 8px); font-weight: bold">距离考试已经过去了0天0时0分0秒</span>
+5. 当考试未开始时，倒计时会显示红色的 "距离...还有...天...时...分...秒"；<br>
+当考试正在进行时，会显示绿色的 "距离...结束还有...天...时...分...秒"；<br>
+当考试结束后，会显示黑色的 "距离...已经过去了...天...时...分...秒"。<br>
 ## 开源许可证
 CEETimerCSharpWinForms is licensed under the GNU General Public License v3.0 (GPL-3.0).
 
