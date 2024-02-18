@@ -20,7 +20,6 @@ namespace CEETimerCSharpWinForms.Modules
         #endregion
         public static void Optimize()
         {
-            #region [当前使用] 获取工作集大小
             ProcessStartInfo processStartInfo = new()
             {
                 FileName = @"tasklist.exe",
@@ -34,21 +33,10 @@ namespace CEETimerCSharpWinForms.Modules
             var Output = ProcessGetCurrentMemory.StandardOutput.ReadToEnd().Trim().Split('"');
             ProcessGetCurrentMemory.WaitForExit();
             int MemoryUsage = int.Parse(Output[9].Replace(",", "").Replace("K", "").Trim());
-            // Console.WriteLine($"{Output[9]} :: {MemoryUsage}");
             if (MemoryUsage > 22000)
             {
                 EmptyWorkingSet(Process.GetCurrentProcess().Handle);
             }
-            #endregion
-            #region [已弃用] 获取私有工作集 (任务管理器同款)
-            /*
-             * 这也太占内存了吧，一路狂飙到 70 MB
-             * 
-            PerformanceCounter performanceCounter = new("Process", "Working Set - Private", Process.GetCurrentProcess().ProcessName);
-            long MemoryUsage = Convert.ToInt64(performanceCounter.NextValue());
-            Console.WriteLine(MemoryUsage);
-            */
-            #endregion
         }
     }
 }

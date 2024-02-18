@@ -57,10 +57,7 @@ namespace CEETimerCSharpWinForms.Forms
         }
         private void BtnRestartFunny_Click(object sender, EventArgs e)
         {
-            if (!isSyncingTime)
-            {
-                LaunchManager.Shutdown();
-            }
+            LaunchManager.Shutdown();
         }
         private void BtnRestart_MouseDown(object sender, MouseEventArgs e)
         {
@@ -78,10 +75,12 @@ namespace CEETimerCSharpWinForms.Forms
         {
             isSyncingTime = true;
             FormSettingsSyncTimeButton.Enabled = false;
+            BtnRestart.Enabled = false;
             FormSettingsSyncTimeButton.Text = "正在同步中，请稍候...";
             await Task.Run(StartSyncTime);
             isSyncingTime = false;
             FormSettingsSyncTimeButton.Enabled = true;
+            BtnRestart.Enabled = true;
             FormSettingsSyncTimeButton.Text = "立即同步(&S)";
         }
         private void FormSettingsApply_Click(object sender, EventArgs e)
@@ -178,14 +177,14 @@ namespace CEETimerCSharpWinForms.Forms
             ProcessStartInfo processStartInfo = new()
             {
                 FileName = @"cmd.exe",
-                Arguments = "/c w32tm /config /manualpeerlist:ntp1.aliyun.com /syncfromflags:manual /reliable:YES /update & net stop w32time & net start w32time & sc config w32time start= auto & w32tm /resync & w32tm /resync",
+                Arguments = "/c w32tm /config /manualpeerlist:ntp1.aliyun.com /syncfromflags:manual /reliable:YES /update && net stop w32time && net start w32time && sc config w32time start= auto && w32tm /resync && w32tm /resync",
                 Verb = "runas",
                 CreateNoWindow = true,
                 WindowStyle = ProcessWindowStyle.Hidden
             };
             Process syncTimeProcess = Process.Start(processStartInfo);
             syncTimeProcess.WaitForExit();
-            MessageBox.Show("命令执行完成，当前系统时间已与网络同步", LaunchManager.InfoMsg, MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show($"命令执行完成！\n\n返回值为 {syncTimeProcess.ExitCode}\n(0 代表成功，其他值为失败)", LaunchManager.InfoMsg, MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         private void CheckStartupSetting()
         {

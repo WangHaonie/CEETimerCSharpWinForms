@@ -15,7 +15,6 @@ namespace CEETimerCSharpWinForms.Forms
         public string downloadUrl;
         public string downloadPath;
         private bool isCancelled = false;
-        private bool isWaiting = false;
         public FormDownloader()
         {
             InitializeComponent();
@@ -51,7 +50,7 @@ namespace CEETimerCSharpWinForms.Forms
                         totalBytesRead += bytesRead;
                         var progressPercentage = totalBytes == -1 ? -1 : (int)(totalBytesRead * 100 / totalBytes);
                         FrmDlL3.Text = $"已下载/总共：{totalBytesRead / 1024} KB / {totalBytes / 1024} KB";
-                        FrmDlL4.Text = $"下载速度：{totalBytesRead / sw.Elapsed.TotalSeconds / 1024:N2} KB/s";
+                        FrmDlL4.Text = $"下载速度：{totalBytesRead / sw.Elapsed.TotalSeconds / 1024:0.00} KB/s";
                         FrmDlPb.Value = progressPercentage;
                         if (cancelRequest.Token.IsCancellationRequested)
                         {
@@ -68,12 +67,7 @@ namespace CEETimerCSharpWinForms.Forms
                 if (!isCancelled)
                 {
                     FrmDlBtnC.Enabled = false;
-                    isWaiting = true;
-                    FrmDlPb.Style = ProgressBarStyle.Marquee;
-                    FrmDlPb.MarqueeAnimationSpeed = 20;
-                    FrmDlL1.Text = "下载成功，即将安装更新，请稍候...";
-                    FrmDlL4.Text = "下载速度：0 KB/s";
-                    await Task.Delay(6000);
+                    FrmDlBtnR.Enabled = false;
                     ProcessStartInfo processStartInfo = new()
                     {
                         FileName = "cmd.exe",
@@ -81,8 +75,10 @@ namespace CEETimerCSharpWinForms.Forms
                         CreateNoWindow = true,
                         WindowStyle = ProcessWindowStyle.Hidden
                     };
+                    await Task.Delay(1800);
                     Process.Start(processStartInfo);
                     Close();
+                    Environment.Exit(0);
                 }
             }
             catch (Exception ex)
@@ -103,6 +99,7 @@ namespace CEETimerCSharpWinForms.Forms
                 FrmDlL1.Text = "用户已取消下载。";
                 MessageBox.Show($"你已取消下载！\n\n你稍后可以在 关于 窗口点击版本号来再次检查更新。", LaunchManager.WarnMsg, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
+            FormClosing -= FormDownloader_FormClosing;
             Close();
         }
         private async void FrmDlBtnR_Click(object sender, EventArgs e)
@@ -115,10 +112,7 @@ namespace CEETimerCSharpWinForms.Forms
         }
         private void FormDownloader_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (isWaiting)
-            {
-                e.Cancel = true;
-            }
+            e.Cancel = true;
         }
     }
 }
