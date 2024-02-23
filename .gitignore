@@ -4,3 +4,4 @@ CEETimerCSharpWinForms/obj/
 CEETimerCSharpWinForms/packages/
 CEETimerCSharpWinForms/packages.config
 NSIS/*.exe
+CEETimerCSharpWinForms/app.config

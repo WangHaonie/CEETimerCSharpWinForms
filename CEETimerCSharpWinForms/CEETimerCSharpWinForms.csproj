@@ -169,6 +169,9 @@
     <Compile Include="Modules\ConfigManager.cs" />
     <Compile Include="Modules\LaunchManager.cs" />
     <Compile Include="Modules\MemoryManager.cs" />
+    <Compile Include="Modules\VirtualDesktopSwitch.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <None Include="Modules\app.manifest" />

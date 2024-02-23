@@ -3,6 +3,7 @@ using CEETimerCSharpWinForms.Modules;
 using System;
 using System.Diagnostics;
 using System.Windows.Forms;
+using VirtualDesktopSwitch;
 
 namespace CEETimerCSharpWinForms
 {
@@ -12,17 +13,27 @@ namespace CEETimerCSharpWinForms
         private DateTime ExamStartTime = new();
         private DateTime ExamEndTime = new();
         private Timer CountdownTimer;
+        private Timer VDCheckTimer;
         private int i;
         private string isTopMost;
         private bool isTopMostBool;
         private static FormSettings formSettings;
         private static FormAbout formAbout;
+        private VirtualDesktopManager vdm;
         public CEETimerCSharpWinForms()
         {
             InitializeComponent();
+
+            VDCheckTimer = new Timer
+            {
+                Enabled = true,
+                Interval = 1000
+            };
+            VDCheckTimer.Tick += VDCheckTimer_Tick;
         }
         private void RefreshSettings(object sender, EventArgs e)
         {
+            vdm = new VirtualDesktopManager();
             ExamName = ConfigManager.ReadConfig("ExamName");
             isTopMost = ConfigManager.ReadConfig("TopMost");
             DateTime.TryParseExact(ConfigManager.ReadConfig("ExamStartTime"), "yyyyMMddHHmmss", null, System.Globalization.DateTimeStyles.None, out ExamStartTime);
@@ -51,6 +62,24 @@ namespace CEETimerCSharpWinForms
                 CountdownTimer.Tick += Timer_Tick;
                 CountdownTimer.Start();
             }
+        }
+        private void VDCheckTimer_Tick(object sender, EventArgs e)
+        {
+            try
+            {
+                foreach (Form form in Application.OpenForms)
+                {
+                    if (!vdm.IsWindowOnCurrentVirtualDesktop(form.Handle))
+                    {
+                        using NewWindow nw = new();
+                        nw.Show(null);
+                        vdm.MoveWindowToDesktop(form.Handle, vdm.GetWindowDesktopId(nw.Handle));
+                        form.Activate();
+                    }
+                }
+            }
+            catch
+            { }
         }
         private void Timer_Tick(object sender, EventArgs e)
         {
