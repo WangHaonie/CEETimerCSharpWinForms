@@ -24,11 +24,11 @@ namespace CEETimerCSharpWinForms.Modules
                 LatestVersion = release["v"].ToString();
                 if (Version.Parse(LatestVersion) > Version.Parse(LaunchManager.AppVersion))
                 {
-                    DialogResult result = MessageBox.Show($"检测到新版本，是否下载并安装？\n当前版本: v{LaunchManager.AppVersion}\n新版本: v{LatestVersion}", LaunchManager.InfoMsg, MessageBoxButtons.YesNo, MessageBoxIcon.Information);
-                    if (result == DialogResult.Yes)
+                    CEETimerCSharpWinForms MainForm = Application.OpenForms[0] as CEETimerCSharpWinForms;
+                    MainForm.Invoke(new Action(() =>
                     {
-                        CEETimerCSharpWinForms MainForm = Application.OpenForms[0] as CEETimerCSharpWinForms;
-                        MainForm.Invoke(new Action(() =>
+                        DialogResult result = MessageBox.Show($"检测到新版本，是否下载并安装？\n当前版本: v{LaunchManager.AppVersion}\n新版本: v{LatestVersion}", LaunchManager.InfoMsg, MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                        if (result == DialogResult.Yes)
                         {
                             if (formDownloader == null || formDownloader.IsDisposed)
                             {
@@ -37,8 +37,8 @@ namespace CEETimerCSharpWinForms.Modules
                             formDownloader.WindowState = FormWindowState.Normal;
                             formDownloader.Show();
                             formDownloader.Activate();
-                        }));
-                    }
+                        }
+                    }));
                 }
                 else if (!isProgramStart)
                 {
