@@ -1,6 +1,6 @@
 ﻿namespace CEETimerCSharpWinForms
 {
-    partial class CEETimerCSharpWinForms
+    partial class FormMain
     {
         /// <summary>
         /// 必需的设计器变量。
@@ -88,7 +88,7 @@
             this.ContextOpenDir.Text = "打开程序文件夹(&O)";
             this.ContextOpenDir.Click += new System.EventHandler(this.ContextOpenDir_Click);
             // 
-            // CEETimerCSharpWinForms
+            // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
@@ -106,7 +106,7 @@
             this.ImeMode = System.Windows.Forms.ImeMode.Off;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "CEETimerCSharpWinForms";
+            this.Name = "FormMain";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;

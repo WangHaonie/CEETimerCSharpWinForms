@@ -7,7 +7,7 @@ using VirtualDesktopSwitch;
 
 namespace CEETimerCSharpWinForms
 {
-    public partial class CEETimerCSharpWinForms : Form
+    public partial class FormMain : Form
     {
         private string ExamName;
         private DateTime ExamStartTime = new();
@@ -61,7 +61,7 @@ namespace CEETimerCSharpWinForms
             vdm = new VirtualDesktopManager();
         }
         #endregion
-        public CEETimerCSharpWinForms()
+        public FormMain()
         {
             InitializeComponent();
         }

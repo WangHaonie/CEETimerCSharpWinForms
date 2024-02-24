@@ -24,7 +24,7 @@ namespace CEETimerCSharpWinForms.Modules
                 LatestVersion = release["v"].ToString();
                 if (Version.Parse(LatestVersion) > Version.Parse(LaunchManager.AppVersion))
                 {
-                    CEETimerCSharpWinForms MainForm = Application.OpenForms[0] as CEETimerCSharpWinForms;
+                    FormMain MainForm = Application.OpenForms[0] as FormMain;
                     MainForm.Invoke(new Action(() =>
                     {
                         DialogResult result = MessageBox.Show($"检测到新版本，是否下载并安装？\n当前版本: v{LaunchManager.AppVersion}\n新版本: v{LatestVersion}", LaunchManager.InfoMsg, MessageBoxButtons.YesNo, MessageBoxIcon.Information);
