@@ -33,7 +33,7 @@ namespace CEETimerCSharpWinForms.Modules
             var Output = ProcessGetCurrentMemory.StandardOutput.ReadToEnd().Trim().Split('"');
             ProcessGetCurrentMemory.WaitForExit();
             int MemoryUsage = int.Parse(Output[9].Replace(",", "").Replace("K", "").Trim());
-            if (MemoryUsage > 22000)
+            if (MemoryUsage > 12288)
             {
                 EmptyWorkingSet(Process.GetCurrentProcess().Handle);
             }

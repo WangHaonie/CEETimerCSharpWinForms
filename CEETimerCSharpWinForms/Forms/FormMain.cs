@@ -32,6 +32,8 @@ namespace CEETimerCSharpWinForms
         private VirtualDesktopManager vdm;
         private void VDCheckTimer_Tick(object sender, EventArgs e)
         {
+            TriggerMemoryOptimization();
+            //顺便把触发内存清理的代码搬过来将就用一下，因为全程序只有这一个是自程序运行就运行的 Timer
             try
             {
                 foreach (Form form in Application.OpenForms)
@@ -98,13 +100,16 @@ namespace CEETimerCSharpWinForms
                 CountdownTimer.Start();
             }
         }
-        private void Timer_Tick(object sender, EventArgs e)
+        private void TriggerMemoryOptimization()
         {
             i++;
             if (i % 300 == 0 || i == 5)
             {
                 MemoryManager.Optimize();
             }
+        }
+        private void Timer_Tick(object sender, EventArgs e)
+        {
             if (DateTime.Now < ExamStartTime)
             {
                 TimeSpan timeLeft = ExamStartTime - DateTime.Now;
