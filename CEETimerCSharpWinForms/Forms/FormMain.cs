@@ -67,7 +67,10 @@ namespace CEETimerCSharpWinForms
         }
         private void FormMain_Load(object sender, EventArgs e)
         {
-            InitializeVdm();
+            if (Environment.OSVersion.Platform == PlatformID.Win32NT && Environment.OSVersion.Version.Major >= 10)
+            {
+                InitializeVdm();
+            }
             RefreshSettings(sender, e);
         }
         private void RefreshSettings(object sender, EventArgs e)
