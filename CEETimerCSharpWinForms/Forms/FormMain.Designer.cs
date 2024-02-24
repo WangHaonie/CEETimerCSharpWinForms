@@ -113,7 +113,7 @@
             this.Text = "高考倒计时";
             this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CEETimerCSharpWinForms_FormClosing);
-            this.Load += new System.EventHandler(this.RefreshSettings);
+            this.Load += new System.EventHandler(this.FormMain_Load);
             this.Context.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -1,4 +1,13 @@
-﻿using System;
+﻿#region 来自网络
+/* 
+        
+自动将窗口移动到当前虚拟桌面 (Windows 10 以上) 参考：
+
+Virtual Desktop Switching in Windows 10 | Microsoft Learn
+https://learn.microsoft.com/en-us/archive/blogs/winsdk/virtual-desktop-switching-in-windows-10
+
+*/
+using System;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
@@ -81,3 +90,4 @@ namespace VirtualDesktopSwitch
         }
     }
 }
+#endregion
