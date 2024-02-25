@@ -17,13 +17,27 @@ namespace CEETimerCSharpWinForms.Modules
 
         */
         private static Dictionary<string, string> JsonConfig = [];
-        private static string ConfigFile = $"{LaunchManager.CurrentExecutablePath}CEETimerCSharpWinForms.dll";
-        public static string ReadConfig(string key)
+        private static readonly string ConfigFile = $"{LaunchManager.CurrentExecutablePath}CEETimerCSharpWinForms.dll";
+
+        private static void CheckConfig()
         {
             if (!File.Exists(ConfigFile))
             {
-                File.Create(ConfigFile).Close();
+                if (Directory.Exists(ConfigFile))
+                {
+                    Directory.Delete(ConfigFile);
+                }
+                else
+                {
+                    File.Create(ConfigFile).Close();
+                }
             }
+        }
+
+        public static string ReadConfig(string key)
+        {
+            CheckConfig();
+
             try
             {
                 JsonConfig = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(ConfigFile));
@@ -35,21 +49,24 @@ namespace CEETimerCSharpWinForms.Modules
 
             if (JsonConfig != null && JsonConfig.ContainsKey(key))
             {
-                return JsonConfig[key];
+                return JsonConfig[key].RemoveAllBadChars();
             }
             else
             {
                 return string.Empty;
             }
         }
+
         public static void WriteConfig(string key, string value)
         {
+            CheckConfig();
             JsonConfig ??= [];
             JsonConfig[key] = value;
             string Config = JsonConvert.SerializeObject(JsonConfig);
             File.WriteAllText(ConfigFile, Config);
         }
         #endregion
+
         public static bool IsValidData(string ExamName)
         {
             if (string.IsNullOrEmpty(ExamName) || ExamName.Length < 2 || ExamName.Length > 15)
@@ -58,9 +75,10 @@ namespace CEETimerCSharpWinForms.Modules
             }
             return true;
         }
+
         public static bool IsValidData(DateTime ExamTime)
         {
-            if (ExamTime < new DateTime(1753, 1, 1))
+            if (ExamTime < new DateTime(1753, 1, 1, 23, 59, 59) || ExamTime > new DateTime(2106, 12, 31, 23, 59, 59))
             {
                 return false;
             }

@@ -18,6 +18,7 @@ namespace CEETimerCSharpWinForms.Modules
         [DllImport("psapi.dll")]
         static extern int EmptyWorkingSet(IntPtr hwProc);
         #endregion
+
         public static void Optimize()
         {
             ProcessStartInfo processStartInfo = new()
@@ -30,9 +31,11 @@ namespace CEETimerCSharpWinForms.Modules
                 UseShellExecute = false
             };
             Process ProcessGetCurrentMemory = Process.Start(processStartInfo);
+
             var Output = ProcessGetCurrentMemory.StandardOutput.ReadToEnd().Trim().Split('"');
             ProcessGetCurrentMemory.WaitForExit();
             int MemoryUsage = int.Parse(Output[9].Replace(",", "").Replace("K", "").Trim());
+
             if (MemoryUsage > 12288)
             {
                 EmptyWorkingSet(Process.GetCurrentProcess().Handle);

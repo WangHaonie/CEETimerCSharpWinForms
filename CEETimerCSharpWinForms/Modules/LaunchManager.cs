@@ -23,39 +23,20 @@ namespace CEETimerCSharpWinForms.Modules
         public static readonly string CurrentExecutable = Application.ExecutablePath;
         private static readonly string CurrentExecutableName = Path.GetFileName(CurrentExecutable);
         private static readonly string OriginalFileName = "CEETimerCSharpWinForms.exe";
-        public static void Restart()
-        {
-            ProcessStartInfo processStartInfo = new()
-            {
-                FileName = @"cmd.exe",
-                Arguments = $"/c taskkill /f /fi \"PID eq {Process.GetCurrentProcess().Id}\" /im {CurrentExecutableName} & start \"\" \"{CurrentExecutable}\"",
-                CreateNoWindow = true,
-                WindowStyle = ProcessWindowStyle.Hidden
-            };
-            Process.Start(processStartInfo);
-        }
-        public static void Shutdown()
-        {
-            ProcessStartInfo processStartInfo = new()
-            {
-                FileName = @"cmd.exe",
-                Arguments = $"/c taskkill /f /fi \"PID eq {Process.GetCurrentProcess().Id}\" /im {CurrentExecutableName}",
-                CreateNoWindow = true,
-                WindowStyle = ProcessWindowStyle.Hidden
-            };
-            Process.Start(processStartInfo);
-        }
+
         public static void StartProgram()
         {
-            Dictionary<string, string> DllHashes = new()
-            {
-                { "Newtonsoft.Json.dll", "E1E27AF7B07EEEDF5CE71A9255F0422816A6FC5849A483C6714E1B472044FA9D" }
-            };
             using Mutex mutex = new(true, "CEETimerCSharpWinForms_MUTEX_61c0097d-3682-421c-84e6-70ca37dc31dd_[A3F8B92E6D14]", out bool isNewProcess);
             if (isNewProcess)
             {
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
+
+                Dictionary<string, string> DllHashes = new()
+                {
+                    { "Newtonsoft.Json.dll", "E1E27AF7B07EEEDF5CE71A9255F0422816A6FC5849A483C6714E1B472044FA9D" }
+                };
+
                 foreach (var Dll in DllHashes)
                 {
                     string DllPath = $"{CurrentExecutablePath}{Dll.Key}";
@@ -64,6 +45,7 @@ namespace CEETimerCSharpWinForms.Modules
                     using FileStream fs = File.OpenRead(DllName);
                     byte[] HashBytes = SHA256.Create().ComputeHash(fs);
                     string CurrentHash = BitConverter.ToString(HashBytes).Replace("-", "");
+
                     if (!File.Exists(DllName))
                     {
                         MessageBox.Show($"由于找不到 {DllName}, 无法继续执行代码。重新安装程序可能会解决此问题。", $"{CurrentExecutableName} - 系统错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -75,6 +57,7 @@ namespace CEETimerCSharpWinForms.Modules
                         Environment.Exit(3);
                     }
                 }
+
                 if (!CurrentExecutableName.Equals(OriginalFileName, StringComparison.OrdinalIgnoreCase))
                 {
                     MessageBox.Show($"为了您的使用体验，请不要更改程序文件名! 程序将在该对话框关闭后尝试自动恢复到原文件名，若自动恢复失败请手动改回。\n\n当前文件名：{CurrentExecutableName}\n原始文件名：{OriginalFileName}", WarnMsg, MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -98,6 +81,30 @@ namespace CEETimerCSharpWinForms.Modules
             {
                 Environment.Exit(1);
             }
+        }
+
+        public static void Restart()
+        {
+            ProcessStartInfo processStartInfo = new()
+            {
+                FileName = @"cmd.exe",
+                Arguments = $"/c taskkill /f /fi \"PID eq {Process.GetCurrentProcess().Id}\" /im {CurrentExecutableName} & start \"\" \"{CurrentExecutable}\"",
+                CreateNoWindow = true,
+                WindowStyle = ProcessWindowStyle.Hidden
+            };
+            Process.Start(processStartInfo);
+        }
+
+        public static void Shutdown()
+        {
+            ProcessStartInfo processStartInfo = new()
+            {
+                FileName = @"cmd.exe",
+                Arguments = $"/c taskkill /f /fi \"PID eq {Process.GetCurrentProcess().Id}\" /im {CurrentExecutableName}",
+                CreateNoWindow = true,
+                WindowStyle = ProcessWindowStyle.Hidden
+            };
+            Process.Start(processStartInfo);
         }
     }
 }

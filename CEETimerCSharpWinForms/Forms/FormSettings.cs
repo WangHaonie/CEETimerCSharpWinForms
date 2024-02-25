@@ -2,7 +2,6 @@
 using Microsoft.Win32;
 using System;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -27,10 +26,12 @@ namespace CEETimerCSharpWinForms.Forms
         private const string btnText = "点击关闭(&C)";
         public delegate void ConfigChangedHandler(object sender, EventArgs e);
         public ConfigChangedHandler ConfigChanged;
+
         public FormSettings()
         {
             InitializeComponent();
         }
+
         private void FormSettings_Load(object sender, EventArgs e)
         {
             RestoreFunny();
@@ -39,11 +40,13 @@ namespace CEETimerCSharpWinForms.Forms
             isChanged = false;
             FormSettingsApply.Enabled = false;
         }
+
         private void SettingsChanged(object sender, EventArgs e)
         {
             isChanged = true;
             FormSettingsApply.Enabled = true;
         }
+
         private void FormSettingsSetExamNameText_TextChanged(object sender, EventArgs e)
         {
             SettingsChanged(sender, e);
@@ -51,14 +54,17 @@ namespace CEETimerCSharpWinForms.Forms
             LblCounter.Text = $"{CharCount}/15";
             LblCounter.ForeColor = CharCount > 15 ? System.Drawing.Color.Red : System.Drawing.Color.Black;
         }
+
         private void BtnRestart_Click(object sender, EventArgs e)
         {
             LaunchManager.Restart();
         }
+
         private void BtnRestartFunny_Click(object sender, EventArgs e)
         {
             LaunchManager.Shutdown();
         }
+
         private void BtnRestart_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
@@ -71,6 +77,7 @@ namespace CEETimerCSharpWinForms.Forms
                 BtnRestart.Text = btnText;
             }
         }
+
         private async void FormSettingsSyncTimeButton_Click(object sender, EventArgs e)
         {
             isSyncingTime = true;
@@ -83,6 +90,7 @@ namespace CEETimerCSharpWinForms.Forms
             BtnRestart.Enabled = true;
             FormSettingsSyncTimeButton.Text = "立即同步(&S)";
         }
+
         private void FormSettingsApply_Click(object sender, EventArgs e)
         {
             if (ValidateInput())
@@ -102,6 +110,7 @@ namespace CEETimerCSharpWinForms.Forms
             else if (isChanged)
             {
                 DialogResult result = MessageBox.Show("检测到设置被更改但没有被保存，是否立即进行保存？", LaunchManager.WarnMsg, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
                 if (result == DialogResult.Yes)
                 {
                     FormSettingsApply_Click(sender, e);
@@ -113,16 +122,19 @@ namespace CEETimerCSharpWinForms.Forms
                 }
             }
         }
+
         private void FormSettings_FormClosed(object sender, FormClosedEventArgs e)
         {
             RestoreFunny();
             BtnRestart.Click -= BtnRestartFunny_Click;
             BtnRestart.Click += BtnRestart_Click;
         }
+
         private void FormSettingsCloseMain_Click(object sender, EventArgs e)
         {
             Close();
         }
+
         private void FormSettings_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Escape)
@@ -130,22 +142,27 @@ namespace CEETimerCSharpWinForms.Forms
                 Close();
             }
         }
+
         public bool ValidateInput()
         {
             ExamName = FormSettingsSetExamNameText.Text.RemoveAllBadChars();
+
             if (string.IsNullOrWhiteSpace(ExamName) || (ExamName.Length < 2) || (ExamName.Length > 15))
             {
                 MessageBox.Show("输入的考试名称有误！\n\n请检查输入的考试名称是否太长或太短！", LaunchManager.ErrMsg, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
+
             if (StartTimePicker.Value >= EndTimePicker.Value)
             {
                 MessageBox.Show("考试开始时间必须在结束时间之前！", LaunchManager.ErrMsg, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
+
             TimeSpan timeSpan = EndTimePicker.Value - StartTimePicker.Value;
             string UniMsg = "";
             string TimeMsg = "";
+
             if (timeSpan.TotalDays > 4)
             {
                 TimeMsg = $"{timeSpan.TotalDays:0.0} 天";
@@ -158,10 +175,12 @@ namespace CEETimerCSharpWinForms.Forms
             {
                 TimeMsg = $"{timeSpan.TotalSeconds:0.0} 秒";
             }
+
             if (!string.IsNullOrEmpty(TimeMsg))
             {
                 UniMsg = $"检测到设置的考试时长太长或太短！\n\n当前考试时长: {TimeMsg}。\n\n如果你确定当前设置的是正确的考试时间，请点击确定，否则请点击取消。";
             }
+
             if (!string.IsNullOrEmpty(UniMsg))
             {
                 DialogResult result = MessageBox.Show(UniMsg, LaunchManager.WarnMsg, MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
@@ -170,8 +189,10 @@ namespace CEETimerCSharpWinForms.Forms
                     return false;
                 }
             }
+
             return true;
         }
+
         private void StartSyncTime()
         {
             ProcessStartInfo processStartInfo = new()
@@ -182,13 +203,16 @@ namespace CEETimerCSharpWinForms.Forms
                 CreateNoWindow = true,
                 WindowStyle = ProcessWindowStyle.Hidden
             };
+
             Process syncTimeProcess = Process.Start(processStartInfo);
             syncTimeProcess.WaitForExit();
             MessageBox.Show($"命令执行完成！\n\n返回值为 {syncTimeProcess.ExitCode}\n(0 代表成功，其他值为失败)", LaunchManager.InfoMsg, MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
+
         private void CheckStartupSetting()
         {
             RegistryKey reg = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+
             if (reg.GetValue("CEETimerCSharpWinForms") is string regvalue)
             {
                 if (regvalue.Equals(Application.ExecutablePath, StringComparison.OrdinalIgnoreCase))
@@ -205,12 +229,14 @@ namespace CEETimerCSharpWinForms.Forms
                 FormSettingsSetStartupCheck.Checked = false;
             }
         }
+
         private void RefreshSettings()
         {
             try
             {
                 ExamName = ConfigManager.ReadConfig("ExamName");
                 isTopMost = ConfigManager.ReadConfig("TopMost");
+
                 if (isTopMost.Equals("true", StringComparison.OrdinalIgnoreCase) || isTopMost.Equals("false", StringComparison.OrdinalIgnoreCase))
                 {
                     bool.TryParse(isTopMost, out isTopMostBool);
@@ -220,17 +246,23 @@ namespace CEETimerCSharpWinForms.Forms
                 {
                     chkSetTopMost.Checked = true;
                 }
+
                 DateTime.TryParseExact(ConfigManager.ReadConfig("ExamStartTime"), "yyyyMMddHHmmss", null, System.Globalization.DateTimeStyles.None, out ExamStartTime);
                 DateTime.TryParseExact(ConfigManager.ReadConfig("ExamEndTime"), "yyyyMMddHHmmss", null, System.Globalization.DateTimeStyles.None, out ExamEndTime);
                 FormSettingsSetExamNameText.Text = ConfigManager.IsValidData(ExamName) ? ExamName : "";
                 StartTimePicker.Value = ConfigManager.IsValidData(ExamStartTime) ? ExamStartTime : DateTime.Now;
                 EndTimePicker.Value = ConfigManager.IsValidData(ExamEndTime) ? ExamEndTime : DateTime.Now;
             }
-            catch (Exception) { }
+            catch
+            {
+
+            }
         }
+
         private void SaveSettings()
         {
             RegistryKey reg = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+
             if (FormSettingsSetStartupCheck.Checked)
             {
                 reg.SetValue("CEETimerCSharpWinForms", LaunchManager.CurrentExecutable);
@@ -239,11 +271,13 @@ namespace CEETimerCSharpWinForms.Forms
             {
                 reg.DeleteValue("CEETimerCSharpWinForms", false);
             }
+
             ConfigManager.WriteConfig("TopMost", chkSetTopMost.Checked.ToString());
             ConfigManager.WriteConfig("ExamName", ExamName);
             ConfigManager.WriteConfig("ExamStartTime", StartTimePicker.Value.ToString("yyyyMMddHHmmss"));
             ConfigManager.WriteConfig("ExamEndTime", EndTimePicker.Value.ToString("yyyyMMddHHmmss"));
         }
+
         private void RestoreFunny()
         {
             groupBox3.Text = groupBoxTitleOriginal;
@@ -251,26 +285,10 @@ namespace CEETimerCSharpWinForms.Forms
             label8.Text = label8TextOriginal;
             BtnRestart.Text = btnTextOriginal;
         }
+
         protected virtual void OnConfigChanged()
         {
             ConfigChanged?.Invoke(this, EventArgs.Empty);
-        }
-    }
-    public static class SomeExtensions
-    {
-        public static string RemoveAllBadChars(this string text)
-        {
-            #region 来自网络
-            /*
-            
-            移除字符串里不可见的空格 (Unicode 控制字符) 参考：
-
-            c# - Removing hidden characters from within strings - Stack Overflow
-            https://stackoverflow.com/a/40888424/21094697
-
-            */
-            return new string(text.Trim().Replace(" ", "").Where(c => char.IsLetterOrDigit(c) || (c >= ' ' && c <= byte.MaxValue)).ToArray());
-            #endregion
         }
     }
 }
