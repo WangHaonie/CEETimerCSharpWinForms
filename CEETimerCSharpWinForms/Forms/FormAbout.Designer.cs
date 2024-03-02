@@ -30,114 +30,112 @@ namespace CEETimerCSharpWinForms.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            this.FormAboutLabelInfo = new System.Windows.Forms.Label();
-            this.FormAboutLabelAuthor = new System.Windows.Forms.Label();
-            this.FormAboutBottonGH = new System.Windows.Forms.Button();
-            this.FormAboutBottonClose = new System.Windows.Forms.Button();
-            this.FormAboutLicenseButton = new System.Windows.Forms.Button();
-            this.FormAboutLicenseHint = new System.Windows.Forms.Label();
-            this.FormAboutLabelVersion = new System.Windows.Forms.Label();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.panel1.SuspendLayout();
+            this.LabelInfo = new System.Windows.Forms.Label();
+            this.LabelAuthor = new System.Windows.Forms.Label();
+            this.ButtonGitHub = new System.Windows.Forms.Button();
+            this.ButtonClose = new System.Windows.Forms.Button();
+            this.ButtonLicense = new System.Windows.Forms.Button();
+            this.LabelLicense = new System.Windows.Forms.Label();
+            this.LableVersion = new System.Windows.Forms.Label();
+            this.PanelMain = new System.Windows.Forms.Panel();
+            this.PanelMain.SuspendLayout();
             this.SuspendLayout();
             // 
-            // FormAboutLabelInfo
+            // LabelInfo
             // 
-            this.FormAboutLabelInfo.AutoSize = true;
-            this.FormAboutLabelInfo.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FormAboutLabelInfo.Location = new System.Drawing.Point(3, 3);
-            this.FormAboutLabelInfo.Name = "FormAboutLabelInfo";
-            this.FormAboutLabelInfo.Size = new System.Drawing.Size(217, 15);
-            this.FormAboutLabelInfo.TabIndex = 1;
-            this.FormAboutLabelInfo.Text = "CEETimerCSharpWinForms 高考倒计时";
+            this.LabelInfo.AutoSize = true;
+            this.LabelInfo.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LabelInfo.Location = new System.Drawing.Point(3, 3);
+            this.LabelInfo.Name = "LabelInfo";
+            this.LabelInfo.Size = new System.Drawing.Size(217, 15);
+            this.LabelInfo.TabIndex = 1;
+            this.LabelInfo.Text = "CEETimerCSharpWinForms 高考倒计时";
             // 
-            // FormAboutLabelAuthor
+            // LabelAuthor
             // 
-            this.FormAboutLabelAuthor.AutoSize = true;
-            this.FormAboutLabelAuthor.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FormAboutLabelAuthor.Location = new System.Drawing.Point(3, 48);
-            this.FormAboutLabelAuthor.Name = "FormAboutLabelAuthor";
-            this.FormAboutLabelAuthor.Size = new System.Drawing.Size(133, 15);
-            this.FormAboutLabelAuthor.TabIndex = 3;
-            this.FormAboutLabelAuthor.Text = "FormAboutLabelAuthor";
+            this.LabelAuthor.AutoSize = true;
+            this.LabelAuthor.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LabelAuthor.Location = new System.Drawing.Point(3, 48);
+            this.LabelAuthor.Name = "LabelAuthor";
+            this.LabelAuthor.Size = new System.Drawing.Size(0, 15);
+            this.LabelAuthor.TabIndex = 3;
             // 
-            // FormAboutBottonGH
+            // ButtonGitHub
             // 
-            this.FormAboutBottonGH.AutoSize = true;
-            this.FormAboutBottonGH.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.FormAboutBottonGH.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FormAboutBottonGH.Location = new System.Drawing.Point(14, 66);
-            this.FormAboutBottonGH.Name = "FormAboutBottonGH";
-            this.FormAboutBottonGH.Size = new System.Drawing.Size(85, 25);
-            this.FormAboutBottonGH.TabIndex = 4;
-            this.FormAboutBottonGH.Text = "项目主页(&G)";
-            this.FormAboutBottonGH.UseVisualStyleBackColor = true;
-            this.FormAboutBottonGH.Click += new System.EventHandler(this.FormAboutBottonGH_Click);
+            this.ButtonGitHub.AutoSize = true;
+            this.ButtonGitHub.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.ButtonGitHub.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ButtonGitHub.Location = new System.Drawing.Point(14, 66);
+            this.ButtonGitHub.Name = "ButtonGitHub";
+            this.ButtonGitHub.Size = new System.Drawing.Size(85, 25);
+            this.ButtonGitHub.TabIndex = 4;
+            this.ButtonGitHub.Text = "项目主页(&G)";
+            this.ButtonGitHub.UseVisualStyleBackColor = true;
+            this.ButtonGitHub.Click += new System.EventHandler(this.FormAboutBottonGH_Click);
             // 
-            // FormAboutBottonClose
+            // ButtonClose
             // 
-            this.FormAboutBottonClose.AutoSize = true;
-            this.FormAboutBottonClose.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.FormAboutBottonClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.FormAboutBottonClose.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FormAboutBottonClose.Location = new System.Drawing.Point(181, 66);
-            this.FormAboutBottonClose.Name = "FormAboutBottonClose";
-            this.FormAboutBottonClose.Size = new System.Drawing.Size(59, 25);
-            this.FormAboutBottonClose.TabIndex = 5;
-            this.FormAboutBottonClose.Text = "关闭(&C)";
-            this.FormAboutBottonClose.UseVisualStyleBackColor = true;
-            this.FormAboutBottonClose.Click += new System.EventHandler(this.FormAboutBottonClose_Click);
+            this.ButtonClose.AutoSize = true;
+            this.ButtonClose.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.ButtonClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.ButtonClose.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ButtonClose.Location = new System.Drawing.Point(181, 66);
+            this.ButtonClose.Name = "ButtonClose";
+            this.ButtonClose.Size = new System.Drawing.Size(59, 25);
+            this.ButtonClose.TabIndex = 5;
+            this.ButtonClose.Text = "关闭(&C)";
+            this.ButtonClose.UseVisualStyleBackColor = true;
+            this.ButtonClose.Click += new System.EventHandler(this.FormAboutBottonClose_Click);
             // 
-            // FormAboutLicenseButton
+            // ButtonLicense
             // 
-            this.FormAboutLicenseButton.AutoSize = true;
-            this.FormAboutLicenseButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.FormAboutLicenseButton.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FormAboutLicenseButton.Location = new System.Drawing.Point(105, 66);
-            this.FormAboutLicenseButton.Name = "FormAboutLicenseButton";
-            this.FormAboutLicenseButton.Size = new System.Drawing.Size(70, 25);
-            this.FormAboutLicenseButton.TabIndex = 6;
-            this.FormAboutLicenseButton.Text = "许可证(&L)";
-            this.FormAboutLicenseButton.UseVisualStyleBackColor = true;
-            this.FormAboutLicenseButton.Click += new System.EventHandler(this.FormAboutLicenseButton_Click);
+            this.ButtonLicense.AutoSize = true;
+            this.ButtonLicense.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.ButtonLicense.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ButtonLicense.Location = new System.Drawing.Point(105, 66);
+            this.ButtonLicense.Name = "ButtonLicense";
+            this.ButtonLicense.Size = new System.Drawing.Size(70, 25);
+            this.ButtonLicense.TabIndex = 6;
+            this.ButtonLicense.Text = "许可证(&L)";
+            this.ButtonLicense.UseVisualStyleBackColor = true;
+            this.ButtonLicense.Click += new System.EventHandler(this.FormAboutLicenseButton_Click);
             // 
-            // FormAboutLicenseHint
+            // LabelLicense
             // 
-            this.FormAboutLicenseHint.AutoSize = true;
-            this.FormAboutLicenseHint.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FormAboutLicenseHint.Location = new System.Drawing.Point(3, 33);
-            this.FormAboutLicenseHint.Name = "FormAboutLicenseHint";
-            this.FormAboutLicenseHint.Size = new System.Drawing.Size(180, 15);
-            this.FormAboutLicenseHint.TabIndex = 7;
-            this.FormAboutLicenseHint.Text = "Licensed under the GNU GPL, v3.";
+            this.LabelLicense.AutoSize = true;
+            this.LabelLicense.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LabelLicense.Location = new System.Drawing.Point(3, 33);
+            this.LabelLicense.Name = "LabelLicense";
+            this.LabelLicense.Size = new System.Drawing.Size(180, 15);
+            this.LabelLicense.TabIndex = 7;
+            this.LabelLicense.Text = "Licensed under the GNU GPL, v3.";
             // 
-            // FormAboutLabelVersion
+            // LableVersion
             // 
-            this.FormAboutLabelVersion.AutoSize = true;
-            this.FormAboutLabelVersion.Cursor = System.Windows.Forms.Cursors.Help;
-            this.FormAboutLabelVersion.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FormAboutLabelVersion.Location = new System.Drawing.Point(3, 18);
-            this.FormAboutLabelVersion.Name = "FormAboutLabelVersion";
-            this.FormAboutLabelVersion.Size = new System.Drawing.Size(134, 15);
-            this.FormAboutLabelVersion.TabIndex = 2;
-            this.FormAboutLabelVersion.Text = "FormAboutLabelVersion";
-            this.FormAboutLabelVersion.Click += new System.EventHandler(this.FormAboutLabelVersion_Click);
+            this.LableVersion.AutoSize = true;
+            this.LableVersion.Cursor = System.Windows.Forms.Cursors.Help;
+            this.LableVersion.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LableVersion.Location = new System.Drawing.Point(3, 18);
+            this.LableVersion.Name = "LableVersion";
+            this.LableVersion.Size = new System.Drawing.Size(0, 15);
+            this.LableVersion.TabIndex = 2;
+            this.LableVersion.Click += new System.EventHandler(this.FormAboutLabelVersion_Click);
             // 
-            // panel1
+            // PanelMain
             // 
-            this.panel1.AutoSize = true;
-            this.panel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.panel1.Controls.Add(this.FormAboutLabelInfo);
-            this.panel1.Controls.Add(this.FormAboutLicenseButton);
-            this.panel1.Controls.Add(this.FormAboutBottonClose);
-            this.panel1.Controls.Add(this.FormAboutLabelVersion);
-            this.panel1.Controls.Add(this.FormAboutBottonGH);
-            this.panel1.Controls.Add(this.FormAboutLicenseHint);
-            this.panel1.Controls.Add(this.FormAboutLabelAuthor);
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(243, 94);
-            this.panel1.TabIndex = 8;
+            this.PanelMain.AutoSize = true;
+            this.PanelMain.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.PanelMain.Controls.Add(this.LabelInfo);
+            this.PanelMain.Controls.Add(this.ButtonLicense);
+            this.PanelMain.Controls.Add(this.ButtonClose);
+            this.PanelMain.Controls.Add(this.LableVersion);
+            this.PanelMain.Controls.Add(this.ButtonGitHub);
+            this.PanelMain.Controls.Add(this.LabelLicense);
+            this.PanelMain.Controls.Add(this.LabelAuthor);
+            this.PanelMain.Location = new System.Drawing.Point(0, 0);
+            this.PanelMain.Name = "PanelMain";
+            this.PanelMain.Size = new System.Drawing.Size(243, 94);
+            this.PanelMain.TabIndex = 8;
             // 
             // FormAbout
             // 
@@ -145,9 +143,9 @@ namespace CEETimerCSharpWinForms.Forms
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.CancelButton = this.FormAboutBottonClose;
+            this.CancelButton = this.ButtonClose;
             this.ClientSize = new System.Drawing.Size(243, 94);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.PanelMain);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
@@ -157,21 +155,21 @@ namespace CEETimerCSharpWinForms.Forms
             this.Text = "关于此程序";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormAbout_FormClosing);
             this.Load += new System.EventHandler(this.FormAbout_Load);
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
+            this.PanelMain.ResumeLayout(false);
+            this.PanelMain.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-        private System.Windows.Forms.Label FormAboutLabelInfo;
-        private System.Windows.Forms.Label FormAboutLabelAuthor;
-        private System.Windows.Forms.Button FormAboutBottonGH;
-        private System.Windows.Forms.Button FormAboutBottonClose;
-        private System.Windows.Forms.Button FormAboutLicenseButton;
-        private System.Windows.Forms.Label FormAboutLicenseHint;
-        private System.Windows.Forms.Label FormAboutLabelVersion;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label LabelInfo;
+        private System.Windows.Forms.Label LabelAuthor;
+        private System.Windows.Forms.Button ButtonGitHub;
+        private System.Windows.Forms.Button ButtonClose;
+        private System.Windows.Forms.Button ButtonLicense;
+        private System.Windows.Forms.Label LabelLicense;
+        private System.Windows.Forms.Label LableVersion;
+        private System.Windows.Forms.Panel PanelMain;
     }
 }

@@ -56,9 +56,9 @@ namespace CEETimerCSharpWinForms.Forms
                         totalBytesRead += bytesRead;
                         var progressPercentage = totalBytes == -1 ? -1 : (int)(totalBytesRead * 100 / totalBytes);
 
-                        FrmDlL3.Text = $"已下载/总共：{totalBytesRead / 1024} KB / {totalBytes / 1024} KB";
-                        FrmDlL4.Text = $"下载速度：{totalBytesRead / sw.Elapsed.TotalSeconds / 1024:0.00} KB/s";
-                        FrmDlPb.Value = progressPercentage;
+                        LabelSize.Text = $"已下载/总共：{totalBytesRead / 1024} KB / {totalBytes / 1024} KB";
+                        LabelSpeed.Text = $"下载速度：{totalBytesRead / sw.Elapsed.TotalSeconds / 1024:0.00} KB/s";
+                        ProgressBarMain.Value = progressPercentage;
 
                         if (cancelRequest.Token.IsCancellationRequested)
                         {
@@ -74,8 +74,8 @@ namespace CEETimerCSharpWinForms.Forms
                 }
                 if (!isCancelled)
                 {
-                    FrmDlBtnC.Enabled = false;
-                    FrmDlBtnR.Enabled = false;
+                    ButtonCancel.Enabled = false;
+                    ButtonRetry.Enabled = false;
 
                     ProcessStartInfo processStartInfo = new()
                     {
@@ -93,11 +93,11 @@ namespace CEETimerCSharpWinForms.Forms
             }
             catch (Exception ex)
             {
-                FrmDlL1.Text = "下载失败，你可以点击 重试 重新启动下载。";
-                FrmDlL3.Text = "已下载/总共：N/A";
-                FrmDlL4.Text = "下载速度：N/A";
+                LabelDownloading.Text = "下载失败，你可以点击 重试 重新启动下载。";
+                LabelSize.Text = "已下载/总共：N/A";
+                LabelSpeed.Text = "下载速度：N/A";
                 MessageBox.Show($"无法下载更新文件! \n\n错误信息: \n{ex.Message}", LaunchManager.ErrMsg, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                FrmDlBtnR.Enabled = true;
+                ButtonRetry.Enabled = true;
                 return;
             }
         }
@@ -106,7 +106,7 @@ namespace CEETimerCSharpWinForms.Forms
             if (cancelRequest != null && !cancelRequest.Token.IsCancellationRequested)
             {
                 cancelRequest?.Cancel();
-                FrmDlL1.Text = "用户已取消下载。";
+                LabelDownloading.Text = "用户已取消下载。";
                 MessageBox.Show($"你已取消下载！\n\n你稍后可以在 关于 窗口点击版本号来再次检查更新。", LaunchManager.WarnMsg, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
 
@@ -115,10 +115,10 @@ namespace CEETimerCSharpWinForms.Forms
         }
         private async void FrmDlBtnR_Click(object sender, EventArgs e)
         {
-            FrmDlBtnR.Enabled = false;
-            FrmDlL1.Text = "正在重新下载更新文件，请稍侯...";
-            FrmDlL3.Text = "已下载/总共：(获取中...)";
-            FrmDlL4.Text = "下载速度：(获取中...)";
+            ButtonRetry.Enabled = false;
+            LabelDownloading.Text = "正在重新下载更新文件，请稍侯...";
+            LabelSize.Text = "已下载/总共：(获取中...)";
+            LabelSpeed.Text = "下载速度：(获取中...)";
 
             await DownloadFile(downloadUrl, downloadPath);
         }

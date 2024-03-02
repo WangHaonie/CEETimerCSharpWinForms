@@ -49,7 +49,14 @@ namespace CEETimerCSharpWinForms.Modules
 
             if (JsonConfig != null && JsonConfig.ContainsKey(key))
             {
-                return JsonConfig[key].RemoveAllBadChars();
+                if (key == "Font")
+                {
+                    return JsonConfig["Font"];
+                }
+                else
+                {
+                    return JsonConfig[key].RemoveAllBadChars();
+                }
             }
             else
             {

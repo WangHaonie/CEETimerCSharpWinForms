@@ -17,21 +17,21 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void FormAboutLabelVersion_MouseLeave(object sender, EventArgs e)
         {
-            checkUpdateTip.Hide(FormAboutLabelVersion);
+            checkUpdateTip.Hide(LableVersion);
         }
 
         private void FormAbout_Load(object sender, EventArgs e)
         {
-            FormAboutLabelVersion.Text = LaunchManager.AppVersionText;
-            FormAboutLabelAuthor.Text = LaunchManager.CopyrightInfo;
+            LableVersion.Text = LaunchManager.AppVersionText;
+            LabelAuthor.Text = LaunchManager.CopyrightInfo;
 
             checkUpdateTip = new ToolTip
             {
                 AutoPopDelay = 10000
             };
 
-            checkUpdateTip.SetToolTip(FormAboutLabelVersion, "是的你没有看错，点击这里可以检查是否有新版本。");
-            FormAboutLabelVersion.MouseLeave += FormAboutLabelVersion_MouseLeave;
+            checkUpdateTip.SetToolTip(LableVersion, "是的你没有看错，点击这里可以检查是否有新版本。");
+            LableVersion.MouseLeave += FormAboutLabelVersion_MouseLeave;
         }
 
         private void FormAboutBottonGH_Click(object sender, EventArgs e)
@@ -51,7 +51,7 @@ namespace CEETimerCSharpWinForms.Forms
 
         private async void FormAboutLabelVersion_Click(object sender, EventArgs e)
         {
-            FormAboutLabelVersion.Enabled = false;
+            LableVersion.Enabled = false;
 
             try
             {
@@ -61,7 +61,7 @@ namespace CEETimerCSharpWinForms.Forms
             finally
             {
                 isCheckingUpdate = false;
-                FormAboutLabelVersion.Enabled = true;
+                LableVersion.Enabled = true;
             }
         }
 

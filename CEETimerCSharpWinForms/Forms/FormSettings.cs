@@ -2,6 +2,7 @@
 using Microsoft.Win32;
 using System;
 using System.Diagnostics;
+using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -9,21 +10,23 @@ namespace CEETimerCSharpWinForms.Forms
 {
     public partial class FormSettings : Form
     {
+        public Font CountdownFont { get; set; }
         private string ExamName;
+        private Font SelectedFont;
+        private FontStyle SelectedFontStyle;
         private DateTime ExamStartTime = new();
         private DateTime ExamEndTime = new();
-        private string isTopMost;
-        private bool isTopMostBool;
+        private FontConverter fontConverter = new();
         private bool isSyncingTime = false;
-        private bool isChanged;
-        private const string groupBoxTitleOriginal = "重启倒计时";
-        private const string label7TextOriginal = "如果你更改了屏幕缩放或者分辨率, 可以点击此按钮来重启倒计时以";
-        private const string label8TextOriginal = "确保显示的文字不会变模糊。";
-        private const string btnTextOriginal = "点击重启(&R)";
-        private const string groupBoxTitle = "关闭倒计时";
-        private const string label7Text = "如果你由于某些原因需要临时关闭这个倒计时, 那你现在就可以选择";
-        private const string label8Text = "关闭它了。";
-        private const string btnText = "点击关闭(&C)";
+        private bool IsSettingsChanged;
+        private const string GBoxRestartTitleOriginal = "重启倒计时";
+        private const string LabelLine9Original = "如果你更改了屏幕缩放或者分辨率, 可以点击此按钮来重启倒计时以";
+        private const string LabelLine10Original = "确保显示的文字不会变模糊。";
+        private const string ButtonRestartTextOriginal = "点击重启(&R)";
+        private const string GBoxRestartTitle = "关闭倒计时";
+        private const string LabelLine9Text = "如果你由于某些原因需要临时关闭这个倒计时, 那你现在就可以选择";
+        private const string LabelLine10Text = "关闭它了。";
+        private const string ButtonRestartText = "点击关闭(&C)";
         public delegate void ConfigChangedHandler(object sender, EventArgs e);
         public ConfigChangedHandler ConfigChanged;
 
@@ -37,22 +40,23 @@ namespace CEETimerCSharpWinForms.Forms
             RestoreFunny();
             CheckStartupSetting();
             RefreshSettings();
-            isChanged = false;
-            FormSettingsApply.Enabled = false;
+            UpdateSomeControls();
+            IsSettingsChanged = false;
+            ButtonApply.Enabled = false;
         }
 
         private void SettingsChanged(object sender, EventArgs e)
         {
-            isChanged = true;
-            FormSettingsApply.Enabled = true;
+            IsSettingsChanged = true;
+            ButtonApply.Enabled = true;
         }
 
         private void FormSettingsSetExamNameText_TextChanged(object sender, EventArgs e)
         {
             SettingsChanged(sender, e);
-            int CharCount = FormSettingsSetExamNameText.Text.RemoveAllBadChars().Length;
-            LblCounter.Text = $"{CharCount}/15";
-            LblCounter.ForeColor = CharCount > 15 ? System.Drawing.Color.Red : System.Drawing.Color.Black;
+            int CharCount = TextBoxExamName.Text.RemoveAllBadChars().Length;
+            LabelExamNameCounter.Text = $"{CharCount}/15";
+            LabelExamNameCounter.ForeColor = CharCount > 15 ? Color.Red : Color.Black;
         }
 
         private void BtnRestart_Click(object sender, EventArgs e)
@@ -69,45 +73,46 @@ namespace CEETimerCSharpWinForms.Forms
         {
             if (e.Button == MouseButtons.Right)
             {
-                BtnRestart.Click -= BtnRestart_Click;
-                BtnRestart.Click += BtnRestartFunny_Click;
-                groupBox3.Text = groupBoxTitle;
-                label7.Text = label7Text;
-                label8.Text = label8Text;
-                BtnRestart.Text = btnText;
+                ButtonRestart.Click -= BtnRestart_Click;
+                ButtonRestart.Click += BtnRestartFunny_Click;
+                GBoxRestart.Text = GBoxRestartTitle;
+                LabelLine9.Text = LabelLine9Text;
+                LabelLine10.Text = LabelLine10Text;
+                ButtonRestart.Text = ButtonRestartText;
             }
         }
 
         private async void FormSettingsSyncTimeButton_Click(object sender, EventArgs e)
         {
             isSyncingTime = true;
-            FormSettingsSyncTimeButton.Enabled = false;
-            BtnRestart.Enabled = false;
-            FormSettingsSyncTimeButton.Text = "正在同步中，请稍候...";
+            ButtonSyncTime.Enabled = false;
+            ButtonRestart.Enabled = false;
+            ButtonSyncTime.Text = "正在同步中，请稍候...";
             await Task.Run(StartSyncTime);
             isSyncingTime = false;
-            FormSettingsSyncTimeButton.Enabled = true;
-            BtnRestart.Enabled = true;
-            FormSettingsSyncTimeButton.Text = "立即同步(&S)";
+            ButtonSyncTime.Enabled = true;
+            ButtonRestart.Enabled = true;
+            ButtonSyncTime.Text = "立即同步(&S)";
         }
 
         private void FormSettingsApply_Click(object sender, EventArgs e)
         {
             if (ValidateInput())
             {
-                isChanged = false;
+                IsSettingsChanged = false;
                 SaveSettings();
                 OnConfigChanged();
                 Close();
             }
         }
+
         private void FormSettings_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (isSyncingTime)
             {
                 e.Cancel = true;
             }
-            else if (isChanged)
+            else if (IsSettingsChanged)
             {
                 DialogResult result = MessageBox.Show("检测到设置被更改但没有被保存，是否立即进行保存？", LaunchManager.WarnMsg, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
@@ -117,7 +122,7 @@ namespace CEETimerCSharpWinForms.Forms
                 }
                 else
                 {
-                    isChanged = false;
+                    IsSettingsChanged = false;
                     Close();
                 }
             }
@@ -126,8 +131,8 @@ namespace CEETimerCSharpWinForms.Forms
         private void FormSettings_FormClosed(object sender, FormClosedEventArgs e)
         {
             RestoreFunny();
-            BtnRestart.Click -= BtnRestartFunny_Click;
-            BtnRestart.Click += BtnRestart_Click;
+            ButtonRestart.Click -= BtnRestartFunny_Click;
+            ButtonRestart.Click += BtnRestart_Click;
         }
 
         private void FormSettingsCloseMain_Click(object sender, EventArgs e)
@@ -145,7 +150,7 @@ namespace CEETimerCSharpWinForms.Forms
 
         public bool ValidateInput()
         {
-            ExamName = FormSettingsSetExamNameText.Text.RemoveAllBadChars();
+            ExamName = TextBoxExamName.Text.RemoveAllBadChars();
 
             if (string.IsNullOrWhiteSpace(ExamName) || (ExamName.Length < 2) || (ExamName.Length > 15))
             {
@@ -153,13 +158,13 @@ namespace CEETimerCSharpWinForms.Forms
                 return false;
             }
 
-            if (StartTimePicker.Value >= EndTimePicker.Value)
+            if (DTPExamStart.Value >= DTPExamEnd.Value)
             {
                 MessageBox.Show("考试开始时间必须在结束时间之前！", LaunchManager.ErrMsg, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
-            TimeSpan timeSpan = EndTimePicker.Value - StartTimePicker.Value;
+            TimeSpan timeSpan = DTPExamEnd.Value - DTPExamStart.Value;
             string UniMsg = "";
             string TimeMsg = "";
 
@@ -217,16 +222,16 @@ namespace CEETimerCSharpWinForms.Forms
             {
                 if (regvalue.Equals(Application.ExecutablePath, StringComparison.OrdinalIgnoreCase))
                 {
-                    FormSettingsSetStartupCheck.Checked = true;
+                    CheckBoxStartup.Checked = true;
                 }
                 else
                 {
-                    FormSettingsSetStartupCheck.Checked = false;
+                    CheckBoxStartup.Checked = false;
                 }
             }
             else
             {
-                FormSettingsSetStartupCheck.Checked = false;
+                CheckBoxStartup.Checked = false;
             }
         }
 
@@ -234,24 +239,26 @@ namespace CEETimerCSharpWinForms.Forms
         {
             try
             {
-                ExamName = ConfigManager.ReadConfig("ExamName");
-                isTopMost = ConfigManager.ReadConfig("TopMost");
-
-                if (isTopMost.Equals("true", StringComparison.OrdinalIgnoreCase) || isTopMost.Equals("false", StringComparison.OrdinalIgnoreCase))
-                {
-                    bool.TryParse(isTopMost, out isTopMostBool);
-                    chkSetTopMost.Checked = isTopMostBool;
-                }
-                else
-                {
-                    chkSetTopMost.Checked = true;
-                }
-
                 DateTime.TryParseExact(ConfigManager.ReadConfig("ExamStartTime"), "yyyyMMddHHmmss", null, System.Globalization.DateTimeStyles.None, out ExamStartTime);
                 DateTime.TryParseExact(ConfigManager.ReadConfig("ExamEndTime"), "yyyyMMddHHmmss", null, System.Globalization.DateTimeStyles.None, out ExamEndTime);
-                FormSettingsSetExamNameText.Text = ConfigManager.IsValidData(ExamName) ? ExamName : "";
-                StartTimePicker.Value = ConfigManager.IsValidData(ExamStartTime) ? ExamStartTime : DateTime.Now;
-                EndTimePicker.Value = ConfigManager.IsValidData(ExamEndTime) ? ExamEndTime : DateTime.Now;
+                ExamName = ConfigManager.ReadConfig("ExamName");
+
+                TextBoxExamName.Text = ConfigManager.IsValidData(ExamName) ? ExamName : "";
+                DTPExamStart.Value = ConfigManager.IsValidData(ExamStartTime) ? ExamStartTime : DateTime.Now;
+                DTPExamEnd.Value = ConfigManager.IsValidData(ExamEndTime) ? ExamEndTime : DateTime.Now;
+                CheckBoxSetTopMost.Checked = !bool.TryParse(ConfigManager.ReadConfig("TopMost"), out bool tmpa) || tmpa;
+                CheckBoxEnableVDM.Checked = bool.TryParse(ConfigManager.ReadConfig("FeatureVDM"), out bool tmpb) && tmpb;
+                CheckBoxEnableMO.Checked = bool.TryParse(ConfigManager.ReadConfig("FeatureMO"), out bool tmpc) && tmpc;
+                SelectedFont = (Font)fontConverter.ConvertFromString(ConfigManager.ReadConfig("Font"));
+                SelectedFontStyle = (FontStyle)Enum.Parse(typeof(FontStyle), ConfigManager.ReadConfig("FontStyle"));
+                ChangeFont(new Font(SelectedFont, SelectedFontStyle));
+
+                if (LaunchManager.CurrentWindowsVersion < 10)
+                {
+                    CheckBoxEnableVDM.Enabled = false;
+                    CheckBoxEnableVDM.Checked = false;
+                    CheckBoxEnableVDM.Text = $"此功能在当前系统上不可用";
+                }
             }
             catch
             {
@@ -259,36 +266,98 @@ namespace CEETimerCSharpWinForms.Forms
             }
         }
 
+        private void UpdateSomeControls()
+        {
+            //LabelPreviewFont.Font = new Font(SelectedFont, SelectedFontStyle);
+            //LabelFontInfo.Text = $"当前选择的字体: {SelectedFont.Name}, {SelectedFont.Size}pt, {SelectedFontStyle}";
+            LabelPreviewFont.Font = CountdownFont;
+            LabelFontInfo.Text = $"当前选择的字体: {CountdownFont.Name}, {CountdownFont.Size}pt, {CountdownFont.Style}";
+        }
+
         private void SaveSettings()
         {
-            RegistryKey reg = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
-
-            if (FormSettingsSetStartupCheck.Checked)
+            try
             {
-                reg.SetValue("CEETimerCSharpWinForms", LaunchManager.CurrentExecutable);
-            }
-            else
-            {
-                reg.DeleteValue("CEETimerCSharpWinForms", false);
-            }
+                RegistryKey reg = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
 
-            ConfigManager.WriteConfig("TopMost", chkSetTopMost.Checked.ToString());
-            ConfigManager.WriteConfig("ExamName", ExamName);
-            ConfigManager.WriteConfig("ExamStartTime", StartTimePicker.Value.ToString("yyyyMMddHHmmss"));
-            ConfigManager.WriteConfig("ExamEndTime", EndTimePicker.Value.ToString("yyyyMMddHHmmss"));
+                if (CheckBoxStartup.Checked)
+                {
+                    reg.SetValue("CEETimerCSharpWinForms", LaunchManager.CurrentExecutable);
+                }
+                else
+                {
+                    reg.DeleteValue("CEETimerCSharpWinForms", false);
+                }
+
+                ConfigManager.WriteConfig("ExamName", ExamName);
+                ConfigManager.WriteConfig("ExamStartTime", DTPExamStart.Value.ToString("yyyyMMddHHmmss"));
+                ConfigManager.WriteConfig("ExamEndTime", DTPExamEnd.Value.ToString("yyyyMMddHHmmss"));
+                ConfigManager.WriteConfig("TopMost", CheckBoxSetTopMost.Checked.ToString());
+                ConfigManager.WriteConfig("FeatureVDM", CheckBoxEnableVDM.Checked.ToString());
+                ConfigManager.WriteConfig("FeatureMO", CheckBoxEnableMO.Checked.ToString());
+                ConfigManager.WriteConfig("Font", $"{SelectedFont.Name}, {SelectedFont.Size}pt");
+                ConfigManager.WriteConfig("FontStyle", $"{SelectedFont.Style}");
+            }
+            catch
+            {
+                ConfigManager.WriteConfig("Font", LaunchManager.OriginalFontString);
+                ConfigManager.WriteConfig("FontStyle", "Bold");
+            }
+            
         }
 
         private void RestoreFunny()
         {
-            groupBox3.Text = groupBoxTitleOriginal;
-            label7.Text = label7TextOriginal;
-            label8.Text = label8TextOriginal;
-            BtnRestart.Text = btnTextOriginal;
+            GBoxRestart.Text = GBoxRestartTitleOriginal;
+            LabelLine9.Text = LabelLine9Original;
+            LabelLine10.Text = LabelLine10Original;
+            ButtonRestart.Text = ButtonRestartTextOriginal;
         }
 
         protected virtual void OnConfigChanged()
         {
             ConfigChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void ButtonChooseFont_Click(object sender, EventArgs e)
+        {
+            FontDialog FontDialogMain = new()
+            {
+                AllowScriptChange = true,
+                AllowVerticalFonts = false,
+                Font = SelectedFont ?? CountdownFont,
+                FontMustExist = true,
+                MinSize = 10,
+                MaxSize = 24,
+                ScriptsOnly = true,
+                ShowEffects = false
+            };
+
+            if (FontDialogMain.ShowDialog() == DialogResult.OK)
+            {
+                SelectedFont = FontDialogMain.Font;
+                ChangeFont(SelectedFont);
+                SettingsChanged(sender, e);
+            }
+
+            FontDialogMain.Dispose();
+        }
+
+        private void ButtonRestoreFont_Click(object sender, EventArgs e)
+        {
+            Font OriginalFont = (Font)fontConverter.ConvertFromString(LaunchManager.OriginalFontString);
+            Font FinalFont = new(OriginalFont, FontStyle.Bold);
+
+            ChangeFont(FinalFont);
+            SettingsChanged(sender, e);
+        }
+
+        private void ChangeFont(Font NewFont)
+        {
+            SelectedFont = NewFont;
+            SelectedFontStyle = NewFont.Style;
+            LabelPreviewFont.Font = NewFont;
+            LabelFontInfo.Text = $"当前选择的字体: {NewFont.Name}, {NewFont.Size}pt, {NewFont.Style}";
         }
     }
 }

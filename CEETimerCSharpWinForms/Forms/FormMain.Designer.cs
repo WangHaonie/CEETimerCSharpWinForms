@@ -29,64 +29,63 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.labelCountdown = new System.Windows.Forms.Label();
-            this.Context = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.ContextSettings = new System.Windows.Forms.ToolStripMenuItem();
-            this.ContextAbout = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.ContextOpenDir = new System.Windows.Forms.ToolStripMenuItem();
-            this.Context.SuspendLayout();
+            this.LableCountdown = new System.Windows.Forms.Label();
+            this.ContextMenuMain = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.ContextMenuSettings = new System.Windows.Forms.ToolStripMenuItem();
+            this.ContextMenuAbout = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.ContextMenuOpenDir = new System.Windows.Forms.ToolStripMenuItem();
+            this.ContextMenuMain.SuspendLayout();
             this.SuspendLayout();
             // 
-            // labelCountdown
+            // LableCountdown
             // 
-            this.labelCountdown.AutoSize = true;
-            this.labelCountdown.BackColor = System.Drawing.Color.Transparent;
-            this.labelCountdown.ContextMenuStrip = this.Context;
-            this.labelCountdown.Font = new System.Drawing.Font("微软雅黑", 17.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelCountdown.ForeColor = System.Drawing.Color.Black;
-            this.labelCountdown.Location = new System.Drawing.Point(1, 0);
-            this.labelCountdown.Name = "labelCountdown";
-            this.labelCountdown.Size = new System.Drawing.Size(472, 31);
-            this.labelCountdown.TabIndex = 0;
-            this.labelCountdown.Text = "欢迎使用高考倒计时，正在加载中，请稍候...";
+            this.LableCountdown.AutoSize = true;
+            this.LableCountdown.BackColor = System.Drawing.Color.Transparent;
+            this.LableCountdown.ContextMenuStrip = this.ContextMenuMain;
+            this.LableCountdown.ForeColor = System.Drawing.Color.Black;
+            this.LableCountdown.Location = new System.Drawing.Point(1, 0);
+            this.LableCountdown.Name = "LableCountdown";
+            this.LableCountdown.Size = new System.Drawing.Size(263, 15);
+            this.LableCountdown.TabIndex = 0;
+            this.LableCountdown.Text = "欢迎使用高考倒计时，正在加载中，请稍候...";
             // 
-            // Context
+            // ContextMenuMain
             // 
-            this.Context.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ContextSettings,
-            this.ContextAbout,
-            this.toolStripSeparator1,
-            this.ContextOpenDir});
-            this.Context.Name = "Context";
-            this.Context.Size = new System.Drawing.Size(183, 76);
+            this.ContextMenuMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ContextMenuSettings,
+            this.ContextMenuAbout,
+            this.ToolStripSeparator1,
+            this.ContextMenuOpenDir});
+            this.ContextMenuMain.Name = "Context";
+            this.ContextMenuMain.Size = new System.Drawing.Size(183, 76);
             // 
-            // ContextSettings
+            // ContextMenuSettings
             // 
-            this.ContextSettings.Name = "ContextSettings";
-            this.ContextSettings.Size = new System.Drawing.Size(182, 22);
-            this.ContextSettings.Text = "设置(&S)";
-            this.ContextSettings.Click += new System.EventHandler(this.ContextSettings_Click);
+            this.ContextMenuSettings.Name = "ContextMenuSettings";
+            this.ContextMenuSettings.Size = new System.Drawing.Size(182, 22);
+            this.ContextMenuSettings.Text = "设置(&S)";
+            this.ContextMenuSettings.Click += new System.EventHandler(this.ContextSettings_Click);
             // 
-            // ContextAbout
+            // ContextMenuAbout
             // 
-            this.ContextAbout.Name = "ContextAbout";
-            this.ContextAbout.ShowShortcutKeys = false;
-            this.ContextAbout.Size = new System.Drawing.Size(182, 22);
-            this.ContextAbout.Text = "关于(&A)";
-            this.ContextAbout.Click += new System.EventHandler(this.ContextAbout_Click);
+            this.ContextMenuAbout.Name = "ContextMenuAbout";
+            this.ContextMenuAbout.ShowShortcutKeys = false;
+            this.ContextMenuAbout.Size = new System.Drawing.Size(182, 22);
+            this.ContextMenuAbout.Text = "关于(&A)";
+            this.ContextMenuAbout.Click += new System.EventHandler(this.ContextAbout_Click);
             // 
-            // toolStripSeparator1
+            // ToolStripSeparator1
             // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(179, 6);
+            this.ToolStripSeparator1.Name = "ToolStripSeparator1";
+            this.ToolStripSeparator1.Size = new System.Drawing.Size(179, 6);
             // 
-            // ContextOpenDir
+            // ContextMenuOpenDir
             // 
-            this.ContextOpenDir.Name = "ContextOpenDir";
-            this.ContextOpenDir.Size = new System.Drawing.Size(182, 22);
-            this.ContextOpenDir.Text = "打开程序文件夹(&O)";
-            this.ContextOpenDir.Click += new System.EventHandler(this.ContextOpenDir_Click);
+            this.ContextMenuOpenDir.Name = "ContextMenuOpenDir";
+            this.ContextMenuOpenDir.Size = new System.Drawing.Size(182, 22);
+            this.ContextMenuOpenDir.Text = "打开程序文件夹(&O)";
+            this.ContextMenuOpenDir.Click += new System.EventHandler(this.ContextOpenDir_Click);
             // 
             // FormMain
             // 
@@ -94,13 +93,11 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(472, 30);
-            this.ContextMenuStrip = this.Context;
+            this.ClientSize = new System.Drawing.Size(265, 15);
+            this.ContextMenuStrip = this.ContextMenuMain;
             this.ControlBox = false;
-            this.Controls.Add(this.labelCountdown);
-            this.DoubleBuffered = true;
+            this.Controls.Add(this.LableCountdown);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.ImeMode = System.Windows.Forms.ImeMode.Off;
@@ -109,12 +106,13 @@
             this.Name = "FormMain";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "高考倒计时";
             this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CEETimerCSharpWinForms_FormClosing);
             this.Load += new System.EventHandler(this.FormMain_Load);
-            this.Context.ResumeLayout(false);
+            this.ContextMenuMain.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -122,12 +120,12 @@
 
         #endregion
 
-        private System.Windows.Forms.Label labelCountdown;
-        private System.Windows.Forms.ContextMenuStrip Context;
-        private System.Windows.Forms.ToolStripMenuItem ContextAbout;
-        private System.Windows.Forms.ToolStripMenuItem ContextSettings;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripMenuItem ContextOpenDir;
+        private System.Windows.Forms.Label LableCountdown;
+        private System.Windows.Forms.ContextMenuStrip ContextMenuMain;
+        private System.Windows.Forms.ToolStripMenuItem ContextMenuAbout;
+        private System.Windows.Forms.ToolStripMenuItem ContextMenuSettings;
+        private System.Windows.Forms.ToolStripSeparator ToolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem ContextMenuOpenDir;
     }
 }
 

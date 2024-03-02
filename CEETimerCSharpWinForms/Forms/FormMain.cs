@@ -3,6 +3,7 @@ using CEETimerCSharpWinForms.Modules;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using VirtualDesktopSwitch;
@@ -12,14 +13,16 @@ namespace CEETimerCSharpWinForms
     public partial class FormMain : Form
     {
         private string ExamName;
+        private Font SelectedFont;
+        private FontStyle SelectedFontStyle;
         private DateTime ExamStartTime = new();
         private DateTime ExamEndTime = new();
+        private FontConverter fontConverter = new();
         private Timer CountdownTimer;
         private int i;
-        private string isTopMost;
-        private bool isTopMostBool;
         private bool IsReady;
-        private bool VirtualDesktopAvailable;
+        private bool IsFeatureVDMEnabled;
+        private bool IsFeatureMOEnabled;
         private static FormSettings formSettings;
         private static FormAbout formAbout;
         private VirtualDesktopManager vdm;
@@ -31,10 +34,10 @@ namespace CEETimerCSharpWinForms
 
         private void FormMain_Load(object sender, EventArgs e)
         {
-            if (Environment.OSVersion.Platform == PlatformID.Win32NT && Environment.OSVersion.Version.Major >= 10)
+            if (LaunchManager.CurrentWindowsVersion >= 10)
             {
-                VirtualDesktopAvailable = true;
                 vdm = new VirtualDesktopManager();
+                IsFeatureVDMEnabled = true;
             }
 
             CountdownTimer = new Timer()
@@ -51,25 +54,40 @@ namespace CEETimerCSharpWinForms
         private void RefreshSettings(object sender, EventArgs e)
         {
             ExamName = ConfigManager.ReadConfig("ExamName");
-            isTopMost = ConfigManager.ReadConfig("TopMost");
+            TopMost = !bool.TryParse(ConfigManager.ReadConfig("TopMost"), out bool tmpa) || tmpa;
+            IsFeatureVDMEnabled = bool.TryParse(ConfigManager.ReadConfig("FeatureVDM"), out bool tmpb) && tmpb;
+            IsFeatureMOEnabled = bool.TryParse(ConfigManager.ReadConfig("FeatureMO"), out bool tmpc) && tmpc;
             DateTime.TryParseExact(ConfigManager.ReadConfig("ExamStartTime"), "yyyyMMddHHmmss", null, System.Globalization.DateTimeStyles.None, out ExamStartTime);
             DateTime.TryParseExact(ConfigManager.ReadConfig("ExamEndTime"), "yyyyMMddHHmmss", null, System.Globalization.DateTimeStyles.None, out ExamEndTime);
 
-            if (isTopMost.Equals("true", StringComparison.OrdinalIgnoreCase) || isTopMost.Equals("false", StringComparison.OrdinalIgnoreCase))
+            if (LaunchManager.CurrentWindowsVersion < 10)
             {
-                bool.TryParse(isTopMost, out isTopMostBool);
-                TopMost = isTopMostBool;
+                IsFeatureVDMEnabled = false;
             }
-            else
+
+            try
             {
-                TopMost = true;
+                SelectedFont = (Font)fontConverter.ConvertFromString(ConfigManager.ReadConfig("Font"));
+                SelectedFontStyle = (FontStyle)Enum.Parse(typeof(FontStyle), ConfigManager.ReadConfig("FontStyle"));
+
+                if (SelectedFont.Size > 24 || SelectedFont.Size < 10)
+                {
+                    throw new Exception();
+                }
             }
+            catch
+            {
+                SelectedFont = (Font)fontConverter.ConvertFromString(LaunchManager.OriginalFontString);
+                SelectedFontStyle = FontStyle.Bold;
+            }
+
+            LableCountdown.Font = new Font(SelectedFont, SelectedFontStyle);
 
             if (!ConfigManager.IsValidData(ExamName) || !ConfigManager.IsValidData(ExamStartTime) || !ConfigManager.IsValidData(ExamEndTime))
             {
                 IsReady = false;
-                labelCountdown.ForeColor = System.Drawing.Color.Black;
-                labelCountdown.Text = $"欢迎使用，请右键点击此处到设置里添加考试信息";
+                LableCountdown.ForeColor = Color.Black;
+                LableCountdown.Text = $"欢迎使用，请右键点击此处到设置里添加考试信息";
             }
             else
             {
@@ -81,8 +99,8 @@ namespace CEETimerCSharpWinForms
         {
             try
             {
-                TriggerMemoryOptimization();
-                if (VirtualDesktopAvailable) { TriggerVirtualDesktopDetect(); }
+                if (IsFeatureMOEnabled) { TriggerMemoryOptimization(); } else { i = 0; }
+                if (IsFeatureVDMEnabled) { TriggerVirtualDesktopDetect(); }
                 if (IsReady) { TriggerCountdownStart(); }
             }
             catch
@@ -122,6 +140,7 @@ namespace CEETimerCSharpWinForms
                 formSettings = new FormSettings();
             }
 
+            formSettings.CountdownFont = LableCountdown.Font;
             formSettings.WindowState = FormWindowState.Normal;
             formSettings.ConfigChanged += RefreshSettings;
             formSettings.Show();
@@ -156,11 +175,11 @@ namespace CEETimerCSharpWinForms
 
             List<Form> Forms = Application.OpenForms.Cast<Form>().ToList();// 修复报错：Collection was modified; enumeration operation may not execute.
 
+            using NewWindow nw = new();
             foreach (Form form in Forms)
             {
                 if (!vdm.IsWindowOnCurrentVirtualDesktop(form.Handle))
                 {
-                    using NewWindow nw = new();
                     nw.Show(null);
                     vdm.MoveWindowToDesktop(form.Handle, vdm.GetWindowDesktopId(nw.Handle));
                     form.Activate();
@@ -174,20 +193,20 @@ namespace CEETimerCSharpWinForms
             if (DateTime.Now < ExamStartTime)
             {
                 TimeSpan timeLeft = ExamStartTime - DateTime.Now;
-                labelCountdown.ForeColor = System.Drawing.Color.Red;
-                labelCountdown.Text = $"距离{ExamName}还有{timeLeft.Days}天{timeLeft.Hours:00}时{timeLeft.Minutes:00}分{timeLeft.Seconds:00}秒";
+                LableCountdown.ForeColor = Color.Red;
+                LableCountdown.Text = $"距离{ExamName}还有{timeLeft.Days}天{timeLeft.Hours:00}时{timeLeft.Minutes:00}分{timeLeft.Seconds:00}秒";
             }
             else if (DateTime.Now >= ExamStartTime && DateTime.Now < ExamEndTime)
             {
                 TimeSpan timeLeftPast = ExamEndTime - DateTime.Now;
-                labelCountdown.ForeColor = System.Drawing.Color.Green;
-                labelCountdown.Text = $"距离{ExamName}结束还有{timeLeftPast.Days}天{timeLeftPast.Hours:00}时{timeLeftPast.Minutes:00}分{timeLeftPast.Seconds:00}秒";
+                LableCountdown.ForeColor = Color.Green;
+                LableCountdown.Text = $"距离{ExamName}结束还有{timeLeftPast.Days}天{timeLeftPast.Hours:00}时{timeLeftPast.Minutes:00}分{timeLeftPast.Seconds:00}秒";
             }
             else if (DateTime.Now >= ExamEndTime)
             {
                 TimeSpan timePast = DateTime.Now - ExamEndTime;
-                labelCountdown.ForeColor = System.Drawing.Color.Black;
-                labelCountdown.Text = $"距离{ExamName}已经过去了{timePast.Days}天{timePast.Hours:00}时{timePast.Minutes:00}分{timePast.Seconds:00}秒";
+                LableCountdown.ForeColor = Color.Black;
+                LableCountdown.Text = $"距离{ExamName}已经过去了{timePast.Days}天{timePast.Hours:00}时{timePast.Minutes:00}分{timePast.Seconds:00}秒";
             }
         }
     }
