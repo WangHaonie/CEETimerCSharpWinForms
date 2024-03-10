@@ -40,6 +40,8 @@ CEETimerCSharpWinForms，适用于 Windows 系统的高考倒计时，自 v1.6 �
 当考试正在进行时，会显示绿色的 "距离...结束还有...天...时...分...秒" (可设置是否显示该内容)；<br>
 当考试结束后，会显示黑色的 "距离...已经过去了...天...时...分...秒" (可设置是否显示该内容)。<br>
 ## 开源许可证
-CEETimerCSharpWinForms is licensed under the GNU General Public License v3.0 (GPL-3.0).
+CEETimerCSharpWinForms is licensed under the [GNU General Public License v3.0 (GPL-3.0)](https://github.com/WangHaonie/CEETimerCSharpWinForms?tab=GPL-3.0-1-ov-file#GPL-3.0-1-ov-file)
+## 打赏作者💰
+[传送门](https://wanghaonie.github.io/reward/)
 
 
