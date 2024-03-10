@@ -43,8 +43,9 @@
             this.LableCountdown.AutoSize = true;
             this.LableCountdown.BackColor = System.Drawing.Color.Transparent;
             this.LableCountdown.ContextMenuStrip = this.ContextMenuMain;
+            this.LableCountdown.Dock = System.Windows.Forms.DockStyle.Fill;
             this.LableCountdown.ForeColor = System.Drawing.Color.Black;
-            this.LableCountdown.Location = new System.Drawing.Point(1, 0);
+            this.LableCountdown.Location = new System.Drawing.Point(0, 0);
             this.LableCountdown.Name = "LableCountdown";
             this.LableCountdown.Size = new System.Drawing.Size(263, 15);
             this.LableCountdown.TabIndex = 0;
@@ -65,7 +66,7 @@
             this.ContextMenuSettings.Name = "ContextMenuSettings";
             this.ContextMenuSettings.Size = new System.Drawing.Size(182, 22);
             this.ContextMenuSettings.Text = "设置(&S)";
-            this.ContextMenuSettings.Click += new System.EventHandler(this.ContextSettings_Click);
+            this.ContextMenuSettings.Click += new System.EventHandler(this.ContextMenuSettings_Click);
             // 
             // ContextMenuAbout
             // 
@@ -73,7 +74,7 @@
             this.ContextMenuAbout.ShowShortcutKeys = false;
             this.ContextMenuAbout.Size = new System.Drawing.Size(182, 22);
             this.ContextMenuAbout.Text = "关于(&A)";
-            this.ContextMenuAbout.Click += new System.EventHandler(this.ContextAbout_Click);
+            this.ContextMenuAbout.Click += new System.EventHandler(this.ContextMenuAbout_Click);
             // 
             // ToolStripSeparator1
             // 
@@ -85,7 +86,7 @@
             this.ContextMenuOpenDir.Name = "ContextMenuOpenDir";
             this.ContextMenuOpenDir.Size = new System.Drawing.Size(182, 22);
             this.ContextMenuOpenDir.Text = "打开程序文件夹(&O)";
-            this.ContextMenuOpenDir.Click += new System.EventHandler(this.ContextOpenDir_Click);
+            this.ContextMenuOpenDir.Click += new System.EventHandler(this.ContextMenuOpenDir_Click);
             // 
             // FormMain
             // 
@@ -94,7 +95,7 @@
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(265, 15);
+            this.ClientSize = new System.Drawing.Size(265, 23);
             this.ContextMenuStrip = this.ContextMenuMain;
             this.ControlBox = false;
             this.Controls.Add(this.LableCountdown);
@@ -110,7 +111,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "高考倒计时";
             this.TopMost = true;
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CEETimerCSharpWinForms_FormClosing);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMain_FormClosing);
             this.Load += new System.EventHandler(this.FormMain_Load);
             this.ContextMenuMain.ResumeLayout(false);
             this.ResumeLayout(false);

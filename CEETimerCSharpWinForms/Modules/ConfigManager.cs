@@ -64,11 +64,16 @@ namespace CEETimerCSharpWinForms.Modules
             }
         }
 
-        public static void WriteConfig(string key, string value)
+        public static void WriteConfig(Dictionary<string, string> DataSet)
         {
             CheckConfig();
             JsonConfig ??= [];
-            JsonConfig[key] = value;
+
+            foreach (var Keys in DataSet)
+            {
+                JsonConfig[Keys.Key] = Keys.Value;
+            }
+
             string Config = JsonConvert.SerializeObject(JsonConfig);
             File.WriteAllText(ConfigFile, Config);
         }

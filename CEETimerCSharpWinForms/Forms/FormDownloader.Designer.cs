@@ -87,7 +87,7 @@
             this.ButtonRetry.TabIndex = 7;
             this.ButtonRetry.Text = "重试(&R)";
             this.ButtonRetry.UseVisualStyleBackColor = true;
-            this.ButtonRetry.Click += new System.EventHandler(this.FrmDlBtnR_Click);
+            this.ButtonRetry.Click += new System.EventHandler(this.ButtonRetry_Click);
             // 
             // ButtonCancel
             // 
@@ -100,7 +100,7 @@
             this.ButtonCancel.TabIndex = 8;
             this.ButtonCancel.Text = "取消(&C)";
             this.ButtonCancel.UseVisualStyleBackColor = true;
-            this.ButtonCancel.Click += new System.EventHandler(this.FrmDlBtnC_Click);
+            this.ButtonCancel.Click += new System.EventHandler(this.ButtonCancel_Click);
             // 
             // FormDownloader
             // 

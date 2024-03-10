@@ -71,7 +71,7 @@ namespace CEETimerCSharpWinForms.Forms
             this.ButtonGitHub.TabIndex = 4;
             this.ButtonGitHub.Text = "项目主页(&G)";
             this.ButtonGitHub.UseVisualStyleBackColor = true;
-            this.ButtonGitHub.Click += new System.EventHandler(this.FormAboutBottonGH_Click);
+            this.ButtonGitHub.Click += new System.EventHandler(this.ButtonGitHub_Click);
             // 
             // ButtonClose
             // 
@@ -85,7 +85,7 @@ namespace CEETimerCSharpWinForms.Forms
             this.ButtonClose.TabIndex = 5;
             this.ButtonClose.Text = "关闭(&C)";
             this.ButtonClose.UseVisualStyleBackColor = true;
-            this.ButtonClose.Click += new System.EventHandler(this.FormAboutBottonClose_Click);
+            this.ButtonClose.Click += new System.EventHandler(this.ButtonClose_Click);
             // 
             // ButtonLicense
             // 
@@ -98,7 +98,7 @@ namespace CEETimerCSharpWinForms.Forms
             this.ButtonLicense.TabIndex = 6;
             this.ButtonLicense.Text = "许可证(&L)";
             this.ButtonLicense.UseVisualStyleBackColor = true;
-            this.ButtonLicense.Click += new System.EventHandler(this.FormAboutLicenseButton_Click);
+            this.ButtonLicense.Click += new System.EventHandler(this.ButtonLicense_Click);
             // 
             // LabelLicense
             // 
@@ -119,7 +119,7 @@ namespace CEETimerCSharpWinForms.Forms
             this.LableVersion.Name = "LableVersion";
             this.LableVersion.Size = new System.Drawing.Size(0, 15);
             this.LableVersion.TabIndex = 2;
-            this.LableVersion.Click += new System.EventHandler(this.FormAboutLabelVersion_Click);
+            this.LableVersion.Click += new System.EventHandler(this.LabelVersion_Click);
             // 
             // PanelMain
             // 

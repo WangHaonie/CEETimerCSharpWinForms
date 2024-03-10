@@ -11,11 +11,8 @@ namespace CEETimerCSharpWinForms.Forms
 {
     public partial class FormDownloader : Form
     {
-        private string latestVersion;
-        public string downloadUrl;
-        public string downloadPath;
-        private bool isCancelled = false;
-        private CancellationTokenSource cancelRequest;
+        private bool IsCancelled = false;
+        private CancellationTokenSource CancelRequest;
 
         public FormDownloader()
         {
@@ -24,26 +21,26 @@ namespace CEETimerCSharpWinForms.Forms
 
         private async void FormDownloader_Load(object sender, EventArgs e)
         {
-            latestVersion = CheckForUpdate.LatestVersion;
-            downloadUrl = $"https://wanghaonie.github.io/file-storages/github-repos/CEETimerCSharpWinForms/CEETimerCSharpWinForms_{latestVersion}_x64_Setup.exe";
-            downloadPath = Path.Combine(Path.GetTempPath(), $"CEETimerCSharpWinForms_{latestVersion}_x64_Setup.exe");
-
-            await DownloadFile(downloadUrl, downloadPath);
+            await DownloadUpdate();
         }
 
-        public async Task DownloadFile(string url, string filePath)
+        public async Task DownloadUpdate()
         {
-            using var httpClient = new HttpClient();
-            cancelRequest = new CancellationTokenSource();
-            httpClient.DefaultRequestHeaders.UserAgent.ParseAdd(LaunchManager.RequestUa);
+            string LatestVersion = CheckForUpdate.LatestVersion;
+            string DownloadUrl = $"https://wanghaonie.github.io/file-storages/github-repos/CEETimerCSharpWinForms/CEETimerCSharpWinForms_{LatestVersion}_x64_Setup.exe";
+            string DownloadPath = Path.Combine(Path.GetTempPath(), $"CEETimerCSharpWinForms_{LatestVersion}_x64_Setup.exe");
+
+            using var Updater = new HttpClient();
+            CancelRequest = new CancellationTokenSource();
+            Updater.DefaultRequestHeaders.UserAgent.ParseAdd(LaunchManager.RequestUa);
 
             try
             {
-                using (var response = await httpClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, cancelRequest.Token))
+                using (var response = await Updater.GetAsync(DownloadUrl, HttpCompletionOption.ResponseHeadersRead, CancelRequest.Token))
                 {
                     response.EnsureSuccessStatusCode();
                     using var stream = await response.Content.ReadAsStreamAsync();
-                    using var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None);
+                    using var fileStream = new FileStream(DownloadPath, FileMode.Create, FileAccess.Write, FileShare.None);
                     var buffer = new byte[8192];
                     var totalBytesRead = 0L;
                     var totalBytes = response.Content.Headers.ContentLength ?? -1L;
@@ -60,19 +57,19 @@ namespace CEETimerCSharpWinForms.Forms
                         LabelSpeed.Text = $"下载速度：{totalBytesRead / sw.Elapsed.TotalSeconds / 1024:0.00} KB/s";
                         ProgressBarMain.Value = progressPercentage;
 
-                        if (cancelRequest.Token.IsCancellationRequested)
+                        if (CancelRequest.Token.IsCancellationRequested)
                         {
-                            isCancelled = true;
+                            IsCancelled = true;
                             fileStream.Close();
-                            if (File.Exists(filePath))
+                            if (File.Exists(DownloadPath))
                             {
-                                File.Delete(filePath);
+                                File.Delete(DownloadPath);
                             }
                             return;
                         }
                     }
                 }
-                if (!isCancelled)
+                if (!IsCancelled)
                 {
                     ButtonCancel.Enabled = false;
                     ButtonRetry.Enabled = false;
@@ -80,7 +77,7 @@ namespace CEETimerCSharpWinForms.Forms
                     ProcessStartInfo processStartInfo = new()
                     {
                         FileName = "cmd.exe",
-                        Arguments = $"/c start \"\" \"{filePath}\" /S",
+                        Arguments = $"/c start \"\" \"{DownloadPath}\" /S",
                         CreateNoWindow = true,
                         WindowStyle = ProcessWindowStyle.Hidden
                     };
@@ -93,19 +90,30 @@ namespace CEETimerCSharpWinForms.Forms
             }
             catch (Exception ex)
             {
+                MessageBox.Show($"无法下载更新文件! \n\n错误信息: \n{ex.Message}\n\n错误详情: \n{ex}", LaunchManager.ErrMsg, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 LabelDownloading.Text = "下载失败，你可以点击 重试 重新启动下载。";
                 LabelSize.Text = "已下载/总共：N/A";
                 LabelSpeed.Text = "下载速度：N/A";
-                MessageBox.Show($"无法下载更新文件! \n\n错误信息: \n{ex.Message}", LaunchManager.ErrMsg, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 ButtonRetry.Enabled = true;
                 return;
             }
         }
-        private void FrmDlBtnC_Click(object sender, EventArgs e)
+
+        private async void ButtonRetry_Click(object sender, EventArgs e)
         {
-            if (cancelRequest != null && !cancelRequest.Token.IsCancellationRequested)
+            ButtonRetry.Enabled = false;
+            LabelDownloading.Text = "正在重新下载更新文件，请稍侯...";
+            LabelSize.Text = "已下载/总共：(获取中...)";
+            LabelSpeed.Text = "下载速度：(获取中...)";
+
+            await DownloadUpdate();
+        }
+
+        private void ButtonCancel_Click(object sender, EventArgs e)
+        {
+            if (CancelRequest != null && !CancelRequest.Token.IsCancellationRequested)
             {
-                cancelRequest?.Cancel();
+                CancelRequest?.Cancel();
                 LabelDownloading.Text = "用户已取消下载。";
                 MessageBox.Show($"你已取消下载！\n\n你稍后可以在 关于 窗口点击版本号来再次检查更新。", LaunchManager.WarnMsg, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
@@ -113,15 +121,7 @@ namespace CEETimerCSharpWinForms.Forms
             FormClosing -= FormDownloader_FormClosing;
             Close();
         }
-        private async void FrmDlBtnR_Click(object sender, EventArgs e)
-        {
-            ButtonRetry.Enabled = false;
-            LabelDownloading.Text = "正在重新下载更新文件，请稍侯...";
-            LabelSize.Text = "已下载/总共：(获取中...)";
-            LabelSpeed.Text = "下载速度：(获取中...)";
 
-            await DownloadFile(downloadUrl, downloadPath);
-        }
         private void FormDownloader_FormClosing(object sender, FormClosingEventArgs e)
         {
             e.Cancel = true;
