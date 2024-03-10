@@ -53,7 +53,7 @@ namespace CEETimerCSharpWinForms.Modules
             {
                 if (!isProgramStart)
                 {
-                    MessageBox.Show($"检查更新时发生错误! \n\n错误信息：\n{ex.Message}", LaunchManager.ErrMsg, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"检查更新时发生错误! \n\n错误信息：\n{ex.Message}\n\n错误详情：\n{ex}", LaunchManager.ErrMsg, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
