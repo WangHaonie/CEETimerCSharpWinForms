@@ -21,8 +21,8 @@ namespace CEETimerCSharpWinForms
         private bool IsNoStart;
         private bool IsReady;
         private bool IsRounding;
-        private DateTime ExamEndTime = new();
-        private DateTime ExamStartTime = new();
+        private DateTime ExamEndTime;
+        private DateTime ExamStartTime;
         private Font SelectedFont;
         private FontStyle SelectedFontStyle;
         private int i;
