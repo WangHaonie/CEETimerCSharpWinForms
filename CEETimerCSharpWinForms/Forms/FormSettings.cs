@@ -28,7 +28,7 @@ namespace CEETimerCSharpWinForms.Forms
         public delegate void ConfigChangedHandler(object sender, EventArgs e);
         public ConfigChangedHandler ConfigChanged;
 
-        private bool isSyncingTime = false;
+        private bool IsSyncingTime = false;
         private bool IsSettingsChanged;
         private const string GBoxRestartTitleOriginal = "重启倒计时";
         private const string LabelLine9Original = "如果你更改了屏幕缩放或者分辨率, 可以点击此按钮来重启倒计时以";
@@ -47,7 +47,7 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void FormSettings_Load(object sender, EventArgs e)
         {
-            RestoreFunny();
+            ChangeWorkingStyle(false, "Funny");
             CheckStartupSetting();
             RefreshSettings();
             IsSettingsChanged = false;
@@ -84,24 +84,15 @@ namespace CEETimerCSharpWinForms.Forms
             {
                 ButtonRestart.Click -= ButtonRestart_Click;
                 ButtonRestart.Click += ButtonRestart_Funny_Click;
-                GBoxRestart.Text = GBoxRestartTitle;
-                LabelLine9.Text = LabelLine9Text;
-                LabelLine10.Text = LabelLine10Text;
-                ButtonRestart.Text = ButtonRestartText;
+                ChangeWorkingStyle(true, "Funny");
             }
         }
 
         private async void ButtonSyncTime_Click(object sender, EventArgs e)
         {
-            isSyncingTime = true;
-            ButtonSyncTime.Enabled = false;
-            ButtonRestart.Enabled = false;
-            ButtonSyncTime.Text = "正在同步中，请稍候...";
+            ChangeWorkingStyle(true, "SyncTime");
             await Task.Run(StartSyncTime);
-            isSyncingTime = false;
-            ButtonSyncTime.Enabled = true;
-            ButtonRestart.Enabled = true;
-            ButtonSyncTime.Text = "立即同步(&S)";
+            ChangeWorkingStyle(false, "SyncTime");
         }
 
         private void ButtonSave_Click(object sender, EventArgs e)
@@ -181,7 +172,7 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void FormSettings_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (isSyncingTime)
+            if (IsSyncingTime)
             {
                 e.Cancel = true;
             }
@@ -203,7 +194,7 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void FormSettings_FormClosed(object sender, FormClosedEventArgs e)
         {
-            RestoreFunny();
+            ChangeWorkingStyle(false, "Funny");
             ButtonRestart.Click -= ButtonRestart_Funny_Click;
             ButtonRestart.Click += ButtonRestart_Click;
         }
@@ -257,34 +248,31 @@ namespace CEETimerCSharpWinForms.Forms
         private bool ValidateInput()
         {
             ExamName = TextBoxExamName.Text.RemoveAllBadChars();
+            TimeSpan ExamTimeSpan = DTPExamEnd.Value - DTPExamStart.Value;
+            string UniMsg = "";
+            string TimeMsg = "";
 
             if (string.IsNullOrWhiteSpace(ExamName) || (ExamName.Length < 2) || (ExamName.Length > 15))
             {
                 MessageBox.Show("输入的考试名称有误！\n\n请检查输入的考试名称是否太长或太短！", LaunchManager.ErrMsg, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
-
-            if (DTPExamStart.Value >= DTPExamEnd.Value)
+            else if (DTPExamStart.Value >= DTPExamEnd.Value)
             {
                 MessageBox.Show("考试开始时间必须在结束时间之前！", LaunchManager.ErrMsg, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
-
-            TimeSpan timeSpan = DTPExamEnd.Value - DTPExamStart.Value;
-            string UniMsg = "";
-            string TimeMsg = "";
-
-            if (timeSpan.TotalDays > 4)
+            else if (ExamTimeSpan.TotalDays > 4)
             {
-                TimeMsg = $"{timeSpan.TotalDays:0.0} 天";
+                TimeMsg = $"{ExamTimeSpan.TotalDays:0.0} 天";
             }
-            else if (timeSpan.TotalMinutes < 40 && timeSpan.TotalSeconds > 60)
+            else if (ExamTimeSpan.TotalMinutes < 40 && ExamTimeSpan.TotalSeconds > 60)
             {
-                TimeMsg = $"{timeSpan.TotalMinutes:0.0} 分钟";
+                TimeMsg = $"{ExamTimeSpan.TotalMinutes:0.0} 分钟";
             }
-            else if (timeSpan.TotalSeconds < 60)
+            else if (ExamTimeSpan.TotalSeconds < 60)
             {
-                TimeMsg = $"{timeSpan.TotalSeconds:0.0} 秒";
+                TimeMsg = $"{ExamTimeSpan.TotalSeconds:0.0} 秒";
             }
 
             if (!string.IsNullOrEmpty(TimeMsg))
@@ -338,9 +326,7 @@ namespace CEETimerCSharpWinForms.Forms
             }
             catch
             {
-
             }
-
         }
 
         private void StartSyncTime()
@@ -359,20 +345,30 @@ namespace CEETimerCSharpWinForms.Forms
             MessageBox.Show($"命令执行完成！\n\n返回值为 {syncTimeProcess.ExitCode}\n(0 代表成功，其他值为失败)", LaunchManager.InfoMsg, MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        private void RestoreFunny()
-        {
-            GBoxRestart.Text = GBoxRestartTitleOriginal;
-            LabelLine9.Text = LabelLine9Original;
-            LabelLine10.Text = LabelLine10Original;
-            ButtonRestart.Text = ButtonRestartTextOriginal;
-        }
-
         private void ChangeFont(Font NewFont)
         {
             CountdownFont = NewFont;
             CountdownFontStyle = NewFont.Style;
             LabelPreviewFont.Font = NewFont;
             LabelFontInfo.Text = $"当前选择的字体/大小/样式: {NewFont.Name}, {NewFont.Size}pt, {NewFont.Style}";
+        }
+
+        private void ChangeWorkingStyle(bool IsWorking, string WhereToChange)
+        {
+            if (WhereToChange == "SyncTime")
+            {
+                IsSyncingTime = IsWorking;
+                ButtonSyncTime.Enabled = !IsWorking;
+                ButtonRestart.Enabled = !IsWorking;
+                ButtonSyncTime.Text = IsWorking ? "正在同步中，请稍候..." : "立即同步(&S)";
+            }
+            else if (WhereToChange == "Funny")
+            {
+                GBoxRestart.Text = IsWorking ? GBoxRestartTitle : GBoxRestartTitleOriginal;
+                LabelLine9.Text = IsWorking ? LabelLine9Text : LabelLine9Original;
+                LabelLine10.Text = IsWorking ? LabelLine10Text : LabelLine10Original;
+                ButtonRestart.Text = IsWorking ? ButtonRestartText : ButtonRestartTextOriginal;
+            }
         }
 
         protected virtual void OnConfigChanged()

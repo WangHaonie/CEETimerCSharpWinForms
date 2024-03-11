@@ -4,7 +4,7 @@ namespace CEETimerCSharpWinForms.Modules
 {
     public static class Extensions
     {
-        public static string RemoveAllBadChars(this string text)
+        public static string RemoveAllBadChars(this string Text)
         {
             #region 来自网络
             /*
@@ -15,7 +15,7 @@ namespace CEETimerCSharpWinForms.Modules
             https://stackoverflow.com/a/40888424/21094697
 
             */
-            return new string(text.Trim().Replace(" ", "").Where(c => char.IsLetterOrDigit(c) || (c >= ' ' && c <= byte.MaxValue)).ToArray());
+            return new string(Text.Trim().Replace(" ", "").Where(c => char.IsLetterOrDigit(c) || (c >= ' ' && c <= byte.MaxValue)).ToArray());
             #endregion
         }
     }
