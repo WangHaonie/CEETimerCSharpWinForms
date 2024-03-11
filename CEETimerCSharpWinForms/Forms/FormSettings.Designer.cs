@@ -589,9 +589,9 @@
             this.LabelLine8.ForeColor = System.Drawing.Color.Red;
             this.LabelLine8.Location = new System.Drawing.Point(6, 64);
             this.LabelLine8.Name = "LabelLine8";
-            this.LabelLine8.Size = new System.Drawing.Size(189, 15);
+            this.LabelLine8.Size = new System.Drawing.Size(163, 15);
             this.LabelLine8.TabIndex = 24;
-            this.LabelLine8.Text = "服务器的操作可自行上网查阅。";
+            this.LabelLine8.Text = "器的操作可自行上网查阅。";
             // 
             // LabelLine7
             // 
@@ -599,9 +599,9 @@
             this.LabelLine7.ForeColor = System.Drawing.Color.Red;
             this.LabelLine7.Location = new System.Drawing.Point(6, 49);
             this.LabelLine7.Name = "LabelLine7";
-            this.LabelLine7.Size = new System.Drawing.Size(382, 15);
+            this.LabelLine7.Size = new System.Drawing.Size(395, 15);
             this.LabelLine7.TabIndex = 23;
-            this.LabelLine7.Text = "将 Windows Time 服务设置为自动启动, 请谨慎操作。有关修改 NTP";
+            this.LabelLine7.Text = "Windows Time 服务设置为自动启动, 请谨慎操作。有关修改 NTP 服务";
             // 
             // LabelLine6
             // 
@@ -609,9 +609,9 @@
             this.LabelLine6.ForeColor = System.Drawing.Color.Red;
             this.LabelLine6.Location = new System.Drawing.Point(6, 34);
             this.LabelLine6.Name = "LabelLine6";
-            this.LabelLine6.Size = new System.Drawing.Size(383, 15);
+            this.LabelLine6.Size = new System.Drawing.Size(396, 15);
             this.LabelLine6.TabIndex = 22;
-            this.LabelLine6.Text = "注意: 此项会将系统的 NTP 服务器设置为 ntp1.aliyun.com, 并且还会";
+            this.LabelLine6.Text = "注意: 此项会将系统的 NTP 服务器设置为 ntp1.aliyun.com, 并且还会将";
             // 
             // LabelLine5
             // 

@@ -95,7 +95,7 @@
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(265, 23);
+            this.ClientSize = new System.Drawing.Size(265, 15);
             this.ContextMenuStrip = this.ContextMenuMain;
             this.ControlBox = false;
             this.Controls.Add(this.LableCountdown);

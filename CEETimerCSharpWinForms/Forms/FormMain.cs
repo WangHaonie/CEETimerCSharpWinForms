@@ -347,8 +347,10 @@ namespace CEETimerCSharpWinForms
         https://www.cnblogs.com/shuang121/p/3149570.html
 
          */
+
         [DllImport("user32.dll")]
         public static extern bool ReleaseCapture();
+
         [DllImport("user32.dll")]
         public static extern bool SendMessage(IntPtr hwnd, int wMsg, int wParam, int lParam);
 
