@@ -57,6 +57,9 @@
             this.LabelFontInfo = new System.Windows.Forms.Label();
             this.LabelLine11 = new System.Windows.Forms.Label();
             this.TabPageAdvanced = new System.Windows.Forms.TabPage();
+            this.GBoxSetDragable = new System.Windows.Forms.GroupBox();
+            this.CheckBoxEnableDragable = new System.Windows.Forms.CheckBox();
+            this.LabelLine12 = new System.Windows.Forms.Label();
             this.GBoxMO = new System.Windows.Forms.GroupBox();
             this.CheckBoxEnableMO = new System.Windows.Forms.CheckBox();
             this.LabelLine4 = new System.Windows.Forms.Label();
@@ -74,9 +77,6 @@
             this.LabelLine7 = new System.Windows.Forms.Label();
             this.LabelLine6 = new System.Windows.Forms.Label();
             this.LabelLine5 = new System.Windows.Forms.Label();
-            this.GBoxSetDragable = new System.Windows.Forms.GroupBox();
-            this.LabelLine12 = new System.Windows.Forms.Label();
-            this.CheckBoxEnableDragable = new System.Windows.Forms.CheckBox();
             this.TabControlMain.SuspendLayout();
             this.TabPageGeneral.SuspendLayout();
             this.GBoxStartup.SuspendLayout();
@@ -87,12 +87,12 @@
             this.GBoxContent.SuspendLayout();
             this.GBoxChangeFont.SuspendLayout();
             this.TabPageAdvanced.SuspendLayout();
+            this.GBoxSetDragable.SuspendLayout();
             this.GBoxMO.SuspendLayout();
             this.GBoxVDM.SuspendLayout();
             this.TabPageOther.SuspendLayout();
             this.GBoxRestart.SuspendLayout();
             this.GBoxSyncTime.SuspendLayout();
-            this.GBoxSetDragable.SuspendLayout();
             this.SuspendLayout();
             // 
             // ButtonClose
@@ -417,6 +417,37 @@
             this.TabPageAdvanced.Text = "高级";
             this.TabPageAdvanced.UseVisualStyleBackColor = true;
             // 
+            // GBoxSetDragable
+            // 
+            this.GBoxSetDragable.Controls.Add(this.CheckBoxEnableDragable);
+            this.GBoxSetDragable.Controls.Add(this.LabelLine12);
+            this.GBoxSetDragable.Location = new System.Drawing.Point(7, 174);
+            this.GBoxSetDragable.Name = "GBoxSetDragable";
+            this.GBoxSetDragable.Size = new System.Drawing.Size(405, 62);
+            this.GBoxSetDragable.TabIndex = 4;
+            this.GBoxSetDragable.TabStop = false;
+            this.GBoxSetDragable.Text = "窗口拖动";
+            // 
+            // CheckBoxEnableDragable
+            // 
+            this.CheckBoxEnableDragable.AutoSize = true;
+            this.CheckBoxEnableDragable.Location = new System.Drawing.Point(9, 37);
+            this.CheckBoxEnableDragable.Name = "CheckBoxEnableDragable";
+            this.CheckBoxEnableDragable.Size = new System.Drawing.Size(91, 19);
+            this.CheckBoxEnableDragable.TabIndex = 3;
+            this.CheckBoxEnableDragable.Text = "启用此功能";
+            this.CheckBoxEnableDragable.UseVisualStyleBackColor = true;
+            this.CheckBoxEnableDragable.CheckedChanged += new System.EventHandler(this.SettingsChanged);
+            // 
+            // LabelLine12
+            // 
+            this.LabelLine12.AutoSize = true;
+            this.LabelLine12.Location = new System.Drawing.Point(6, 19);
+            this.LabelLine12.Name = "LabelLine12";
+            this.LabelLine12.Size = new System.Drawing.Size(345, 15);
+            this.LabelLine12.TabIndex = 0;
+            this.LabelLine12.Text = "将允许倒计时窗口被拖动。目前暂时无法记住拖动的位置。";
+            // 
             // GBoxMO
             // 
             this.GBoxMO.Controls.Add(this.CheckBoxEnableMO);
@@ -591,37 +622,6 @@
             this.LabelLine5.TabIndex = 20;
             this.LabelLine5.Text = "通过运行外部命令将当前系统时间与网络同步以确保准确无误。";
             // 
-            // GBoxSetDragable
-            // 
-            this.GBoxSetDragable.Controls.Add(this.CheckBoxEnableDragable);
-            this.GBoxSetDragable.Controls.Add(this.LabelLine12);
-            this.GBoxSetDragable.Location = new System.Drawing.Point(7, 174);
-            this.GBoxSetDragable.Name = "GBoxSetDragable";
-            this.GBoxSetDragable.Size = new System.Drawing.Size(405, 62);
-            this.GBoxSetDragable.TabIndex = 4;
-            this.GBoxSetDragable.TabStop = false;
-            this.GBoxSetDragable.Text = "窗口拖动";
-            // 
-            // LabelLine12
-            // 
-            this.LabelLine12.AutoSize = true;
-            this.LabelLine12.Location = new System.Drawing.Point(6, 19);
-            this.LabelLine12.Name = "LabelLine12";
-            this.LabelLine12.Size = new System.Drawing.Size(345, 15);
-            this.LabelLine12.TabIndex = 0;
-            this.LabelLine12.Text = "将允许倒计时窗口被拖动。目前暂时无法记住拖动的位置。";
-            // 
-            // CheckBoxEnableDragable
-            // 
-            this.CheckBoxEnableDragable.AutoSize = true;
-            this.CheckBoxEnableDragable.Location = new System.Drawing.Point(9, 37);
-            this.CheckBoxEnableDragable.Name = "CheckBoxEnableDragable";
-            this.CheckBoxEnableDragable.Size = new System.Drawing.Size(91, 19);
-            this.CheckBoxEnableDragable.TabIndex = 3;
-            this.CheckBoxEnableDragable.Text = "启用此功能";
-            this.CheckBoxEnableDragable.UseVisualStyleBackColor = true;
-            this.CheckBoxEnableDragable.CheckedChanged += new System.EventHandler(this.SettingsChanged);
-            // 
             // FormSettings
             // 
             this.AcceptButton = this.ButtonSave;
@@ -658,6 +658,8 @@
             this.GBoxChangeFont.ResumeLayout(false);
             this.GBoxChangeFont.PerformLayout();
             this.TabPageAdvanced.ResumeLayout(false);
+            this.GBoxSetDragable.ResumeLayout(false);
+            this.GBoxSetDragable.PerformLayout();
             this.GBoxMO.ResumeLayout(false);
             this.GBoxMO.PerformLayout();
             this.GBoxVDM.ResumeLayout(false);
@@ -667,8 +669,6 @@
             this.GBoxRestart.PerformLayout();
             this.GBoxSyncTime.ResumeLayout(false);
             this.GBoxSyncTime.PerformLayout();
-            this.GBoxSetDragable.ResumeLayout(false);
-            this.GBoxSetDragable.PerformLayout();
             this.ResumeLayout(false);
 
         }
