@@ -331,18 +331,17 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void StartSyncTime()
         {
-            ProcessStartInfo processStartInfo = new()
+            Process SyncTimeProcess = Process.Start(new ProcessStartInfo
             {
                 FileName = @"cmd.exe",
                 Arguments = "/c w32tm /config /manualpeerlist:ntp1.aliyun.com /syncfromflags:manual /reliable:YES /update && net stop w32time && net start w32time && sc config w32time start= auto && w32tm /resync && w32tm /resync",
                 Verb = "runas",
                 CreateNoWindow = true,
                 WindowStyle = ProcessWindowStyle.Hidden
-            };
+            });
 
-            Process syncTimeProcess = Process.Start(processStartInfo);
-            syncTimeProcess.WaitForExit();
-            MessageBox.Show($"命令执行完成！\n\n返回值为 {syncTimeProcess.ExitCode}\n(0 代表成功，其他值为失败)", LaunchManager.InfoMsg, MessageBoxButtons.OK, MessageBoxIcon.Information);
+            SyncTimeProcess.WaitForExit();
+            MessageBox.Show($"命令执行完成！\n\n返回值为 {SyncTimeProcess.ExitCode}\n(0 代表成功，其他值为失败)", LaunchManager.InfoMsg, MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void ChangeFont(Font NewFont)

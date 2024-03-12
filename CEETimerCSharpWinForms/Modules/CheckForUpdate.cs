@@ -9,49 +9,48 @@ namespace CEETimerCSharpWinForms.Modules
     public class CheckForUpdate
     {
         public static string LatestVersion { get; private set; }
-        public const string GitHubAPI = "https://wanghaonie.github.io/static-pages/api/software-update/CEETimerCSharpWinForms/get/";
-        private static FormDownloader formDownloader;
 
-        public static void Start(bool isProgramStart)
+        private const string GitHubAPI = "https://wanghaonie.github.io/static-pages/api/software-update/CEETimerCSharpWinForms/get/";
+        private static FormDownloader DownloaderForm;
+
+        public static void Start(bool IsProgramStart)
         {
-            using var updateCheck = new HttpClient();
-            updateCheck.DefaultRequestHeaders.UserAgent.ParseAdd(LaunchManager.RequestUa);
+            using var HttpClienMain = new HttpClient();
+            HttpClienMain.DefaultRequestHeaders.UserAgent.ParseAdd(LaunchManager.RequestUA);
 
             try
             {
-                HttpResponseMessage response = updateCheck.GetAsync(GitHubAPI).Result;
-                response.EnsureSuccessStatusCode();
-                string apiRes = response.Content.ReadAsStringAsync().Result;
-                JObject release = JObject.Parse(apiRes);
-                LatestVersion = release["v"].ToString();
+                string ResponseContent = HttpClienMain.GetAsync(GitHubAPI).Result.EnsureSuccessStatusCode().Content.ReadAsStringAsync().Result;
+                LatestVersion = JObject.Parse(ResponseContent)["v"].ToString();
 
                 if (Version.Parse(LatestVersion) > Version.Parse(LaunchManager.AppVersion))
                 {
                     FormMain MainForm = Application.OpenForms[0] as FormMain;
                     MainForm.Invoke(new Action(() =>
                     {
-                        DialogResult result = MessageBox.Show($"检测到新版本，是否下载并安装？\n当前版本: v{LaunchManager.AppVersion}\n新版本: v{LatestVersion}", LaunchManager.InfoMsg, MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                        DialogResult Result = MessageBox.Show($"检测到新版本，是否下载并安装？\n当前版本: v{LaunchManager.AppVersion}\n新版本: v{LatestVersion}", LaunchManager.InfoMsg, MessageBoxButtons.YesNo, MessageBoxIcon.Information);
 
-                        if (result == DialogResult.Yes)
+                        if (Result == DialogResult.Yes)
                         {
-                            if (formDownloader == null || formDownloader.IsDisposed)
+                            if (DownloaderForm == null || DownloaderForm.IsDisposed)
                             {
-                                formDownloader = new FormDownloader();
+                                DownloaderForm = new FormDownloader();
                             }
-                            formDownloader.WindowState = FormWindowState.Normal;
-                            formDownloader.Show();
-                            formDownloader.Activate();
+
+                            DownloaderForm.WindowState = FormWindowState.Normal;
+                            DownloaderForm.Show();
+                            DownloaderForm.Activate();
                         }
                     }));
                 }
-                else if (!isProgramStart)
+                else if (!IsProgramStart)
                 {
                     MessageBox.Show($"当前 v{LaunchManager.AppVersion} 已是最新版本。\n\n获取到的版本：v{LatestVersion}。", LaunchManager.InfoMsg, MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
             catch (Exception ex)
             {
-                if (!isProgramStart)
+                if (!IsProgramStart)
                 {
                     MessageBox.Show($"检查更新时发生错误! \n\n错误信息：\n{ex.Message}\n\n错误详情：\n{ex}", LaunchManager.ErrMsg, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }

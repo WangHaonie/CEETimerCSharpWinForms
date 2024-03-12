@@ -19,7 +19,7 @@ namespace CEETimerCSharpWinForms.Modules
         public const string AppName = "高考倒计时 by WangHaonie";
         public const string CopyrightInfo = "Copyright © 2023-2024 WangHaonie";
         public const string OriginalFontString = "Microsoft YaHei, 17.25pt";
-        public const string RequestUa = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36";
+        public const string RequestUA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36";
         public static readonly int CurrentWindowsVersion = Environment.OSVersion.Version.Major;
         public static readonly string CurrentExecutablePath = AppDomain.CurrentDomain.BaseDirectory;
         public static readonly string CurrentExecutable = Application.ExecutablePath;
@@ -28,8 +28,8 @@ namespace CEETimerCSharpWinForms.Modules
 
         public static void StartProgram()
         {
-            using Mutex mutex = new(true, "CEETimerCSharpWinForms_MUTEX_61c0097d-3682-421c-84e6-70ca37dc31dd_[A3F8B92E6D14]", out bool isNewProcess);
-            if (isNewProcess)
+            using Mutex MutexMain = new(true, "CEETimerCSharpWinForms_MUTEX_61c0097d-3682-421c-84e6-70ca37dc31dd_[A3F8B92E6D14]", out bool IsNewProcess);
+            if (IsNewProcess)
             {
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
@@ -66,14 +66,13 @@ namespace CEETimerCSharpWinForms.Modules
                 if (!CurrentExecutableName.Equals(OriginalFileName, StringComparison.OrdinalIgnoreCase))
                 {
                     MessageBox.Show($"为了您的使用体验，请不要更改程序文件名! 程序将在该对话框关闭后尝试自动恢复到原文件名，若自动恢复失败请手动改回。\n\n当前文件名：{CurrentExecutableName}\n原始文件名：{OriginalFileName}", WarnMsg, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    ProcessStartInfo processStartInfo = new()
+                    Process.Start(new ProcessStartInfo
                     {
                         FileName = @"cmd.exe",
                         Arguments = $"/c ren \"{CurrentExecutable}\" {OriginalFileName} & start \"\" \"{CurrentExecutablePath}{OriginalFileName}\"",
                         CreateNoWindow = true,
                         WindowStyle = ProcessWindowStyle.Hidden
-                    };
-                    Process.Start(processStartInfo);
+                    });
                     Environment.Exit(4);
                 }
                 else
@@ -90,26 +89,24 @@ namespace CEETimerCSharpWinForms.Modules
 
         public static void Restart()
         {
-            ProcessStartInfo processStartInfo = new()
+            Process.Start(new ProcessStartInfo
             {
                 FileName = @"cmd.exe",
                 Arguments = $"/c taskkill /f /fi \"PID eq {Process.GetCurrentProcess().Id}\" /im {CurrentExecutableName} & start \"\" \"{CurrentExecutable}\"",
                 CreateNoWindow = true,
                 WindowStyle = ProcessWindowStyle.Hidden
-            };
-            Process.Start(processStartInfo);
+            });
         }
 
         public static void Shutdown()
         {
-            ProcessStartInfo processStartInfo = new()
+            Process.Start(new ProcessStartInfo
             {
                 FileName = @"cmd.exe",
                 Arguments = $"/c taskkill /f /fi \"PID eq {Process.GetCurrentProcess().Id}\" /im {CurrentExecutableName}",
                 CreateNoWindow = true,
                 WindowStyle = ProcessWindowStyle.Hidden
-            };
-            Process.Start(processStartInfo);
+            });
         }
     }
 }

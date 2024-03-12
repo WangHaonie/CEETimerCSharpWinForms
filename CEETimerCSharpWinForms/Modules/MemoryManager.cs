@@ -21,7 +21,7 @@ namespace CEETimerCSharpWinForms.Modules
 
         public static void Optimize()
         {
-            ProcessStartInfo processStartInfo = new()
+            Process ProcessGetCurrentMemory = Process.Start(new ProcessStartInfo
             {
                 FileName = @"tasklist.exe",
                 Arguments = $"/fi \"PID eq {Process.GetCurrentProcess().Id}\" /fo csv /nh",
@@ -29,8 +29,7 @@ namespace CEETimerCSharpWinForms.Modules
                 CreateNoWindow = true,
                 RedirectStandardOutput = true,
                 UseShellExecute = false
-            };
-            Process ProcessGetCurrentMemory = Process.Start(processStartInfo);
+            });
 
             var Output = ProcessGetCurrentMemory.StandardOutput.ReadToEnd().Trim().Split('"');
             ProcessGetCurrentMemory.WaitForExit();

@@ -32,7 +32,7 @@ namespace CEETimerCSharpWinForms.Forms
 
             using var Updater = new HttpClient();
             CancelRequest = new CancellationTokenSource();
-            Updater.DefaultRequestHeaders.UserAgent.ParseAdd(LaunchManager.RequestUa);
+            Updater.DefaultRequestHeaders.UserAgent.ParseAdd(LaunchManager.RequestUA);
 
             try
             {
@@ -74,16 +74,14 @@ namespace CEETimerCSharpWinForms.Forms
                     ButtonCancel.Enabled = false;
                     ButtonRetry.Enabled = false;
 
-                    ProcessStartInfo processStartInfo = new()
+                    await Task.Delay(1800);
+                    Process.Start(new ProcessStartInfo
                     {
                         FileName = "cmd.exe",
                         Arguments = $"/c start \"\" \"{DownloadPath}\" /S",
                         CreateNoWindow = true,
                         WindowStyle = ProcessWindowStyle.Hidden
-                    };
-
-                    await Task.Delay(1800);
-                    Process.Start(processStartInfo);
+                    });
                     Close();
                     Environment.Exit(0);
                 }
@@ -113,9 +111,9 @@ namespace CEETimerCSharpWinForms.Forms
         {
             if (CancelRequest != null && !CancelRequest.Token.IsCancellationRequested)
             {
+                MessageBox.Show($"你已取消下载！\n\n你稍后可以在 关于 窗口点击版本号来再次检查更新。", LaunchManager.WarnMsg, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 CancelRequest?.Cancel();
                 LabelDownloading.Text = "用户已取消下载。";
-                MessageBox.Show($"你已取消下载！\n\n你稍后可以在 关于 窗口点击版本号来再次检查更新。", LaunchManager.WarnMsg, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
 
             FormClosing -= FormDownloader_FormClosing;
