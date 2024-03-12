@@ -30,14 +30,6 @@ namespace CEETimerCSharpWinForms.Forms
 
         private bool IsSyncingTime = false;
         private bool IsSettingsChanged;
-        private const string GBoxRestartTitleOriginal = "重启倒计时";
-        private const string LabelLine9Original = "如果你更改了屏幕缩放或者分辨率, 可以点击此按钮来重启倒计时以";
-        private const string LabelLine10Original = "确保显示的文字不会变模糊。";
-        private const string ButtonRestartTextOriginal = "点击重启(&R)";
-        private const string GBoxRestartTitle = "关闭倒计时";
-        private const string LabelLine9Text = "如果你由于某些原因需要临时关闭这个倒计时, 那你现在就可以选择";
-        private const string LabelLine10Text = "关闭它了。";
-        private const string ButtonRestartText = "点击关闭(&C)";
         private readonly FontConverter fontConverter = new();
 
         public FormSettings()
@@ -363,10 +355,10 @@ namespace CEETimerCSharpWinForms.Forms
             }
             else if (WhereToChange == "Funny")
             {
-                GBoxRestart.Text = IsWorking ? GBoxRestartTitle : GBoxRestartTitleOriginal;
-                LabelLine9.Text = IsWorking ? LabelLine9Text : LabelLine9Original;
-                LabelLine10.Text = IsWorking ? LabelLine10Text : LabelLine10Original;
-                ButtonRestart.Text = IsWorking ? ButtonRestartText : ButtonRestartTextOriginal;
+                GBoxRestart.Text = IsWorking ? "关闭倒计时" : "重启倒计时";
+                LabelLine9.Text = IsWorking ? "如果你由于某些原因需要临时关闭这个倒计时, 那你现在就可以选择" : "如果你更改了屏幕缩放或者分辨率, 可以点击此按钮来重启倒计时以";
+                LabelLine10.Text = IsWorking ? "关闭它了。" : "确保显示的文字不会变模糊。";
+                ButtonRestart.Text = IsWorking ? "点击关闭(&C)" : "点击重启(&R)";
             }
         }
 
