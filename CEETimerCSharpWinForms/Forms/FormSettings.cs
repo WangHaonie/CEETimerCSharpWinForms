@@ -40,7 +40,6 @@ namespace CEETimerCSharpWinForms.Forms
         private void FormSettings_Load(object sender, EventArgs e)
         {
             ChangeWorkingStyle(false, "Funny");
-            CheckStartupSetting();
             RefreshSettings();
             IsSettingsChanged = false;
             ButtonSave.Enabled = false;
@@ -124,9 +123,7 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void ButtonRestoreFont_Click(object sender, EventArgs e)
         {
-            Font OriginalFont = new((Font)fontConverter.ConvertFromString(LaunchManager.OriginalFontString), FontStyle.Bold);
-
-            ChangeFont(OriginalFont);
+            ChangeFont(new((Font)fontConverter.ConvertFromString(LaunchManager.OriginalFontString), FontStyle.Bold));
             SettingsChanged(sender, e);
         }
 
@@ -170,9 +167,7 @@ namespace CEETimerCSharpWinForms.Forms
             }
             else if (IsSettingsChanged)
             {
-                DialogResult result = MessageBox.Show("检测到设置被更改但没有被保存，是否立即进行保存？", LaunchManager.WarnMsg, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-
-                if (result == DialogResult.Yes)
+                if (MessageBox.Show("检测到设置被更改但没有被保存，是否立即进行保存？", LaunchManager.WarnMsg, MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
                 {
                     ButtonSave_Click(sender, e);
                 }
@@ -193,6 +188,8 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void RefreshSettings()
         {
+            CheckBoxStartup.Checked = (Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true)?.GetValue("CEETimerCSharpWinForms") is string regvalue) && regvalue.Equals($"\"{LaunchManager.CurrentExecutable}\"", StringComparison.OrdinalIgnoreCase);
+
             CheckBoxSetTopMost.Checked = TopMostChecked;
             TextBoxExamName.Text = ExamName;
             DTPExamStart.Value = ConfigManager.IsValidData(ExamStartTime) ? ExamStartTime : DateTime.Now;
@@ -213,27 +210,6 @@ namespace CEETimerCSharpWinForms.Forms
                 CheckBoxEnableVDM.Enabled = false;
                 CheckBoxEnableVDM.Checked = false;
                 CheckBoxEnableVDM.Text = $"此功能在当前系统上不可用";
-            }
-        }
-
-        private void CheckStartupSetting()
-        {
-            RegistryKey reg = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
-
-            if (reg.GetValue("CEETimerCSharpWinForms") is string regvalue)
-            {
-                if (regvalue.Equals(Application.ExecutablePath, StringComparison.OrdinalIgnoreCase))
-                {
-                    CheckBoxStartup.Checked = true;
-                }
-                else
-                {
-                    CheckBoxStartup.Checked = false;
-                }
-            }
-            else
-            {
-                CheckBoxStartup.Checked = false;
             }
         }
 
@@ -274,8 +250,7 @@ namespace CEETimerCSharpWinForms.Forms
 
             if (!string.IsNullOrEmpty(UniMsg))
             {
-                DialogResult result = MessageBox.Show(UniMsg, LaunchManager.WarnMsg, MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
-                if (result == DialogResult.Cancel)
+                if (MessageBox.Show(UniMsg, LaunchManager.WarnMsg, MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.Cancel)
                 {
                     return false;
                 }
@@ -292,7 +267,7 @@ namespace CEETimerCSharpWinForms.Forms
 
                 if (CheckBoxStartup.Checked)
                 {
-                    reg.SetValue("CEETimerCSharpWinForms", LaunchManager.CurrentExecutable);
+                    reg.SetValue("CEETimerCSharpWinForms", $"\"{LaunchManager.CurrentExecutable}\"");
                 }
                 else
                 {

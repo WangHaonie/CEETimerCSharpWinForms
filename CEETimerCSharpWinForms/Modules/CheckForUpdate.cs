@@ -31,9 +31,7 @@ namespace CEETimerCSharpWinForms.Modules
                     FormMain MainForm = Application.OpenForms[0] as FormMain;
                     MainForm.Invoke(new Action(() =>
                     {
-                        DialogResult Result = MessageBox.Show($"检测到新版本，是否下载并安装？\n\n当前版本: v{LaunchManager.AppVersion}\n最新版本: v{LatestVersion}\n发布日期: {PublishTime}\n\n{UpdateLog}", LaunchManager.InfoMsg, MessageBoxButtons.YesNo, MessageBoxIcon.Information);
-
-                        if (Result == DialogResult.Yes)
+                        if (MessageBox.Show($"检测到新版本，是否下载并安装？\n\n当前版本: v{LaunchManager.AppVersion}\n最新版本: v{LatestVersion}\n发布日期: {PublishTime}\n\n{UpdateLog}", LaunchManager.InfoMsg, MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
                         {
                             if (DownloaderForm == null || DownloaderForm.IsDisposed)
                             {
