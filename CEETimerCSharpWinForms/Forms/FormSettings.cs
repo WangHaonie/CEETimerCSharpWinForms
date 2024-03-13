@@ -312,7 +312,7 @@ namespace CEETimerCSharpWinForms.Forms
                 });
 
                 SyncTimeProcess.WaitForExit();
-                MessageBox.Show($"命令执行完成！\n\n返回值为 {SyncTimeProcess.ExitCode}\n(0 代表成功，其他值为失败)", LaunchManager.InfoMsg, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ShowAsyncMessageBox($"命令执行完成！\n\n返回值为 {SyncTimeProcess.ExitCode}\n(0 代表成功，其他值为失败)", LaunchManager.InfoMsg, MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Win32Exception ex)
             {
@@ -327,14 +327,22 @@ namespace CEETimerCSharpWinForms.Forms
                  */
                 if (ex.NativeErrorCode == 1223)
                 {
-                    MessageBox.Show($"请在 UAC 对话框弹出时点击 \"是\"\n\n错误信息：\n{ex.Message}\n\n错误详情：\n{ex}", LaunchManager.ErrMsg, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    ShowAsyncMessageBox($"请在 UAC 对话框弹出时点击 \"是\"\n\n错误信息：\n{ex.Message}\n\n错误详情：\n{ex}", LaunchManager.ErrMsg, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 #endregion
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"命令执行时发生了错误。\n\n错误信息：\n{ex.Message}\n\n错误详情：\n{ex}", LaunchManager.InfoMsg, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ShowAsyncMessageBox($"命令执行时发生了错误。\n\n错误信息：\n{ex.Message}\n\n错误详情：\n{ex}", LaunchManager.InfoMsg, MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
+        }
+
+        private void ShowAsyncMessageBox(string Message, string LevelMsg, MessageBoxButtons Buttons, MessageBoxIcon Icon)
+        {
+            Invoke(new Action(() =>
+            {
+                MessageBox.Show(Message, LevelMsg, Buttons, Icon);
+            }));
         }
 
         private void ChangeFont(Font NewFont)
