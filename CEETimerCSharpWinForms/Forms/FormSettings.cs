@@ -31,6 +31,7 @@ namespace CEETimerCSharpWinForms.Forms
 
         private bool IsSyncingTime = false;
         private bool IsSettingsChanged;
+        private enum WorkingArea { Funny, SyncTime }
         private readonly FontConverter fontConverter = new();
 
         public FormSettings()
@@ -40,7 +41,7 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void FormSettings_Load(object sender, EventArgs e)
         {
-            ChangeWorkingStyle(false, "Funny");
+            ChangeWorkingStyle(false, WorkingArea.Funny);
             RefreshSettings();
             IsSettingsChanged = false;
             ButtonSave.Enabled = false;
@@ -76,15 +77,15 @@ namespace CEETimerCSharpWinForms.Forms
             {
                 ButtonRestart.Click -= ButtonRestart_Click;
                 ButtonRestart.Click += ButtonRestart_Funny_Click;
-                ChangeWorkingStyle(true, "Funny");
+                ChangeWorkingStyle(true, WorkingArea.Funny);
             }
         }
 
         private async void ButtonSyncTime_Click(object sender, EventArgs e)
         {
-            ChangeWorkingStyle(true, "SyncTime");
+            ChangeWorkingStyle(true, WorkingArea.SyncTime);
             await Task.Run(StartSyncTime);
-            ChangeWorkingStyle(false, "SyncTime");
+            ChangeWorkingStyle(false, WorkingArea.SyncTime);
         }
 
         private void ButtonSave_Click(object sender, EventArgs e)
@@ -182,7 +183,7 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void FormSettings_FormClosed(object sender, FormClosedEventArgs e)
         {
-            ChangeWorkingStyle(false, "Funny");
+            ChangeWorkingStyle(false, WorkingArea.Funny);
             ButtonRestart.Click -= ButtonRestart_Funny_Click;
             ButtonRestart.Click += ButtonRestart_Click;
         }
@@ -353,21 +354,22 @@ namespace CEETimerCSharpWinForms.Forms
             LabelFontInfo.Text = $"当前选择的字体/大小/样式: {NewFont.Name}, {NewFont.Size}pt, {NewFont.Style}";
         }
 
-        private void ChangeWorkingStyle(bool IsWorking, string WhereToChange)
+        private void ChangeWorkingStyle(bool IsWorking, WorkingArea Where)
         {
-            if (WhereToChange == "SyncTime")
+            switch (Where)
             {
-                IsSyncingTime = IsWorking;
-                ButtonSyncTime.Enabled = !IsWorking;
-                ButtonRestart.Enabled = !IsWorking;
-                ButtonSyncTime.Text = IsWorking ? "正在同步中，请稍候..." : "立即同步(&S)";
-            }
-            else if (WhereToChange == "Funny")
-            {
-                GBoxRestart.Text = IsWorking ? "关闭倒计时" : "重启倒计时";
-                LabelLine9.Text = IsWorking ? "如果你由于某些原因需要临时关闭这个倒计时, 那你现在就可以选择" : "如果你更改了屏幕缩放或者分辨率, 可以点击此按钮来重启倒计时以";
-                LabelLine10.Text = IsWorking ? "关闭它了。" : "确保显示的文字不会变模糊。";
-                ButtonRestart.Text = IsWorking ? "点击关闭(&C)" : "点击重启(&R)";
+                case WorkingArea.SyncTime:
+                    IsSyncingTime = IsWorking;
+                    ButtonSyncTime.Enabled = !IsWorking;
+                    ButtonRestart.Enabled = !IsWorking;
+                    ButtonSyncTime.Text = IsWorking ? "正在同步中，请稍候..." : "立即同步(&S)";
+                    break;
+                case WorkingArea.Funny:
+                    GBoxRestart.Text = IsWorking ? "关闭倒计时" : "重启倒计时";
+                    LabelLine9.Text = IsWorking ? "如果你由于某些原因需要临时关闭这个倒计时, 那你现在就可以选择" : "如果你更改了屏幕缩放或者分辨率, 可以点击此按钮来重启倒计时以";
+                    LabelLine10.Text = IsWorking ? "关闭它了。" : "确保显示的文字不会变模糊。";
+                    ButtonRestart.Text = IsWorking ? "点击关闭(&C)" : "点击重启(&R)";
+                    break;
             }
         }
 
