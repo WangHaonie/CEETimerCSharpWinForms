@@ -2,6 +2,7 @@
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Threading.Tasks;
@@ -298,17 +299,42 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void StartSyncTime()
         {
-            Process SyncTimeProcess = Process.Start(new ProcessStartInfo
+            try
             {
-                FileName = @"cmd.exe",
-                Arguments = "/c w32tm /config /manualpeerlist:ntp1.aliyun.com /syncfromflags:manual /reliable:YES /update && net stop w32time && net start w32time && sc config w32time start= auto && w32tm /resync && w32tm /resync",
-                Verb = "runas",
-                CreateNoWindow = true,
-                WindowStyle = ProcessWindowStyle.Hidden
-            });
+                Process SyncTimeProcess = Process.Start(new ProcessStartInfo
+                {
+                    UseShellExecute = true,
+                    FileName = @"cmd.exe",
+                    Arguments = "/c w32tm /config /manualpeerlist:ntp1.aliyun.com /syncfromflags:manual /reliable:YES /update && net stop w32time && net start w32time && sc config w32time start= auto && w32tm /resync && w32tm /resync",
+                    Verb = "runas",
+                    CreateNoWindow = true,
+                    WindowStyle = ProcessWindowStyle.Hidden
+                });
 
-            SyncTimeProcess.WaitForExit();
-            MessageBox.Show($"命令执行完成！\n\n返回值为 {SyncTimeProcess.ExitCode}\n(0 代表成功，其他值为失败)", LaunchManager.InfoMsg, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                SyncTimeProcess.WaitForExit();
+                MessageBox.Show($"命令执行完成！\n\n返回值为 {SyncTimeProcess.ExitCode}\n(0 代表成功，其他值为失败)", LaunchManager.InfoMsg, MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Win32Exception ex)
+            {
+                #region 来自网络
+                /*
+                 
+                检测用户是否点击了 UAC 提示框的 "否" 参考:
+
+                c# - Run process as administrator from a non-admin application - Stack Overflow
+                https://stackoverflow.com/a/20872219/21094697
+                 
+                 */
+                if (ex.NativeErrorCode == 1223)
+                {
+                    MessageBox.Show($"请在 UAC 对话框弹出时点击 \"是\"\n\n错误信息：\n{ex.Message}\n\n错误详情：\n{ex}", LaunchManager.ErrMsg, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                #endregion
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"命令执行时发生了错误。\n\n错误信息：\n{ex.Message}\n\n错误详情：\n{ex}", LaunchManager.InfoMsg, MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
 
         private void ChangeFont(Font NewFont)
