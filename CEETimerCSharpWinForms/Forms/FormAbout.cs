@@ -1,5 +1,6 @@
 ﻿using CEETimerCSharpWinForms.Modules;
 using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -52,12 +53,12 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void ButtonGitHub_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start("https://github.com/WangHaonie/CEETimerCSharpWinForms");
+            Process.Start("https://github.com/WangHaonie/CEETimerCSharpWinForms");
         }
 
         private void ButtonLicense_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start("https://github.com/WangHaonie/CEETimerCSharpWinForms/blob/main/LICENSE");
+            Process.Start("https://github.com/WangHaonie/CEETimerCSharpWinForms/blob/main/LICENSE");
         }
 
         private void ButtonClose_Click(object sender, EventArgs e)
