@@ -25,7 +25,7 @@ namespace CEETimerCSharpWinForms.Modules
                 DateTime.TryParse(JObject.Parse(ResponseContent)["published_at"].ToString(), out DateTime result);
                 string PublishTime = result.AddHours(8).ToString("yyyy-MM-dd HH:mm:ss");
                 string UpdateLog = JObject.Parse(ResponseContent)["body"].ToString().RemoveInvalidLogChars();
-                
+
                 if (Version.Parse(LatestVersion) > Version.Parse(LaunchManager.AppVersion))
                 {
                     FormMain MainForm = Application.OpenForms[0] as FormMain;

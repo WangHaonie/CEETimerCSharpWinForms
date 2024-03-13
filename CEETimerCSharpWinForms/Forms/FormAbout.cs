@@ -37,11 +37,11 @@ namespace CEETimerCSharpWinForms.Forms
 
         private async void LabelVersion_Click(object sender, EventArgs e)
         {
+            IsCheckingUpdate = true;
             LableVersion.Enabled = false;
 
             try
             {
-                IsCheckingUpdate = true;
                 await Task.Run(() => CheckForUpdate.Start(false));
             }
             finally
