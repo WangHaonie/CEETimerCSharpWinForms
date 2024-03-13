@@ -59,6 +59,7 @@
             this.ToolStripSeparator1,
             this.ContextMenuOpenDir});
             this.ContextMenuMain.Name = "Context";
+            this.ContextMenuMain.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
             this.ContextMenuMain.Size = new System.Drawing.Size(183, 76);
             // 
             // ContextMenuSettings
@@ -95,7 +96,7 @@
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(265, 15);
+            this.ClientSize = new System.Drawing.Size(265, 23);
             this.ContextMenuStrip = this.ContextMenuMain;
             this.ControlBox = false;
             this.Controls.Add(this.LableCountdown);
