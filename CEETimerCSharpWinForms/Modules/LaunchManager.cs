@@ -11,8 +11,8 @@ namespace CEETimerCSharpWinForms.Modules
 {
     public class LaunchManager
     {
-        public const string AppVersion = "2.7";
-        public const string AppVersionText = $"版本 v{AppVersion} x64 (2024/03/10)";
+        public const string AppVersion = "2.8";
+        public const string AppVersionText = $"版本 v{AppVersion} x64 (2024/03/14)";
         public const string InfoMsg = "提示 - 高考倒计时";
         public const string WarnMsg = "警告 - 高考倒计时";
         public const string ErrMsg = "错误 - 高考倒计时";

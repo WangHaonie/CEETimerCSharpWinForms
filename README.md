@@ -2,9 +2,9 @@
 [![GitHub all releases](https://img.shields.io/github/downloads/WangHaonie/CEETimerCSharpWinForms/total?logo=github&label=%E4%B8%8B%E8%BD%BD%E9%87%8F&color=%23DC67A5)](#) [![GitHub release (with filter)](https://img.shields.io/github/v/release/WangHaonie/CEETimerCSharpWinForms?logo=github&label=%E6%9C%80%E6%96%B0%E7%89%88&color=%23178600)](https://github.com/WangHaonie/CEETimerCSharpWinForms/releases/latest/) [![GitHub Repo stars](https://img.shields.io/github/stars/WangHaonie/CEETimerCSharpWinForms?logo=github&label=Stars&color=%23E5B84E)](#) [![GitHub](https://img.shields.io/github/license/WangHaonie/CEETimerCSharpWinForms?logo=github&label=%E8%AE%B8%E5%8F%AF%E8%AF%81&color=%233C9DF8)](https://github.com/WangHaonie/CEETimerCSharpWinForms/blob/main/LICENSE)
 ## 简介
 CEETimerCSharpWinForms，适用于 Windows 系统的高考倒计时，自 v1.6 起不再只是高考倒计时，你可以自定义考试名称。
-> 开发环境：Windows 11 Pro x64 (22635.3276)，Visual Studio 2022 (17.9.2)，C# (12.0)，WinForms，.NET Framework 4.7.2
+> 开发环境：Windows 11 Pro x64 (22635.3350)，Visual Studio 2022 (17.9.3)，C# (12.0)，WinForms，.NET Framework 4.7.2
 ## 运行截图
-> v2.7，Windows 10，1920x1080，125% 缩放
+> v2.8，Windows 10，1920x1080，125% 缩放
 
 ![主窗口](./Screenshot.jpg)
 ## 主要功能

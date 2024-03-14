@@ -4,8 +4,8 @@ SetFont "Segoe UI" 9
 
 !include "MUI2.nsh"
 !define PRODUCT_NAME "¸ß¿¼µ¹¼ÆÊ±"
-!define PRODUCT_VERSION "v2.7"
-!define SETUP_FILENAME_NO_V "2.7"
+!define PRODUCT_VERSION "v2.8"
+!define SETUP_FILENAME_NO_V "2.8"
 !define PRODUCT_PUBLISHER "WangHaonie"
 !define PRODUCT_WEB_SITE "https://github.com/WangHaonie/CEETimerCSharpWinForms"
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
