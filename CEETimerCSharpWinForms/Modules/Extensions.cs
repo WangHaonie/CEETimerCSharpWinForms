@@ -20,21 +20,9 @@ namespace CEETimerCSharpWinForms.Modules
             #endregion
         }
 
-        public static string RemoveInvalidLogChars(this string UpdateLog)
+        public static string RemoveInvalidLogChars(this string UpdateLog, string LatestVersion)
         {
-            #region 来自网络
-            /*
-            
-            移除字符串里所有的 Emoji 参考：
-
-            c# - How do I remove emoji characters from a string? - Stack Overflow
-            https://stackoverflow.com/a/28025891/21094697
-
-            (可恶，为什么不能移除⛔啊，++)
-
-            */
-            return Regex.Replace(UpdateLog.Replace(">  🌈 新功能、🛠️ 修复、⛔ 移除\r\n\r\n", "").Replace("⛔", "").Replace("## ", "").Replace("+ ", "# ").Replace("；", ""), @"\p{Cs}", "");
-            #endregion
+            return Regex.Replace(UpdateLog.RemoveAllBadChars(), @"[#\>]", "").Replace($"v{LatestVersion}更新日志新功能修复移除", "").Replace("+","\n# ");
         }
     }
 }
