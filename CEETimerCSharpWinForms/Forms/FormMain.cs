@@ -183,6 +183,7 @@ namespace CEETimerCSharpWinForms
 
             ExamName = ConfigManager.ReadConfig("ExamName");
             TopMost = !bool.TryParse(ConfigManager.ReadConfig("TopMost"), out bool tmpa) || tmpa;
+            ShowInTaskbar = !TopMost;
             IsFeatureVDMEnabled = bool.TryParse(ConfigManager.ReadConfig("FeatureVDM"), out bool tmpb) && tmpb;
             IsFeatureMOEnabled = bool.TryParse(ConfigManager.ReadConfig("FeatureMO"), out bool tmpc) && tmpc;
             IsDaysOnly = bool.TryParse(ConfigManager.ReadConfig("DaysOnly"), out bool tmpd) && tmpd;
