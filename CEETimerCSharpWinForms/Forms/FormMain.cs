@@ -46,6 +46,8 @@ namespace CEETimerCSharpWinForms
                 IsFeatureVDMEnabled = true;
             }
 
+            RefreshSettings(sender, e);
+
             TimerCountdown = new Timer()
             {
                 Interval = 1000
@@ -53,8 +55,6 @@ namespace CEETimerCSharpWinForms
 
             TimerCountdown.Tick += TimerCountdown_Tick;
             TimerCountdown.Start();
-
-            RefreshSettings(sender, e);
         }
 
         private void TimerCountdown_Tick(object sender, EventArgs e)
@@ -179,6 +179,8 @@ namespace CEETimerCSharpWinForms
 
         private void RefreshSettings(object sender, EventArgs e)
         {
+            ConfigManager.MountConfig(true);
+
             ExamName = ConfigManager.ReadConfig("ExamName");
             TopMost = !bool.TryParse(ConfigManager.ReadConfig("TopMost"), out bool tmpa) || tmpa;
             IsFeatureVDMEnabled = bool.TryParse(ConfigManager.ReadConfig("FeatureVDM"), out bool tmpb) && tmpb;
@@ -190,6 +192,8 @@ namespace CEETimerCSharpWinForms
             IsDragable = bool.TryParse(ConfigManager.ReadConfig("Dragable"), out bool tmph) && tmph;
             DateTime.TryParseExact(ConfigManager.ReadConfig("ExamStartTime"), "yyyyMMddHHmmss", null, System.Globalization.DateTimeStyles.None, out ExamStartTime);
             DateTime.TryParseExact(ConfigManager.ReadConfig("ExamEndTime"), "yyyyMMddHHmmss", null, System.Globalization.DateTimeStyles.None, out ExamEndTime);
+
+            ConfigManager.MountConfig(false);
 
             if (LaunchManager.CurrentWindowsVersion < 10)
             {

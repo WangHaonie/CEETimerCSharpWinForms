@@ -16,7 +16,8 @@ namespace CEETimerCSharpWinForms.Modules
         https://www.cnblogs.com/baozi789654/p/15645897.html
 
         */
-        private static Dictionary<string, string> JsonConfig = [];
+        private static bool IsConfigMounted;
+        private static Dictionary<string, string> JsonConfig;
         private static readonly string ConfigFile = $"{LaunchManager.CurrentExecutablePath}CEETimerCSharpWinForms.dll";
 
         private static void CheckConfig()
@@ -27,35 +28,21 @@ namespace CEETimerCSharpWinForms.Modules
                 {
                     Directory.Delete(ConfigFile);
                 }
-                else
-                {
-                    File.Create(ConfigFile).Close();
-                }
+                File.Create(ConfigFile).Close();
             }
         }
 
-        public static string ReadConfig(string key)
+        public static string ReadConfig(string Key)
         {
-            CheckConfig();
-
-            try
+            if (IsConfigMounted && JsonConfig != null && JsonConfig.ContainsKey(Key))
             {
-                JsonConfig = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(ConfigFile));
-            }
-            catch
-            {
-                JsonConfig = [];
-            }
-
-            if (JsonConfig != null && JsonConfig.ContainsKey(key))
-            {
-                if (key == "Font")
+                if (Key == "Font")
                 {
                     return JsonConfig["Font"];
                 }
                 else
                 {
-                    return JsonConfig[key].RemoveAllBadChars();
+                    return JsonConfig[Key].RemoveAllBadChars();
                 }
             }
             else
@@ -69,15 +56,38 @@ namespace CEETimerCSharpWinForms.Modules
             CheckConfig();
             JsonConfig ??= [];
 
-            foreach (var Keys in DataSet)
+            foreach (var Data in DataSet)
             {
-                JsonConfig[Keys.Key] = Keys.Value;
+                JsonConfig[Data.Key] = Data.Value;
             }
 
             string Config = JsonConvert.SerializeObject(JsonConfig);
             File.WriteAllText(ConfigFile, Config);
         }
         #endregion
+
+        public static void MountConfig(bool IsMount)
+        {
+            CheckConfig();
+
+            try
+            {
+                if (IsMount)
+                {
+                    JsonConfig = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(ConfigFile));
+                    IsConfigMounted = true;
+                }
+                else
+                {
+                    throw new Exception();
+                }
+            }
+            catch
+            {
+                JsonConfig = null;
+                IsConfigMounted = false;
+            }
+        }
 
         public static bool IsValidData(string ExamName)
         {
