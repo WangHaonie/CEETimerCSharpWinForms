@@ -377,5 +377,26 @@ namespace CEETimerCSharpWinForms.Forms
         {
             ConfigChanged?.Invoke(this, EventArgs.Empty);
         }
+
+        #region
+        /*
+        
+        解决设置窗口因控件较多导致的闪烁问题 参考:
+
+        winform窗体闪烁问题解决 - 就叫我雷人吧 - 博客园
+        https://www.cnblogs.com/guosheng/p/7417918.html
+
+         */
+
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams cp = base.CreateParams;
+                cp.ExStyle |= 0x02000000;
+                return cp;
+            }
+        }
+        #endregion
     }
 }

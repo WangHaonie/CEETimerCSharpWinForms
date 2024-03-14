@@ -631,6 +631,7 @@
             this.Controls.Add(this.TabControlMain);
             this.Controls.Add(this.ButtonSave);
             this.Controls.Add(this.ButtonClose);
+            this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.KeyPreview = true;
