@@ -13,7 +13,7 @@ namespace CEETimerCSharpWinForms.Modules
         private const string GitHubAPI = "https://api.github.com/repos/WangHaonie/CEETimerCSharpWinForms/releases/latest";
         private static FormDownloader DownloaderForm;
 
-        public static void Start(bool IsProgramStart)
+        public static void Start(bool IsProgramStart, Form ThisForm)
         {
             using var HttpClienMain = new HttpClient();
             HttpClienMain.DefaultRequestHeaders.UserAgent.ParseAdd(LaunchManager.RequestUA);
@@ -46,14 +46,14 @@ namespace CEETimerCSharpWinForms.Modules
                 }
                 else if (!IsProgramStart)
                 {
-                    MessageBox.Show($"当前 v{LaunchManager.AppVersion} 已是最新版本。\n\n获取到的版本：v{LatestVersion}\n发布日期: {PublishTime}\n\n当前版本更新日志: {UpdateLog}", LaunchManager.InfoMsg, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    FormSettings.ShowAsyncMessageBox(ThisForm, $"当前 v{LaunchManager.AppVersion} 已是最新版本。\n\n获取到的版本：v{LatestVersion}\n发布日期: {PublishTime}\n\n当前版本更新日志: {UpdateLog}", LaunchManager.InfoMsg, MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
             catch (Exception ex)
             {
                 if (!IsProgramStart)
                 {
-                    MessageBox.Show($"检查更新时发生错误! \n\n错误信息：\n{ex.Message}\n\n错误详情：\n{ex}", LaunchManager.ErrMsg, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    FormSettings.ShowAsyncMessageBox(ThisForm, $"检查更新时发生错误! \n\n错误信息：\n{ex.Message}\n\n错误详情：\n{ex}", LaunchManager.ErrMsg, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
