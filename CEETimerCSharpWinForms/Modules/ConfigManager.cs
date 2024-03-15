@@ -100,7 +100,7 @@ namespace CEETimerCSharpWinForms.Modules
 
         public static bool IsValidData(DateTime ExamTime)
         {
-            if (ExamTime < new DateTime(1753, 1, 1, 23, 59, 59) || ExamTime > new DateTime(2106, 12, 31, 23, 59, 59))
+            if (ExamTime < new DateTime(1753, 1, 1, 0, 0, 0) || ExamTime > new DateTime(9998, 12, 31, 23, 59, 59))
             {
                 return false;
             }
