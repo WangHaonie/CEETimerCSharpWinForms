@@ -165,11 +165,12 @@
     <Compile Include="Forms\FormSettings.Designer.cs">
       <DependentUpon>FormSettings.cs</DependentUpon>
     </Compile>
-    <Compile Include="Modules\CheckForUpdate.cs" />
+    <Compile Include="Modules\Updater.cs" />
     <Compile Include="Modules\ConfigManager.cs" />
     <Compile Include="Modules\Extensions.cs" />
     <Compile Include="Modules\LaunchManager.cs" />
     <Compile Include="Modules\MemoryManager.cs" />
+    <Compile Include="Modules\SimpleMessageBox.cs" />
     <Compile Include="Modules\VirtualDesktopSwitch.cs">
       <SubType>Form</SubType>
     </Compile>

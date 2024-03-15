@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace CEETimerCSharpWinForms.Modules
+namespace CEETimerCSharpWinForms
 {
     public static class Extensions
     {
@@ -22,7 +22,7 @@ namespace CEETimerCSharpWinForms.Modules
 
         public static string RemoveInvalidLogChars(this string UpdateLog, string LatestVersion)
         {
-            return Regex.Replace(UpdateLog.RemoveAllBadChars(), @"[#\>]", "").Replace($"v{LatestVersion}更新日志新功能修复移除", "").Replace("+","\n# ");
+            return Regex.Replace(UpdateLog.RemoveAllBadChars(), @"[#\>]", "").Replace($"v{LatestVersion}更新日志新功能修复移除", "").Replace("+", "\n# ");
         }
     }
 }

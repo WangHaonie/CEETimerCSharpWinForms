@@ -1,6 +1,4 @@
-﻿using CEETimerCSharpWinForms.Modules;
-
-namespace CEETimerCSharpWinForms.Forms
+﻿namespace CEETimerCSharpWinForms.Forms
 {
     partial class FormAbout
     {

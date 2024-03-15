@@ -1,5 +1,4 @@
 ﻿using CEETimerCSharpWinForms.Forms;
-using CEETimerCSharpWinForms.Modules;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -8,6 +7,9 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using VirtualDesktopSwitch;
+using static CEETimerCSharpWinForms.ConfigManager;
+using static CEETimerCSharpWinForms.LaunchManager;
+using static CEETimerCSharpWinForms.MemoryManager;
 
 namespace CEETimerCSharpWinForms
 {
@@ -42,7 +44,7 @@ namespace CEETimerCSharpWinForms
 
         private void FormMain_Load(object sender, EventArgs e)
         {
-            if (LaunchManager.CurrentWindowsVersion >= 10)
+            if (CurrentWindowsVersion >= 10)
             {
                 vdm = new VirtualDesktopManager();
                 IsFeatureVDMEnabled = true;
@@ -57,6 +59,87 @@ namespace CEETimerCSharpWinForms
 
             TimerCountdown.Tick += TimerCountdown_Tick;
             TimerCountdown.Start();
+        }
+
+        private void RefreshSettings(object sender, EventArgs e)
+        {
+            MountConfig(true);
+
+            ExamName = ReadConfig("ExamName");
+            TopMost = !bool.TryParse(ReadConfig("TopMost"), out bool tmpa) || tmpa;
+            ShowInTaskbar = !TopMost;
+            IsFeatureVDMEnabled = bool.TryParse(ReadConfig("FeatureVDM"), out bool tmpb) && tmpb;
+            IsFeatureMOEnabled = bool.TryParse(ReadConfig("FeatureMO"), out bool tmpc) && tmpc;
+            IsDaysOnly = bool.TryParse(ReadConfig("DaysOnly"), out bool tmpd) && tmpd;
+            IsRounding = bool.TryParse(ReadConfig("Rounding"), out bool tmpe) && tmpe;
+            IsNoStart = bool.TryParse(ReadConfig("NoStart"), out bool tmpf) && tmpf;
+            IsNoPast = bool.TryParse(ReadConfig("NoPast"), out bool tmpg) && tmpg;
+            IsDragable = bool.TryParse(ReadConfig("Dragable"), out bool tmph) && tmph;
+            IsUniTopMost = !bool.TryParse(ReadConfig("UniTopMost"), out bool tmpi) || tmpi;
+            DateTime.TryParseExact(ReadConfig("ExamStartTime"), "yyyyMMddHHmmss", null, System.Globalization.DateTimeStyles.None, out ExamStartTime);
+            DateTime.TryParseExact(ReadConfig("ExamEndTime"), "yyyyMMddHHmmss", null, System.Globalization.DateTimeStyles.None, out ExamEndTime);
+
+            MountConfig(false);
+
+            if (IsUniTopMost && TopMost)
+            {
+                UniTopMost = true;
+            }
+            else
+            {
+                UniTopMost = false;
+            }
+
+            if (CurrentWindowsVersion < 10)
+            {
+                IsFeatureVDMEnabled = false;
+            }
+
+            if (IsRounding && !IsDaysOnly)
+            {
+                IsRounding = false;
+            }
+
+            if (IsDragable)
+            {
+                LocationChanged += Form_LocationChanged;
+                LableCountdown.MouseDown += Drag_MouseDown;
+            }
+            else
+            {
+                Location = new Point(0, 0);
+                LocationChanged -= Form_LocationChanged;
+                LableCountdown.MouseDown -= Drag_MouseDown;
+            }
+
+            try
+            {
+                SelectedFont = (Font)fontConverter.ConvertFromString(ReadConfig("Font"));
+                SelectedFontStyle = (FontStyle)Enum.Parse(typeof(FontStyle), ReadConfig("FontStyle"));
+
+                if (SelectedFont.Size > 24 || SelectedFont.Size < 10)
+                {
+                    throw new Exception();
+                }
+            }
+            catch
+            {
+                SelectedFont = (Font)fontConverter.ConvertFromString(OriginalFontString);
+                SelectedFontStyle = FontStyle.Bold;
+            }
+
+            LableCountdown.Font = new Font(SelectedFont, SelectedFontStyle);
+
+            if (!IsValidData(ExamName) || !IsValidData(ExamStartTime) || !IsValidData(ExamEndTime))
+            {
+                IsReady = false;
+                LableCountdown.ForeColor = Color.Black;
+                LableCountdown.Text = $"欢迎使用高考倒计时，请右键点击此处到设置里添加考试信息";
+            }
+            else
+            {
+                IsReady = true;
+            }
         }
 
         private void TimerCountdown_Tick(object sender, EventArgs e)
@@ -78,7 +161,7 @@ namespace CEETimerCSharpWinForms
             i++;
             if (i % 300 == 0 || i == 5)
             {
-                MemoryManager.Optimize();
+                OptimizeMemory();
             }
         }
 
@@ -179,87 +262,6 @@ namespace CEETimerCSharpWinForms
             }
         }
 
-        private void RefreshSettings(object sender, EventArgs e)
-        {
-            ConfigManager.MountConfig(true);
-
-            ExamName = ConfigManager.ReadConfig("ExamName");
-            TopMost = !bool.TryParse(ConfigManager.ReadConfig("TopMost"), out bool tmpa) || tmpa;
-            ShowInTaskbar = !TopMost;
-            IsFeatureVDMEnabled = bool.TryParse(ConfigManager.ReadConfig("FeatureVDM"), out bool tmpb) && tmpb;
-            IsFeatureMOEnabled = bool.TryParse(ConfigManager.ReadConfig("FeatureMO"), out bool tmpc) && tmpc;
-            IsDaysOnly = bool.TryParse(ConfigManager.ReadConfig("DaysOnly"), out bool tmpd) && tmpd;
-            IsRounding = bool.TryParse(ConfigManager.ReadConfig("Rounding"), out bool tmpe) && tmpe;
-            IsNoStart = bool.TryParse(ConfigManager.ReadConfig("NoStart"), out bool tmpf) && tmpf;
-            IsNoPast = bool.TryParse(ConfigManager.ReadConfig("NoPast"), out bool tmpg) && tmpg;
-            IsDragable = bool.TryParse(ConfigManager.ReadConfig("Dragable"), out bool tmph) && tmph;
-            IsUniTopMost = !bool.TryParse(ConfigManager.ReadConfig("UniTopMost"), out bool tmpi) || tmpi;
-            DateTime.TryParseExact(ConfigManager.ReadConfig("ExamStartTime"), "yyyyMMddHHmmss", null, System.Globalization.DateTimeStyles.None, out ExamStartTime);
-            DateTime.TryParseExact(ConfigManager.ReadConfig("ExamEndTime"), "yyyyMMddHHmmss", null, System.Globalization.DateTimeStyles.None, out ExamEndTime);
-
-            ConfigManager.MountConfig(false);
-
-            if (IsUniTopMost && TopMost)
-            {
-                ConfigManager.UniTopMost = true;
-            }
-            else
-            {
-                ConfigManager.UniTopMost = false;
-            }
-
-            if (LaunchManager.CurrentWindowsVersion < 10)
-            {
-                IsFeatureVDMEnabled = false;
-            }
-
-            if (IsRounding && !IsDaysOnly)
-            {
-                IsRounding = false;
-            }
-
-            if (IsDragable)
-            {
-                LocationChanged += Form_LocationChanged;
-                LableCountdown.MouseDown += Drag_MouseDown;
-            }
-            else
-            {
-                Location = new Point(0, 0);
-                LocationChanged -= Form_LocationChanged;
-                LableCountdown.MouseDown -= Drag_MouseDown;
-            }
-
-            try
-            {
-                SelectedFont = (Font)fontConverter.ConvertFromString(ConfigManager.ReadConfig("Font"));
-                SelectedFontStyle = (FontStyle)Enum.Parse(typeof(FontStyle), ConfigManager.ReadConfig("FontStyle"));
-
-                if (SelectedFont.Size > 24 || SelectedFont.Size < 10)
-                {
-                    throw new Exception();
-                }
-            }
-            catch
-            {
-                SelectedFont = (Font)fontConverter.ConvertFromString(LaunchManager.OriginalFontString);
-                SelectedFontStyle = FontStyle.Bold;
-            }
-
-            LableCountdown.Font = new Font(SelectedFont, SelectedFontStyle);
-
-            if (!ConfigManager.IsValidData(ExamName) || !ConfigManager.IsValidData(ExamStartTime) || !ConfigManager.IsValidData(ExamEndTime))
-            {
-                IsReady = false;
-                LableCountdown.ForeColor = Color.Black;
-                LableCountdown.Text = $"欢迎使用高考倒计时，请右键点击此处到设置里添加考试信息";
-            }
-            else
-            {
-                IsReady = true;
-            }
-        }
-
         private void Drag_MouseDown(object sender, MouseEventArgs e)
         {
             ReleaseCapture();
@@ -339,7 +341,7 @@ namespace CEETimerCSharpWinForms
 
         private void ContextMenuOpenDir_Click(object sender, EventArgs e)
         {
-            Process.Start(LaunchManager.CurrentExecutablePath);
+            Process.Start(CurrentExecutablePath);
         }
 
         private void FormMain_FormClosing(object sender, FormClosingEventArgs e)

@@ -2,9 +2,9 @@
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
-namespace CEETimerCSharpWinForms.Modules
+namespace CEETimerCSharpWinForms
 {
-    public class MemoryManager
+    public static class MemoryManager
     {
         #region 来自网络
         /*
@@ -16,10 +16,10 @@ namespace CEETimerCSharpWinForms.Modules
 
          */
         [DllImport("psapi.dll")]
-        static extern int EmptyWorkingSet(IntPtr hwProc);
+        public static extern int EmptyWorkingSet(IntPtr hwProc);
         #endregion
 
-        public static void Optimize()
+        public static void OptimizeMemory()
         {
             Process ProcessGetCurrentMemory = Process.Start(new ProcessStartInfo
             {

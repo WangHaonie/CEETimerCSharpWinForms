@@ -1,5 +1,4 @@
-﻿using CEETimerCSharpWinForms.Modules;
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -7,6 +6,9 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static CEETimerCSharpWinForms.ConfigManager;
+using static CEETimerCSharpWinForms.LaunchManager;
+using static CEETimerCSharpWinForms.SimpleMessageBox;
 
 namespace CEETimerCSharpWinForms.Forms
 {
@@ -40,17 +42,17 @@ namespace CEETimerCSharpWinForms.Forms
             ConfigChanged += RefreshSettings;
         }
 
-        private void RefreshSettings(object sender, EventArgs e)
-        {
-            ConfigManager.SetTopMost(this);
-        }
-
         private void FormSettings_Load(object sender, EventArgs e)
         {
             ChangeWorkingStyle(false, WorkingArea.Funny);
             RefreshSettings();
             IsSettingsChanged = false;
             ButtonSave.Enabled = false;
+        }
+
+        private void RefreshSettings(object sender, EventArgs e)
+        {
+            SetTopMost(this);
         }
 
         private void SettingsChanged(object sender, EventArgs e)
@@ -69,12 +71,12 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void ButtonRestart_Click(object sender, EventArgs e)
         {
-            LaunchManager.Restart();
+            Restart();
         }
 
         private void ButtonRestart_Funny_Click(object sender, EventArgs e)
         {
-            LaunchManager.Shutdown();
+            Shutdown();
         }
 
         private void ButtonRestart_MouseDown(object sender, MouseEventArgs e)
@@ -92,17 +94,6 @@ namespace CEETimerCSharpWinForms.Forms
             ChangeWorkingStyle(true, WorkingArea.SyncTime);
             await Task.Run(StartSyncTime);
             ChangeWorkingStyle(false, WorkingArea.SyncTime);
-        }
-
-        private void ButtonSave_Click(object sender, EventArgs e)
-        {
-            if (ValidateInput())
-            {
-                IsSettingsChanged = false;
-                SaveSettings();
-                OnConfigChanged();
-                Close();
-            }
         }
 
         private void ButtonChooseFont_Click(object sender, EventArgs e)
@@ -131,7 +122,7 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void ButtonRestoreFont_Click(object sender, EventArgs e)
         {
-            ChangeFont(new((Font)fontConverter.ConvertFromString(LaunchManager.OriginalFontString), FontStyle.Bold));
+            ChangeFont(new((Font)fontConverter.ConvertFromString(OriginalFontString), FontStyle.Bold));
             SettingsChanged(sender, e);
         }
 
@@ -166,6 +157,17 @@ namespace CEETimerCSharpWinForms.Forms
             CheckBoxSetNoPast.Enabled = !CheckBoxSetNoStart.Checked;
         }
 
+        private void ButtonSave_Click(object sender, EventArgs e)
+        {
+            if (ValidateInput())
+            {
+                IsSettingsChanged = false;
+                SaveSettings();
+                OnConfigChanged();
+                Close();
+            }
+        }
+
         private void ButtonClose_Click(object sender, EventArgs e)
         {
             Close();
@@ -187,7 +189,7 @@ namespace CEETimerCSharpWinForms.Forms
             }
             else if (IsSettingsChanged)
             {
-                if (MessageBox.Show("检测到设置被更改但没有被保存，是否立即进行保存？", LaunchManager.WarnMsg, MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+                if (Popup("检测到设置被更改但没有被保存，是否立即进行保存？", MessageLevel.Warning, MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
                     ButtonSave_Click(sender, e);
                 }
@@ -208,12 +210,12 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void RefreshSettings()
         {
-            CheckBoxStartup.Checked = (Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true)?.GetValue("CEETimerCSharpWinForms") is string regvalue) && regvalue.Equals($"\"{LaunchManager.CurrentExecutable}\"", StringComparison.OrdinalIgnoreCase);
+            CheckBoxStartup.Checked = (Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true)?.GetValue("CEETimerCSharpWinForms") is string regvalue) && regvalue.Equals($"\"{CurrentExecutable}\"", StringComparison.OrdinalIgnoreCase);
 
             CheckBoxSetTopMost.Checked = TopMostChecked;
             TextBoxExamName.Text = ExamName;
-            DTPExamStart.Value = ConfigManager.IsValidData(ExamStartTime) ? ExamStartTime : DateTime.Now;
-            DTPExamEnd.Value = ConfigManager.IsValidData(ExamEndTime) ? ExamEndTime : DateTime.Now;
+            DTPExamStart.Value = IsValidData(ExamStartTime) ? ExamStartTime : DateTime.Now;
+            DTPExamEnd.Value = IsValidData(ExamEndTime) ? ExamEndTime : DateTime.Now;
             var SelectedFont = CountdownFont;
             CheckBoxEnableVDM.Checked = FeatureVDMEnabled;
             CheckBoxEnableMO.Checked = FeatureMOEnabled;
@@ -222,17 +224,57 @@ namespace CEETimerCSharpWinForms.Forms
             CheckBoxSetRounding.Checked = IsRounding;
             CheckBoxSetNoStart.Checked = IsNoStart;
             CheckBoxSetNoPast.Checked = IsNoPast;
-            CheckBoxSetUniTopMost.Checked = ConfigManager.UniTopMost;
+            CheckBoxSetUniTopMost.Checked = UniTopMost;
 
-            ConfigManager.SetTopMost(this);
+            SetTopMost(this);
 
             ChangeFont(new Font(SelectedFont, CountdownFontStyle));
 
-            if (LaunchManager.CurrentWindowsVersion < 10)
+            if (CurrentWindowsVersion < 10)
             {
                 CheckBoxEnableVDM.Enabled = false;
                 CheckBoxEnableVDM.Checked = false;
                 CheckBoxEnableVDM.Text = $"此功能在当前系统上不可用";
+            }
+        }
+
+        private void StartSyncTime()
+        {
+            try
+            {
+                Process SyncTimeProcess = Process.Start(new ProcessStartInfo
+                {
+                    UseShellExecute = true,
+                    FileName = @"cmd.exe",
+                    Arguments = "/c w32tm /config /manualpeerlist:ntp1.aliyun.com /syncfromflags:manual /reliable:YES /update && net stop w32time && net start w32time && sc config w32time start= auto && w32tm /resync && w32tm /resync",
+                    Verb = "runas",
+                    CreateNoWindow = true,
+                    WindowStyle = ProcessWindowStyle.Hidden
+                });
+
+                SyncTimeProcess.WaitForExit();
+                Popup($"命令执行完成！\n\n返回值为 {SyncTimeProcess.ExitCode}\n(0 代表成功，其他值为失败)", MessageLevel.Info, this);
+            }
+            catch (Win32Exception ex)
+            {
+                #region 来自网络
+                /*
+                 
+                检测用户是否点击了 UAC 提示框的 "否" 参考:
+
+                c# - Run process as administrator from a non-admin application - Stack Overflow
+                https://stackoverflow.com/a/20872219/21094697
+                 
+                 */
+                if (ex.NativeErrorCode == 1223)
+                {
+                    Popup($"请在 UAC 对话框弹出时点击 \"是\"\n\n错误信息：\n{ex.Message}\n\n错误详情：\n{ex}", MessageLevel.Error, this);
+                }
+                #endregion
+            }
+            catch (Exception ex)
+            {
+                Popup($"命令执行时发生了错误。\n\n错误信息：\n{ex.Message}\n\n错误详情：\n{ex}", MessageLevel.Error, this);
             }
         }
 
@@ -245,12 +287,12 @@ namespace CEETimerCSharpWinForms.Forms
 
             if (string.IsNullOrWhiteSpace(ExamName) || (ExamName.Length < 2) || (ExamName.Length > 15))
             {
-                MessageBox.Show("输入的考试名称有误！\n\n请检查输入的考试名称是否太长或太短！", LaunchManager.ErrMsg, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Popup("输入的考试名称有误！\n\n请检查输入的考试名称是否太长或太短！", MessageLevel.Error);
                 return false;
             }
             else if (DTPExamStart.Value >= DTPExamEnd.Value)
             {
-                MessageBox.Show("考试开始时间必须在结束时间之前！", LaunchManager.ErrMsg, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Popup("考试开始时间必须在结束时间之前！", MessageLevel.Error);
                 return false;
             }
             else if (ExamTimeSpan.TotalDays > 4)
@@ -273,7 +315,7 @@ namespace CEETimerCSharpWinForms.Forms
 
             if (!string.IsNullOrEmpty(UniMsg))
             {
-                if (MessageBox.Show(UniMsg, LaunchManager.WarnMsg, MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.Cancel)
+                if (Popup(UniMsg, MessageLevel.Warning, MessageBoxButtons.OKCancel) == DialogResult.Cancel)
                 {
                     return false;
                 }
@@ -290,14 +332,14 @@ namespace CEETimerCSharpWinForms.Forms
 
                 if (CheckBoxStartup.Checked)
                 {
-                    reg.SetValue("CEETimerCSharpWinForms", $"\"{LaunchManager.CurrentExecutable}\"");
+                    reg.SetValue("CEETimerCSharpWinForms", $"\"{CurrentExecutable}\"");
                 }
                 else
                 {
                     reg.DeleteValue("CEETimerCSharpWinForms", false);
                 }
 
-                ConfigManager.WriteConfig(new Dictionary<string, string>
+                WriteConfig(new Dictionary<string, string>
                 {
                     { "ExamName", ExamName },
                     { "ExamStartTime", DTPExamStart.Value.ToString("yyyyMMddHHmmss") },
@@ -318,54 +360,6 @@ namespace CEETimerCSharpWinForms.Forms
             catch
             {
             }
-        }
-
-        private void StartSyncTime()
-        {
-            try
-            {
-                Process SyncTimeProcess = Process.Start(new ProcessStartInfo
-                {
-                    UseShellExecute = true,
-                    FileName = @"cmd.exe",
-                    Arguments = "/c w32tm /config /manualpeerlist:ntp1.aliyun.com /syncfromflags:manual /reliable:YES /update && net stop w32time && net start w32time && sc config w32time start= auto && w32tm /resync && w32tm /resync",
-                    Verb = "runas",
-                    CreateNoWindow = true,
-                    WindowStyle = ProcessWindowStyle.Hidden
-                });
-
-                SyncTimeProcess.WaitForExit();
-                ShowAsyncMessageBox(this, $"命令执行完成！\n\n返回值为 {SyncTimeProcess.ExitCode}\n(0 代表成功，其他值为失败)", LaunchManager.InfoMsg, MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            catch (Win32Exception ex)
-            {
-                #region 来自网络
-                /*
-                 
-                检测用户是否点击了 UAC 提示框的 "否" 参考:
-
-                c# - Run process as administrator from a non-admin application - Stack Overflow
-                https://stackoverflow.com/a/20872219/21094697
-                 
-                 */
-                if (ex.NativeErrorCode == 1223)
-                {
-                    ShowAsyncMessageBox(this, $"请在 UAC 对话框弹出时点击 \"是\"\n\n错误信息：\n{ex.Message}\n\n错误详情：\n{ex}", LaunchManager.ErrMsg, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-                #endregion
-            }
-            catch (Exception ex)
-            {
-                ShowAsyncMessageBox(this, $"命令执行时发生了错误。\n\n错误信息：\n{ex.Message}\n\n错误详情：\n{ex}", LaunchManager.InfoMsg, MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-        }
-
-        public static void ShowAsyncMessageBox(Form ThisForm, string Message, string LevelMsg, MessageBoxButtons Buttons, MessageBoxIcon Icon)
-        {
-            ThisForm?.Invoke(new Action(() =>
-            {
-                MessageBox.Show(Message, LevelMsg, Buttons, Icon);
-            }));
         }
 
         private void ChangeFont(Font NewFont)

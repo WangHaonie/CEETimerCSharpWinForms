@@ -1,8 +1,10 @@
-﻿using CEETimerCSharpWinForms.Modules;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static CEETimerCSharpWinForms.ConfigManager;
+using static CEETimerCSharpWinForms.LaunchManager;
+using static CEETimerCSharpWinForms.Updater;
 
 namespace CEETimerCSharpWinForms.Forms
 {
@@ -17,16 +19,11 @@ namespace CEETimerCSharpWinForms.Forms
             FormSettings.ConfigChanged += RefreshSettings;
         }
 
-        private void RefreshSettings(object sender, EventArgs e)
-        {
-            ConfigManager.SetTopMost(this);
-        }
-
         private void FormAbout_Load(object sender, EventArgs e)
         {
             RefreshSettings(sender, e);
-            LableVersion.Text = LaunchManager.AppVersionText;
-            LabelAuthor.Text = LaunchManager.CopyrightInfo;
+            LableVersion.Text = AppVersionText;
+            LabelAuthor.Text = CopyrightInfo;
 
             CheckUpdateTip = new()
             {
@@ -35,6 +32,11 @@ namespace CEETimerCSharpWinForms.Forms
 
             CheckUpdateTip.SetToolTip(LableVersion, "是的你没有看错，点击这里可以检查是否有新版本。");
             LableVersion.MouseLeave += LableVersion_MouseLeave;
+        }
+
+        private void RefreshSettings(object sender, EventArgs e)
+        {
+            SetTopMost(this);
         }
 
         private void LableVersion_MouseLeave(object sender, EventArgs e)
@@ -49,7 +51,7 @@ namespace CEETimerCSharpWinForms.Forms
 
             try
             {
-                await Task.Run(() => CheckForUpdate.Start(false, this));
+                await Task.Run(() => CheckUpdate(false, this));
             }
             finally
             {
