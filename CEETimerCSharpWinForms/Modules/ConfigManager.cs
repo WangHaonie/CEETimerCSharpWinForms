@@ -2,11 +2,19 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Windows.Forms;
 
 namespace CEETimerCSharpWinForms.Modules
 {
     public class ConfigManager
     {
+        public static bool UniTopMost { get; set; }
+
+        public static void SetTopMost(Form ThisForm)
+        {
+            ThisForm.TopMost = UniTopMost;
+        }
+
         #region 来自网络
         /* 
         

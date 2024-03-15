@@ -46,6 +46,7 @@
             this.LabelExamNameCounter = new System.Windows.Forms.Label();
             this.TabPageDisplay = new System.Windows.Forms.TabPage();
             this.GBoxContent = new System.Windows.Forms.GroupBox();
+            this.CheckBoxSetUniTopMost = new System.Windows.Forms.CheckBox();
             this.CheckBoxSetNoPast = new System.Windows.Forms.CheckBox();
             this.CheckBoxSetNoStart = new System.Windows.Forms.CheckBox();
             this.CheckBoxSetRounding = new System.Windows.Forms.CheckBox();
@@ -219,7 +220,7 @@
             this.CheckBoxSetTopMost.TabIndex = 0;
             this.CheckBoxSetTopMost.Text = "将倒计时显示到最上层(&T)";
             this.CheckBoxSetTopMost.UseVisualStyleBackColor = true;
-            this.CheckBoxSetTopMost.CheckedChanged += new System.EventHandler(this.SettingsChanged);
+            this.CheckBoxSetTopMost.CheckedChanged += new System.EventHandler(this.CheckBoxSetTopMost_CheckedChanged);
             // 
             // CheckBoxStartup
             // 
@@ -286,16 +287,28 @@
             // 
             // GBoxContent
             // 
+            this.GBoxContent.Controls.Add(this.CheckBoxSetUniTopMost);
             this.GBoxContent.Controls.Add(this.CheckBoxSetNoPast);
             this.GBoxContent.Controls.Add(this.CheckBoxSetNoStart);
             this.GBoxContent.Controls.Add(this.CheckBoxSetRounding);
             this.GBoxContent.Controls.Add(this.CheckBoxSetDaysOnly);
             this.GBoxContent.Location = new System.Drawing.Point(7, 6);
             this.GBoxContent.Name = "GBoxContent";
-            this.GBoxContent.Size = new System.Drawing.Size(405, 96);
+            this.GBoxContent.Size = new System.Drawing.Size(405, 120);
             this.GBoxContent.TabIndex = 1;
             this.GBoxContent.TabStop = false;
             this.GBoxContent.Text = "倒计时内容";
+            // 
+            // CheckBoxSetUniTopMost
+            // 
+            this.CheckBoxSetUniTopMost.AutoSize = true;
+            this.CheckBoxSetUniTopMost.Location = new System.Drawing.Point(6, 97);
+            this.CheckBoxSetUniTopMost.Name = "CheckBoxSetUniTopMost";
+            this.CheckBoxSetUniTopMost.Size = new System.Drawing.Size(247, 19);
+            this.CheckBoxSetUniTopMost.TabIndex = 4;
+            this.CheckBoxSetUniTopMost.Text = "顶置属性同样适用于本程序的其他窗口";
+            this.CheckBoxSetUniTopMost.UseVisualStyleBackColor = true;
+            this.CheckBoxSetUniTopMost.CheckedChanged += new System.EventHandler(this.SettingsChanged);
             // 
             // CheckBoxSetNoPast
             // 
@@ -349,7 +362,7 @@
             this.GBoxChangeFont.Controls.Add(this.LabelPreviewFont);
             this.GBoxChangeFont.Controls.Add(this.LabelFontInfo);
             this.GBoxChangeFont.Controls.Add(this.LabelLine11);
-            this.GBoxChangeFont.Location = new System.Drawing.Point(7, 108);
+            this.GBoxChangeFont.Location = new System.Drawing.Point(7, 132);
             this.GBoxChangeFont.Name = "GBoxChangeFont";
             this.GBoxChangeFont.Size = new System.Drawing.Size(405, 124);
             this.GBoxChangeFont.TabIndex = 0;
@@ -724,5 +737,6 @@
         private System.Windows.Forms.GroupBox GBoxSetDragable;
         private System.Windows.Forms.CheckBox CheckBoxEnableDragable;
         private System.Windows.Forms.Label LabelLine12;
+        private System.Windows.Forms.CheckBox CheckBoxSetUniTopMost;
     }
 }

@@ -21,6 +21,7 @@ namespace CEETimerCSharpWinForms
         private bool IsNoStart;
         private bool IsReady;
         private bool IsRounding;
+        private bool IsUniTopMost;
         private DateTime ExamEndTime;
         private DateTime ExamStartTime;
         private Font SelectedFont;
@@ -36,6 +37,7 @@ namespace CEETimerCSharpWinForms
         public FormMain()
         {
             InitializeComponent();
+            FormSettings.ConfigChanged += RefreshSettings;
         }
 
         private void FormMain_Load(object sender, EventArgs e)
@@ -191,10 +193,20 @@ namespace CEETimerCSharpWinForms
             IsNoStart = bool.TryParse(ConfigManager.ReadConfig("NoStart"), out bool tmpf) && tmpf;
             IsNoPast = bool.TryParse(ConfigManager.ReadConfig("NoPast"), out bool tmpg) && tmpg;
             IsDragable = bool.TryParse(ConfigManager.ReadConfig("Dragable"), out bool tmph) && tmph;
+            IsUniTopMost = !bool.TryParse(ConfigManager.ReadConfig("UniTopMost"), out bool tmpi) || tmpi;
             DateTime.TryParseExact(ConfigManager.ReadConfig("ExamStartTime"), "yyyyMMddHHmmss", null, System.Globalization.DateTimeStyles.None, out ExamStartTime);
             DateTime.TryParseExact(ConfigManager.ReadConfig("ExamEndTime"), "yyyyMMddHHmmss", null, System.Globalization.DateTimeStyles.None, out ExamEndTime);
 
             ConfigManager.MountConfig(false);
+
+            if (IsUniTopMost && TopMost)
+            {
+                ConfigManager.UniTopMost = true;
+            }
+            else
+            {
+                ConfigManager.UniTopMost = false;
+            }
 
             if (LaunchManager.CurrentWindowsVersion < 10)
             {
@@ -309,7 +321,6 @@ namespace CEETimerCSharpWinForms
             formSettings.IsDragable = IsDragable;
 
             formSettings.WindowState = FormWindowState.Normal;
-            formSettings.ConfigChanged += RefreshSettings;
             formSettings.Show();
             formSettings.Activate();
         }

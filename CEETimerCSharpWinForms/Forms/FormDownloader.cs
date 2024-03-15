@@ -17,10 +17,17 @@ namespace CEETimerCSharpWinForms.Forms
         public FormDownloader()
         {
             InitializeComponent();
+            FormSettings.ConfigChanged += RefreshSettings;
+        }
+
+        private void RefreshSettings(object sender, EventArgs e)
+        {
+            ConfigManager.SetTopMost(this);
         }
 
         private async void FormDownloader_Load(object sender, EventArgs e)
         {
+            RefreshSettings(sender, e);
             await DownloadUpdate();
         }
 

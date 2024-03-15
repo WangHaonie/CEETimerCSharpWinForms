@@ -27,7 +27,7 @@ namespace CEETimerCSharpWinForms.Forms
         public string ExamName { get; set; }
 
         public delegate void ConfigChangedHandler(object sender, EventArgs e);
-        public ConfigChangedHandler ConfigChanged;
+        public static ConfigChangedHandler ConfigChanged;
 
         private bool IsSyncingTime = false;
         private bool IsSettingsChanged;
@@ -37,6 +37,12 @@ namespace CEETimerCSharpWinForms.Forms
         public FormSettings()
         {
             InitializeComponent();
+            ConfigChanged += RefreshSettings;
+        }
+
+        private void RefreshSettings(object sender, EventArgs e)
+        {
+            ConfigManager.SetTopMost(this);
         }
 
         private void FormSettings_Load(object sender, EventArgs e)
@@ -141,6 +147,18 @@ namespace CEETimerCSharpWinForms.Forms
             }
         }
 
+        private void CheckBoxSetTopMost_CheckedChanged(object sender, EventArgs e)
+        {
+            SettingsChanged(sender, e);
+            CheckBoxSetUniTopMost.Enabled = CheckBoxSetTopMost.Checked;
+
+            if (CheckBoxSetUniTopMost.Checked && !CheckBoxSetTopMost.Checked)
+            {
+                CheckBoxSetUniTopMost.Checked = false;
+                CheckBoxSetUniTopMost.Enabled = false;
+            }
+        }
+
         private void CheckBoxSetNoStart_CheckedChanged(object sender, EventArgs e)
         {
             SettingsChanged(sender, e);
@@ -204,6 +222,9 @@ namespace CEETimerCSharpWinForms.Forms
             CheckBoxSetRounding.Checked = IsRounding;
             CheckBoxSetNoStart.Checked = IsNoStart;
             CheckBoxSetNoPast.Checked = IsNoPast;
+            CheckBoxSetUniTopMost.Checked = ConfigManager.UniTopMost;
+
+            ConfigManager.SetTopMost(this);
 
             ChangeFont(new Font(SelectedFont, CountdownFontStyle));
 
@@ -290,7 +311,8 @@ namespace CEETimerCSharpWinForms.Forms
                     { "Rounding", CheckBoxSetRounding.Checked.ToString() },
                     { "NoStart", CheckBoxSetNoStart.Checked.ToString() },
                     { "NoPast", CheckBoxSetNoPast.Checked.ToString() },
-                    { "Dragable", CheckBoxEnableDragable.Checked.ToString() }
+                    { "Dragable", CheckBoxEnableDragable.Checked.ToString() },
+                    { "UniTopMost", CheckBoxSetUniTopMost.Checked.ToString() }
                 });
             }
             catch

@@ -14,10 +14,17 @@ namespace CEETimerCSharpWinForms.Forms
         public FormAbout()
         {
             InitializeComponent();
+            FormSettings.ConfigChanged += RefreshSettings;
+        }
+
+        private void RefreshSettings(object sender, EventArgs e)
+        {
+            ConfigManager.SetTopMost(this);
         }
 
         private void FormAbout_Load(object sender, EventArgs e)
         {
+            RefreshSettings(sender, e);
             LableVersion.Text = LaunchManager.AppVersionText;
             LabelAuthor.Text = LaunchManager.CopyrightInfo;
 
