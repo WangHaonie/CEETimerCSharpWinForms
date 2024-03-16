@@ -251,7 +251,8 @@ namespace CEETimerCSharpWinForms.Forms
                 });
 
                 SyncTimeProcess.WaitForExit();
-                MessageX.Popup($"命令执行完成！\n\n返回值为 {SyncTimeProcess.ExitCode}\n(0 代表成功，其他值为失败)", MessageLevel.Info, this);
+                var ExitCode = SyncTimeProcess.ExitCode;
+                MessageX.Popup($"命令执行完成！\n\n返回值为 {ExitCode} (0x{ExitCode:X})\n(0 代表成功，其他值为失败)", MessageLevel.Info, this);
             }
             catch (Win32Exception ex)
             {
