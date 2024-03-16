@@ -54,7 +54,7 @@ Section -POST
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Publisher" "${PRODUCT_PUBLISHER}"
   WriteIniStr "$INSTDIR\GitHub.url" "InternetShortcut" "URL" "${PRODUCT_WEB_SITE}"
   File "..\CEETimerCSharpWinForms\bin\x64\Release\Newtonsoft.Json.dll"
-  File "..\CEETimerCSharpWinForms\bin\x64\Release\CEETimerCSharpWinForms.exe"
+  File "..\CEETimerCSharpWinForms\bin\x64\Release\Confused\CEETimerCSharpWinForms.exe"
   CreateShortCut "$SMPROGRAMS\高考倒计时\GitHub.lnk" "$INSTDIR\${PRODUCT_NAME}.url"
   CreateShortCut "$SMPROGRAMS\高考倒计时\卸载 高考倒计时.lnk" "$INSTDIR\uninst.exe"
 SectionEnd
