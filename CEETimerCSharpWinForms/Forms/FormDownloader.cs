@@ -95,7 +95,7 @@ namespace CEETimerCSharpWinForms.Forms
             }
             catch (Exception ex)
             {
-                MessageX.Popup($"无法下载更新文件! \n\n错误信息: \n{ex.Message}\n\n错误详情: \n{ex}", MessageLevel.Error);
+                MessageX.Popup("无法下载更新文件!", ex);
                 LabelDownloading.Text = "下载失败，你可以点击 重试 重新启动下载。";
                 LabelSize.Text = "已下载/总共：N/A";
                 LabelSpeed.Text = "下载速度：N/A";

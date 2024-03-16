@@ -266,13 +266,13 @@ namespace CEETimerCSharpWinForms.Forms
                  */
                 if (ex.NativeErrorCode == 1223)
                 {
-                    MessageX.Popup($"请在 UAC 对话框弹出时点击 \"是\"\n\n错误信息：\n{ex.Message}\n\n错误详情：\n{ex}", MessageLevel.Error, this);
+                    MessageX.Popup("请在 UAC 对话框弹出时点击 \"是\"。", ex, this);
                 }
                 #endregion
             }
             catch (Exception ex)
             {
-                MessageX.Popup($"命令执行时发生了错误。\n\n错误信息：\n{ex.Message}\n\n错误详情：\n{ex}", MessageLevel.Error, this);
+                MessageX.Popup($"命令执行时发生了错误。", ex, this);
             }
         }
 

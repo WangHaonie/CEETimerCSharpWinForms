@@ -53,7 +53,7 @@ namespace CEETimerCSharpWinForms.Modules
             {
                 if (!IsProgramStart)
                 {
-                    MessageX.Popup($"检查更新时发生错误! \n\n错误信息：\n{ex.Message}\n\n错误详情：\n{ex}", MessageLevel.Error, ThisForm);
+                    MessageX.Popup($"检查更新时发生错误! ", ex, ThisForm);
                 }
             }
         }
