@@ -70,6 +70,7 @@ namespace CEETimerCSharpWinForms.Modules
 
             WhichForm?.Invoke(new Action(() =>
             {
+                WhichForm.Activate();
                 MessageBox.Show(Message, Title, MessageBoxButtons.OK, Icon);
             }));
         }
@@ -125,6 +126,7 @@ namespace CEETimerCSharpWinForms.Modules
         {
             WhichForm?.Invoke(new Action(() =>
             {
+                WhichForm.Activate();
                 MessageBox.Show($"{Message}\n\n错误信息: \n{ex.Message}\n\n错误详情: \n{ex}", LaunchManager.ErrMsg, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }));
         }
