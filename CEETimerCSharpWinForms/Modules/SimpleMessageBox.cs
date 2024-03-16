@@ -32,6 +32,10 @@ namespace CEETimerCSharpWinForms.Modules
                     Icon = MessageBoxIcon.Warning;
                     Title = LaunchManager.WarnMsg;
                     break;
+                case MessageLevel.Error:
+                    Icon = MessageBoxIcon.Error;
+                    Title = LaunchManager.ErrMsg;
+                    break;
             }
 
             MessageBox.Show(Message, Title, MessageBoxButtons.OK, Icon);
