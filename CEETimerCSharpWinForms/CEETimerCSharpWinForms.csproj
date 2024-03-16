@@ -165,7 +165,7 @@
     <Compile Include="Forms\FormSettings.Designer.cs">
       <DependentUpon>FormSettings.cs</DependentUpon>
     </Compile>
-    <Compile Include="Modules\Updater.cs" />
+    <Compile Include="Modules\SimpleUpdater.cs" />
     <Compile Include="Modules\ConfigManager.cs" />
     <Compile Include="Modules\Extensions.cs" />
     <Compile Include="Modules\LaunchManager.cs" />
