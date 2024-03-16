@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace CEETimerCSharpWinForms.Modules
 {
-    public class SimpleUpdater
+    public class SimpleUpdateChecker
     {
         public static string CurrentLatest { get; private set; }
 

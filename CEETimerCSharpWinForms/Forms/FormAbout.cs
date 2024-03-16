@@ -49,7 +49,7 @@ namespace CEETimerCSharpWinForms.Forms
 
             try
             {
-                await Task.Run(() => SimpleUpdater.CheckUpdate(false, this));
+                await Task.Run(() => SimpleUpdateChecker.CheckUpdate(false, this));
             }
             finally
             {
