@@ -244,7 +244,7 @@ namespace CEETimerCSharpWinForms.Forms
                 {
                     UseShellExecute = true,
                     FileName = @"cmd.exe",
-                    Arguments = "/c w32tm /config /manualpeerlist:ntp1.aliyun.com /syncfromflags:manual /reliable:YES /update && net stop w32time && net start w32time && sc config w32time start= auto && w32tm /resync && w32tm /resync",
+                    Arguments = "/c net stop w32time & sc config w32time start= auto & net start w32time && w32tm /config /manualpeerlist:ntp1.aliyun.com /syncfromflags:manual /reliable:YES /update && w32tm /resync && w32tm /resync",
                     Verb = "runas",
                     CreateNoWindow = true,
                     WindowStyle = ProcessWindowStyle.Hidden
