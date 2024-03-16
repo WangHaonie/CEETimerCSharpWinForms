@@ -1,4 +1,4 @@
-﻿namespace CEETimerCSharpWinForms
+﻿namespace CEETimerCSharpWinForms.Forms
 {
     partial class FormMain
     {

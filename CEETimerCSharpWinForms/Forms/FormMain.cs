@@ -8,7 +8,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
-namespace CEETimerCSharpWinForms
+namespace CEETimerCSharpWinForms.Forms
 {
     public partial class FormMain : Form
     {

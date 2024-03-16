@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using CEETimerCSharpWinForms.Forms;
 
 namespace CEETimerCSharpWinForms.Modules
 {
