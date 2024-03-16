@@ -78,6 +78,9 @@ namespace CEETimerCSharpWinForms
 
             ConfigManager.MountConfig(false);
 
+            LocationChanged -= Form_LocationChanged;
+            LableCountdown.MouseDown -= Drag_MouseDown;
+
             if (IsUniTopMost && TopMost)
             {
                 ConfigManager.UniTopMost = true;
@@ -105,8 +108,6 @@ namespace CEETimerCSharpWinForms
             else
             {
                 Location = new Point(0, 0);
-                LocationChanged -= Form_LocationChanged;
-                LableCountdown.MouseDown -= Drag_MouseDown;
             }
 
             try
