@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace CEETimerCSharpWinForms
+namespace CEETimerCSharpWinForms.Modules
 {
     public static class Extensions
     {

@@ -6,12 +6,10 @@ using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static CEETimerCSharpWinForms.SimpleMessageBox;
-using static CEETimerCSharpWinForms.Updater;
 
-namespace CEETimerCSharpWinForms
+namespace CEETimerCSharpWinForms.Modules
 {
-    public static class LaunchManager
+    public class LaunchManager
     {
         public const string AppVersion = "2.8";
         public const string AppVersionText = $"版本 v{AppVersion} x64 (2024/03/14)";
@@ -67,7 +65,7 @@ namespace CEETimerCSharpWinForms
 
                 if (!CurrentExecutableName.Equals(OriginalFileName, StringComparison.OrdinalIgnoreCase))
                 {
-                    Popup($"为了您的使用体验，请不要更改程序文件名! 程序将在该对话框关闭后尝试自动恢复到原文件名，若自动恢复失败请手动改回。\n\n当前文件名：{CurrentExecutableName}\n原始文件名：{OriginalFileName}", MessageLevel.Warning);
+                    MessageX.Popup($"为了您的使用体验，请不要更改程序文件名! 程序将在该对话框关闭后尝试自动恢复到原文件名，若自动恢复失败请手动改回。\n\n当前文件名：{CurrentExecutableName}\n原始文件名：{OriginalFileName}", MessageLevel.Warning);
                     Process.Start(new ProcessStartInfo
                     {
                         FileName = @"cmd.exe",
@@ -79,7 +77,7 @@ namespace CEETimerCSharpWinForms
                 }
                 else
                 {
-                    Task.Run(() => CheckUpdate(true, null));
+                    Task.Run(() => SimpleUpdater.CheckUpdate(true, null));
                     Application.Run(new FormMain());
                 }
             }

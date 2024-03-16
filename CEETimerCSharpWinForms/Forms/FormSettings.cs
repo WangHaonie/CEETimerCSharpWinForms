@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using CEETimerCSharpWinForms.Modules;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -6,9 +7,6 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static CEETimerCSharpWinForms.ConfigManager;
-using static CEETimerCSharpWinForms.LaunchManager;
-using static CEETimerCSharpWinForms.SimpleMessageBox;
 
 namespace CEETimerCSharpWinForms.Forms
 {
@@ -52,7 +50,7 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void RefreshSettings(object sender, EventArgs e)
         {
-            SetTopMost(this);
+            ConfigManager.SetTopMost(this);
         }
 
         private void SettingsChanged(object sender, EventArgs e)
@@ -71,12 +69,12 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void ButtonRestart_Click(object sender, EventArgs e)
         {
-            Restart();
+            LaunchManager.Restart();
         }
 
         private void ButtonRestart_Funny_Click(object sender, EventArgs e)
         {
-            Shutdown();
+            LaunchManager.Shutdown();
         }
 
         private void ButtonRestart_MouseDown(object sender, MouseEventArgs e)
@@ -122,7 +120,7 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void ButtonRestoreFont_Click(object sender, EventArgs e)
         {
-            ChangeFont(new((Font)fontConverter.ConvertFromString(OriginalFontString), FontStyle.Bold));
+            ChangeFont(new((Font)fontConverter.ConvertFromString(LaunchManager.OriginalFontString), FontStyle.Bold));
             SettingsChanged(sender, e);
         }
 
@@ -189,7 +187,7 @@ namespace CEETimerCSharpWinForms.Forms
             }
             else if (IsSettingsChanged)
             {
-                if (Popup("检测到设置被更改但没有被保存，是否立即进行保存？", MessageLevel.Warning, MessageBoxButtons.YesNo) == DialogResult.Yes)
+                if (MessageX.Popup("检测到设置被更改但没有被保存，是否立即进行保存？", MessageLevel.Warning, MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
                     ButtonSave_Click(sender, e);
                 }
@@ -210,12 +208,12 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void RefreshSettings()
         {
-            CheckBoxStartup.Checked = (Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true)?.GetValue("CEETimerCSharpWinForms") is string regvalue) && regvalue.Equals($"\"{CurrentExecutable}\"", StringComparison.OrdinalIgnoreCase);
+            CheckBoxStartup.Checked = (Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true)?.GetValue("CEETimerCSharpWinForms") is string regvalue) && regvalue.Equals($"\"{LaunchManager.CurrentExecutable}\"", StringComparison.OrdinalIgnoreCase);
 
             CheckBoxSetTopMost.Checked = TopMostChecked;
             TextBoxExamName.Text = ExamName;
-            DTPExamStart.Value = IsValidData(ExamStartTime) ? ExamStartTime : DateTime.Now;
-            DTPExamEnd.Value = IsValidData(ExamEndTime) ? ExamEndTime : DateTime.Now;
+            DTPExamStart.Value = ConfigManager.IsValidData(ExamStartTime) ? ExamStartTime : DateTime.Now;
+            DTPExamEnd.Value = ConfigManager.IsValidData(ExamEndTime) ? ExamEndTime : DateTime.Now;
             var SelectedFont = CountdownFont;
             CheckBoxEnableVDM.Checked = FeatureVDMEnabled;
             CheckBoxEnableMO.Checked = FeatureMOEnabled;
@@ -224,13 +222,13 @@ namespace CEETimerCSharpWinForms.Forms
             CheckBoxSetRounding.Checked = IsRounding;
             CheckBoxSetNoStart.Checked = IsNoStart;
             CheckBoxSetNoPast.Checked = IsNoPast;
-            CheckBoxSetUniTopMost.Checked = UniTopMost;
+            CheckBoxSetUniTopMost.Checked = ConfigManager.UniTopMost;
 
-            SetTopMost(this);
+            ConfigManager.SetTopMost(this);
 
             ChangeFont(new Font(SelectedFont, CountdownFontStyle));
 
-            if (CurrentWindowsVersion < 10)
+            if (LaunchManager.CurrentWindowsVersion < 10)
             {
                 CheckBoxEnableVDM.Enabled = false;
                 CheckBoxEnableVDM.Checked = false;
@@ -253,7 +251,7 @@ namespace CEETimerCSharpWinForms.Forms
                 });
 
                 SyncTimeProcess.WaitForExit();
-                Popup($"命令执行完成！\n\n返回值为 {SyncTimeProcess.ExitCode}\n(0 代表成功，其他值为失败)", MessageLevel.Info, this);
+                MessageX.Popup($"命令执行完成！\n\n返回值为 {SyncTimeProcess.ExitCode}\n(0 代表成功，其他值为失败)", MessageLevel.Info, this);
             }
             catch (Win32Exception ex)
             {
@@ -268,13 +266,13 @@ namespace CEETimerCSharpWinForms.Forms
                  */
                 if (ex.NativeErrorCode == 1223)
                 {
-                    Popup($"请在 UAC 对话框弹出时点击 \"是\"\n\n错误信息：\n{ex.Message}\n\n错误详情：\n{ex}", MessageLevel.Error, this);
+                    MessageX.Popup($"请在 UAC 对话框弹出时点击 \"是\"\n\n错误信息：\n{ex.Message}\n\n错误详情：\n{ex}", MessageLevel.Error, this);
                 }
                 #endregion
             }
             catch (Exception ex)
             {
-                Popup($"命令执行时发生了错误。\n\n错误信息：\n{ex.Message}\n\n错误详情：\n{ex}", MessageLevel.Error, this);
+                MessageX.Popup($"命令执行时发生了错误。\n\n错误信息：\n{ex.Message}\n\n错误详情：\n{ex}", MessageLevel.Error, this);
             }
         }
 
@@ -287,12 +285,12 @@ namespace CEETimerCSharpWinForms.Forms
 
             if (string.IsNullOrWhiteSpace(ExamName) || (ExamName.Length < 2) || (ExamName.Length > 15))
             {
-                Popup("输入的考试名称有误！\n\n请检查输入的考试名称是否太长或太短！", MessageLevel.Error);
+                MessageX.Popup("输入的考试名称有误！\n\n请检查输入的考试名称是否太长或太短！", MessageLevel.Error);
                 return false;
             }
             else if (DTPExamStart.Value >= DTPExamEnd.Value)
             {
-                Popup("考试开始时间必须在结束时间之前！", MessageLevel.Error);
+                MessageX.Popup("考试开始时间必须在结束时间之前！", MessageLevel.Error);
                 return false;
             }
             else if (ExamTimeSpan.TotalDays > 4)
@@ -315,7 +313,7 @@ namespace CEETimerCSharpWinForms.Forms
 
             if (!string.IsNullOrEmpty(UniMsg))
             {
-                if (Popup(UniMsg, MessageLevel.Warning, MessageBoxButtons.OKCancel) == DialogResult.Cancel)
+                if (MessageX.Popup(UniMsg, MessageLevel.Warning, MessageBoxButtons.OKCancel) == DialogResult.Cancel)
                 {
                     return false;
                 }
@@ -332,14 +330,14 @@ namespace CEETimerCSharpWinForms.Forms
 
                 if (CheckBoxStartup.Checked)
                 {
-                    reg.SetValue("CEETimerCSharpWinForms", $"\"{CurrentExecutable}\"");
+                    reg.SetValue("CEETimerCSharpWinForms", $"\"{LaunchManager.CurrentExecutable}\"");
                 }
                 else
                 {
                     reg.DeleteValue("CEETimerCSharpWinForms", false);
                 }
 
-                WriteConfig(new Dictionary<string, string>
+                ConfigManager.WriteConfig(new Dictionary<string, string>
                 {
                     { "ExamName", ExamName },
                     { "ExamStartTime", DTPExamStart.Value.ToString("yyyyMMddHHmmss") },

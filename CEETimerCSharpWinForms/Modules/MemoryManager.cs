@@ -2,9 +2,9 @@
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
-namespace CEETimerCSharpWinForms
+namespace CEETimerCSharpWinForms.Modules
 {
-    public static class MemoryManager
+    public class MemoryManager
     {
         #region 来自网络
         /*

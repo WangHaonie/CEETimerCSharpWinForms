@@ -1,10 +1,8 @@
-﻿using System;
+﻿using CEETimerCSharpWinForms.Modules;
+using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static CEETimerCSharpWinForms.ConfigManager;
-using static CEETimerCSharpWinForms.LaunchManager;
-using static CEETimerCSharpWinForms.Updater;
 
 namespace CEETimerCSharpWinForms.Forms
 {
@@ -22,8 +20,8 @@ namespace CEETimerCSharpWinForms.Forms
         private void FormAbout_Load(object sender, EventArgs e)
         {
             RefreshSettings(sender, e);
-            LableVersion.Text = AppVersionText;
-            LabelAuthor.Text = CopyrightInfo;
+            LableVersion.Text = LaunchManager.AppVersionText;
+            LabelAuthor.Text = LaunchManager.CopyrightInfo;
 
             CheckUpdateTip = new()
             {
@@ -36,7 +34,7 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void RefreshSettings(object sender, EventArgs e)
         {
-            SetTopMost(this);
+            ConfigManager.SetTopMost(this);
         }
 
         private void LableVersion_MouseLeave(object sender, EventArgs e)
@@ -51,7 +49,7 @@ namespace CEETimerCSharpWinForms.Forms
 
             try
             {
-                await Task.Run(() => CheckUpdate(false, this));
+                await Task.Run(() => SimpleUpdater.CheckUpdate(false, this));
             }
             finally
             {

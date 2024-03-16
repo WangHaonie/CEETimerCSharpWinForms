@@ -1,14 +1,11 @@
-﻿using System;
+﻿using CEETimerCSharpWinForms.Modules;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static CEETimerCSharpWinForms.ConfigManager;
-using static CEETimerCSharpWinForms.LaunchManager;
-using static CEETimerCSharpWinForms.SimpleMessageBox;
-using static CEETimerCSharpWinForms.Updater;
 
 namespace CEETimerCSharpWinForms.Forms
 {
@@ -31,22 +28,22 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void RefreshSettings(object sender, EventArgs e)
         {
-            SetTopMost(this);
+            ConfigManager.SetTopMost(this);
         }
 
         public async Task DownloadUpdate()
         {
-            string LatestVersion = CurrentLatest;
+            string LatestVersion = SimpleUpdater.CurrentLatest;
             string DownloadUrl = $"https://wanghaonie.github.io/file-storages/github-repos/CEETimerCSharpWinForms/CEETimerCSharpWinFoms_{LatestVersion}_x64_Setup.exe";
             string DownloadPath = Path.Combine(Path.GetTempPath(), $"CEETimerCSharpWinForms_{LatestVersion}_x64_Setup.exe");
 
-            using var Updater = new HttpClient();
+            using var UpdateChecker = new HttpClient();
             CancelRequest = new CancellationTokenSource();
-            Updater.DefaultRequestHeaders.UserAgent.ParseAdd(RequestUA);
+            UpdateChecker.DefaultRequestHeaders.UserAgent.ParseAdd(LaunchManager.RequestUA);
 
             try
             {
-                using (var response = await Updater.GetAsync(DownloadUrl, HttpCompletionOption.ResponseHeadersRead, CancelRequest.Token))
+                using (var response = await UpdateChecker.GetAsync(DownloadUrl, HttpCompletionOption.ResponseHeadersRead, CancelRequest.Token))
                 {
                     response.EnsureSuccessStatusCode();
                     using var stream = await response.Content.ReadAsStreamAsync();
@@ -98,7 +95,7 @@ namespace CEETimerCSharpWinForms.Forms
             }
             catch (Exception ex)
             {
-                Popup($"无法下载更新文件! \n\n错误信息: \n{ex.Message}\n\n错误详情: \n{ex}", MessageLevel.Error);
+                MessageX.Popup($"无法下载更新文件! \n\n错误信息: \n{ex.Message}\n\n错误详情: \n{ex}", MessageLevel.Error);
                 LabelDownloading.Text = "下载失败，你可以点击 重试 重新启动下载。";
                 LabelSize.Text = "已下载/总共：N/A";
                 LabelSpeed.Text = "下载速度：N/A";
@@ -121,7 +118,7 @@ namespace CEETimerCSharpWinForms.Forms
         {
             if (CancelRequest != null && !CancelRequest.Token.IsCancellationRequested)
             {
-                Popup($"你已取消下载！\n\n你稍后可以在 关于 窗口点击版本号来再次检查更新。", MessageLevel.Warning);
+                MessageX.Popup($"你已取消下载！\n\n你稍后可以在 关于 窗口点击版本号来再次检查更新。", MessageLevel.Warning);
                 CancelRequest?.Cancel();
                 LabelDownloading.Text = "用户已取消下载。";
             }

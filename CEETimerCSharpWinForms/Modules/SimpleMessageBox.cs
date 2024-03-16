@@ -1,18 +1,17 @@
 ﻿using System;
 using System.Windows.Forms;
-using static CEETimerCSharpWinForms.LaunchManager;
 
-namespace CEETimerCSharpWinForms
+namespace CEETimerCSharpWinForms.Modules
 {
-    public static class SimpleMessageBox
+    public enum MessageLevel
     {
-        public enum MessageLevel
-        {
-            Info,
-            Warning,
-            Error
-        }
+        Info,
+        Warning,
+        Error
+    }
 
+    public class MessageX
+    {
         public static void Popup(string Message, MessageLevel Level)
         {
             MessageBoxIcon Icon = MessageBoxIcon.None;
@@ -22,15 +21,15 @@ namespace CEETimerCSharpWinForms
             {
                 case MessageLevel.Info:
                     Icon = MessageBoxIcon.Information;
-                    Title = InfoMsg;
+                    Title = LaunchManager.InfoMsg;
                     break;
                 case MessageLevel.Warning:
                     Icon = MessageBoxIcon.Warning;
-                    Title = WarnMsg;
+                    Title = LaunchManager.WarnMsg;
                     break;
                 case MessageLevel.Error:
                     Icon = MessageBoxIcon.Error;
-                    Title = ErrMsg;
+                    Title = LaunchManager.ErrMsg;
                     break;
             }
 
@@ -46,15 +45,15 @@ namespace CEETimerCSharpWinForms
             {
                 case MessageLevel.Info:
                     Icon = MessageBoxIcon.Information;
-                    Title = InfoMsg;
+                    Title = LaunchManager.InfoMsg;
                     break;
                 case MessageLevel.Warning:
                     Icon = MessageBoxIcon.Warning;
-                    Title = WarnMsg;
+                    Title = LaunchManager.WarnMsg;
                     break;
                 case MessageLevel.Error:
                     Icon = MessageBoxIcon.Error;
-                    Title = ErrMsg;
+                    Title = LaunchManager.ErrMsg;
                     break;
             }
 
@@ -73,15 +72,15 @@ namespace CEETimerCSharpWinForms
             {
                 case MessageLevel.Info:
                     Icon = MessageBoxIcon.Information;
-                    Title = InfoMsg;
+                    Title = LaunchManager.InfoMsg;
                     break;
                 case MessageLevel.Warning:
                     Icon = MessageBoxIcon.Warning;
-                    Title = WarnMsg;
+                    Title = LaunchManager.WarnMsg;
                     break;
                 case MessageLevel.Error:
                     Icon = MessageBoxIcon.Error;
-                    Title = ErrMsg;
+                    Title = LaunchManager.ErrMsg;
                     break;
             }
 

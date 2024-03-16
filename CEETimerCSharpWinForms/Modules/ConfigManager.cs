@@ -3,11 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
-using static CEETimerCSharpWinForms.LaunchManager;
 
-namespace CEETimerCSharpWinForms
+namespace CEETimerCSharpWinForms.Modules
 {
-    public static class ConfigManager
+    public class ConfigManager
     {
         public static bool UniTopMost { get; set; }
 
@@ -27,7 +26,7 @@ namespace CEETimerCSharpWinForms
         */
         private static bool IsConfigMounted;
         private static Dictionary<string, string> JsonConfig;
-        private static readonly string ConfigFile = $"{CurrentExecutablePath}CEETimerCSharpWinForms.dll";
+        private static readonly string ConfigFile = $"{LaunchManager.CurrentExecutablePath}CEETimerCSharpWinForms.dll";
 
         private static void CheckConfig()
         {
