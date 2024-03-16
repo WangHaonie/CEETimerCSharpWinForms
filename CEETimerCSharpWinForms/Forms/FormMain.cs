@@ -72,7 +72,7 @@ namespace CEETimerCSharpWinForms
             IsNoStart = bool.TryParse(ConfigManager.ReadConfig("NoStart"), out bool tmpf) && tmpf;
             IsNoPast = bool.TryParse(ConfigManager.ReadConfig("NoPast"), out bool tmpg) && tmpg;
             IsDragable = bool.TryParse(ConfigManager.ReadConfig("Dragable"), out bool tmph) && tmph;
-            IsUniTopMost = !bool.TryParse(ConfigManager.ReadConfig("UniTopMost"), out bool tmpi) || tmpi;
+            IsUniTopMost = bool.TryParse(ConfigManager.ReadConfig("UniTopMost"), out bool tmpi) && tmpi;
             DateTime.TryParseExact(ConfigManager.ReadConfig("ExamStartTime"), "yyyyMMddHHmmss", null, System.Globalization.DateTimeStyles.None, out ExamStartTime);
             DateTime.TryParseExact(ConfigManager.ReadConfig("ExamEndTime"), "yyyyMMddHHmmss", null, System.Globalization.DateTimeStyles.None, out ExamEndTime);
 
