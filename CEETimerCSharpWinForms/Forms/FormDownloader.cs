@@ -11,7 +11,7 @@ namespace CEETimerCSharpWinForms.Forms
 {
     public partial class FormDownloader : Form
     {
-        private bool IsCancelled = false;
+        private bool IsCancelled;
         private CancellationTokenSource CancelRequest;
 
         public FormDownloader()
@@ -33,8 +33,9 @@ namespace CEETimerCSharpWinForms.Forms
 
         public async Task DownloadUpdate()
         {
+            IsCancelled = false;
             string LatestVersion = SimpleUpdateChecker.CurrentLatest;
-            string DownloadUrl = $"https://wanghaonie.github.io/file-storages/github-repos/CEETimerCSharpWinForms/CEETimerCSharpWinFoms_{LatestVersion}_x64_Setup.exe";
+            string DownloadUrl = $"https://wanghaonie.github.io/file-storages/github-repos/CEETimerCSharpWinForms/CEETimerCSharpWinForms_{LatestVersion}_x64_Setup.exe";
             string DownloadPath = Path.Combine(Path.GetTempPath(), $"CEETimerCSharpWinForms_{LatestVersion}_x64_Setup.exe");
 
             using var UpdateChecker = new HttpClient();
@@ -95,6 +96,7 @@ namespace CEETimerCSharpWinForms.Forms
             }
             catch (Exception ex)
             {
+                IsCancelled = true;
                 MessageX.Popup("无法下载更新文件!", ex);
                 LabelDownloading.Text = "下载失败，你可以点击 重试 重新启动下载。";
                 LabelSize.Text = "已下载/总共：N/A";
@@ -116,11 +118,11 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void ButtonCancel_Click(object sender, EventArgs e)
         {
-            if (CancelRequest != null && !CancelRequest.Token.IsCancellationRequested)
+            if (!IsCancelled && CancelRequest != null && !CancelRequest.Token.IsCancellationRequested)
             {
-                MessageX.Popup($"你已取消下载！\n\n你稍后可以在 关于 窗口点击版本号来再次检查更新。", MessageLevel.Warning);
                 CancelRequest?.Cancel();
                 LabelDownloading.Text = "用户已取消下载。";
+                MessageX.Popup($"你已取消下载！\n\n你稍后可以在 关于 窗口点击版本号来再次检查更新。", MessageLevel.Warning);
             }
 
             FormClosing -= FormDownloader_FormClosing;
