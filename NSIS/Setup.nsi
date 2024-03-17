@@ -1,6 +1,44 @@
 ManifestDPIAware true
-
 SetFont "Segoe UI" 9
+
+!define INSTALLERMUTEXNAME "90d56f33-3a68-4d48-8890-f06b488f4c04-9505e4f0e0cabb73"
+ 
+!ifndef NSIS_PTR_SIZE & SYSTYPE_PTR
+!define SYSTYPE_PTR i
+!else
+!define /ifndef SYSTYPE_PTR p
+!endif
+
+!macro ActivateOtherInstance
+StrCpy $3 ""
+loop:
+	FindWindow $3 "#32770" "" "" $3
+	StrCmp 0 $3 windownotfound
+	StrLen $0 "$(^UninstallCaption)"
+	IntOp $0 $0 + 1
+	System::Call 'USER32::GetWindowText(${SYSTYPE_PTR}r3, t.r0, ir0)'
+	StrCmp $0 "$(^UninstallCaption)" windowfound ""
+	StrLen $0 "$(^SetupCaption)"
+	IntOp $0 $0 + 1
+	System::Call 'USER32::GetWindowText(${SYSTYPE_PTR}r3, t.r0, ir0)'
+	StrCmp $0 "$(^SetupCaption)" windowfound loop
+windowfound:
+	SendMessage $3 0x112 0xF120 0 /TIMEOUT=2000
+	System::Call "USER32::SetForegroundWindow(${SYSTYPE_PTR}r3)"
+windownotfound:
+!macroend
+ 
+!macro SingleInstanceMutex
+!ifndef INSTALLERMUTEXNAME
+!error "Must define INSTALLERMUTEXNAME"
+!endif
+System::Call 'KERNEL32::CreateMutex(${SYSTYPE_PTR}0, i1, t"${INSTALLERMUTEXNAME}")?e'
+Pop $0
+IntCmpU $0 183 "" launch launch
+	!insertmacro ActivateOtherInstance
+	Abort
+launch:
+!macroend
 
 !include "MUI2.nsh"
 !define PRODUCT_NAME "¸ß¿¼µ¹¼ÆÊ±"
@@ -75,6 +113,14 @@ Section Uninstall
   DeleteRegKey ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}"
   SetAutoClose true
 SectionEnd
+
+Function .onInit
+!insertmacro SingleInstanceMutex
+FunctionEnd
+ 
+Function un.onInit
+!insertmacro SingleInstanceMutex
+FunctionEnd
 
 Function .onInstSuccess
   Exec "$INSTDIR\CEETimerCSharpWinForms.exe"
