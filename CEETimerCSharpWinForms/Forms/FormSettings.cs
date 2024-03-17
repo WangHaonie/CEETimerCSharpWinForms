@@ -326,7 +326,7 @@ namespace CEETimerCSharpWinForms.Forms
             CountdownFont = NewFont;
             CountdownFontStyle = NewFont.Style;
             LabelPreviewFont.Font = NewFont;
-            LabelFontInfo.Text = $"当前选择的字体/大小/样式: {NewFont.Name}, {NewFont.Size}pt, {NewFont.Style}";
+            LabelFontInfo.Text = $"当前字体: {NewFont.Name}, {NewFont.Size}pt, {NewFont.Style}";
         }
 
         private void SaveSettings()
