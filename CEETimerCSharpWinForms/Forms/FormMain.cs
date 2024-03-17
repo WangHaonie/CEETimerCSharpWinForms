@@ -76,8 +76,6 @@ namespace CEETimerCSharpWinForms.Forms
             DateTime.TryParseExact(ConfigManager.ReadConfig("ExamStartTime"), "yyyyMMddHHmmss", null, System.Globalization.DateTimeStyles.None, out ExamStartTime);
             DateTime.TryParseExact(ConfigManager.ReadConfig("ExamEndTime"), "yyyyMMddHHmmss", null, System.Globalization.DateTimeStyles.None, out ExamEndTime);
 
-            ConfigManager.MountConfig(false);
-
             LocationChanged -= Form_LocationChanged;
             LableCountdown.MouseDown -= Drag_MouseDown;
 
@@ -127,6 +125,8 @@ namespace CEETimerCSharpWinForms.Forms
             }
 
             LableCountdown.Font = new Font(SelectedFont, SelectedFontStyle);
+
+            ConfigManager.MountConfig(false);
 
             if (!ConfigManager.IsValidData(ExamName) || !ConfigManager.IsValidData(ExamStartTime) || !ConfigManager.IsValidData(ExamEndTime))
             {
