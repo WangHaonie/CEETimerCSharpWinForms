@@ -110,8 +110,7 @@ namespace CEETimerCSharpWinForms.Forms
 
             if (FontDialogMain.ShowDialog() == DialogResult.OK)
             {
-                CountdownFont = FontDialogMain.Font;
-                ChangeFont(CountdownFont);
+                ChangeFont(FontDialogMain.Font);
                 SettingsChanged(sender, e);
             }
 
@@ -214,7 +213,6 @@ namespace CEETimerCSharpWinForms.Forms
             TextBoxExamName.Text = ExamName;
             DTPExamStart.Value = ConfigManager.IsValidData(ExamStartTime) ? ExamStartTime : DateTime.Now;
             DTPExamEnd.Value = ConfigManager.IsValidData(ExamEndTime) ? ExamEndTime : DateTime.Now;
-            var SelectedFont = CountdownFont;
             CheckBoxEnableVDM.Checked = FeatureVDMEnabled;
             CheckBoxEnableMO.Checked = FeatureMOEnabled;
             CheckBoxEnableDragable.Checked = IsDragable;
@@ -226,7 +224,7 @@ namespace CEETimerCSharpWinForms.Forms
 
             ConfigManager.SetTopMost(this);
 
-            ChangeFont(new Font(SelectedFont, CountdownFontStyle));
+            ChangeFont(new Font(CountdownFont, CountdownFontStyle));
 
             if (LaunchManager.CurrentWindowsVersion < 10)
             {
@@ -323,6 +321,14 @@ namespace CEETimerCSharpWinForms.Forms
             return true;
         }
 
+        private void ChangeFont(Font NewFont)
+        {
+            CountdownFont = NewFont;
+            CountdownFontStyle = NewFont.Style;
+            LabelPreviewFont.Font = NewFont;
+            LabelFontInfo.Text = $"当前选择的字体/大小/样式: {NewFont.Name}, {NewFont.Size}pt, {NewFont.Style}";
+        }
+
         private void SaveSettings()
         {
             try
@@ -359,14 +365,6 @@ namespace CEETimerCSharpWinForms.Forms
             catch
             {
             }
-        }
-
-        private void ChangeFont(Font NewFont)
-        {
-            CountdownFont = NewFont;
-            CountdownFontStyle = NewFont.Style;
-            LabelPreviewFont.Font = NewFont;
-            LabelFontInfo.Text = $"当前选择的字体/大小/样式: {NewFont.Name}, {NewFont.Size}pt, {NewFont.Style}";
         }
 
         private void ChangeWorkingStyle(bool IsWorking, WorkingArea Where)
