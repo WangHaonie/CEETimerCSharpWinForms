@@ -16,10 +16,10 @@ namespace CEETimerCSharpWinForms.Forms
         public bool FeatureVDMEnabled { get; set; }
         public bool IsDaysOnly { get; set; }
         public bool IsDragable { get; set; }
-        public bool IsNoPast { get; set; }
-        public bool IsNoStart { get; set; }
+        public bool IsShowEnd { get; set; }
+        public bool IsShowPast { get; set; }
         public bool IsRounding { get; set; }
-        public bool IsPPTService {  get; set; }
+        public bool IsPPTService { get; set; }
         public bool TopMostChecked { get; set; }
         public DateTime ExamStartTime { get; set; }
         public DateTime ExamEndTime { get; set; }
@@ -148,11 +148,20 @@ namespace CEETimerCSharpWinForms.Forms
             }
         }
 
-        private void CheckBoxSetNoStart_CheckedChanged(object sender, EventArgs e)
+        private void CheckBoxShowEnd_CheckedChanged(object sender, EventArgs e)
         {
             SettingsChanged(sender, e);
-            CheckBoxSetNoPast.Checked = CheckBoxSetNoStart.Checked;
-            CheckBoxSetNoPast.Enabled = !CheckBoxSetNoStart.Checked;
+            DTPExamEnd.Enabled = CheckBoxShowEnd.Checked;
+            GBoxExamEnd.Visible = CheckBoxShowEnd.Checked;
+        }
+
+        private void CheckBoxShowPast_CheckedChanged(object sender, EventArgs e)
+        {
+            SettingsChanged(sender, e);
+            CheckBoxShowEnd.Checked = CheckBoxShowPast.Checked;
+            CheckBoxShowEnd.Enabled = !CheckBoxShowPast.Checked;
+            DTPExamEnd.Enabled = CheckBoxShowPast.Checked;
+            GBoxExamEnd.Visible = CheckBoxShowPast.Checked;
         }
 
         private void ButtonSave_Click(object sender, EventArgs e)
@@ -220,8 +229,8 @@ namespace CEETimerCSharpWinForms.Forms
             CheckBoxEnableDragable.Checked = IsDragable;
             CheckBoxSetDaysOnly.Checked = IsDaysOnly;
             CheckBoxSetRounding.Checked = IsRounding;
-            CheckBoxSetNoStart.Checked = IsNoStart;
-            CheckBoxSetNoPast.Checked = IsNoPast;
+            CheckBoxShowEnd.Checked = IsShowEnd;
+            CheckBoxShowPast.Checked = IsShowPast;
             CheckBoxSwPptSvc.Checked = IsPPTService;
             CheckBoxSetUniTopMost.Checked = ConfigManager.UniTopMost;
 
@@ -234,6 +243,11 @@ namespace CEETimerCSharpWinForms.Forms
                 CheckBoxEnableVDM.Enabled = false;
                 CheckBoxEnableVDM.Checked = false;
                 CheckBoxEnableVDM.Text = $"此功能在当前系统上不可用";
+            }
+
+            if (!IsShowEnd || !IsShowPast)
+            {
+                DTPExamEnd.Enabled = false;
             }
         }
 
@@ -290,34 +304,38 @@ namespace CEETimerCSharpWinForms.Forms
                 MessageX.Popup("输入的考试名称有误！\n\n请检查输入的考试名称是否太长或太短！", MessageLevel.Error);
                 return false;
             }
-            else if (DTPExamStart.Value >= DTPExamEnd.Value)
-            {
-                MessageX.Popup("考试开始时间必须在结束时间之前！", MessageLevel.Error);
-                return false;
-            }
-            else if (ExamTimeSpan.TotalDays > 4)
-            {
-                TimeMsg = $"{ExamTimeSpan.TotalDays:0.0} 天";
-            }
-            else if (ExamTimeSpan.TotalMinutes < 40 && ExamTimeSpan.TotalSeconds > 60)
-            {
-                TimeMsg = $"{ExamTimeSpan.TotalMinutes:0.0} 分钟";
-            }
-            else if (ExamTimeSpan.TotalSeconds < 60)
-            {
-                TimeMsg = $"{ExamTimeSpan.TotalSeconds:0.0} 秒";
-            }
 
-            if (!string.IsNullOrEmpty(TimeMsg))
+            if (DTPExamEnd.Enabled)
             {
-                UniMsg = $"检测到设置的考试时长太长或太短！\n\n当前考试时长: {TimeMsg}。\n\n如果你确定当前设置的是正确的考试时间，请点击确定，否则请点击取消。";
-            }
-
-            if (!string.IsNullOrEmpty(UniMsg))
-            {
-                if (MessageX.Popup(UniMsg, MessageLevel.Warning, MessageBoxButtons.OKCancel) == DialogResult.Cancel)
+                if (DTPExamStart.Value >= DTPExamEnd.Value)
                 {
+                    MessageX.Popup("考试开始时间必须在结束时间之前！", MessageLevel.Error);
                     return false;
+                }
+                else if (ExamTimeSpan.TotalDays > 4)
+                {
+                    TimeMsg = $"{ExamTimeSpan.TotalDays:0.0} 天";
+                }
+                else if (ExamTimeSpan.TotalMinutes < 40 && ExamTimeSpan.TotalSeconds > 60)
+                {
+                    TimeMsg = $"{ExamTimeSpan.TotalMinutes:0.0} 分钟";
+                }
+                else if (ExamTimeSpan.TotalSeconds < 60)
+                {
+                    TimeMsg = $"{ExamTimeSpan.TotalSeconds:0.0} 秒";
+                }
+
+                if (!string.IsNullOrEmpty(TimeMsg))
+                {
+                    UniMsg = $"检测到设置的考试时长太长或太短！\n\n当前考试时长: {TimeMsg}。\n\n如果你确定当前设置的是正确的考试时间，请点击确定，否则请点击取消。";
+                }
+
+                if (!string.IsNullOrEmpty(UniMsg))
+                {
+                    if (MessageX.Popup(UniMsg, MessageLevel.Warning, MessageBoxButtons.OKCancel) == DialogResult.Cancel)
+                    {
+                        return false;
+                    }
                 }
             }
 
@@ -359,8 +377,8 @@ namespace CEETimerCSharpWinForms.Forms
                     { "FontStyle", CountdownFontStyle.ToString() },
                     { "DaysOnly", CheckBoxSetDaysOnly.Checked.ToString() },
                     { "Rounding", CheckBoxSetRounding.Checked.ToString() },
-                    { "NoStart", CheckBoxSetNoStart.Checked.ToString() },
-                    { "NoPast", CheckBoxSetNoPast.Checked.ToString() },
+                    { "ShowEnd", CheckBoxShowEnd.Checked.ToString() },
+                    { "ShowPast", CheckBoxShowPast.Checked.ToString() },
                     { "Dragable", CheckBoxEnableDragable.Checked.ToString() },
                     { "UniTopMost", CheckBoxSetUniTopMost.Checked.ToString() },
                     { "PPTService", CheckBoxSwPptSvc.Checked.ToString() }
@@ -383,8 +401,8 @@ namespace CEETimerCSharpWinForms.Forms
                     break;
                 case WorkingArea.Funny:
                     GBoxRestart.Text = IsWorking ? "关闭倒计时" : "重启倒计时";
-                    LabelLine9.Text = IsWorking ? "如果你由于某些原因需要临时关闭这个倒计时, 那你现在就可以选择" : "如果你更改了屏幕缩放或者分辨率, 可以点击此按钮来重启倒计时以";
-                    LabelLine10.Text = IsWorking ? "关闭它了。" : "确保显示的文字不会变模糊。";
+                    LabelLine9.Text = IsWorking ? "当然, 你也可以关闭此倒计时。(●'◡'●)" : "用于更改了屏幕缩放或者分辨率之后, 可以点击此按钮来重启倒计时";
+                    LabelLine10.Text = IsWorking ? "" : "以确保窗口的文字不会变模糊。";
                     ButtonRestart.Text = IsWorking ? "点击关闭(&C)" : "点击重启(&R)";
                     break;
             }

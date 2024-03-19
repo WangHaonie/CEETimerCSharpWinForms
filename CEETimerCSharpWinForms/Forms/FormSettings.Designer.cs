@@ -47,8 +47,8 @@
             this.TabPageDisplay = new System.Windows.Forms.TabPage();
             this.GBoxContent = new System.Windows.Forms.GroupBox();
             this.CheckBoxSetUniTopMost = new System.Windows.Forms.CheckBox();
-            this.CheckBoxSetNoPast = new System.Windows.Forms.CheckBox();
-            this.CheckBoxSetNoStart = new System.Windows.Forms.CheckBox();
+            this.CheckBoxShowPast = new System.Windows.Forms.CheckBox();
+            this.CheckBoxShowEnd = new System.Windows.Forms.CheckBox();
             this.CheckBoxSetRounding = new System.Windows.Forms.CheckBox();
             this.CheckBoxSetDaysOnly = new System.Windows.Forms.CheckBox();
             this.GBoxChangeFont = new System.Windows.Forms.GroupBox();
@@ -250,6 +250,7 @@
             this.GBoxExamEnd.TabIndex = 42;
             this.GBoxExamEnd.TabStop = false;
             this.GBoxExamEnd.Text = "考试结束日期和时间";
+            this.GBoxExamEnd.Visible = false;
             // 
             // GBoxExamStart
             // 
@@ -296,8 +297,8 @@
             // GBoxContent
             // 
             this.GBoxContent.Controls.Add(this.CheckBoxSetUniTopMost);
-            this.GBoxContent.Controls.Add(this.CheckBoxSetNoPast);
-            this.GBoxContent.Controls.Add(this.CheckBoxSetNoStart);
+            this.GBoxContent.Controls.Add(this.CheckBoxShowPast);
+            this.GBoxContent.Controls.Add(this.CheckBoxShowEnd);
             this.GBoxContent.Controls.Add(this.CheckBoxSetRounding);
             this.GBoxContent.Controls.Add(this.CheckBoxSetDaysOnly);
             this.GBoxContent.Location = new System.Drawing.Point(7, 6);
@@ -318,27 +319,27 @@
             this.CheckBoxSetUniTopMost.UseVisualStyleBackColor = true;
             this.CheckBoxSetUniTopMost.CheckedChanged += new System.EventHandler(this.SettingsChanged);
             // 
-            // CheckBoxSetNoPast
+            // CheckBoxShowPast
             // 
-            this.CheckBoxSetNoPast.AutoSize = true;
-            this.CheckBoxSetNoPast.Location = new System.Drawing.Point(6, 72);
-            this.CheckBoxSetNoPast.Name = "CheckBoxSetNoPast";
-            this.CheckBoxSetNoPast.Size = new System.Drawing.Size(315, 19);
-            this.CheckBoxSetNoPast.TabIndex = 3;
-            this.CheckBoxSetNoPast.Text = "不显示 \"距离...已经过去了...\" (考试已经结束了多久)";
-            this.CheckBoxSetNoPast.UseVisualStyleBackColor = true;
-            this.CheckBoxSetNoPast.CheckedChanged += new System.EventHandler(this.SettingsChanged);
+            this.CheckBoxShowPast.AutoSize = true;
+            this.CheckBoxShowPast.Location = new System.Drawing.Point(6, 72);
+            this.CheckBoxShowPast.Name = "CheckBoxShowPast";
+            this.CheckBoxShowPast.Size = new System.Drawing.Size(276, 19);
+            this.CheckBoxShowPast.TabIndex = 3;
+            this.CheckBoxShowPast.Text = "显示 \"考试已过去了多久\" (距离...已过去了...)";
+            this.CheckBoxShowPast.UseVisualStyleBackColor = true;
+            this.CheckBoxShowPast.CheckedChanged += new System.EventHandler(this.CheckBoxShowPast_CheckedChanged);
             // 
-            // CheckBoxSetNoStart
+            // CheckBoxShowEnd
             // 
-            this.CheckBoxSetNoStart.AutoSize = true;
-            this.CheckBoxSetNoStart.Location = new System.Drawing.Point(6, 47);
-            this.CheckBoxSetNoStart.Name = "CheckBoxSetNoStart";
-            this.CheckBoxSetNoStart.Size = new System.Drawing.Size(289, 19);
-            this.CheckBoxSetNoStart.TabIndex = 2;
-            this.CheckBoxSetNoStart.Text = "不显示 \"距离...结束还有...\" (考试还有多久结束)";
-            this.CheckBoxSetNoStart.UseVisualStyleBackColor = true;
-            this.CheckBoxSetNoStart.CheckedChanged += new System.EventHandler(this.CheckBoxSetNoStart_CheckedChanged);
+            this.CheckBoxShowEnd.AutoSize = true;
+            this.CheckBoxShowEnd.Location = new System.Drawing.Point(6, 47);
+            this.CheckBoxShowEnd.Name = "CheckBoxShowEnd";
+            this.CheckBoxShowEnd.Size = new System.Drawing.Size(276, 19);
+            this.CheckBoxShowEnd.TabIndex = 2;
+            this.CheckBoxShowEnd.Text = "显示 \"考试还有多久结束\" (距离...结束还有...)";
+            this.CheckBoxShowEnd.UseVisualStyleBackColor = true;
+            this.CheckBoxShowEnd.CheckedChanged += new System.EventHandler(this.CheckBoxShowEnd_CheckedChanged);
             // 
             // CheckBoxSetRounding
             // 
@@ -791,8 +792,8 @@
         private System.Windows.Forms.Button ButtonRestoreFont;
         private System.Windows.Forms.GroupBox GBoxContent;
         private System.Windows.Forms.CheckBox CheckBoxSetDaysOnly;
-        private System.Windows.Forms.CheckBox CheckBoxSetNoPast;
-        private System.Windows.Forms.CheckBox CheckBoxSetNoStart;
+        private System.Windows.Forms.CheckBox CheckBoxShowPast;
+        private System.Windows.Forms.CheckBox CheckBoxShowEnd;
         private System.Windows.Forms.CheckBox CheckBoxSetRounding;
         private System.Windows.Forms.GroupBox GBoxSetDragable;
         private System.Windows.Forms.CheckBox CheckBoxEnableDragable;

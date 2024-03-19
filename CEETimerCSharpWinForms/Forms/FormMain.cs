@@ -15,8 +15,8 @@ namespace CEETimerCSharpWinForms.Forms
         private bool IsDragable;
         private bool IsFeatureMOEnabled;
         private bool IsFeatureVDMEnabled;
-        private bool IsNoPast;
-        private bool IsNoStart;
+        private bool IsShowPast;
+        private bool IsShowEnd;
         private bool IsReady;
         private bool IsRounding;
         private bool IsUniTopMost;
@@ -69,14 +69,15 @@ namespace CEETimerCSharpWinForms.Forms
             IsFeatureMOEnabled = bool.TryParse(ConfigManager.ReadConfig("FeatureMO"), out bool tmpc) && tmpc;
             IsDaysOnly = bool.TryParse(ConfigManager.ReadConfig("DaysOnly"), out bool tmpd) && tmpd;
             IsRounding = bool.TryParse(ConfigManager.ReadConfig("Rounding"), out bool tmpe) && tmpe;
-            IsNoStart = bool.TryParse(ConfigManager.ReadConfig("NoStart"), out bool tmpf) && tmpf;
-            IsNoPast = bool.TryParse(ConfigManager.ReadConfig("NoPast"), out bool tmpg) && tmpg;
+            IsShowPast = bool.TryParse(ConfigManager.ReadConfig("ShowPast"), out bool tmpg) && tmpg;
+            IsShowEnd = bool.TryParse(ConfigManager.ReadConfig("ShowEnd"), out bool tmpf) && tmpf;
             IsDragable = bool.TryParse(ConfigManager.ReadConfig("Dragable"), out bool tmph) && tmph;
             IsUniTopMost = bool.TryParse(ConfigManager.ReadConfig("UniTopMost"), out bool tmpi) && tmpi;
             IsPPTService = bool.TryParse(ConfigManager.ReadConfig("PPTService"), out bool tmpj) && tmpj;
             DateTime.TryParseExact(ConfigManager.ReadConfig("ExamStartTime"), "yyyyMMddHHmmss", null, System.Globalization.DateTimeStyles.None, out ExamStartTime);
             DateTime.TryParseExact(ConfigManager.ReadConfig("ExamEndTime"), "yyyyMMddHHmmss", null, System.Globalization.DateTimeStyles.None, out ExamEndTime);
 
+            IsShowEnd = IsShowPast && !IsShowEnd ? IsShowPast : IsShowEnd;
             LocationChanged -= Form_LocationChanged;
             LableCountdown.MouseDown -= Drag_MouseDown;
 
@@ -217,17 +218,12 @@ namespace CEETimerCSharpWinForms.Forms
                     LableCountdown.Text = $"距离{ExamName}还有{TimeLeft.Days}天{TimeLeft.Hours:00}时{TimeLeft.Minutes:00}分{TimeLeft.Seconds:00}秒";
                 }
             }
-            else if (DateTime.Now >= ExamStartTime && DateTime.Now < ExamEndTime)
+            else if (DateTime.Now >= ExamStartTime && DateTime.Now < ExamEndTime && IsShowEnd)
             {
                 TimeSpan TimeLeftPast = ExamEndTime - DateTime.Now;
                 LableCountdown.ForeColor = Color.Green;
 
-                if (IsNoStart)
-                {
-                    LableCountdown.ForeColor = Color.Black;
-                    LableCountdown.Text = $"欢迎使用高考倒计时，请右键点击此处到设置里添加考试信息";
-                }
-                else if (IsDaysOnly)
+                if (IsDaysOnly)
                 {
                     LableCountdown.Text = $"距离{ExamName}结束还有{TimeLeftPast.Days}天";
 
@@ -241,16 +237,12 @@ namespace CEETimerCSharpWinForms.Forms
                     LableCountdown.Text = $"距离{ExamName}结束还有{TimeLeftPast.Days}天{TimeLeftPast.Hours:00}时{TimeLeftPast.Minutes:00}分{TimeLeftPast.Seconds:00}秒";
                 }
             }
-            else if (DateTime.Now >= ExamEndTime)
+            else if (DateTime.Now >= ExamEndTime && IsShowPast)
             {
                 TimeSpan TimePast = DateTime.Now - ExamEndTime;
                 LableCountdown.ForeColor = Color.Black;
 
-                if (IsNoStart || IsNoPast)
-                {
-                    LableCountdown.Text = $"欢迎使用高考倒计时，请右键点击此处到设置里添加考试信息";
-                }
-                else if (IsDaysOnly)
+                if (IsDaysOnly)
                 {
                     LableCountdown.Text = $"距离{ExamName}已经过去了{TimePast.Days}天";
 
@@ -263,6 +255,11 @@ namespace CEETimerCSharpWinForms.Forms
                 {
                     LableCountdown.Text = $"距离{ExamName}已经过去了{TimePast.Days}天{TimePast.Hours:00}时{TimePast.Minutes:00}分{TimePast.Seconds:00}秒";
                 }
+            }
+            else
+            {
+                LableCountdown.ForeColor = Color.Black;
+                LableCountdown.Text = "欢迎使用高考倒计时，请右键点击此处到设置里添加考试信息";
             }
         }
 
@@ -311,7 +308,7 @@ namespace CEETimerCSharpWinForms.Forms
                     Top = TaskbarBounds.Top - Height;
                 }
             }
-            
+
             CompatibleWithPPTService();
         }
 
@@ -331,8 +328,8 @@ namespace CEETimerCSharpWinForms.Forms
             formSettings.CountdownFontStyle = LableCountdown.Font.Style;
             formSettings.ExamName = ExamName;
             formSettings.IsDaysOnly = IsDaysOnly;
-            formSettings.IsNoPast = IsNoPast;
-            formSettings.IsNoStart = IsNoStart;
+            formSettings.IsShowEnd = IsShowEnd;
+            formSettings.IsShowPast = IsShowPast;
             formSettings.IsRounding = IsRounding;
             formSettings.IsDragable = IsDragable;
             formSettings.IsPPTService = IsPPTService;
