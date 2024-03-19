@@ -19,6 +19,7 @@ namespace CEETimerCSharpWinForms.Forms
         public bool IsNoPast { get; set; }
         public bool IsNoStart { get; set; }
         public bool IsRounding { get; set; }
+        public bool IsPPTService {  get; set; }
         public bool TopMostChecked { get; set; }
         public DateTime ExamStartTime { get; set; }
         public DateTime ExamEndTime { get; set; }
@@ -208,6 +209,7 @@ namespace CEETimerCSharpWinForms.Forms
         private void RefreshSettings()
         {
             CheckBoxStartup.Checked = (Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true)?.GetValue("CEETimerCSharpWinForms") is string regvalue) && regvalue.Equals($"\"{LaunchManager.CurrentExecutable}\"", StringComparison.OrdinalIgnoreCase);
+            CheckBoxSwPptSvc.Checked = IsAccessible;
 
             CheckBoxSetTopMost.Checked = TopMostChecked;
             TextBoxExamName.Text = ExamName;
@@ -220,6 +222,7 @@ namespace CEETimerCSharpWinForms.Forms
             CheckBoxSetRounding.Checked = IsRounding;
             CheckBoxSetNoStart.Checked = IsNoStart;
             CheckBoxSetNoPast.Checked = IsNoPast;
+            CheckBoxSwPptSvc.Checked = IsPPTService;
             CheckBoxSetUniTopMost.Checked = ConfigManager.UniTopMost;
 
             ConfigManager.SetTopMost(this);
@@ -359,7 +362,8 @@ namespace CEETimerCSharpWinForms.Forms
                     { "NoStart", CheckBoxSetNoStart.Checked.ToString() },
                     { "NoPast", CheckBoxSetNoPast.Checked.ToString() },
                     { "Dragable", CheckBoxEnableDragable.Checked.ToString() },
-                    { "UniTopMost", CheckBoxSetUniTopMost.Checked.ToString() }
+                    { "UniTopMost", CheckBoxSetUniTopMost.Checked.ToString() },
+                    { "PPTService", CheckBoxSwPptSvc.Checked.ToString() }
                 });
             }
             catch

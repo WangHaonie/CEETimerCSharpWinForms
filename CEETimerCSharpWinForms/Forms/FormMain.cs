@@ -1,5 +1,4 @@
-﻿using CEETimerCSharpWinForms.Forms;
-using CEETimerCSharpWinForms.Modules;
+﻿using CEETimerCSharpWinForms.Modules;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -21,6 +20,7 @@ namespace CEETimerCSharpWinForms.Forms
         private bool IsReady;
         private bool IsRounding;
         private bool IsUniTopMost;
+        private bool IsPPTService;
         private DateTime ExamEndTime;
         private DateTime ExamStartTime;
         private Font SelectedFont;
@@ -73,6 +73,7 @@ namespace CEETimerCSharpWinForms.Forms
             IsNoPast = bool.TryParse(ConfigManager.ReadConfig("NoPast"), out bool tmpg) && tmpg;
             IsDragable = bool.TryParse(ConfigManager.ReadConfig("Dragable"), out bool tmph) && tmph;
             IsUniTopMost = bool.TryParse(ConfigManager.ReadConfig("UniTopMost"), out bool tmpi) && tmpi;
+            IsPPTService = bool.TryParse(ConfigManager.ReadConfig("PPTService"), out bool tmpj) && tmpj;
             DateTime.TryParseExact(ConfigManager.ReadConfig("ExamStartTime"), "yyyyMMddHHmmss", null, System.Globalization.DateTimeStyles.None, out ExamStartTime);
             DateTime.TryParseExact(ConfigManager.ReadConfig("ExamEndTime"), "yyyyMMddHHmmss", null, System.Globalization.DateTimeStyles.None, out ExamEndTime);
 
@@ -105,8 +106,13 @@ namespace CEETimerCSharpWinForms.Forms
             }
             else
             {
-                Location = new Point(0, 0);
+                if (IsPPTService)
+                {
+                    Location = new Point(1, 0);
+                }
             }
+
+            CompatibleWithPPTService();
 
             try
             {
@@ -260,6 +266,14 @@ namespace CEETimerCSharpWinForms.Forms
             }
         }
 
+        private void CompatibleWithPPTService()
+        {
+            if (IsPPTService && Location == new Point(0, 0))
+            {
+                Location = new Point(1, 0);
+            }
+        }
+
         private void Drag_MouseDown(object sender, MouseEventArgs e)
         {
             ReleaseCapture();
@@ -297,6 +311,8 @@ namespace CEETimerCSharpWinForms.Forms
                     Top = TaskbarBounds.Top - Height;
                 }
             }
+            
+            CompatibleWithPPTService();
         }
 
         private void ContextMenuSettings_Click(object sender, EventArgs e)
@@ -319,6 +335,7 @@ namespace CEETimerCSharpWinForms.Forms
             formSettings.IsNoStart = IsNoStart;
             formSettings.IsRounding = IsRounding;
             formSettings.IsDragable = IsDragable;
+            formSettings.IsPPTService = IsPPTService;
 
             formSettings.WindowState = FormWindowState.Normal;
             formSettings.Show();
