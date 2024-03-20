@@ -152,7 +152,6 @@ namespace CEETimerCSharpWinForms.Forms
         {
             SettingsChanged(sender, e);
             DTPExamEnd.Enabled = CheckBoxShowEnd.Checked;
-            GBoxExamEnd.Visible = CheckBoxShowEnd.Checked;
         }
 
         private void CheckBoxShowPast_CheckedChanged(object sender, EventArgs e)
@@ -160,8 +159,6 @@ namespace CEETimerCSharpWinForms.Forms
             SettingsChanged(sender, e);
             CheckBoxShowEnd.Checked = CheckBoxShowPast.Checked;
             CheckBoxShowEnd.Enabled = !CheckBoxShowPast.Checked;
-            DTPExamEnd.Enabled = CheckBoxShowPast.Checked;
-            GBoxExamEnd.Visible = CheckBoxShowPast.Checked;
         }
 
         private void ButtonSave_Click(object sender, EventArgs e)
@@ -198,6 +195,7 @@ namespace CEETimerCSharpWinForms.Forms
             {
                 if (MessageX.Popup("检测到设置被更改但没有被保存，是否立即进行保存？", MessageLevel.Warning, MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
+                    e.Cancel = true;
                     ButtonSave_Click(sender, e);
                 }
                 else
@@ -229,7 +227,7 @@ namespace CEETimerCSharpWinForms.Forms
             CheckBoxEnableDragable.Checked = IsDragable;
             CheckBoxSetDaysOnly.Checked = IsDaysOnly;
             CheckBoxSetRounding.Checked = IsRounding;
-            CheckBoxShowEnd.Checked = IsShowEnd;
+            CheckBoxShowEnd.Checked = DTPExamEnd.Enabled = IsShowEnd;
             CheckBoxShowPast.Checked = IsShowPast;
             CheckBoxSwPptSvc.Checked = IsPPTService;
             CheckBoxSetUniTopMost.Checked = ConfigManager.UniTopMost;
@@ -243,11 +241,6 @@ namespace CEETimerCSharpWinForms.Forms
                 CheckBoxEnableVDM.Enabled = false;
                 CheckBoxEnableVDM.Checked = false;
                 CheckBoxEnableVDM.Text = $"此功能在当前系统上不可用";
-            }
-
-            if (!IsShowEnd || !IsShowPast)
-            {
-                DTPExamEnd.Enabled = false;
             }
         }
 
@@ -267,7 +260,7 @@ namespace CEETimerCSharpWinForms.Forms
 
                 SyncTimeProcess.WaitForExit();
                 var ExitCode = SyncTimeProcess.ExitCode;
-                MessageX.Popup($"命令执行完成！\n\n返回值为 {ExitCode} (0x{ExitCode:X})\n(0 代表成功，其他值为失败)", MessageLevel.Info, this);
+                MessageX.Popup($"命令执行完成！\n\n返回值为 {ExitCode} (0x{ExitCode:X})\n(0 代表成功，其他值为失败)", MessageLevel.Info, this, TabControlMain, TabPageTools);
             }
             catch (Win32Exception ex)
             {
@@ -282,13 +275,13 @@ namespace CEETimerCSharpWinForms.Forms
                  */
                 if (ex.NativeErrorCode == 1223)
                 {
-                    MessageX.Popup("请在 UAC 对话框弹出时点击 \"是\"。", ex, this);
+                    MessageX.Popup("请在 UAC 对话框弹出时点击 \"是\"。", ex, this, TabControlMain, TabPageTools);
                 }
                 #endregion
             }
             catch (Exception ex)
             {
-                MessageX.Popup($"命令执行时发生了错误。", ex, this);
+                MessageX.Popup($"命令执行时发生了错误。", ex, this, TabControlMain, TabPageTools);
             }
         }
 
@@ -301,6 +294,7 @@ namespace CEETimerCSharpWinForms.Forms
 
             if (string.IsNullOrWhiteSpace(ExamName) || (ExamName.Length < 2) || (ExamName.Length > 15))
             {
+                TabControlMain.SelectedTab = TabPageGeneral;
                 MessageX.Popup("输入的考试名称有误！\n\n请检查输入的考试名称是否太长或太短！", MessageLevel.Error);
                 return false;
             }
@@ -309,6 +303,7 @@ namespace CEETimerCSharpWinForms.Forms
             {
                 if (DTPExamStart.Value >= DTPExamEnd.Value)
                 {
+                    TabControlMain.SelectedTab = TabPageGeneral;
                     MessageX.Popup("考试开始时间必须在结束时间之前！", MessageLevel.Error);
                     return false;
                 }
@@ -332,6 +327,7 @@ namespace CEETimerCSharpWinForms.Forms
 
                 if (!string.IsNullOrEmpty(UniMsg))
                 {
+                    TabControlMain.SelectedTab = TabPageGeneral;
                     if (MessageX.Popup(UniMsg, MessageLevel.Warning, MessageBoxButtons.OKCancel) == DialogResult.Cancel)
                     {
                         return false;

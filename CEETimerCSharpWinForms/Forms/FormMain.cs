@@ -77,40 +77,19 @@ namespace CEETimerCSharpWinForms.Forms
             DateTime.TryParseExact(ConfigManager.ReadConfig("ExamStartTime"), "yyyyMMddHHmmss", null, System.Globalization.DateTimeStyles.None, out ExamStartTime);
             DateTime.TryParseExact(ConfigManager.ReadConfig("ExamEndTime"), "yyyyMMddHHmmss", null, System.Globalization.DateTimeStyles.None, out ExamEndTime);
 
-            IsShowEnd = IsShowPast && !IsShowEnd ? IsShowPast : IsShowEnd;
+            IsShowPast = IsShowPast && !IsShowEnd ? IsShowEnd : IsShowPast;
+            IsRounding = IsRounding && !IsDaysOnly ? IsDaysOnly : IsRounding;
+            ConfigManager.UniTopMost = IsUniTopMost && TopMost;
+            Location = IsPPTService ? new Point(1, 0) : new Point(0, 0);
+            IsFeatureVDMEnabled = LaunchManager.CurrentWindowsVersion >= 10;
+
             LocationChanged -= Form_LocationChanged;
             LableCountdown.MouseDown -= Drag_MouseDown;
-
-            if (IsUniTopMost && TopMost)
-            {
-                ConfigManager.UniTopMost = true;
-            }
-            else
-            {
-                ConfigManager.UniTopMost = false;
-            }
-
-            if (LaunchManager.CurrentWindowsVersion < 10)
-            {
-                IsFeatureVDMEnabled = false;
-            }
-
-            if (IsRounding && !IsDaysOnly)
-            {
-                IsRounding = false;
-            }
-
+            
             if (IsDragable)
             {
                 LocationChanged += Form_LocationChanged;
                 LableCountdown.MouseDown += Drag_MouseDown;
-            }
-            else
-            {
-                if (IsPPTService)
-                {
-                    Location = new Point(1, 0);
-                }
             }
 
             CompatibleWithPPTService();
@@ -135,7 +114,7 @@ namespace CEETimerCSharpWinForms.Forms
 
             ConfigManager.MountConfig(false);
 
-            if (!ConfigManager.IsValidData(ExamName) || !ConfigManager.IsValidData(ExamStartTime) || !ConfigManager.IsValidData(ExamEndTime))
+            if (!ConfigManager.IsValidData(ExamName) || !ConfigManager.IsValidData(ExamStartTime) || !ConfigManager.IsValidData(ExamEndTime) || ExamEndTime <= ExamStartTime)
             {
                 IsReady = false;
                 LableCountdown.ForeColor = Color.Black;

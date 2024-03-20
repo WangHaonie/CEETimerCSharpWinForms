@@ -250,7 +250,6 @@
             this.GBoxExamEnd.TabIndex = 42;
             this.GBoxExamEnd.TabStop = false;
             this.GBoxExamEnd.Text = "考试结束日期和时间";
-            this.GBoxExamEnd.Visible = false;
             // 
             // GBoxExamStart
             // 
