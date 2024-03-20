@@ -29,6 +29,7 @@ namespace CEETimerCSharpWinForms.Modules
             var (Icon, Title) = GetIconTitle(Level);
             WhichForm?.Invoke(new Action(() =>
             {
+                WhichForm.WindowState = FormWindowState.Normal;
                 WhichForm.Activate();
                 MessageBox.Show(Message, Title, MessageBoxButtons.OK, Icon);
             }));
@@ -39,6 +40,7 @@ namespace CEETimerCSharpWinForms.Modules
             var (Icon, Title) = GetIconTitle(Level);
             WhichForm?.Invoke(new Action(() =>
             {
+                WhichForm.WindowState = FormWindowState.Normal;
                 WhichForm.Activate();
                 TabControl.SelectedTab = TabPage;
                 MessageBox.Show(Message, Title, MessageBoxButtons.OK, Icon);
@@ -54,6 +56,7 @@ namespace CEETimerCSharpWinForms.Modules
         {
             WhichForm?.Invoke(new Action(() =>
             {
+                WhichForm.WindowState = FormWindowState.Normal;
                 WhichForm.Activate();
                 MessageBox.Show($"{Message}\n\n错误信息: \n{ex.Message}\n\n错误详情: \n{ex}", LaunchManager.ErrMsg, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }));
@@ -63,6 +66,7 @@ namespace CEETimerCSharpWinForms.Modules
         {
             WhichForm?.Invoke(new Action(() =>
             {
+                WhichForm.WindowState = FormWindowState.Normal;
                 WhichForm.Activate();
                 TabControl.SelectedTab = TabPage;
                 MessageBox.Show($"{Message}\n\n错误信息: \n{ex.Message}\n\n错误详情: \n{ex}", LaunchManager.ErrMsg, MessageBoxButtons.OK, MessageBoxIcon.Error);
