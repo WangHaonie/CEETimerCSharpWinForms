@@ -29,8 +29,8 @@ namespace CEETimerCSharpWinForms.Forms
         private int i;
         private Timer TimerCountdown;
         private readonly FontConverter fontConverter = new();
-        private static FormSettings formSettings;
-        private static FormAbout formAbout;
+        private FormSettings formSettings;
+        private FormAbout formAbout;
         private string ExamName;
         private VirtualDesktopManager vdm;
 
