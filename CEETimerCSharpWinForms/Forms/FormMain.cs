@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
@@ -74,18 +75,22 @@ namespace CEETimerCSharpWinForms.Forms
             IsDragable = bool.TryParse(ConfigManager.ReadConfig("Dragable"), out bool tmph) && tmph;
             IsUniTopMost = bool.TryParse(ConfigManager.ReadConfig("UniTopMost"), out bool tmpi) && tmpi;
             IsPPTService = bool.TryParse(ConfigManager.ReadConfig("PPTService"), out bool tmpj) && tmpj;
-            DateTime.TryParseExact(ConfigManager.ReadConfig("ExamStartTime"), "yyyyMMddHHmmss", null, System.Globalization.DateTimeStyles.None, out ExamStartTime);
-            DateTime.TryParseExact(ConfigManager.ReadConfig("ExamEndTime"), "yyyyMMddHHmmss", null, System.Globalization.DateTimeStyles.None, out ExamEndTime);
+            DateTime.TryParseExact(ConfigManager.ReadConfig("ExamStartTime"), "yyyyMMddHHmmss", null, DateTimeStyles.None, out ExamStartTime);
+            DateTime.TryParseExact(ConfigManager.ReadConfig("ExamEndTime"), "yyyyMMddHHmmss", null, DateTimeStyles.None, out ExamEndTime);
 
             IsShowPast = IsShowPast && !IsShowEnd ? IsShowEnd : IsShowPast;
             IsRounding = IsRounding && !IsDaysOnly ? IsDaysOnly : IsRounding;
             ConfigManager.UniTopMost = IsUniTopMost && TopMost;
             Location = IsPPTService ? new Point(1, 0) : new Point(0, 0);
-            IsFeatureVDMEnabled = LaunchManager.CurrentWindowsVersion >= 10;
+
+            if (IsFeatureVDMEnabled && LaunchManager.CurrentWindowsVersion < 10)
+            {
+                IsFeatureVDMEnabled = false;
+            }
 
             LocationChanged -= Form_LocationChanged;
             LableCountdown.MouseDown -= Drag_MouseDown;
-            
+
             if (IsDragable)
             {
                 LocationChanged += Form_LocationChanged;
@@ -114,15 +119,19 @@ namespace CEETimerCSharpWinForms.Forms
 
             ConfigManager.MountConfig(false);
 
-            if (!ConfigManager.IsValidData(ExamName) || !ConfigManager.IsValidData(ExamStartTime) || !ConfigManager.IsValidData(ExamEndTime) || ExamEndTime <= ExamStartTime)
+            if (!ConfigManager.IsValidData(ExamName) || !ConfigManager.IsValidData(ExamStartTime) || !ConfigManager.IsValidData(ExamEndTime) || (ExamEndTime <= ExamStartTime && IsShowEnd))
             {
                 IsReady = false;
-                LableCountdown.ForeColor = Color.Black;
-                LableCountdown.Text = $"欢迎使用高考倒计时，请右键点击此处到设置里添加考试信息";
             }
             else
             {
                 IsReady = true;
+            }
+
+            if (!IsReady)
+            {
+                LableCountdown.ForeColor = Color.Black;
+                LableCountdown.Text = "欢迎使用高考倒计时，请右键点击此处到设置里添加考试信息";
             }
         }
 
@@ -130,9 +139,9 @@ namespace CEETimerCSharpWinForms.Forms
         {
             try
             {
+                if (IsReady) { TriggerCountdownStart(); }
                 if (IsFeatureMOEnabled) { TriggerMemoryOptimization(); } else { i = 0; }
                 if (IsFeatureVDMEnabled) { TriggerVirtualDesktopDetect(); }
-                if (IsReady) { TriggerCountdownStart(); }
             }
             catch
             {
@@ -223,16 +232,16 @@ namespace CEETimerCSharpWinForms.Forms
 
                 if (IsDaysOnly)
                 {
-                    LableCountdown.Text = $"距离{ExamName}已经过去了{TimePast.Days}天";
+                    LableCountdown.Text = $"距离{ExamName}已过去了{TimePast.Days}天";
 
                     if (IsRounding)
                     {
-                        LableCountdown.Text = $"距离{ExamName}已经过去了{TimePast.Days + 1}天";
+                        LableCountdown.Text = $"距离{ExamName}已过去了{TimePast.Days + 1}天";
                     }
                 }
                 else
                 {
-                    LableCountdown.Text = $"距离{ExamName}已经过去了{TimePast.Days}天{TimePast.Hours:00}时{TimePast.Minutes:00}分{TimePast.Seconds:00}秒";
+                    LableCountdown.Text = $"距离{ExamName}已过去了{TimePast.Days}天{TimePast.Hours:00}时{TimePast.Minutes:00}分{TimePast.Seconds:00}秒";
                 }
             }
             else
