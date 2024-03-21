@@ -24,24 +24,24 @@ namespace CEETimerCSharpWinForms.Modules
             return MessageBox.Show(Message, Title, Buttons, Icon);
         }
 
-        public static void Popup(string Message, MessageLevel Level, Form WhichForm)
+        public static void Popup(string Message, MessageLevel Level, Form ParentForm)
         {
             var (Icon, Title) = GetIconTitle(Level);
-            WhichForm?.Invoke(new Action(() =>
+            ParentForm?.Invoke(new Action(() =>
             {
-                WhichForm.WindowState = FormWindowState.Normal;
-                WhichForm.Activate();
+                ParentForm.WindowState = FormWindowState.Normal;
+                ParentForm.Activate();
                 MessageBox.Show(Message, Title, MessageBoxButtons.OK, Icon);
             }));
         }
 
-        public static void Popup(string Message, MessageLevel Level, Form WhichForm, TabControl TabControl, TabPage TabPage)
+        public static void Popup(string Message, MessageLevel Level, Form ParentForm, TabControl TabControl, TabPage TabPage)
         {
             var (Icon, Title) = GetIconTitle(Level);
-            WhichForm?.Invoke(new Action(() =>
+            ParentForm?.Invoke(new Action(() =>
             {
-                WhichForm.WindowState = FormWindowState.Normal;
-                WhichForm.Activate();
+                ParentForm.WindowState = FormWindowState.Normal;
+                ParentForm.Activate();
                 TabControl.SelectedTab = TabPage;
                 MessageBox.Show(Message, Title, MessageBoxButtons.OK, Icon);
             }));
@@ -52,22 +52,22 @@ namespace CEETimerCSharpWinForms.Modules
             MessageBox.Show($"{Message}\n\n错误信息: \n{ex.Message}\n\n错误详情: \n{ex}", LaunchManager.ErrMsg, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
-        public static void Popup(string Message, Exception ex, Form WhichForm)
+        public static void Popup(string Message, Exception ex, Form ParentForm)
         {
-            WhichForm?.Invoke(new Action(() =>
+            ParentForm?.Invoke(new Action(() =>
             {
-                WhichForm.WindowState = FormWindowState.Normal;
-                WhichForm.Activate();
+                ParentForm.WindowState = FormWindowState.Normal;
+                ParentForm.Activate();
                 MessageBox.Show($"{Message}\n\n错误信息: \n{ex.Message}\n\n错误详情: \n{ex}", LaunchManager.ErrMsg, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }));
         }
 
-        public static void Popup(string Message, Exception ex, Form WhichForm, TabControl TabControl, TabPage TabPage)
+        public static void Popup(string Message, Exception ex, Form ParentForm, TabControl TabControl, TabPage TabPage)
         {
-            WhichForm?.Invoke(new Action(() =>
+            ParentForm?.Invoke(new Action(() =>
             {
-                WhichForm.WindowState = FormWindowState.Normal;
-                WhichForm.Activate();
+                ParentForm.WindowState = FormWindowState.Normal;
+                ParentForm.Activate();
                 TabControl.SelectedTab = TabPage;
                 MessageBox.Show($"{Message}\n\n错误信息: \n{ex.Message}\n\n错误详情: \n{ex}", LaunchManager.ErrMsg, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }));

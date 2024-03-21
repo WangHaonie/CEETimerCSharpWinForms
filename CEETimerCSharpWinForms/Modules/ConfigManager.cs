@@ -10,9 +10,9 @@ namespace CEETimerCSharpWinForms.Modules
     {
         public static bool UniTopMost { get; set; }
 
-        public static void SetTopMost(Form ThisForm)
+        public static void SetTopMost(Form ParentForm)
         {
-            ThisForm.TopMost = UniTopMost;
+            ParentForm.TopMost = UniTopMost;
         }
 
         #region 来自网络

@@ -11,7 +11,7 @@ namespace CEETimerCSharpWinForms.Modules
         public static string CurrentLatest { get; private set; }
         private const string GitHubAPI = "https://api.github.com/repos/WangHaonie/CEETimerCSharpWinForms/releases/latest";
 
-        public static void CheckUpdate(bool IsProgramStart, Form ThisForm)
+        public static void CheckUpdate(bool IsProgramStart, Form ParentForm)
         {
             using var HttpClienMain = new HttpClient();
             HttpClienMain.DefaultRequestHeaders.UserAgent.ParseAdd(LaunchManager.RequestUA);
@@ -37,14 +37,14 @@ namespace CEETimerCSharpWinForms.Modules
                 }
                 else if (!IsProgramStart)
                 {
-                    MessageX.Popup($"当前 v{LaunchManager.AppVersion} 已是最新版本。\n\n获取到的版本：v{CurrentLatest}\n发布日期: {PublishTime}\n\n当前版本更新日志: {UpdateLog}", MessageLevel.Info, ThisForm);
+                    MessageX.Popup($"当前 v{LaunchManager.AppVersion} 已是最新版本。\n\n获取到的版本：v{CurrentLatest}\n发布日期: {PublishTime}\n\n当前版本更新日志: {UpdateLog}", MessageLevel.Info, ParentForm);
                 }
             }
             catch (Exception ex)
             {
                 if (!IsProgramStart)
                 {
-                    MessageX.Popup($"检查更新时发生错误! ", ex, ThisForm);
+                    MessageX.Popup($"检查更新时发生错误! ", ex, ParentForm);
                 }
             }
         }
