@@ -77,11 +77,8 @@
             this.CheckBoxEnableVDM = new System.Windows.Forms.CheckBox();
             this.LabelLine2 = new System.Windows.Forms.Label();
             this.LabelLine1 = new System.Windows.Forms.Label();
-            this.TabPageOther = new System.Windows.Forms.TabPage();
             this.GBoxPPTService = new System.Windows.Forms.GroupBox();
             this.CheckBoxSwPptSvc = new System.Windows.Forms.CheckBox();
-            this.LabelLine15 = new System.Windows.Forms.Label();
-            this.LabelLine14 = new System.Windows.Forms.Label();
             this.LabelLine13 = new System.Windows.Forms.Label();
             this.TabControlMain.SuspendLayout();
             this.TabPageGeneral.SuspendLayout();
@@ -99,14 +96,13 @@
             this.GBoxSetDragable.SuspendLayout();
             this.GBoxMO.SuspendLayout();
             this.GBoxVDM.SuspendLayout();
-            this.TabPageOther.SuspendLayout();
             this.GBoxPPTService.SuspendLayout();
             this.SuspendLayout();
             // 
             // ButtonClose
             // 
             this.ButtonClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.ButtonClose.Location = new System.Drawing.Point(361, 297);
+            this.ButtonClose.Location = new System.Drawing.Point(357, 301);
             this.ButtonClose.Name = "ButtonClose";
             this.ButtonClose.Size = new System.Drawing.Size(75, 25);
             this.ButtonClose.TabIndex = 17;
@@ -171,7 +167,7 @@
             // 
             // ButtonSave
             // 
-            this.ButtonSave.Location = new System.Drawing.Point(280, 297);
+            this.ButtonSave.Location = new System.Drawing.Point(276, 301);
             this.ButtonSave.Name = "ButtonSave";
             this.ButtonSave.Size = new System.Drawing.Size(75, 25);
             this.ButtonSave.TabIndex = 16;
@@ -185,11 +181,10 @@
             this.TabControlMain.Controls.Add(this.TabPageDisplay);
             this.TabControlMain.Controls.Add(this.TabPageTools);
             this.TabControlMain.Controls.Add(this.TabPageAdvanced);
-            this.TabControlMain.Controls.Add(this.TabPageOther);
             this.TabControlMain.Location = new System.Drawing.Point(7, 4);
             this.TabControlMain.Name = "TabControlMain";
             this.TabControlMain.SelectedIndex = 0;
-            this.TabControlMain.Size = new System.Drawing.Size(429, 287);
+            this.TabControlMain.Size = new System.Drawing.Size(429, 295);
             this.TabControlMain.TabIndex = 40;
             // 
             // TabPageGeneral
@@ -201,7 +196,7 @@
             this.TabPageGeneral.Location = new System.Drawing.Point(4, 24);
             this.TabPageGeneral.Name = "TabPageGeneral";
             this.TabPageGeneral.Padding = new System.Windows.Forms.Padding(3);
-            this.TabPageGeneral.Size = new System.Drawing.Size(421, 259);
+            this.TabPageGeneral.Size = new System.Drawing.Size(421, 267);
             this.TabPageGeneral.TabIndex = 0;
             this.TabPageGeneral.Text = "基本";
             this.TabPageGeneral.UseVisualStyleBackColor = true;
@@ -276,7 +271,7 @@
             // 
             this.LabelExamNameCounter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.LabelExamNameCounter.AutoSize = true;
-            this.LabelExamNameCounter.Location = new System.Drawing.Point(364, 24);
+            this.LabelExamNameCounter.Location = new System.Drawing.Point(364, 25);
             this.LabelExamNameCounter.Name = "LabelExamNameCounter";
             this.LabelExamNameCounter.Size = new System.Drawing.Size(30, 15);
             this.LabelExamNameCounter.TabIndex = 35;
@@ -288,7 +283,7 @@
             this.TabPageDisplay.Controls.Add(this.GBoxChangeFont);
             this.TabPageDisplay.Location = new System.Drawing.Point(4, 24);
             this.TabPageDisplay.Name = "TabPageDisplay";
-            this.TabPageDisplay.Size = new System.Drawing.Size(421, 259);
+            this.TabPageDisplay.Size = new System.Drawing.Size(421, 267);
             this.TabPageDisplay.TabIndex = 3;
             this.TabPageDisplay.Text = "显示";
             this.TabPageDisplay.UseVisualStyleBackColor = true;
@@ -372,7 +367,7 @@
             this.GBoxChangeFont.Controls.Add(this.LabelLine11);
             this.GBoxChangeFont.Location = new System.Drawing.Point(7, 132);
             this.GBoxChangeFont.Name = "GBoxChangeFont";
-            this.GBoxChangeFont.Size = new System.Drawing.Size(405, 124);
+            this.GBoxChangeFont.Size = new System.Drawing.Size(405, 129);
             this.GBoxChangeFont.TabIndex = 0;
             this.GBoxChangeFont.TabStop = false;
             this.GBoxChangeFont.Text = "字体和大小";
@@ -380,7 +375,7 @@
             // ButtonRestoreFont
             // 
             this.ButtonRestoreFont.AutoSize = true;
-            this.ButtonRestoreFont.Location = new System.Drawing.Point(98, 91);
+            this.ButtonRestoreFont.Location = new System.Drawing.Point(95, 98);
             this.ButtonRestoreFont.Name = "ButtonRestoreFont";
             this.ButtonRestoreFont.Size = new System.Drawing.Size(85, 25);
             this.ButtonRestoreFont.TabIndex = 4;
@@ -391,7 +386,7 @@
             // ButtonChooseFont
             // 
             this.ButtonChooseFont.AutoSize = true;
-            this.ButtonChooseFont.Location = new System.Drawing.Point(9, 91);
+            this.ButtonChooseFont.Location = new System.Drawing.Point(6, 98);
             this.ButtonChooseFont.Name = "ButtonChooseFont";
             this.ButtonChooseFont.Size = new System.Drawing.Size(83, 25);
             this.ButtonChooseFont.TabIndex = 2;
@@ -427,12 +422,13 @@
             // 
             // TabPageTools
             // 
+            this.TabPageTools.Controls.Add(this.GBoxPPTService);
             this.TabPageTools.Controls.Add(this.GBoxRestart);
             this.TabPageTools.Controls.Add(this.GBoxSyncTime);
             this.TabPageTools.Location = new System.Drawing.Point(4, 24);
             this.TabPageTools.Name = "TabPageTools";
             this.TabPageTools.Padding = new System.Windows.Forms.Padding(3);
-            this.TabPageTools.Size = new System.Drawing.Size(421, 259);
+            this.TabPageTools.Size = new System.Drawing.Size(421, 267);
             this.TabPageTools.TabIndex = 1;
             this.TabPageTools.Text = "工具";
             this.TabPageTools.UseVisualStyleBackColor = true;
@@ -442,7 +438,7 @@
             this.GBoxRestart.Controls.Add(this.LabelLine10);
             this.GBoxRestart.Controls.Add(this.LabelLine9);
             this.GBoxRestart.Controls.Add(this.ButtonRestart);
-            this.GBoxRestart.Location = new System.Drawing.Point(7, 113);
+            this.GBoxRestart.Location = new System.Drawing.Point(7, 111);
             this.GBoxRestart.Name = "GBoxRestart";
             this.GBoxRestart.Size = new System.Drawing.Size(405, 85);
             this.GBoxRestart.TabIndex = 45;
@@ -470,7 +466,7 @@
             this.GBoxSyncTime.Controls.Add(this.LabelLine6);
             this.GBoxSyncTime.Controls.Add(this.LabelLine5);
             this.GBoxSyncTime.Controls.Add(this.ButtonSyncTime);
-            this.GBoxSyncTime.Location = new System.Drawing.Point(7, 6);
+            this.GBoxSyncTime.Location = new System.Drawing.Point(7, 5);
             this.GBoxSyncTime.Name = "GBoxSyncTime";
             this.GBoxSyncTime.Size = new System.Drawing.Size(405, 101);
             this.GBoxSyncTime.TabIndex = 44;
@@ -514,7 +510,7 @@
             this.TabPageAdvanced.Location = new System.Drawing.Point(4, 24);
             this.TabPageAdvanced.Name = "TabPageAdvanced";
             this.TabPageAdvanced.Padding = new System.Windows.Forms.Padding(3);
-            this.TabPageAdvanced.Size = new System.Drawing.Size(421, 259);
+            this.TabPageAdvanced.Size = new System.Drawing.Size(421, 267);
             this.TabPageAdvanced.TabIndex = 2;
             this.TabPageAdvanced.Text = "高级";
             this.TabPageAdvanced.UseVisualStyleBackColor = true;
@@ -632,25 +628,13 @@
             this.LabelLine1.TabIndex = 0;
             this.LabelLine1.Text = "跟随虚拟桌面的切换而移动窗口，仅适用于 Windows 10 以上的系统。";
             // 
-            // TabPageOther
-            // 
-            this.TabPageOther.Controls.Add(this.GBoxPPTService);
-            this.TabPageOther.Location = new System.Drawing.Point(4, 24);
-            this.TabPageOther.Name = "TabPageOther";
-            this.TabPageOther.Size = new System.Drawing.Size(421, 259);
-            this.TabPageOther.TabIndex = 4;
-            this.TabPageOther.Text = "其他";
-            this.TabPageOther.UseVisualStyleBackColor = true;
-            // 
             // GBoxPPTService
             // 
             this.GBoxPPTService.Controls.Add(this.CheckBoxSwPptSvc);
-            this.GBoxPPTService.Controls.Add(this.LabelLine15);
-            this.GBoxPPTService.Controls.Add(this.LabelLine14);
             this.GBoxPPTService.Controls.Add(this.LabelLine13);
-            this.GBoxPPTService.Location = new System.Drawing.Point(7, 6);
+            this.GBoxPPTService.Location = new System.Drawing.Point(7, 201);
             this.GBoxPPTService.Name = "GBoxPPTService";
-            this.GBoxPPTService.Size = new System.Drawing.Size(405, 92);
+            this.GBoxPPTService.Size = new System.Drawing.Size(405, 60);
             this.GBoxPPTService.TabIndex = 0;
             this.GBoxPPTService.TabStop = false;
             this.GBoxPPTService.Text = "兼容希沃PPT小工具";
@@ -658,31 +642,13 @@
             // CheckBoxSwPptSvc
             // 
             this.CheckBoxSwPptSvc.AutoSize = true;
-            this.CheckBoxSwPptSvc.Location = new System.Drawing.Point(9, 67);
+            this.CheckBoxSwPptSvc.Location = new System.Drawing.Point(9, 37);
             this.CheckBoxSwPptSvc.Name = "CheckBoxSwPptSvc";
             this.CheckBoxSwPptSvc.Size = new System.Drawing.Size(106, 19);
             this.CheckBoxSwPptSvc.TabIndex = 3;
             this.CheckBoxSwPptSvc.Text = "启用此功能(&X)";
             this.CheckBoxSwPptSvc.UseVisualStyleBackColor = true;
             this.CheckBoxSwPptSvc.CheckedChanged += new System.EventHandler(this.SettingsChanged);
-            // 
-            // LabelLine15
-            // 
-            this.LabelLine15.AutoSize = true;
-            this.LabelLine15.Location = new System.Drawing.Point(6, 49);
-            this.LabelLine15.Name = "LabelLine15";
-            this.LabelLine15.Size = new System.Drawing.Size(264, 15);
-            this.LabelLine15.TabIndex = 2;
-            this.LabelLine15.Text = "可以开启拖动功能, 将倒计时拖动到其他位置)";
-            // 
-            // LabelLine14
-            // 
-            this.LabelLine14.AutoSize = true;
-            this.LabelLine14.Location = new System.Drawing.Point(6, 34);
-            this.LabelLine14.Name = "LabelLine14";
-            this.LabelLine14.Size = new System.Drawing.Size(401, 15);
-            this.LabelLine14.TabIndex = 1;
-            this.LabelLine14.Text = "开启此功能后倒计时的默认显示位置将向右偏移一个像素。(或者你也";
             // 
             // LabelLine13
             // 
@@ -698,7 +664,7 @@
             this.AcceptButton = this.ButtonSave;
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(443, 327);
+            this.ClientSize = new System.Drawing.Size(443, 331);
             this.Controls.Add(this.TabControlMain);
             this.Controls.Add(this.ButtonSave);
             this.Controls.Add(this.ButtonClose);
@@ -741,7 +707,6 @@
             this.GBoxMO.PerformLayout();
             this.GBoxVDM.ResumeLayout(false);
             this.GBoxVDM.PerformLayout();
-            this.TabPageOther.ResumeLayout(false);
             this.GBoxPPTService.ResumeLayout(false);
             this.GBoxPPTService.PerformLayout();
             this.ResumeLayout(false);
@@ -798,11 +763,8 @@
         private System.Windows.Forms.CheckBox CheckBoxEnableDragable;
         private System.Windows.Forms.Label LabelLine12;
         private System.Windows.Forms.CheckBox CheckBoxSetUniTopMost;
-        private System.Windows.Forms.TabPage TabPageOther;
         private System.Windows.Forms.GroupBox GBoxPPTService;
         private System.Windows.Forms.Label LabelLine13;
-        private System.Windows.Forms.Label LabelLine15;
-        private System.Windows.Forms.Label LabelLine14;
         private System.Windows.Forms.CheckBox CheckBoxSwPptSvc;
     }
 }

@@ -77,13 +77,11 @@
             // 
             // ButtonRetry
             // 
-            this.ButtonRetry.AutoSize = true;
-            this.ButtonRetry.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ButtonRetry.Enabled = false;
-            this.ButtonRetry.Location = new System.Drawing.Point(237, 60);
+            this.ButtonRetry.Location = new System.Drawing.Point(204, 60);
             this.ButtonRetry.Margin = new System.Windows.Forms.Padding(2);
             this.ButtonRetry.Name = "ButtonRetry";
-            this.ButtonRetry.Size = new System.Drawing.Size(58, 25);
+            this.ButtonRetry.Size = new System.Drawing.Size(75, 25);
             this.ButtonRetry.TabIndex = 7;
             this.ButtonRetry.Text = "重试(&R)";
             this.ButtonRetry.UseVisualStyleBackColor = true;
@@ -91,12 +89,10 @@
             // 
             // ButtonCancel
             // 
-            this.ButtonCancel.AutoSize = true;
-            this.ButtonCancel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ButtonCancel.Location = new System.Drawing.Point(299, 60);
+            this.ButtonCancel.Location = new System.Drawing.Point(283, 60);
             this.ButtonCancel.Margin = new System.Windows.Forms.Padding(2);
             this.ButtonCancel.Name = "ButtonCancel";
-            this.ButtonCancel.Size = new System.Drawing.Size(59, 25);
+            this.ButtonCancel.Size = new System.Drawing.Size(75, 25);
             this.ButtonCancel.TabIndex = 8;
             this.ButtonCancel.Text = "取消(&C)";
             this.ButtonCancel.UseVisualStyleBackColor = true;

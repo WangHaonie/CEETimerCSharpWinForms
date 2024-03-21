@@ -58,16 +58,6 @@ namespace CEETimerCSharpWinForms.Forms
             }
         }
 
-        private void ButtonGitHub_Click(object sender, EventArgs e)
-        {
-            Process.Start("https://github.com/WangHaonie/CEETimerCSharpWinForms");
-        }
-
-        private void ButtonLicense_Click(object sender, EventArgs e)
-        {
-            Process.Start("https://github.com/WangHaonie/CEETimerCSharpWinForms/blob/main/LICENSE");
-        }
-
         private void ButtonClose_Click(object sender, EventArgs e)
         {
             Close();
@@ -79,6 +69,11 @@ namespace CEETimerCSharpWinForms.Forms
             {
                 e.Cancel = true;
             }
+        }
+
+        private void LinkGitHub_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start("https://github.com/WangHaonie/CEETimerCSharpWinForms");
         }
     }
 }

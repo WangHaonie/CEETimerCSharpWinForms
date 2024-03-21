@@ -30,12 +30,11 @@
         {
             this.LabelInfo = new System.Windows.Forms.Label();
             this.LabelAuthor = new System.Windows.Forms.Label();
-            this.ButtonGitHub = new System.Windows.Forms.Button();
             this.ButtonClose = new System.Windows.Forms.Button();
-            this.ButtonLicense = new System.Windows.Forms.Button();
             this.LabelLicense = new System.Windows.Forms.Label();
             this.LableVersion = new System.Windows.Forms.Label();
             this.PanelMain = new System.Windows.Forms.Panel();
+            this.LinkGitHub = new System.Windows.Forms.LinkLabel();
             this.PanelMain.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -58,45 +57,17 @@
             this.LabelAuthor.Size = new System.Drawing.Size(0, 15);
             this.LabelAuthor.TabIndex = 3;
             // 
-            // ButtonGitHub
-            // 
-            this.ButtonGitHub.AutoSize = true;
-            this.ButtonGitHub.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ButtonGitHub.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ButtonGitHub.Location = new System.Drawing.Point(14, 66);
-            this.ButtonGitHub.Name = "ButtonGitHub";
-            this.ButtonGitHub.Size = new System.Drawing.Size(85, 25);
-            this.ButtonGitHub.TabIndex = 4;
-            this.ButtonGitHub.Text = "项目主页(&G)";
-            this.ButtonGitHub.UseVisualStyleBackColor = true;
-            this.ButtonGitHub.Click += new System.EventHandler(this.ButtonGitHub_Click);
-            // 
             // ButtonClose
             // 
-            this.ButtonClose.AutoSize = true;
-            this.ButtonClose.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ButtonClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.ButtonClose.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ButtonClose.Location = new System.Drawing.Point(181, 66);
+            this.ButtonClose.Location = new System.Drawing.Point(165, 66);
             this.ButtonClose.Name = "ButtonClose";
-            this.ButtonClose.Size = new System.Drawing.Size(59, 25);
+            this.ButtonClose.Size = new System.Drawing.Size(75, 25);
             this.ButtonClose.TabIndex = 5;
             this.ButtonClose.Text = "关闭(&C)";
             this.ButtonClose.UseVisualStyleBackColor = true;
             this.ButtonClose.Click += new System.EventHandler(this.ButtonClose_Click);
-            // 
-            // ButtonLicense
-            // 
-            this.ButtonLicense.AutoSize = true;
-            this.ButtonLicense.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ButtonLicense.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ButtonLicense.Location = new System.Drawing.Point(105, 66);
-            this.ButtonLicense.Name = "ButtonLicense";
-            this.ButtonLicense.Size = new System.Drawing.Size(70, 25);
-            this.ButtonLicense.TabIndex = 6;
-            this.ButtonLicense.Text = "许可证(&L)";
-            this.ButtonLicense.UseVisualStyleBackColor = true;
-            this.ButtonLicense.Click += new System.EventHandler(this.ButtonLicense_Click);
             // 
             // LabelLicense
             // 
@@ -123,17 +94,29 @@
             // 
             this.PanelMain.AutoSize = true;
             this.PanelMain.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.PanelMain.Controls.Add(this.LinkGitHub);
             this.PanelMain.Controls.Add(this.LabelInfo);
-            this.PanelMain.Controls.Add(this.ButtonLicense);
             this.PanelMain.Controls.Add(this.ButtonClose);
             this.PanelMain.Controls.Add(this.LableVersion);
-            this.PanelMain.Controls.Add(this.ButtonGitHub);
             this.PanelMain.Controls.Add(this.LabelLicense);
             this.PanelMain.Controls.Add(this.LabelAuthor);
             this.PanelMain.Location = new System.Drawing.Point(0, 0);
             this.PanelMain.Name = "PanelMain";
             this.PanelMain.Size = new System.Drawing.Size(243, 94);
             this.PanelMain.TabIndex = 8;
+            // 
+            // LinkGitHub
+            // 
+            this.LinkGitHub.ActiveLinkColor = System.Drawing.Color.Blue;
+            this.LinkGitHub.AutoSize = true;
+            this.LinkGitHub.Location = new System.Drawing.Point(3, 71);
+            this.LinkGitHub.Name = "LinkGitHub";
+            this.LinkGitHub.Size = new System.Drawing.Size(45, 15);
+            this.LinkGitHub.TabIndex = 8;
+            this.LinkGitHub.TabStop = true;
+            this.LinkGitHub.Text = "GitHub";
+            this.LinkGitHub.VisitedLinkColor = System.Drawing.Color.Blue;
+            this.LinkGitHub.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkGitHub_LinkClicked);
             // 
             // FormAbout
             // 
@@ -163,11 +146,10 @@
         #endregion
         private System.Windows.Forms.Label LabelInfo;
         private System.Windows.Forms.Label LabelAuthor;
-        private System.Windows.Forms.Button ButtonGitHub;
         private System.Windows.Forms.Button ButtonClose;
-        private System.Windows.Forms.Button ButtonLicense;
         private System.Windows.Forms.Label LabelLicense;
         private System.Windows.Forms.Label LableVersion;
         private System.Windows.Forms.Panel PanelMain;
+        private System.Windows.Forms.LinkLabel LinkGitHub;
     }
 }
