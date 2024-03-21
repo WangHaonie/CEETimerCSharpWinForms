@@ -81,7 +81,6 @@ namespace CEETimerCSharpWinForms.Forms
             IsShowPast = IsShowPast && !IsShowEnd ? IsShowEnd : IsShowPast;
             IsRounding = IsRounding && !IsDaysOnly ? IsDaysOnly : IsRounding;
             ConfigManager.UniTopMost = IsUniTopMost && TopMost;
-            Location = IsPPTService ? new Point(1, 0) : new Point(0, 0);
 
             if (IsFeatureVDMEnabled && LaunchManager.CurrentWindowsVersion < 10)
             {
@@ -95,6 +94,10 @@ namespace CEETimerCSharpWinForms.Forms
             {
                 LocationChanged += Form_LocationChanged;
                 LableCountdown.MouseDown += Drag_MouseDown;
+            }
+            else
+            {
+                Location = new Point(0, 0);
             }
 
             CompatibleWithPPTService();
