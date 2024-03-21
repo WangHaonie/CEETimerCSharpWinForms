@@ -29,8 +29,6 @@ namespace CEETimerCSharpWinForms.Forms
         private int i;
         private Timer TimerCountdown;
         private readonly FontConverter fontConverter = new();
-        private FormSettings formSettings;
-        private FormAbout formAbout;
         private string ExamName;
         private VirtualDesktopManager vdm;
 
@@ -305,41 +303,27 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void ContextMenuSettings_Click(object sender, EventArgs e)
         {
-            if (formSettings == null || formSettings.IsDisposed)
-            {
-                formSettings = new FormSettings();
-            }
+            FormSettings.FeatureMOEnabled = IsFeatureMOEnabled;
+            FormSettings.FeatureVDMEnabled = IsFeatureVDMEnabled;
+            FormSettings.TopMostChecked = TopMost;
+            FormSettings.ExamStartTime = ExamStartTime;
+            FormSettings.ExamEndTime = ExamEndTime;
+            FormSettings.CountdownFont = LableCountdown.Font;
+            FormSettings.CountdownFontStyle = LableCountdown.Font.Style;
+            FormSettings.ExamName = ExamName;
+            FormSettings.IsDaysOnly = IsDaysOnly;
+            FormSettings.IsShowEnd = IsShowEnd;
+            FormSettings.IsShowPast = IsShowPast;
+            FormSettings.IsRounding = IsRounding;
+            FormSettings.IsDragable = IsDragable;
+            FormSettings.IsPPTService = IsPPTService;
 
-            formSettings.FeatureMOEnabled = IsFeatureMOEnabled;
-            formSettings.FeatureVDMEnabled = IsFeatureVDMEnabled;
-            formSettings.TopMostChecked = TopMost;
-            formSettings.ExamStartTime = ExamStartTime;
-            formSettings.ExamEndTime = ExamEndTime;
-            formSettings.CountdownFont = LableCountdown.Font;
-            formSettings.CountdownFontStyle = LableCountdown.Font.Style;
-            formSettings.ExamName = ExamName;
-            formSettings.IsDaysOnly = IsDaysOnly;
-            formSettings.IsShowEnd = IsShowEnd;
-            formSettings.IsShowPast = IsShowPast;
-            formSettings.IsRounding = IsRounding;
-            formSettings.IsDragable = IsDragable;
-            formSettings.IsPPTService = IsPPTService;
-
-            formSettings.WindowState = FormWindowState.Normal;
-            formSettings.Show();
-            formSettings.Activate();
+            SingleInstanceRunner<FormSettings>.GetInstance().Show();
         }
 
         private void ContextMenuAbout_Click(object sender, EventArgs e)
         {
-            if (formAbout == null || formAbout.IsDisposed)
-            {
-                formAbout = new FormAbout();
-            }
-
-            formAbout.WindowState = FormWindowState.Normal;
-            formAbout.Show();
-            formAbout.Activate();
+            SingleInstanceRunner<FormAbout>.GetInstance().Show();
         }
 
         private void ContextMenuOpenDir_Click(object sender, EventArgs e)

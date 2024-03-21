@@ -9,9 +9,7 @@ namespace CEETimerCSharpWinForms.Modules
     public class SimpleUpdateChecker
     {
         public static string CurrentLatest { get; private set; }
-
         private const string GitHubAPI = "https://api.github.com/repos/WangHaonie/CEETimerCSharpWinForms/releases/latest";
-        private static FormDownloader DownloaderForm;
 
         public static void CheckUpdate(bool IsProgramStart, Form ThisForm)
         {
@@ -33,14 +31,7 @@ namespace CEETimerCSharpWinForms.Modules
                     {
                         if (MessageX.Popup($"检测到新版本，是否下载并安装？\n\n当前版本: v{LaunchManager.AppVersion}\n最新版本: v{CurrentLatest}\n发布日期: {PublishTime}\n\nv{CurrentLatest}更新日志: {UpdateLog}", MessageLevel.Info, MessageBoxButtons.YesNo) == DialogResult.Yes)
                         {
-                            if (DownloaderForm == null || DownloaderForm.IsDisposed)
-                            {
-                                DownloaderForm = new FormDownloader();
-                            }
-
-                            DownloaderForm.WindowState = FormWindowState.Normal;
-                            DownloaderForm.Show();
-                            DownloaderForm.Activate();
+                            SingleInstanceRunner<FormDownloader>.GetInstance().Show();
                         }
                     }));
                 }

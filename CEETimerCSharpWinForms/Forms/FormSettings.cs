@@ -12,20 +12,20 @@ namespace CEETimerCSharpWinForms.Forms
 {
     public partial class FormSettings : Form
     {
-        public bool FeatureMOEnabled { get; set; }
-        public bool FeatureVDMEnabled { get; set; }
-        public bool IsDaysOnly { get; set; }
-        public bool IsDragable { get; set; }
-        public bool IsShowEnd { get; set; }
-        public bool IsShowPast { get; set; }
-        public bool IsRounding { get; set; }
-        public bool IsPPTService { get; set; }
-        public bool TopMostChecked { get; set; }
-        public DateTime ExamStartTime { get; set; }
-        public DateTime ExamEndTime { get; set; }
-        public Font CountdownFont { get; set; }
-        public FontStyle CountdownFontStyle { get; set; }
-        public string ExamName { get; set; }
+        public static bool FeatureMOEnabled { get; set; }
+        public static bool FeatureVDMEnabled { get; set; }
+        public static bool IsDaysOnly { get; set; }
+        public static bool IsDragable { get; set; }
+        public static bool IsShowEnd { get; set; }
+        public static bool IsShowPast { get; set; }
+        public static bool IsRounding { get; set; }
+        public static bool IsPPTService { get; set; }
+        public static bool TopMostChecked { get; set; }
+        public static DateTime ExamStartTime { get; set; }
+        public static DateTime ExamEndTime { get; set; }
+        public static Font CountdownFont { get; set; }
+        public static FontStyle CountdownFontStyle { get; set; }
+        public static string ExamName { get; set; }
 
         public delegate void ConfigChangedHandler(object sender, EventArgs e);
         public static ConfigChangedHandler ConfigChanged;

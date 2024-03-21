@@ -171,6 +171,7 @@
     <Compile Include="Modules\LaunchManager.cs" />
     <Compile Include="Modules\MemoryManager.cs" />
     <Compile Include="Modules\SimpleMessageBox.cs" />
+    <Compile Include="Modules\SingleInstanceRunner.cs" />
     <Compile Include="Modules\VirtualDesktopSwitch.cs">
       <SubType>Form</SubType>
     </Compile>
