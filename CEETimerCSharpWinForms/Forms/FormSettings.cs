@@ -399,7 +399,7 @@ namespace CEETimerCSharpWinForms.Forms
                     GBoxRestart.Text = IsWorking ? "关闭倒计时" : "重启倒计时";
                     LabelLine9.Text = IsWorking ? "当然, 你也可以关闭此倒计时。(●'◡'●)" : "用于更改了屏幕缩放或者分辨率之后, 可以点击此按钮来重启倒计时";
                     LabelLine10.Text = IsWorking ? "" : "以确保窗口的文字不会变模糊。";
-                    ButtonRestart.Text = IsWorking ? "点击关闭(&C)" : "点击重启(&R)";
+                    ButtonRestart.Text = IsWorking ? "点击关闭(&L)" : "点击重启(&R)";
                     break;
             }
         }

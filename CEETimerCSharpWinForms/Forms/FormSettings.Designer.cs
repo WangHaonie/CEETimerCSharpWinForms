@@ -120,9 +120,9 @@
             this.ButtonSyncTime.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ButtonSyncTime.Location = new System.Drawing.Point(9, 67);
             this.ButtonSyncTime.Name = "ButtonSyncTime";
-            this.ButtonSyncTime.Size = new System.Drawing.Size(83, 25);
+            this.ButtonSyncTime.Size = new System.Drawing.Size(84, 25);
             this.ButtonSyncTime.TabIndex = 19;
-            this.ButtonSyncTime.Text = "立即同步(&S)";
+            this.ButtonSyncTime.Text = "立即同步(&Y)";
             this.ButtonSyncTime.UseVisualStyleBackColor = true;
             this.ButtonSyncTime.Click += new System.EventHandler(this.ButtonSyncTime_Click);
             // 
@@ -312,9 +312,9 @@
             this.CheckBoxSetUniTopMost.AutoSize = true;
             this.CheckBoxSetUniTopMost.Location = new System.Drawing.Point(6, 97);
             this.CheckBoxSetUniTopMost.Name = "CheckBoxSetUniTopMost";
-            this.CheckBoxSetUniTopMost.Size = new System.Drawing.Size(247, 19);
+            this.CheckBoxSetUniTopMost.Size = new System.Drawing.Size(263, 19);
             this.CheckBoxSetUniTopMost.TabIndex = 4;
-            this.CheckBoxSetUniTopMost.Text = "顶置属性同样适用于本程序的其他窗口";
+            this.CheckBoxSetUniTopMost.Text = "顶置属性同样适用于本程序的其他窗口(&U)";
             this.CheckBoxSetUniTopMost.UseVisualStyleBackColor = true;
             this.CheckBoxSetUniTopMost.CheckedChanged += new System.EventHandler(this.SettingsChanged);
             // 
@@ -323,9 +323,9 @@
             this.CheckBoxShowPast.AutoSize = true;
             this.CheckBoxShowPast.Location = new System.Drawing.Point(6, 72);
             this.CheckBoxShowPast.Name = "CheckBoxShowPast";
-            this.CheckBoxShowPast.Size = new System.Drawing.Size(276, 19);
+            this.CheckBoxShowPast.Size = new System.Drawing.Size(291, 19);
             this.CheckBoxShowPast.TabIndex = 3;
-            this.CheckBoxShowPast.Text = "显示 \"考试已过去了多久\" (距离...已过去了...)";
+            this.CheckBoxShowPast.Text = "显示 \"考试已过去了多久\" (距离...已过去了...)(&P)";
             this.CheckBoxShowPast.UseVisualStyleBackColor = true;
             this.CheckBoxShowPast.CheckedChanged += new System.EventHandler(this.CheckBoxShowPast_CheckedChanged);
             // 
@@ -334,9 +334,9 @@
             this.CheckBoxShowEnd.AutoSize = true;
             this.CheckBoxShowEnd.Location = new System.Drawing.Point(6, 47);
             this.CheckBoxShowEnd.Name = "CheckBoxShowEnd";
-            this.CheckBoxShowEnd.Size = new System.Drawing.Size(276, 19);
+            this.CheckBoxShowEnd.Size = new System.Drawing.Size(290, 19);
             this.CheckBoxShowEnd.TabIndex = 2;
-            this.CheckBoxShowEnd.Text = "显示 \"考试还有多久结束\" (距离...结束还有...)";
+            this.CheckBoxShowEnd.Text = "显示 \"考试还有多久结束\" (距离...结束还有...)(&E)";
             this.CheckBoxShowEnd.UseVisualStyleBackColor = true;
             this.CheckBoxShowEnd.CheckedChanged += new System.EventHandler(this.CheckBoxShowEnd_CheckedChanged);
             // 
@@ -344,11 +344,11 @@
             // 
             this.CheckBoxSetRounding.AutoSize = true;
             this.CheckBoxSetRounding.Enabled = false;
-            this.CheckBoxSetRounding.Location = new System.Drawing.Point(103, 22);
+            this.CheckBoxSetRounding.Location = new System.Drawing.Point(120, 22);
             this.CheckBoxSetRounding.Name = "CheckBoxSetRounding";
-            this.CheckBoxSetRounding.Size = new System.Drawing.Size(182, 19);
+            this.CheckBoxSetRounding.Size = new System.Drawing.Size(199, 19);
             this.CheckBoxSetRounding.TabIndex = 1;
-            this.CheckBoxSetRounding.Text = "将不足一天的时间视为一天";
+            this.CheckBoxSetRounding.Text = "将不足一天的时间视为一天(&N)";
             this.CheckBoxSetRounding.UseVisualStyleBackColor = true;
             this.CheckBoxSetRounding.CheckedChanged += new System.EventHandler(this.SettingsChanged);
             // 
@@ -357,9 +357,9 @@
             this.CheckBoxSetDaysOnly.AutoSize = true;
             this.CheckBoxSetDaysOnly.Location = new System.Drawing.Point(6, 22);
             this.CheckBoxSetDaysOnly.Name = "CheckBoxSetDaysOnly";
-            this.CheckBoxSetDaysOnly.Size = new System.Drawing.Size(91, 19);
+            this.CheckBoxSetDaysOnly.Size = new System.Drawing.Size(108, 19);
             this.CheckBoxSetDaysOnly.TabIndex = 0;
-            this.CheckBoxSetDaysOnly.Text = "只显示天数";
+            this.CheckBoxSetDaysOnly.Text = "只显示天数(&O)";
             this.CheckBoxSetDaysOnly.UseVisualStyleBackColor = true;
             this.CheckBoxSetDaysOnly.CheckedChanged += new System.EventHandler(this.CheckBoxSetDaysOnly_CheckedChanged);
             // 
@@ -535,9 +535,9 @@
             this.CheckBoxEnableDragable.AutoSize = true;
             this.CheckBoxEnableDragable.Location = new System.Drawing.Point(9, 37);
             this.CheckBoxEnableDragable.Name = "CheckBoxEnableDragable";
-            this.CheckBoxEnableDragable.Size = new System.Drawing.Size(91, 19);
+            this.CheckBoxEnableDragable.Size = new System.Drawing.Size(107, 19);
             this.CheckBoxEnableDragable.TabIndex = 3;
-            this.CheckBoxEnableDragable.Text = "启用此功能";
+            this.CheckBoxEnableDragable.Text = "启用此功能(&D)";
             this.CheckBoxEnableDragable.UseVisualStyleBackColor = true;
             this.CheckBoxEnableDragable.CheckedChanged += new System.EventHandler(this.SettingsChanged);
             // 
@@ -567,9 +567,9 @@
             this.CheckBoxEnableMO.AutoSize = true;
             this.CheckBoxEnableMO.Location = new System.Drawing.Point(9, 52);
             this.CheckBoxEnableMO.Name = "CheckBoxEnableMO";
-            this.CheckBoxEnableMO.Size = new System.Drawing.Size(91, 19);
+            this.CheckBoxEnableMO.Size = new System.Drawing.Size(110, 19);
             this.CheckBoxEnableMO.TabIndex = 2;
-            this.CheckBoxEnableMO.Text = "启用此功能";
+            this.CheckBoxEnableMO.Text = "启用此功能(&M)";
             this.CheckBoxEnableMO.UseVisualStyleBackColor = true;
             this.CheckBoxEnableMO.CheckedChanged += new System.EventHandler(this.SettingsChanged);
             // 
@@ -608,9 +608,9 @@
             this.CheckBoxEnableVDM.AutoSize = true;
             this.CheckBoxEnableVDM.Location = new System.Drawing.Point(9, 52);
             this.CheckBoxEnableVDM.Name = "CheckBoxEnableVDM";
-            this.CheckBoxEnableVDM.Size = new System.Drawing.Size(91, 19);
+            this.CheckBoxEnableVDM.Size = new System.Drawing.Size(106, 19);
             this.CheckBoxEnableVDM.TabIndex = 2;
-            this.CheckBoxEnableVDM.Text = "启用此功能";
+            this.CheckBoxEnableVDM.Text = "启用此功能(&V)";
             this.CheckBoxEnableVDM.UseVisualStyleBackColor = true;
             this.CheckBoxEnableVDM.CheckedChanged += new System.EventHandler(this.SettingsChanged);
             // 
@@ -660,9 +660,9 @@
             this.CheckBoxSwPptSvc.AutoSize = true;
             this.CheckBoxSwPptSvc.Location = new System.Drawing.Point(9, 67);
             this.CheckBoxSwPptSvc.Name = "CheckBoxSwPptSvc";
-            this.CheckBoxSwPptSvc.Size = new System.Drawing.Size(91, 19);
+            this.CheckBoxSwPptSvc.Size = new System.Drawing.Size(106, 19);
             this.CheckBoxSwPptSvc.TabIndex = 3;
-            this.CheckBoxSwPptSvc.Text = "启用此功能";
+            this.CheckBoxSwPptSvc.Text = "启用此功能(&X)";
             this.CheckBoxSwPptSvc.UseVisualStyleBackColor = true;
             this.CheckBoxSwPptSvc.CheckedChanged += new System.EventHandler(this.SettingsChanged);
             // 
