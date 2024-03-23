@@ -65,7 +65,7 @@
             this.ButtonClose.Name = "ButtonClose";
             this.ButtonClose.Size = new System.Drawing.Size(75, 25);
             this.ButtonClose.TabIndex = 5;
-            this.ButtonClose.Text = "关闭(&C)";
+            this.ButtonClose.Text = "确定(&C)";
             this.ButtonClose.UseVisualStyleBackColor = true;
             this.ButtonClose.Click += new System.EventHandler(this.ButtonClose_Click);
             // 
