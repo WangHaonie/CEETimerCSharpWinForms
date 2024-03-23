@@ -418,7 +418,7 @@ namespace CEETimerCSharpWinForms.Forms
         https://www.cnblogs.com/guosheng/p/7417918.html
 
          */
-
+        
         protected override CreateParams CreateParams
         {
             get
@@ -429,5 +429,16 @@ namespace CEETimerCSharpWinForms.Forms
             }
         }
         #endregion
+
+        protected override void OnResize(EventArgs e)
+        {
+            base.OnResize(e);
+
+            if (WindowState == FormWindowState.Normal)
+            {
+                RecreateHandle();
+                Activate();
+            }
+        }
     }
 }
