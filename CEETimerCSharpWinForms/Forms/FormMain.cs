@@ -27,7 +27,7 @@ namespace CEETimerCSharpWinForms.Forms
         private Font SelectedFont;
         private FontStyle SelectedFontStyle;
         private int i;
-        private Timer TimerCountdown;
+        private Timer TimerMain;
         private readonly FontConverter fontConverter = new();
         private string ExamName;
         private VirtualDesktopManager vdm;
@@ -48,13 +48,13 @@ namespace CEETimerCSharpWinForms.Forms
 
             RefreshSettings(sender, e);
 
-            TimerCountdown = new Timer()
+            TimerMain = new Timer()
             {
                 Interval = 1000
             };
 
-            TimerCountdown.Tick += TimerCountdown_Tick;
-            TimerCountdown.Start();
+            TimerMain.Tick += TimerMain_Tick;
+            TimerMain.Start();
         }
 
         private void RefreshSettings(object sender, EventArgs e)
@@ -136,13 +136,13 @@ namespace CEETimerCSharpWinForms.Forms
             }
         }
 
-        private void TimerCountdown_Tick(object sender, EventArgs e)
+        private void TimerMain_Tick(object sender, EventArgs e)
         {
             try
             {
-                if (IsReady) { TriggerCountdownStart(); }
-                if (IsFeatureMOEnabled) { TriggerMemoryOptimization(); } else { i = 0; }
-                if (IsFeatureVDMEnabled) { TriggerVirtualDesktopDetect(); }
+                if (IsFeatureMOEnabled) { OptimizeMemory(); } else { i = 0; }
+                if (IsReady) { StartCountdown(); }
+                if (IsFeatureVDMEnabled) { DetectVirtualDesktop(); }
             }
             catch
             {
@@ -150,7 +150,7 @@ namespace CEETimerCSharpWinForms.Forms
             }
         }
 
-        private void TriggerMemoryOptimization()
+        private void OptimizeMemory()
         {
             i++;
             if (i % 300 == 0 || i == 5)
@@ -159,7 +159,7 @@ namespace CEETimerCSharpWinForms.Forms
             }
         }
 
-        private void TriggerVirtualDesktopDetect()
+        private void DetectVirtualDesktop()
         {
             #region 来自网络
             /* 
@@ -186,7 +186,7 @@ namespace CEETimerCSharpWinForms.Forms
             #endregion
         }
 
-        private void TriggerCountdownStart()
+        private void StartCountdown()
         {
             if (DateTime.Now < ExamStartTime)
             {

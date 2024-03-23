@@ -41,17 +41,25 @@ namespace CEETimerCSharpWinForms.Forms
             ConfigChanged += RefreshSettings;
         }
 
+        private void RefreshSettings(object sender, EventArgs e)
+        {
+            ConfigManager.SetTopMost(this);
+        }
+
+        private void FormSettings_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+            {
+                Close();
+            }
+        }
+
         private void FormSettings_Load(object sender, EventArgs e)
         {
             ChangeWorkingStyle(false, WorkingArea.Funny);
             RefreshSettings();
             IsSettingsChanged = false;
             ButtonSave.Enabled = false;
-        }
-
-        private void RefreshSettings(object sender, EventArgs e)
-        {
-            ConfigManager.SetTopMost(this);
         }
 
         private void SettingsChanged(object sender, EventArgs e)
@@ -66,62 +74,6 @@ namespace CEETimerCSharpWinForms.Forms
             int CharCount = TextBoxExamName.Text.RemoveAllBadChars().Length;
             LabelExamNameCounter.Text = $"{CharCount}/15";
             LabelExamNameCounter.ForeColor = CharCount > 15 ? Color.Red : Color.Black;
-        }
-
-        private void ButtonRestart_Click(object sender, EventArgs e)
-        {
-            LaunchManager.Restart();
-        }
-
-        private void ButtonRestart_Funny_Click(object sender, EventArgs e)
-        {
-            LaunchManager.Shutdown();
-        }
-
-        private void ButtonRestart_MouseDown(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Right)
-            {
-                ButtonRestart.Click -= ButtonRestart_Click;
-                ButtonRestart.Click += ButtonRestart_Funny_Click;
-                ChangeWorkingStyle(true, WorkingArea.Funny);
-            }
-        }
-
-        private async void ButtonSyncTime_Click(object sender, EventArgs e)
-        {
-            ChangeWorkingStyle(true, WorkingArea.SyncTime);
-            await Task.Run(StartSyncTime);
-            ChangeWorkingStyle(false, WorkingArea.SyncTime);
-        }
-
-        private void ButtonChooseFont_Click(object sender, EventArgs e)
-        {
-            FontDialog FontDialogMain = new()
-            {
-                AllowScriptChange = true,
-                AllowVerticalFonts = false,
-                Font = CountdownFont,
-                FontMustExist = true,
-                MinSize = 10,
-                MaxSize = 24,
-                ScriptsOnly = true,
-                ShowEffects = false
-            };
-
-            if (FontDialogMain.ShowDialog() == DialogResult.OK)
-            {
-                ChangeFont(FontDialogMain.Font);
-                SettingsChanged(sender, e);
-            }
-
-            FontDialogMain.Dispose();
-        }
-
-        private void ButtonRestoreFont_Click(object sender, EventArgs e)
-        {
-            ChangeFont(new((Font)fontConverter.ConvertFromString(LaunchManager.OriginalFontString), FontStyle.Bold));
-            SettingsChanged(sender, e);
         }
 
         private void CheckBoxSetDaysOnly_CheckedChanged(object sender, EventArgs e)
@@ -161,6 +113,62 @@ namespace CEETimerCSharpWinForms.Forms
             CheckBoxShowEnd.Enabled = !CheckBoxShowPast.Checked;
         }
 
+        private void ButtonChooseFont_Click(object sender, EventArgs e)
+        {
+            FontDialog FontDialogMain = new()
+            {
+                AllowScriptChange = true,
+                AllowVerticalFonts = false,
+                Font = CountdownFont,
+                FontMustExist = true,
+                MinSize = 10,
+                MaxSize = 24,
+                ScriptsOnly = true,
+                ShowEffects = false
+            };
+
+            if (FontDialogMain.ShowDialog() == DialogResult.OK)
+            {
+                ChangeFont(FontDialogMain.Font);
+                SettingsChanged(sender, e);
+            }
+
+            FontDialogMain.Dispose();
+        }
+
+        private void ButtonRestoreFont_Click(object sender, EventArgs e)
+        {
+            ChangeFont(new((Font)fontConverter.ConvertFromString(LaunchManager.OriginalFontString), FontStyle.Bold));
+            SettingsChanged(sender, e);
+        }
+
+        private void ButtonRestart_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                ButtonRestart.Click -= ButtonRestart_Click;
+                ButtonRestart.Click += ButtonRestart_Funny_Click;
+                ChangeWorkingStyle(true, WorkingArea.Funny);
+            }
+        }
+
+        private void ButtonRestart_Click(object sender, EventArgs e)
+        {
+            LaunchManager.Restart();
+        }
+
+        private void ButtonRestart_Funny_Click(object sender, EventArgs e)
+        {
+            LaunchManager.Shutdown();
+        }
+
+        private async void ButtonSyncTime_Click(object sender, EventArgs e)
+        {
+            ChangeWorkingStyle(true, WorkingArea.SyncTime);
+            await Task.Run(StartSyncTime);
+            ChangeWorkingStyle(false, WorkingArea.SyncTime);
+        }
+
         private void ButtonSave_Click(object sender, EventArgs e)
         {
             if (ValidateInput())
@@ -168,19 +176,6 @@ namespace CEETimerCSharpWinForms.Forms
                 IsSettingsChanged = false;
                 SaveSettings();
                 OnConfigChanged();
-                Close();
-            }
-        }
-
-        private void ButtonClose_Click(object sender, EventArgs e)
-        {
-            Close();
-        }
-
-        private void FormSettings_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Escape)
-            {
                 Close();
             }
         }
@@ -206,11 +201,35 @@ namespace CEETimerCSharpWinForms.Forms
             }
         }
 
+        private void ButtonClose_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
         private void FormSettings_FormClosed(object sender, FormClosedEventArgs e)
         {
             ChangeWorkingStyle(false, WorkingArea.Funny);
             ButtonRestart.Click -= ButtonRestart_Funny_Click;
             ButtonRestart.Click += ButtonRestart_Click;
+        }
+
+        private void ChangeWorkingStyle(bool IsWorking, WorkingArea Where)
+        {
+            switch (Where)
+            {
+                case WorkingArea.SyncTime:
+                    IsSyncingTime = IsWorking;
+                    ButtonSyncTime.Enabled = !IsWorking;
+                    ButtonRestart.Enabled = !IsWorking;
+                    ButtonSyncTime.Text = IsWorking ? "正在同步中，请稍候..." : "立即同步(&S)";
+                    break;
+                case WorkingArea.Funny:
+                    GBoxRestart.Text = IsWorking ? "关闭倒计时" : "重启倒计时";
+                    LabelLine9.Text = IsWorking ? "当然, 你也可以关闭此倒计时。(●'◡'●)" : "用于更改了屏幕缩放或者分辨率之后, 可以点击此按钮来重启倒计时";
+                    LabelLine10.Text = IsWorking ? "" : "以确保窗口的文字不会变模糊。";
+                    ButtonRestart.Text = IsWorking ? "点击关闭(&L)" : "点击重启(&R)";
+                    break;
+            }
         }
 
         private void RefreshSettings()
@@ -241,47 +260,6 @@ namespace CEETimerCSharpWinForms.Forms
                 CheckBoxEnableVDM.Enabled = false;
                 CheckBoxEnableVDM.Checked = false;
                 CheckBoxEnableVDM.Text = $"此功能在当前系统上不可用";
-            }
-        }
-
-        private void StartSyncTime()
-        {
-            try
-            {
-                Process SyncTimeProcess = Process.Start(new ProcessStartInfo
-                {
-                    UseShellExecute = true,
-                    FileName = @"cmd.exe",
-                    Arguments = "/c net stop w32time & sc config w32time start= auto & net start w32time && w32tm /config /manualpeerlist:ntp1.aliyun.com /syncfromflags:manual /reliable:YES /update && w32tm /resync && w32tm /resync",
-                    Verb = "runas",
-                    CreateNoWindow = true,
-                    WindowStyle = ProcessWindowStyle.Hidden
-                });
-
-                SyncTimeProcess.WaitForExit();
-                var ExitCode = SyncTimeProcess.ExitCode;
-                MessageX.Popup($"命令执行完成！\n\n返回值为 {ExitCode} (0x{ExitCode:X})\n(0 代表成功，其他值为失败)", MessageLevel.Info, this, TabControlMain, TabPageTools);
-            }
-            catch (Win32Exception ex)
-            {
-                #region 来自网络
-                /*
-                 
-                检测用户是否点击了 UAC 提示框的 "否" 参考:
-
-                c# - Run process as administrator from a non-admin application - Stack Overflow
-                https://stackoverflow.com/a/20872219/21094697
-                 
-                 */
-                if (ex.NativeErrorCode == 1223)
-                {
-                    MessageX.Popup("请在 UAC 对话框弹出时点击 \"是\"。", ex, this, TabControlMain, TabPageTools);
-                }
-                #endregion
-            }
-            catch (Exception ex)
-            {
-                MessageX.Popup($"命令执行时发生了错误。", ex, this, TabControlMain, TabPageTools);
             }
         }
 
@@ -338,6 +316,47 @@ namespace CEETimerCSharpWinForms.Forms
             return true;
         }
 
+        private void StartSyncTime()
+        {
+            try
+            {
+                Process SyncTimeProcess = Process.Start(new ProcessStartInfo
+                {
+                    UseShellExecute = true,
+                    FileName = @"cmd.exe",
+                    Arguments = "/c net stop w32time & sc config w32time start= auto & net start w32time && w32tm /config /manualpeerlist:ntp1.aliyun.com /syncfromflags:manual /reliable:YES /update && w32tm /resync && w32tm /resync",
+                    Verb = "runas",
+                    CreateNoWindow = true,
+                    WindowStyle = ProcessWindowStyle.Hidden
+                });
+
+                SyncTimeProcess.WaitForExit();
+                var ExitCode = SyncTimeProcess.ExitCode;
+                MessageX.Popup($"命令执行完成！\n\n返回值为 {ExitCode} (0x{ExitCode:X})\n(0 代表成功，其他值为失败)", MessageLevel.Info, this, TabControlMain, TabPageTools);
+            }
+            catch (Win32Exception ex)
+            {
+                #region 来自网络
+                /*
+                 
+                检测用户是否点击了 UAC 提示框的 "否" 参考:
+
+                c# - Run process as administrator from a non-admin application - Stack Overflow
+                https://stackoverflow.com/a/20872219/21094697
+                 
+                 */
+                if (ex.NativeErrorCode == 1223)
+                {
+                    MessageX.Popup("请在 UAC 对话框弹出时点击 \"是\"。", ex, this, TabControlMain, TabPageTools);
+                }
+                #endregion
+            }
+            catch (Exception ex)
+            {
+                MessageX.Popup($"命令执行时发生了错误。", ex, this, TabControlMain, TabPageTools);
+            }
+        }
+
         private void ChangeFont(Font NewFont)
         {
             CountdownFont = NewFont;
@@ -382,25 +401,6 @@ namespace CEETimerCSharpWinForms.Forms
             }
             catch
             {
-            }
-        }
-
-        private void ChangeWorkingStyle(bool IsWorking, WorkingArea Where)
-        {
-            switch (Where)
-            {
-                case WorkingArea.SyncTime:
-                    IsSyncingTime = IsWorking;
-                    ButtonSyncTime.Enabled = !IsWorking;
-                    ButtonRestart.Enabled = !IsWorking;
-                    ButtonSyncTime.Text = IsWorking ? "正在同步中，请稍候..." : "立即同步(&S)";
-                    break;
-                case WorkingArea.Funny:
-                    GBoxRestart.Text = IsWorking ? "关闭倒计时" : "重启倒计时";
-                    LabelLine9.Text = IsWorking ? "当然, 你也可以关闭此倒计时。(●'◡'●)" : "用于更改了屏幕缩放或者分辨率之后, 可以点击此按钮来重启倒计时";
-                    LabelLine10.Text = IsWorking ? "" : "以确保窗口的文字不会变模糊。";
-                    ButtonRestart.Text = IsWorking ? "点击关闭(&L)" : "点击重启(&R)";
-                    break;
             }
         }
 
