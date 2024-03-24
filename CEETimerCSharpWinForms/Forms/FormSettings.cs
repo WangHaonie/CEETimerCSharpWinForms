@@ -422,7 +422,7 @@ namespace CEETimerCSharpWinForms.Forms
             }
         }
         #endregion
-
+        /*
         protected override void OnResize(EventArgs e)
         {
             base.OnResize(e);
@@ -430,8 +430,10 @@ namespace CEETimerCSharpWinForms.Forms
             if (WindowState == FormWindowState.Normal)
             {
                 RecreateHandle();
+                RefreshSettings();
                 Activate();
             }
         }
+        */
     }
 }
