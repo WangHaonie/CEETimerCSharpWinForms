@@ -23,7 +23,7 @@ namespace CEETimerCSharpWinForms.Modules
         {
             Process ProcessGetCurrentMemory = Process.Start(new ProcessStartInfo
             {
-                FileName = @"tasklist.exe",
+                FileName = "tasklist.exe",
                 Arguments = $"/fi \"PID eq {Process.GetCurrentProcess().Id}\" /fo csv /nh",
                 WindowStyle = ProcessWindowStyle.Hidden,
                 CreateNoWindow = true,

@@ -69,7 +69,7 @@ namespace CEETimerCSharpWinForms.Modules
                     MessageX.Popup($"为了您的使用体验，请不要更改程序文件名! 程序将在该对话框关闭后尝试自动恢复到原文件名，若自动恢复失败请手动改回。\n\n当前文件名：{CurrentExecutableName}\n原始文件名：{OriginalFileName}", MessageLevel.Warning);
                     Process.Start(new ProcessStartInfo
                     {
-                        FileName = @"cmd.exe",
+                        FileName = "cmd.exe",
                         Arguments = $"/c ren \"{CurrentExecutable}\" {OriginalFileName} & start \"\" \"{CurrentExecutablePath}{OriginalFileName}\"",
                         CreateNoWindow = true,
                         WindowStyle = ProcessWindowStyle.Hidden
@@ -92,7 +92,7 @@ namespace CEETimerCSharpWinForms.Modules
         {
             Process.Start(new ProcessStartInfo
             {
-                FileName = @"cmd.exe",
+                FileName = "cmd.exe",
                 Arguments = $"/c taskkill /f /fi \"PID eq {Process.GetCurrentProcess().Id}\" /im {CurrentExecutableName} & start \"\" \"{CurrentExecutable}\"",
                 CreateNoWindow = true,
                 WindowStyle = ProcessWindowStyle.Hidden
@@ -103,7 +103,7 @@ namespace CEETimerCSharpWinForms.Modules
         {
             Process.Start(new ProcessStartInfo
             {
-                FileName = @"cmd.exe",
+                FileName = "cmd.exe",
                 Arguments = $"/c taskkill /f /fi \"PID eq {Process.GetCurrentProcess().Id}\" /im {CurrentExecutableName}",
                 CreateNoWindow = true,
                 WindowStyle = ProcessWindowStyle.Hidden

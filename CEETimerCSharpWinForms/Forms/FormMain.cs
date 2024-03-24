@@ -7,6 +7,7 @@ using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Header;
 
 namespace CEETimerCSharpWinForms.Forms
 {
@@ -144,9 +145,9 @@ namespace CEETimerCSharpWinForms.Forms
         {
             try
             {
-                if (IsFeatureMOEnabled) { OptimizeMemory(); } else { i = 0; }
-                if (IsReady) { StartCountdown(); }
-                if (IsFeatureVDMEnabled) { DetectVirtualDesktop(); }
+                if (IsFeatureMOEnabled) OptimizeMemory(); else i = 0;
+                if (IsReady) StartCountdown();
+                if (IsFeatureVDMEnabled) DetectVirtualDesktop();
             }
             catch
             {
@@ -200,58 +201,19 @@ namespace CEETimerCSharpWinForms.Forms
             {
                 TimeSpan TimeLeft = ExamStartTime - DateTime.Now;
                 LableCountdown.ForeColor = Color.Red;
-
-                if (IsDaysOnly)
-                {
-                    LableCountdown.Text = $"距离{ExamName}还有{TimeLeft.Days}天";
-
-                    if (IsRounding)
-                    {
-                        LableCountdown.Text = $"距离{ExamName}还有{TimeLeft.Days + 1}天";
-                    }
-                }
-                else
-                {
-                    LableCountdown.Text = $"距离{ExamName}还有{TimeLeft.Days}天{TimeLeft.Hours:00}时{TimeLeft.Minutes:00}分{TimeLeft.Seconds:00}秒";
-                }
+                LableCountdown.Text = IsDaysOnly ? $"距离{ExamName}还有{TimeLeft.Days}天" : IsRounding ? $"距离{ExamName}还有{TimeLeft.Days + 1}天" : $"距离{ExamName}还有{TimeLeft.Days}天{TimeLeft.Hours:00}时{TimeLeft.Minutes:00}分{TimeLeft.Seconds:00}秒";
             }
             else if (DateTime.Now >= ExamStartTime && DateTime.Now < ExamEndTime && IsShowEnd)
             {
                 TimeSpan TimeLeftPast = ExamEndTime - DateTime.Now;
                 LableCountdown.ForeColor = Color.Green;
-
-                if (IsDaysOnly)
-                {
-                    LableCountdown.Text = $"距离{ExamName}结束还有{TimeLeftPast.Days}天";
-
-                    if (IsRounding)
-                    {
-                        LableCountdown.Text = $"距离{ExamName}结束还有{TimeLeftPast.Days + 1}天";
-                    }
-                }
-                else
-                {
-                    LableCountdown.Text = $"距离{ExamName}结束还有{TimeLeftPast.Days}天{TimeLeftPast.Hours:00}时{TimeLeftPast.Minutes:00}分{TimeLeftPast.Seconds:00}秒";
-                }
+                LableCountdown.Text = IsDaysOnly ? $"距离{ExamName}结束还有{TimeLeftPast.Days}天" : IsRounding ? $"距离{ExamName}结束还有{TimeLeftPast.Days + 1}天" : $"距离{ExamName}结束还有{TimeLeftPast.Days}天{TimeLeftPast.Hours:00}时{TimeLeftPast.Minutes:00}分{TimeLeftPast.Seconds:00}秒";
             }
             else if (DateTime.Now >= ExamEndTime && IsShowPast)
             {
                 TimeSpan TimePast = DateTime.Now - ExamEndTime;
                 LableCountdown.ForeColor = Color.Black;
-
-                if (IsDaysOnly)
-                {
-                    LableCountdown.Text = $"距离{ExamName}已过去了{TimePast.Days}天";
-
-                    if (IsRounding)
-                    {
-                        LableCountdown.Text = $"距离{ExamName}已过去了{TimePast.Days + 1}天";
-                    }
-                }
-                else
-                {
-                    LableCountdown.Text = $"距离{ExamName}已过去了{TimePast.Days}天{TimePast.Hours:00}时{TimePast.Minutes:00}分{TimePast.Seconds:00}秒";
-                }
+                LableCountdown.Text = IsDaysOnly ? $"距离{ExamName}已过去了{TimePast.Days}天" : IsRounding ? $"距离{ExamName}已过去了{TimePast.Days + 1}天" : $"距离{ExamName}已过去了{TimePast.Days}天{TimePast.Hours:00}时{TimePast.Minutes:00}分{TimePast.Seconds:00}秒";
             }
             else
             {
