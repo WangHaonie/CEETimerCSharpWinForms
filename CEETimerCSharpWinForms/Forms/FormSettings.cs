@@ -38,12 +38,6 @@ namespace CEETimerCSharpWinForms.Forms
         public FormSettings()
         {
             InitializeComponent();
-            ConfigChanged += RefreshSettings;
-        }
-
-        private void RefreshSettings(object sender, EventArgs e)
-        {
-            ConfigManager.SetTopMost(this);
         }
 
         private void FormSettings_KeyDown(object sender, KeyEventArgs e)
@@ -56,6 +50,7 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void FormSettings_Load(object sender, EventArgs e)
         {
+            TopMost = FormMain.IsUniTopMost;
             ChangeWorkingStyle(false, WorkingArea.Funny);
             RefreshSettings();
             IsSettingsChanged = false;
@@ -249,9 +244,7 @@ namespace CEETimerCSharpWinForms.Forms
             CheckBoxShowEnd.Checked = DTPExamEnd.Enabled = IsShowEnd;
             CheckBoxShowPast.Checked = IsShowPast;
             CheckBoxSwPptSvc.Checked = IsPPTService;
-            CheckBoxSetUniTopMost.Checked = ConfigManager.UniTopMost;
-
-            ConfigManager.SetTopMost(this);
+            CheckBoxSetUniTopMost.Checked = TopMost;
 
             ChangeFont(new Font(CountdownFont, CountdownFontStyle));
 

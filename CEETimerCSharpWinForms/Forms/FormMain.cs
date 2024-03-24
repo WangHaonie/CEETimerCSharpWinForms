@@ -12,6 +12,7 @@ namespace CEETimerCSharpWinForms.Forms
 {
     public partial class FormMain : Form
     {
+        public static bool IsUniTopMost { get; private set; }
         private bool IsDaysOnly;
         private bool IsDragable;
         private bool IsFeatureMOEnabled;
@@ -20,7 +21,6 @@ namespace CEETimerCSharpWinForms.Forms
         private bool IsShowEnd;
         private bool IsReady;
         private bool IsRounding;
-        private bool IsUniTopMost;
         private bool IsPPTService;
         private DateTime ExamEndTime;
         private DateTime ExamStartTime;
@@ -31,6 +31,7 @@ namespace CEETimerCSharpWinForms.Forms
         private readonly FontConverter fontConverter = new();
         private string ExamName;
         private VirtualDesktopManager vdm;
+        private List<Form> Forms;
 
         public FormMain()
         {
@@ -76,14 +77,10 @@ namespace CEETimerCSharpWinForms.Forms
             DateTime.TryParseExact(ConfigManager.ReadConfig("ExamStartTime"), "yyyyMMddHHmmss", null, DateTimeStyles.None, out ExamStartTime);
             DateTime.TryParseExact(ConfigManager.ReadConfig("ExamEndTime"), "yyyyMMddHHmmss", null, DateTimeStyles.None, out ExamEndTime);
 
-            IsShowPast = IsShowPast && !IsShowEnd ? IsShowEnd : IsShowPast;
-            IsRounding = IsRounding && !IsDaysOnly ? IsDaysOnly : IsRounding;
-            ConfigManager.UniTopMost = IsUniTopMost && TopMost;
-
-            if (IsFeatureVDMEnabled && LaunchManager.CurrentWindowsVersion < 10)
-            {
-                IsFeatureVDMEnabled = false;
-            }
+            IsShowPast = IsShowPast && IsShowEnd;
+            IsRounding = IsRounding && IsDaysOnly;
+            IsUniTopMost = IsUniTopMost && TopMost;
+            IsFeatureVDMEnabled = IsFeatureVDMEnabled && LaunchManager.CurrentWindowsVersion >= 10;
 
             LocationChanged -= Form_LocationChanged;
             LableCountdown.MouseDown -= Drag_MouseDown;
@@ -134,6 +131,13 @@ namespace CEETimerCSharpWinForms.Forms
                 LableCountdown.ForeColor = Color.Black;
                 LableCountdown.Text = "欢迎使用高考倒计时，请右键点击此处到设置里添加考试信息";
             }
+
+            Forms = GetCurrentForms();
+            foreach (Form form in Forms)
+            {
+                if (form == this) continue;
+                form.TopMost = IsUniTopMost;
+            }
         }
 
         private void TimerMain_Tick(object sender, EventArgs e)
@@ -148,6 +152,11 @@ namespace CEETimerCSharpWinForms.Forms
             {
 
             }
+        }
+
+        private List<Form> GetCurrentForms()
+        {
+            return Application.OpenForms.Cast<Form>().ToList();
         }
 
         private void OptimizeMemory()
@@ -171,8 +180,7 @@ namespace CEETimerCSharpWinForms.Forms
 
             */
 
-            List<Form> Forms = Application.OpenForms.Cast<Form>().ToList();// 修复报错：Collection was modified; enumeration operation may not execute.
-
+            Forms = GetCurrentForms();
             using NewWindow nw = new();
             foreach (Form form in Forms)
             {

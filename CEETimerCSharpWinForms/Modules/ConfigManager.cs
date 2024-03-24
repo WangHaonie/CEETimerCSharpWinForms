@@ -8,13 +8,6 @@ namespace CEETimerCSharpWinForms.Modules
 {
     public class ConfigManager
     {
-        public static bool UniTopMost { get; set; }
-
-        public static void SetTopMost(Form ParentForm)
-        {
-            ParentForm.TopMost = UniTopMost;
-        }
-
         #region 来自网络
         /* 
         

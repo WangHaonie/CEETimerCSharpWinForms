@@ -14,12 +14,11 @@ namespace CEETimerCSharpWinForms.Forms
         public FormAbout()
         {
             InitializeComponent();
-            FormSettings.ConfigChanged += RefreshSettings;
         }
 
         private void FormAbout_Load(object sender, EventArgs e)
         {
-            RefreshSettings(sender, e);
+            TopMost = FormMain.IsUniTopMost;
             LableVersion.Text = LaunchManager.AppVersionText;
             LabelAuthor.Text = LaunchManager.CopyrightInfo;
 
@@ -30,11 +29,6 @@ namespace CEETimerCSharpWinForms.Forms
 
             CheckUpdateTip.SetToolTip(LableVersion, "是的你没有看错，点击这里可以检查是否有新版本。");
             LableVersion.MouseLeave += LableVersion_MouseLeave;
-        }
-
-        private void RefreshSettings(object sender, EventArgs e)
-        {
-            ConfigManager.SetTopMost(this);
         }
 
         private void LableVersion_MouseLeave(object sender, EventArgs e)
