@@ -6,19 +6,6 @@ namespace CEETimerCSharpWinForms.Modules
 {
     public class MemoryManager
     {
-        #region 来自网络
-        /*
-        
-        通过清空工作集来实现减少内存占用参考：
-
-        .NET EXE memory footprint - Stack Overflow
-        https://stackoverflow.com/a/223300/21094697
-
-         */
-        [DllImport("psapi.dll")]
-        public static extern int EmptyWorkingSet(IntPtr hwProc);
-        #endregion
-
         public static void OptimizeMemory()
         {
             Process ProcessGetCurrentMemory = Process.Start(new ProcessStartInfo
@@ -37,7 +24,7 @@ namespace CEETimerCSharpWinForms.Modules
 
             if (MemoryUsage > 12288)
             {
-                EmptyWorkingSet(Process.GetCurrentProcess().Handle);
+                WindowsAPI.EmptyWorkingSet(Process.GetCurrentProcess().Handle);
             }
         }
     }

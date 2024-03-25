@@ -232,8 +232,11 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void Drag_MouseDown(object sender, MouseEventArgs e)
         {
-            ReleaseCapture();
-            SendMessage(Handle, WM_SYSCOMMAND, SC_MOVE + HTCAPTION, 0);
+            if (e.Button == MouseButtons.Left)
+            {
+                WindowsAPI.ReleaseCapture();
+                WindowsAPI.SendMessage(Handle, 0xA1, 0x2, 0);
+            }
         }
 
         private void Form_LocationChanged(object sender, EventArgs e)
@@ -312,28 +315,5 @@ namespace CEETimerCSharpWinForms.Forms
                 e.Cancel = true;
             }
         }
-
-        #region 来自网络
-        /*
-        
-        C# 无边框窗体的拖动 参考：
-
-        C# winform 无边框 窗体的拖动 - 双魂人生 - 博客园
-        https://www.cnblogs.com/shuang121/p/3149570.html
-
-         */
-
-        [DllImport("user32.dll")]
-        public static extern bool ReleaseCapture();
-
-        [DllImport("user32.dll")]
-        public static extern bool SendMessage(IntPtr hwnd, int wMsg, int wParam, int lParam);
-
-        public const int WM_SYSCOMMAND = 0x0112;
-        public const int SC_MOVE = 0xF010;
-        public const int HTCAPTION = 0x0002;
-
-        #endregion
-
     }
 }
