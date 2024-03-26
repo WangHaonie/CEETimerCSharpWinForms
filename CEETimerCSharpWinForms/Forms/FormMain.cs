@@ -115,20 +115,6 @@ namespace CEETimerCSharpWinForms.Forms
             IsUniTopMost = IsUniTopMost && TopMost;
             IsFeatureVDMEnabled = IsFeatureVDMEnabled && LaunchManager.CurrentWindowsVersion >= 10;
 
-            LocationChanged -= Form_LocationChanged;
-            LableCountdown.MouseDown -= Drag_MouseDown;
-
-            if (IsDragable)
-            {
-                LocationChanged += Form_LocationChanged;
-                LableCountdown.MouseDown += Drag_MouseDown;
-            }
-            else
-            {
-                Location = new Point(0, 0);
-                SaveLocation(new Point(Location.X, Location.Y));
-            }
-
             CompatibleWithPPTService();
 
             try
@@ -162,6 +148,19 @@ namespace CEETimerCSharpWinForms.Forms
             Location = new Point(x, y);
             KeepOnScreen();
             SaveLocation(new Point(Location.X, Location.Y));
+
+            LocationChanged -= Form_LocationChanged;
+            LableCountdown.MouseDown -= Drag_MouseDown;
+
+            if (IsDragable)
+            {
+                LocationChanged += Form_LocationChanged;
+                LableCountdown.MouseDown += Drag_MouseDown;
+            }
+            else
+            {
+                Location = new Point(0, 0);
+            }
 
             Forms = GetCurrentForms();
             foreach (Form form in Forms)
@@ -289,6 +288,8 @@ namespace CEETimerCSharpWinForms.Forms
                 LableCountdown.ForeColor = Color.Black;
                 LableCountdown.Text = "欢迎使用高考倒计时，请右键点击此处到设置里添加考试信息";
             }
+
+            KeepOnScreen();
         }
 
         private void CompatibleWithPPTService()
