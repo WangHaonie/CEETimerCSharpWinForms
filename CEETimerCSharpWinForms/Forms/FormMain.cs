@@ -5,9 +5,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Header;
 
 namespace CEETimerCSharpWinForms.Forms
 {
@@ -18,6 +16,7 @@ namespace CEETimerCSharpWinForms.Forms
         private bool IsDragable;
         private bool IsFeatureMOEnabled;
         private bool IsFeatureVDMEnabled;
+        private bool IsMoving;
         private bool IsShowPast;
         private bool IsShowEnd;
         private bool IsReady;
@@ -29,6 +28,8 @@ namespace CEETimerCSharpWinForms.Forms
         private FontStyle SelectedFontStyle;
         private int i;
         private Timer TimerMain;
+        private Timer TimerLocationWatcher;
+        private Point LastLocation;
         private readonly FontConverter fontConverter = new();
         private string ExamName;
         private VirtualDesktopManager vdm;
@@ -37,7 +38,44 @@ namespace CEETimerCSharpWinForms.Forms
         public FormMain()
         {
             InitializeComponent();
+            InitializeExtra();
+        }
+
+        private void InitializeExtra()
+        {
             FormSettings.ConfigChanged += RefreshSettings;
+
+            TimerMain = new Timer()
+            {
+                Interval = 1000
+            };
+
+            TimerMain.Tick += TimerMain_Tick;
+            TimerMain.Start();
+
+            TimerLocationWatcher = new Timer()
+            {
+                Interval = 3000
+            };
+
+            TimerLocationWatcher.Tick += TimerLocationWatcher_Tick;
+            TimerLocationWatcher.Start();
+            LastLocation = Location;
+        }
+
+        private void TimerLocationWatcher_Tick(object sender, EventArgs e)
+        {
+            TimerLocationWatcher.Stop();
+
+            if (LastLocation == Location && IsMoving)
+            {
+                SaveLocation(Location);
+                IsMoving = false;
+            }
+            else
+            {
+                TimerLocationWatcher.Start();
+            }
         }
 
         private void FormMain_Load(object sender, EventArgs e)
@@ -49,14 +87,6 @@ namespace CEETimerCSharpWinForms.Forms
             }
 
             RefreshSettings(sender, e);
-
-            TimerMain = new Timer()
-            {
-                Interval = 1000
-            };
-
-            TimerMain.Tick += TimerMain_Tick;
-            TimerMain.Start();
         }
 
         private void RefreshSettings(object sender, EventArgs e)
@@ -77,6 +107,12 @@ namespace CEETimerCSharpWinForms.Forms
             IsPPTService = bool.TryParse(ConfigManager.ReadConfig("PPTService"), out bool tmpj) && tmpj;
             DateTime.TryParseExact(ConfigManager.ReadConfig("ExamStartTime"), "yyyyMMddHHmmss", null, DateTimeStyles.None, out ExamStartTime);
             DateTime.TryParseExact(ConfigManager.ReadConfig("ExamEndTime"), "yyyyMMddHHmmss", null, DateTimeStyles.None, out ExamEndTime);
+            int.TryParse(ConfigManager.ReadConfig("PosX"), out int x);
+            int.TryParse(ConfigManager.ReadConfig("PosY"), out int y);
+
+            Location = new Point(x, y);
+            KeepOnScreen();
+            SaveLocation(new Point(Location.X, Location.Y));
 
             IsShowPast = IsShowPast && IsShowEnd;
             IsRounding = IsRounding && IsDaysOnly;
@@ -94,6 +130,7 @@ namespace CEETimerCSharpWinForms.Forms
             else
             {
                 Location = new Point(0, 0);
+                SaveLocation(new Point(Location.X, Location.Y));
             }
 
             CompatibleWithPPTService();
@@ -227,6 +264,7 @@ namespace CEETimerCSharpWinForms.Forms
             if (IsPPTService && Location == new Point(0, 0))
             {
                 Location = new Point(1, 0);
+                SaveLocation(new Point(Location.X, Location.Y));
             }
         }
 
@@ -240,6 +278,33 @@ namespace CEETimerCSharpWinForms.Forms
         }
 
         private void Form_LocationChanged(object sender, EventArgs e)
+        {
+            KeepOnScreen();
+            CompatibleWithPPTService();
+
+            if (IsMoving)
+            {
+                LastLocation = Location;
+            }
+            else
+            {
+                IsMoving = true;
+                TimerLocationWatcher.Stop();
+                LastLocation = Location;
+                TimerLocationWatcher.Start();
+            }
+        }
+
+        private void SaveLocation(Point NewLocation)
+        {
+            ConfigManager.WriteConfig(new Dictionary<string, string>
+            {
+                { "PosX", $"{NewLocation.X}" },
+                { "PosY", $"{NewLocation.Y}" }
+            });
+        }
+
+        private void KeepOnScreen()
         {
             Screen CurrentScreen = Screen.FromControl(this);
             Rectangle ScreenBounds = CurrentScreen.WorkingArea;
@@ -270,8 +335,6 @@ namespace CEETimerCSharpWinForms.Forms
                     Top = TaskbarBounds.Top - Height;
                 }
             }
-
-            CompatibleWithPPTService();
         }
 
         private void ContextMenuSettings_Click(object sender, EventArgs e)

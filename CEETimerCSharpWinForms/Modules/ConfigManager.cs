@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Windows.Forms;
 
 namespace CEETimerCSharpWinForms.Modules
 {
@@ -19,6 +19,7 @@ namespace CEETimerCSharpWinForms.Modules
         */
         private static bool IsConfigMounted;
         private static Dictionary<string, string> JsonConfig;
+        private static JObject ConfigObject;
         private static readonly string ConfigFile = $"{LaunchManager.CurrentExecutablePath}CEETimerCSharpWinForms.dll";
 
         private static void CheckConfig()
@@ -55,15 +56,23 @@ namespace CEETimerCSharpWinForms.Modules
         public static void WriteConfig(Dictionary<string, string> DataSet)
         {
             CheckConfig();
-            JsonConfig ??= [];
+
+            try
+            {
+                string OriginalDataContent = File.ReadAllText(ConfigFile);
+                ConfigObject = JObject.Parse(OriginalDataContent);
+            }
+            catch
+            {
+                ConfigObject = [];
+            }
 
             foreach (var Data in DataSet)
             {
-                JsonConfig[Data.Key] = Data.Value;
+                ConfigObject[Data.Key] = JToken.FromObject(Data.Value);
             }
 
-            string Config = JsonConvert.SerializeObject(JsonConfig);
-            File.WriteAllText(ConfigFile, Config);
+            File.WriteAllText(ConfigFile, ConfigObject.ToString());
         }
         #endregion
 
