@@ -110,10 +110,6 @@ namespace CEETimerCSharpWinForms.Forms
             int.TryParse(ConfigManager.ReadConfig("PosX"), out int x);
             int.TryParse(ConfigManager.ReadConfig("PosY"), out int y);
 
-            Location = new Point(x, y);
-            KeepOnScreen();
-            SaveLocation(new Point(Location.X, Location.Y));
-
             IsShowPast = IsShowPast && IsShowEnd;
             IsRounding = IsRounding && IsDaysOnly;
             IsUniTopMost = IsUniTopMost && TopMost;
@@ -155,20 +151,17 @@ namespace CEETimerCSharpWinForms.Forms
 
             ConfigManager.MountConfig(false);
 
-            if (!ConfigManager.IsValidData(ExamName) || !ConfigManager.IsValidData(ExamStartTime) || !ConfigManager.IsValidData(ExamEndTime) || (ExamEndTime <= ExamStartTime && IsShowEnd))
-            {
-                IsReady = false;
-            }
-            else
-            {
-                IsReady = true;
-            }
+            IsReady = ConfigManager.IsValidData(ExamName) && ConfigManager.IsValidData(ExamStartTime) && ConfigManager.IsValidData(ExamEndTime) && (ExamEndTime > ExamStartTime || !IsShowEnd);
 
             if (!IsReady)
             {
                 LableCountdown.ForeColor = Color.Black;
                 LableCountdown.Text = "欢迎使用高考倒计时，请右键点击此处到设置里添加考试信息";
             }
+
+            Location = new Point(x, y);
+            KeepOnScreen();
+            SaveLocation(new Point(Location.X, Location.Y));
 
             Forms = GetCurrentForms();
             foreach (Form form in Forms)
@@ -345,35 +338,16 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void KeepOnScreen()
         {
-            Screen CurrentScreen = Screen.FromControl(this);
-            Rectangle ScreenBounds = CurrentScreen.WorkingArea;
-            Rectangle TaskbarBounds = CurrentScreen.Bounds;
+            Rectangle ScreenBounds = Screen.GetWorkingArea(this);
 
             if (Left < ScreenBounds.Left)
-            {
                 Left = ScreenBounds.Left;
-            }
-            else if (Right > ScreenBounds.Right)
-            {
-                Left = ScreenBounds.Right - Width;
-            }
-
             if (Top < ScreenBounds.Top)
-            {
                 Top = ScreenBounds.Top;
-            }
-            else if (Bottom > ScreenBounds.Bottom)
-            {
+            if (Right > ScreenBounds.Right)
+                Left = ScreenBounds.Right - Width;
+            if (Bottom > ScreenBounds.Bottom)
                 Top = ScreenBounds.Bottom - Height;
-            }
-
-            if (TaskbarBounds.IntersectsWith(Bounds))
-            {
-                if (Top < TaskbarBounds.Bottom && Bottom > TaskbarBounds.Bottom)
-                {
-                    Top = TaskbarBounds.Top - Height;
-                }
-            }
         }
 
         private void ContextMenuSettings_Click(object sender, EventArgs e)
