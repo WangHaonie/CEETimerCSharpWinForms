@@ -44,6 +44,7 @@ namespace CEETimerCSharpWinForms.Forms
         private void InitializeExtra()
         {
             FormSettings.ConfigChanged += RefreshSettings;
+            LableCountdown.TextChanged += LableCountdown_TextChanged;
 
             TimerMain = new Timer()
             {
@@ -61,21 +62,6 @@ namespace CEETimerCSharpWinForms.Forms
             TimerLocationWatcher.Tick += TimerLocationWatcher_Tick;
             TimerLocationWatcher.Start();
             LastLocation = Location;
-        }
-
-        private void TimerLocationWatcher_Tick(object sender, EventArgs e)
-        {
-            TimerLocationWatcher.Stop();
-
-            if (LastLocation == Location && IsMoving)
-            {
-                SaveLocation(Location);
-                IsMoving = false;
-            }
-            else
-            {
-                TimerLocationWatcher.Start();
-            }
         }
 
         private void FormMain_Load(object sender, EventArgs e)
@@ -146,7 +132,6 @@ namespace CEETimerCSharpWinForms.Forms
             }
 
             Location = new Point(x, y);
-            KeepOnScreen();
             SaveLocation(new Point(Location.X, Location.Y));
 
             LocationChanged -= Form_LocationChanged;
@@ -170,6 +155,26 @@ namespace CEETimerCSharpWinForms.Forms
             }
         }
 
+        private void LableCountdown_TextChanged(object sender, EventArgs e)
+        {
+            KeepOnScreen();
+        }
+
+        private void TimerLocationWatcher_Tick(object sender, EventArgs e)
+        {
+            TimerLocationWatcher.Stop();
+
+            if (LastLocation == Location && IsMoving)
+            {
+                SaveLocation(Location);
+                IsMoving = false;
+            }
+            else
+            {
+                TimerLocationWatcher.Start();
+            }
+        }
+
         private void TimerMain_Tick(object sender, EventArgs e)
         {
             try
@@ -181,6 +186,75 @@ namespace CEETimerCSharpWinForms.Forms
             catch
             {
 
+            }
+        }
+
+        private void Drag_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                WindowsAPI.ReleaseCapture();
+                WindowsAPI.SendMessage(Handle, 0xA1, 0x2, 0);
+            }
+        }
+
+        private void Form_LocationChanged(object sender, EventArgs e)
+        {
+            KeepOnScreen();
+            CompatibleWithPPTService();
+
+            if (IsMoving)
+            {
+                LastLocation = Location;
+            }
+            else
+            {
+                IsMoving = true;
+                TimerLocationWatcher.Stop();
+                LastLocation = Location;
+                TimerLocationWatcher.Start();
+            }
+        }
+
+        private void ContextMenuSettings_Click(object sender, EventArgs e)
+        {
+            FormSettings.FeatureMOEnabled = IsFeatureMOEnabled;
+            FormSettings.FeatureVDMEnabled = IsFeatureVDMEnabled;
+            FormSettings.TopMostChecked = TopMost;
+            FormSettings.ExamStartTime = ExamStartTime;
+            FormSettings.ExamEndTime = ExamEndTime;
+            FormSettings.CountdownFont = LableCountdown.Font;
+            FormSettings.CountdownFontStyle = LableCountdown.Font.Style;
+            FormSettings.ExamName = ExamName;
+            FormSettings.IsDaysOnly = IsDaysOnly;
+            FormSettings.IsShowEnd = IsShowEnd;
+            FormSettings.IsShowPast = IsShowPast;
+            FormSettings.IsRounding = IsRounding;
+            FormSettings.IsDragable = IsDragable;
+            FormSettings.IsPPTService = IsPPTService;
+
+            SingleInstanceRunner<FormSettings>.GetInstance().Show();
+        }
+
+        private void ContextMenuAbout_Click(object sender, EventArgs e)
+        {
+            SingleInstanceRunner<FormAbout>.GetInstance().Show();
+        }
+
+        private void ContextMenuOpenDir_Click(object sender, EventArgs e)
+        {
+            Process.Start(LaunchManager.CurrentExecutablePath);
+        }
+
+        private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (e.CloseReason == CloseReason.WindowsShutDown)
+            {
+                Environment.Exit(0);
+            }
+            else
+            {
+                e.Cancel = true;
             }
         }
 
@@ -196,32 +270,6 @@ namespace CEETimerCSharpWinForms.Forms
             {
                 MemoryManager.OptimizeMemory();
             }
-        }
-
-        private void DetectVirtualDesktop()
-        {
-            #region 来自网络
-            /* 
-
-            自动将窗口移动到当前虚拟桌面 (Windows 10 以上) 参考：
-
-            Virtual Desktop Switching in Windows 10 | Microsoft Learn
-            https://learn.microsoft.com/en-us/archive/blogs/winsdk/virtual-desktop-switching-in-windows-10
-
-            */
-
-            Forms = GetCurrentForms();
-            using NewWindow nw = new();
-            foreach (Form form in Forms)
-            {
-                if (!vdm.IsWindowOnCurrentVirtualDesktop(form.Handle))
-                {
-                    nw.Show(null);
-                    vdm.MoveWindowToDesktop(form.Handle, vdm.GetWindowDesktopId(nw.Handle));
-                    form.Activate();
-                }
-            }
-            #endregion
         }
 
         private void StartCountdown()
@@ -288,8 +336,32 @@ namespace CEETimerCSharpWinForms.Forms
                 LableCountdown.ForeColor = Color.Black;
                 LableCountdown.Text = "欢迎使用高考倒计时，请右键点击此处到设置里添加考试信息";
             }
+        }
 
-            KeepOnScreen();
+        private void DetectVirtualDesktop()
+        {
+            #region 来自网络
+            /* 
+
+            自动将窗口移动到当前虚拟桌面 (Windows 10 以上) 参考：
+
+            Virtual Desktop Switching in Windows 10 | Microsoft Learn
+            https://learn.microsoft.com/en-us/archive/blogs/winsdk/virtual-desktop-switching-in-windows-10
+
+            */
+
+            Forms = GetCurrentForms();
+            using NewWindow nw = new();
+            foreach (Form form in Forms)
+            {
+                if (!vdm.IsWindowOnCurrentVirtualDesktop(form.Handle))
+                {
+                    nw.Show(null);
+                    vdm.MoveWindowToDesktop(form.Handle, vdm.GetWindowDesktopId(nw.Handle));
+                    form.Activate();
+                }
+            }
+            #endregion
         }
 
         private void CompatibleWithPPTService()
@@ -301,31 +373,18 @@ namespace CEETimerCSharpWinForms.Forms
             }
         }
 
-        private void Drag_MouseDown(object sender, MouseEventArgs e)
+        private void KeepOnScreen()
         {
-            if (e.Button == MouseButtons.Left)
-            {
-                WindowsAPI.ReleaseCapture();
-                WindowsAPI.SendMessage(Handle, 0xA1, 0x2, 0);
-            }
-        }
+            Rectangle ValidArea = Screen.GetWorkingArea(this);
 
-        private void Form_LocationChanged(object sender, EventArgs e)
-        {
-            KeepOnScreen();
-            CompatibleWithPPTService();
-
-            if (IsMoving)
-            {
-                LastLocation = Location;
-            }
-            else
-            {
-                IsMoving = true;
-                TimerLocationWatcher.Stop();
-                LastLocation = Location;
-                TimerLocationWatcher.Start();
-            }
+            if (Left < ValidArea.Left)
+                Left = ValidArea.Left;
+            if (Top < ValidArea.Top)
+                Top = ValidArea.Top;
+            if (Right > ValidArea.Right)
+                Left = ValidArea.Right - Width;
+            if (Bottom > ValidArea.Bottom)
+                Top = ValidArea.Bottom - Height;
         }
 
         private void SaveLocation(Point NewLocation)
@@ -335,62 +394,6 @@ namespace CEETimerCSharpWinForms.Forms
                 { "PosX", $"{NewLocation.X}" },
                 { "PosY", $"{NewLocation.Y}" }
             });
-        }
-
-        private void KeepOnScreen()
-        {
-            Rectangle ScreenBounds = Screen.GetWorkingArea(this);
-
-            if (Left < ScreenBounds.Left)
-                Left = ScreenBounds.Left;
-            if (Top < ScreenBounds.Top)
-                Top = ScreenBounds.Top;
-            if (Right > ScreenBounds.Right)
-                Left = ScreenBounds.Right - Width;
-            if (Bottom > ScreenBounds.Bottom)
-                Top = ScreenBounds.Bottom - Height;
-        }
-
-        private void ContextMenuSettings_Click(object sender, EventArgs e)
-        {
-            FormSettings.FeatureMOEnabled = IsFeatureMOEnabled;
-            FormSettings.FeatureVDMEnabled = IsFeatureVDMEnabled;
-            FormSettings.TopMostChecked = TopMost;
-            FormSettings.ExamStartTime = ExamStartTime;
-            FormSettings.ExamEndTime = ExamEndTime;
-            FormSettings.CountdownFont = LableCountdown.Font;
-            FormSettings.CountdownFontStyle = LableCountdown.Font.Style;
-            FormSettings.ExamName = ExamName;
-            FormSettings.IsDaysOnly = IsDaysOnly;
-            FormSettings.IsShowEnd = IsShowEnd;
-            FormSettings.IsShowPast = IsShowPast;
-            FormSettings.IsRounding = IsRounding;
-            FormSettings.IsDragable = IsDragable;
-            FormSettings.IsPPTService = IsPPTService;
-
-            SingleInstanceRunner<FormSettings>.GetInstance().Show();
-        }
-
-        private void ContextMenuAbout_Click(object sender, EventArgs e)
-        {
-            SingleInstanceRunner<FormAbout>.GetInstance().Show();
-        }
-
-        private void ContextMenuOpenDir_Click(object sender, EventArgs e)
-        {
-            Process.Start(LaunchManager.CurrentExecutablePath);
-        }
-
-        private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            if (e.CloseReason == CloseReason.WindowsShutDown)
-            {
-                Environment.Exit(0);
-            }
-            else
-            {
-                e.Cancel = true;
-            }
         }
     }
 }
