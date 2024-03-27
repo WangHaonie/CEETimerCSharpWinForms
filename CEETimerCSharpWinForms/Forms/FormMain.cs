@@ -129,10 +129,6 @@ namespace CEETimerCSharpWinForms.Forms
                 LableCountdown.Text = "欢迎使用高考倒计时，请右键点击此处到设置里添加考试信息";
             }
 
-            Location = new Point(x, y);
-            CompatibleWithPPTService();
-            SaveLocation(new Point(Location.X, Location.Y));
-
             LocationChanged -= Form_LocationChanged;
             LableCountdown.MouseDown -= Drag_MouseDown;
 
@@ -144,6 +140,14 @@ namespace CEETimerCSharpWinForms.Forms
             else
             {
                 Location = new Point(0, 0);
+            }
+
+            CompatibleWithPPTService();
+
+            if (IsPPTService == false)
+            {
+                new Point(x, y);
+                SaveLocation(new Point(Location.X, Location.Y));
             }
 
             Forms = GetCurrentForms();
