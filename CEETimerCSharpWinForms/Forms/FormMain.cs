@@ -101,8 +101,6 @@ namespace CEETimerCSharpWinForms.Forms
             IsUniTopMost = IsUniTopMost && TopMost;
             IsFeatureVDMEnabled = IsFeatureVDMEnabled && LaunchManager.CurrentWindowsVersion >= 10;
 
-            CompatibleWithPPTService();
-
             try
             {
                 SelectedFont = (Font)fontConverter.ConvertFromString(ConfigManager.ReadConfig("Font"));
@@ -132,6 +130,7 @@ namespace CEETimerCSharpWinForms.Forms
             }
 
             Location = new Point(x, y);
+            CompatibleWithPPTService();
             SaveLocation(new Point(Location.X, Location.Y));
 
             LocationChanged -= Form_LocationChanged;
@@ -366,10 +365,14 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void CompatibleWithPPTService()
         {
-            if (IsPPTService && Location == new Point(0, 0))
+            if (IsPPTService)
             {
-                Location = new Point(1, 0);
-                SaveLocation(new Point(Location.X, Location.Y));
+                Rectangle ValidArea = Screen.GetWorkingArea(this);
+
+                if (Left == ValidArea.Left && Top == ValidArea.Top)
+                {
+                    Left = ValidArea.Left + 1;
+                }
             }
         }
 
