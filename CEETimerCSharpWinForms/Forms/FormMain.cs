@@ -34,7 +34,6 @@ namespace CEETimerCSharpWinForms.Forms
         private Point LastLocation;
         private readonly FontConverter fontConverter = new();
         private string ExamName;
-        private VirtualDesktopManager vdm;
         private List<Form> Forms;
 
         public FormMain()
@@ -65,14 +64,6 @@ namespace CEETimerCSharpWinForms.Forms
             TimerLocationWatcher.Tick += TimerLocationWatcher_Tick;
             TimerLocationWatcher.Start();
             LastLocation = Location;
-        }
-
-        private void FormMain_Load(object sender, EventArgs e)
-        {
-            if (LaunchManager.CurrentWindowsVersion >= 10)
-            {
-                vdm = new VirtualDesktopManager();
-            }
         }
 
         private void RefreshSettings(object sender, EventArgs e)
@@ -352,8 +343,9 @@ namespace CEETimerCSharpWinForms.Forms
 
             */
 
-            Forms = GetCurrentForms();
+            using VirtualDesktopManager vdm = new();
             using NewWindow nw = new();
+            Forms = GetCurrentForms();
             foreach (Form form in Forms)
             {
                 if (!vdm.IsWindowOnCurrentVirtualDesktop(form.Handle))

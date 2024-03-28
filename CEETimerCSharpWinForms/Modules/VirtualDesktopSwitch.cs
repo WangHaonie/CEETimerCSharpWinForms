@@ -35,26 +35,32 @@ namespace CEETimerCSharpWinForms.Modules
             [In]Guid CurrentDesktop
             );
     }
+
     public class NewWindow : Form
     {
+
     }
+
     [ComImport, Guid("aa509086-5ca9-4c25-8f95-589d3c07b48a")]
     public class CVirtualDesktopManager
     {
 
     }
-    public class VirtualDesktopManager
+
+    public class VirtualDesktopManager : IDisposable
     {
         public VirtualDesktopManager()
         {
             cmanager = new CVirtualDesktopManager();
             manager = (IVirtualDesktopManager)cmanager;
         }
+
         ~VirtualDesktopManager()
         {
             manager = null;
             cmanager = null;
         }
+
         private CVirtualDesktopManager cmanager = null;
         private IVirtualDesktopManager manager;
 
@@ -87,6 +93,17 @@ namespace CEETimerCSharpWinForms.Modules
             {
                 Marshal.ThrowExceptionForHR(hr);
             }
+        }
+
+        public void Dispose()
+        {
+            cmanager = null;
+            manager = null;
+            Marshal.ReleaseComObject(cmanager);
+            Marshal.ReleaseComObject(manager);
+            Marshal.FinalReleaseComObject(cmanager);
+            Marshal.FinalReleaseComObject(manager);
+            GC.SuppressFinalize(this);
         }
     }
 }
