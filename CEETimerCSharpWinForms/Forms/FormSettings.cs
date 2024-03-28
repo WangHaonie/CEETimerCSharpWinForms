@@ -12,6 +12,12 @@ namespace CEETimerCSharpWinForms.Forms
 {
     public partial class FormSettings : Form
     {
+        private class UserMonitorsInfo
+        {
+            public string DisplayName { get; set; }
+            public int Value { get; set; }
+        }
+
         public static bool FeatureMOEnabled { get; set; }
         public static bool FeatureVDMEnabled { get; set; }
         public static bool IsDaysOnly { get; set; }
@@ -21,6 +27,7 @@ namespace CEETimerCSharpWinForms.Forms
         public static bool IsRounding { get; set; }
         public static bool IsPPTService { get; set; }
         public static bool TopMostChecked { get; set; }
+        public static int ScreenIndex { get; set; }
         public static DateTime ExamStartTime { get; set; }
         public static DateTime ExamEndTime { get; set; }
         public static Font CountdownFont { get; set; }
@@ -52,6 +59,7 @@ namespace CEETimerCSharpWinForms.Forms
         {
             TopMost = FormMain.IsUniTopMost;
             ChangeWorkingStyle(false, WorkingArea.Funny);
+            RefreshScreens();
             RefreshSettings();
             IsSettingsChanged = false;
             ButtonSave.Enabled = false;
@@ -175,6 +183,39 @@ namespace CEETimerCSharpWinForms.Forms
             }
         }
 
+        private void CheckBoxEnableDragable_CheckedChanged(object sender, EventArgs e)
+        {
+            SettingsChanged(sender, e);
+            ComboBoxScreens.SelectedValue = CheckBoxEnableDragable.Checked ? 0 : ScreenIndex;
+            LabelScreens.Enabled = LabelScreensHint.Enabled = ComboBoxScreens.Enabled = !CheckBoxEnableDragable.Checked;
+        }
+
+        private void ComboBoxScreens_DropDown(object sender, EventArgs e)
+        {
+            #region
+            /*
+             
+            DropDown 自适应大小 参考：
+
+            c# - Auto-width of ComboBox's content - Stack Overflow
+            https://stackoverflow.com/a/16435431/21094697
+            c# - ComboBox auto DropDownWidth regardless of DataSource type - Stack Overflow
+            https://stackoverflow.com/a/69350288/21094697
+             
+             */
+
+            int MaxWidth = 0;
+
+            foreach (var Item in ComboBoxScreens.Items)
+            {
+                MaxWidth = Math.Max(MaxWidth, TextRenderer.MeasureText(ComboBoxScreens.GetItemText(Item), ComboBoxScreens.Font).Width);
+            }
+
+            ComboBoxScreens.DropDownWidth = MaxWidth + SystemInformation.VerticalScrollBarWidth;
+
+            #endregion
+        }
+
         private void FormSettings_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (IsSyncingTime)
@@ -227,6 +268,34 @@ namespace CEETimerCSharpWinForms.Forms
             }
         }
 
+        private void RefreshScreens()
+        {
+            Screen[] CurrentScreens = Screen.AllScreens;
+            List<UserMonitorsInfo> Monitors = [];
+            int i = 0;
+
+            Monitors.Add(new UserMonitorsInfo
+            {
+                DisplayName = "<请选择>",
+                Value = 0,
+            });
+
+            foreach (var CurrentScreen in CurrentScreens)
+            {
+                i++;
+
+                Monitors.Add(new UserMonitorsInfo
+                {
+                    DisplayName = $"{i} {CurrentScreen.DeviceName} ({CurrentScreen.Bounds.Width}x{CurrentScreen.Bounds.Height})",
+                    Value = i
+                });
+            }
+
+            ComboBoxScreens.DataSource = Monitors;
+            ComboBoxScreens.DisplayMember = "DisplayName";
+            ComboBoxScreens.ValueMember = "Value";
+        }
+
         private void RefreshSettings()
         {
             CheckBoxStartup.Checked = (Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true)?.GetValue("CEETimerCSharpWinForms") is string regvalue) && regvalue.Equals($"\"{LaunchManager.CurrentExecutable}\"", StringComparison.OrdinalIgnoreCase);
@@ -245,6 +314,7 @@ namespace CEETimerCSharpWinForms.Forms
             CheckBoxShowPast.Checked = IsShowPast;
             CheckBoxSwPptSvc.Checked = IsPPTService;
             CheckBoxSetUniTopMost.Checked = TopMost;
+            ComboBoxScreens.SelectedValue = ScreenIndex;
 
             ChangeFont(new Font(CountdownFont, CountdownFontStyle));
 
@@ -389,7 +459,8 @@ namespace CEETimerCSharpWinForms.Forms
                     { "ShowPast", CheckBoxShowPast.Checked.ToString() },
                     { "Dragable", CheckBoxEnableDragable.Checked.ToString() },
                     { "UniTopMost", CheckBoxSetUniTopMost.Checked.ToString() },
-                    { "PPTService", CheckBoxSwPptSvc.Checked.ToString() }
+                    { "PPTService", CheckBoxSwPptSvc.Checked.ToString() },
+                    { "Screen", ComboBoxScreens.SelectedValue.ToString() }
                 });
             }
             catch
@@ -411,7 +482,7 @@ namespace CEETimerCSharpWinForms.Forms
         https://www.cnblogs.com/guosheng/p/7417918.html
 
          */
-        
+
         protected override CreateParams CreateParams
         {
             get
@@ -422,18 +493,5 @@ namespace CEETimerCSharpWinForms.Forms
             }
         }
         #endregion
-        /*
-        protected override void OnResize(EventArgs e)
-        {
-            base.OnResize(e);
-
-            if (WindowState == FormWindowState.Normal)
-            {
-                RecreateHandle();
-                RefreshSettings();
-                Activate();
-            }
-        }
-        */
     }
 }

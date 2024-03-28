@@ -22,6 +22,7 @@ namespace CEETimerCSharpWinForms.Forms
         private bool IsReady;
         private bool IsRounding;
         private bool IsPPTService;
+        private int ScreenIndex;
         private DateTime ExamEndTime;
         private DateTime ExamStartTime;
         private Font SelectedFont;
@@ -91,6 +92,7 @@ namespace CEETimerCSharpWinForms.Forms
             IsDragable = bool.TryParse(ConfigManager.ReadConfig("Dragable"), out bool tmph) && tmph;
             IsUniTopMost = bool.TryParse(ConfigManager.ReadConfig("UniTopMost"), out bool tmpi) && tmpi;
             IsPPTService = bool.TryParse(ConfigManager.ReadConfig("PPTService"), out bool tmpj) && tmpj;
+            ScreenIndex = int.TryParse(ConfigManager.ReadConfig("Screen"), out int tmpk) ? tmpk : 0;
             DateTime.TryParseExact(ConfigManager.ReadConfig("ExamStartTime"), "yyyyMMddHHmmss", null, DateTimeStyles.None, out ExamStartTime);
             DateTime.TryParseExact(ConfigManager.ReadConfig("ExamEndTime"), "yyyyMMddHHmmss", null, DateTimeStyles.None, out ExamEndTime);
             int.TryParse(ConfigManager.ReadConfig("PosX"), out int x);
@@ -100,6 +102,7 @@ namespace CEETimerCSharpWinForms.Forms
             IsRounding = IsRounding && IsDaysOnly;
             IsUniTopMost = IsUniTopMost && TopMost;
             IsFeatureVDMEnabled = IsFeatureVDMEnabled && LaunchManager.CurrentWindowsVersion >= 10;
+            if (ScreenIndex > Screen.AllScreens.Length) ScreenIndex = 0;
 
             try
             {
@@ -136,19 +139,15 @@ namespace CEETimerCSharpWinForms.Forms
             {
                 LocationChanged += Form_LocationChanged;
                 LableCountdown.MouseDown += Drag_MouseDown;
+                Location = new Point(x, y);
+                SaveLocation(new Point(Location.X, Location.Y));
             }
             else
             {
-                Location = new Point(0, 0);
+                Location = Screen.AllScreens[ScreenIndex - 1 == -1 ? 0 : ScreenIndex - 1].Bounds.Location;
             }
 
             CompatibleWithPPTService();
-
-            if (IsPPTService == false)
-            {
-                new Point(x, y);
-                SaveLocation(new Point(Location.X, Location.Y));
-            }
 
             Forms = GetCurrentForms();
             foreach (Form form in Forms)
@@ -235,6 +234,7 @@ namespace CEETimerCSharpWinForms.Forms
             FormSettings.IsRounding = IsRounding;
             FormSettings.IsDragable = IsDragable;
             FormSettings.IsPPTService = IsPPTService;
+            FormSettings.ScreenIndex = ScreenIndex;
 
             SingleInstanceRunner<FormSettings>.GetInstance().Show();
         }

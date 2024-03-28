@@ -58,20 +58,23 @@
             this.LabelFontInfo = new System.Windows.Forms.Label();
             this.LabelLine11 = new System.Windows.Forms.Label();
             this.TabPageTools = new System.Windows.Forms.TabPage();
-            this.GBoxPPTService = new System.Windows.Forms.GroupBox();
-            this.CheckBoxSwPptSvc = new System.Windows.Forms.CheckBox();
-            this.LabelLine13 = new System.Windows.Forms.Label();
             this.GBoxRestart = new System.Windows.Forms.GroupBox();
             this.LabelLine10 = new System.Windows.Forms.Label();
             this.LabelLine9 = new System.Windows.Forms.Label();
+            this.GBoxSetDragable = new System.Windows.Forms.GroupBox();
+            this.CheckBoxEnableDragable = new System.Windows.Forms.CheckBox();
+            this.LabelScreensHint = new System.Windows.Forms.Label();
+            this.LabelScreens = new System.Windows.Forms.Label();
+            this.ComboBoxScreens = new System.Windows.Forms.ComboBox();
             this.GBoxSyncTime = new System.Windows.Forms.GroupBox();
             this.LabelLine7 = new System.Windows.Forms.Label();
             this.LabelLine6 = new System.Windows.Forms.Label();
             this.LabelLine5 = new System.Windows.Forms.Label();
             this.TabPageAdvanced = new System.Windows.Forms.TabPage();
-            this.GBoxSetDragable = new System.Windows.Forms.GroupBox();
-            this.CheckBoxEnableDragable = new System.Windows.Forms.CheckBox();
+            this.GBoxPPTService = new System.Windows.Forms.GroupBox();
+            this.CheckBoxSwPptSvc = new System.Windows.Forms.CheckBox();
             this.LabelLine12 = new System.Windows.Forms.Label();
+            this.LabelLine13 = new System.Windows.Forms.Label();
             this.GBoxMO = new System.Windows.Forms.GroupBox();
             this.CheckBoxEnableMO = new System.Windows.Forms.CheckBox();
             this.LabelLine4 = new System.Windows.Forms.Label();
@@ -90,11 +93,11 @@
             this.GBoxContent.SuspendLayout();
             this.GBoxChangeFont.SuspendLayout();
             this.TabPageTools.SuspendLayout();
-            this.GBoxPPTService.SuspendLayout();
             this.GBoxRestart.SuspendLayout();
+            this.GBoxSetDragable.SuspendLayout();
             this.GBoxSyncTime.SuspendLayout();
             this.TabPageAdvanced.SuspendLayout();
-            this.GBoxSetDragable.SuspendLayout();
+            this.GBoxPPTService.SuspendLayout();
             this.GBoxMO.SuspendLayout();
             this.GBoxVDM.SuspendLayout();
             this.SuspendLayout();
@@ -433,38 +436,6 @@
             this.TabPageTools.Text = "工具";
             this.TabPageTools.UseVisualStyleBackColor = true;
             // 
-            // GBoxPPTService
-            // 
-            this.GBoxPPTService.Controls.Add(this.CheckBoxSwPptSvc);
-            this.GBoxPPTService.Controls.Add(this.LabelLine12);
-            this.GBoxPPTService.Controls.Add(this.LabelLine13);
-            this.GBoxPPTService.Location = new System.Drawing.Point(7, 174);
-            this.GBoxPPTService.Name = "GBoxPPTService";
-            this.GBoxPPTService.Size = new System.Drawing.Size(405, 78);
-            this.GBoxPPTService.TabIndex = 0;
-            this.GBoxPPTService.TabStop = false;
-            this.GBoxPPTService.Text = "兼容希沃PPT小工具";
-            // 
-            // CheckBoxSwPptSvc
-            // 
-            this.CheckBoxSwPptSvc.AutoSize = true;
-            this.CheckBoxSwPptSvc.Location = new System.Drawing.Point(9, 52);
-            this.CheckBoxSwPptSvc.Name = "CheckBoxSwPptSvc";
-            this.CheckBoxSwPptSvc.Size = new System.Drawing.Size(106, 19);
-            this.CheckBoxSwPptSvc.TabIndex = 3;
-            this.CheckBoxSwPptSvc.Text = "启用此功能(&X)";
-            this.CheckBoxSwPptSvc.UseVisualStyleBackColor = true;
-            this.CheckBoxSwPptSvc.CheckedChanged += new System.EventHandler(this.SettingsChanged);
-            // 
-            // LabelLine13
-            // 
-            this.LabelLine13.AutoSize = true;
-            this.LabelLine13.Location = new System.Drawing.Point(6, 19);
-            this.LabelLine13.Name = "LabelLine13";
-            this.LabelLine13.Size = new System.Drawing.Size(404, 15);
-            this.LabelLine13.TabIndex = 0;
-            this.LabelLine13.Text = "用于解决希沃PPT小工具的内置白板打开后底部工具栏会消失的问题。";
-            // 
             // GBoxRestart
             // 
             this.GBoxRestart.Controls.Add(this.LabelLine10);
@@ -491,6 +462,60 @@
             this.LabelLine9.Name = "LabelLine9";
             this.LabelLine9.Size = new System.Drawing.Size(0, 15);
             this.LabelLine9.TabIndex = 37;
+            // 
+            // GBoxSetDragable
+            // 
+            this.GBoxSetDragable.Controls.Add(this.CheckBoxEnableDragable);
+            this.GBoxSetDragable.Controls.Add(this.LabelScreensHint);
+            this.GBoxSetDragable.Controls.Add(this.LabelScreens);
+            this.GBoxSetDragable.Controls.Add(this.ComboBoxScreens);
+            this.GBoxSetDragable.Location = new System.Drawing.Point(7, 200);
+            this.GBoxSetDragable.Name = "GBoxSetDragable";
+            this.GBoxSetDragable.Size = new System.Drawing.Size(405, 48);
+            this.GBoxSetDragable.TabIndex = 4;
+            this.GBoxSetDragable.TabStop = false;
+            this.GBoxSetDragable.Text = "多显示器与拖动";
+            // 
+            // CheckBoxEnableDragable
+            // 
+            this.CheckBoxEnableDragable.AutoSize = true;
+            this.CheckBoxEnableDragable.Location = new System.Drawing.Point(260, 20);
+            this.CheckBoxEnableDragable.Name = "CheckBoxEnableDragable";
+            this.CheckBoxEnableDragable.Size = new System.Drawing.Size(94, 19);
+            this.CheckBoxEnableDragable.TabIndex = 3;
+            this.CheckBoxEnableDragable.Text = "允许拖动(&D)";
+            this.CheckBoxEnableDragable.UseVisualStyleBackColor = true;
+            this.CheckBoxEnableDragable.CheckedChanged += new System.EventHandler(this.CheckBoxEnableDragable_CheckedChanged);
+            // 
+            // LabelScreensHint
+            // 
+            this.LabelScreensHint.AutoSize = true;
+            this.LabelScreensHint.Location = new System.Drawing.Point(234, 21);
+            this.LabelScreensHint.Name = "LabelScreensHint";
+            this.LabelScreensHint.Size = new System.Drawing.Size(20, 15);
+            this.LabelScreensHint.TabIndex = 6;
+            this.LabelScreensHint.Text = "上";
+            // 
+            // LabelScreens
+            // 
+            this.LabelScreens.AutoSize = true;
+            this.LabelScreens.Location = new System.Drawing.Point(6, 21);
+            this.LabelScreens.Name = "LabelScreens";
+            this.LabelScreens.Size = new System.Drawing.Size(124, 15);
+            this.LabelScreens.TabIndex = 5;
+            this.LabelScreens.Text = "将倒计时显示在屏幕";
+            // 
+            // ComboBoxScreens
+            // 
+            this.ComboBoxScreens.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ComboBoxScreens.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.ComboBoxScreens.Location = new System.Drawing.Point(132, 17);
+            this.ComboBoxScreens.MaxDropDownItems = 1;
+            this.ComboBoxScreens.Name = "ComboBoxScreens";
+            this.ComboBoxScreens.Size = new System.Drawing.Size(100, 23);
+            this.ComboBoxScreens.TabIndex = 4;
+            this.ComboBoxScreens.DropDown += new System.EventHandler(this.ComboBoxScreens_DropDown);
+            this.ComboBoxScreens.SelectedIndexChanged += new System.EventHandler(this.SettingsChanged);
             // 
             // GBoxSyncTime
             // 
@@ -547,26 +572,28 @@
             this.TabPageAdvanced.Text = "高级";
             this.TabPageAdvanced.UseVisualStyleBackColor = true;
             // 
-            // GBoxSetDragable
+            // GBoxPPTService
             // 
-            this.GBoxSetDragable.Controls.Add(this.CheckBoxEnableDragable);
-            this.GBoxSetDragable.Location = new System.Drawing.Point(7, 200);
-            this.GBoxSetDragable.Name = "GBoxSetDragable";
-            this.GBoxSetDragable.Size = new System.Drawing.Size(405, 48);
-            this.GBoxSetDragable.TabIndex = 4;
-            this.GBoxSetDragable.TabStop = false;
-            this.GBoxSetDragable.Text = "窗口拖动";
+            this.GBoxPPTService.Controls.Add(this.CheckBoxSwPptSvc);
+            this.GBoxPPTService.Controls.Add(this.LabelLine12);
+            this.GBoxPPTService.Controls.Add(this.LabelLine13);
+            this.GBoxPPTService.Location = new System.Drawing.Point(7, 174);
+            this.GBoxPPTService.Name = "GBoxPPTService";
+            this.GBoxPPTService.Size = new System.Drawing.Size(405, 78);
+            this.GBoxPPTService.TabIndex = 0;
+            this.GBoxPPTService.TabStop = false;
+            this.GBoxPPTService.Text = "兼容希沃PPT小工具";
             // 
-            // CheckBoxEnableDragable
+            // CheckBoxSwPptSvc
             // 
-            this.CheckBoxEnableDragable.AutoSize = true;
-            this.CheckBoxEnableDragable.Location = new System.Drawing.Point(9, 22);
-            this.CheckBoxEnableDragable.Name = "CheckBoxEnableDragable";
-            this.CheckBoxEnableDragable.Size = new System.Drawing.Size(172, 19);
-            this.CheckBoxEnableDragable.TabIndex = 3;
-            this.CheckBoxEnableDragable.Text = "允许倒计时窗口被拖动(&D)";
-            this.CheckBoxEnableDragable.UseVisualStyleBackColor = true;
-            this.CheckBoxEnableDragable.CheckedChanged += new System.EventHandler(this.SettingsChanged);
+            this.CheckBoxSwPptSvc.AutoSize = true;
+            this.CheckBoxSwPptSvc.Location = new System.Drawing.Point(9, 52);
+            this.CheckBoxSwPptSvc.Name = "CheckBoxSwPptSvc";
+            this.CheckBoxSwPptSvc.Size = new System.Drawing.Size(106, 19);
+            this.CheckBoxSwPptSvc.TabIndex = 3;
+            this.CheckBoxSwPptSvc.Text = "启用此功能(&X)";
+            this.CheckBoxSwPptSvc.UseVisualStyleBackColor = true;
+            this.CheckBoxSwPptSvc.CheckedChanged += new System.EventHandler(this.SettingsChanged);
             // 
             // LabelLine12
             // 
@@ -576,6 +603,15 @@
             this.LabelLine12.Size = new System.Drawing.Size(353, 15);
             this.LabelLine12.TabIndex = 0;
             this.LabelLine12.Text = "(或者你也可以开启拖动功能，将倒计时窗口拖动到其他位置)";
+            // 
+            // LabelLine13
+            // 
+            this.LabelLine13.AutoSize = true;
+            this.LabelLine13.Location = new System.Drawing.Point(6, 19);
+            this.LabelLine13.Name = "LabelLine13";
+            this.LabelLine13.Size = new System.Drawing.Size(404, 15);
+            this.LabelLine13.TabIndex = 0;
+            this.LabelLine13.Text = "用于解决希沃PPT小工具的内置白板打开后底部工具栏会消失的问题。";
             // 
             // GBoxMO
             // 
@@ -696,15 +732,15 @@
             this.GBoxChangeFont.ResumeLayout(false);
             this.GBoxChangeFont.PerformLayout();
             this.TabPageTools.ResumeLayout(false);
-            this.GBoxPPTService.ResumeLayout(false);
-            this.GBoxPPTService.PerformLayout();
             this.GBoxRestart.ResumeLayout(false);
             this.GBoxRestart.PerformLayout();
+            this.GBoxSetDragable.ResumeLayout(false);
+            this.GBoxSetDragable.PerformLayout();
             this.GBoxSyncTime.ResumeLayout(false);
             this.GBoxSyncTime.PerformLayout();
             this.TabPageAdvanced.ResumeLayout(false);
-            this.GBoxSetDragable.ResumeLayout(false);
-            this.GBoxSetDragable.PerformLayout();
+            this.GBoxPPTService.ResumeLayout(false);
+            this.GBoxPPTService.PerformLayout();
             this.GBoxMO.ResumeLayout(false);
             this.GBoxMO.PerformLayout();
             this.GBoxVDM.ResumeLayout(false);
@@ -766,5 +802,8 @@
         private System.Windows.Forms.GroupBox GBoxPPTService;
         private System.Windows.Forms.Label LabelLine13;
         private System.Windows.Forms.CheckBox CheckBoxSwPptSvc;
+        private System.Windows.Forms.Label LabelScreensHint;
+        private System.Windows.Forms.Label LabelScreens;
+        private System.Windows.Forms.ComboBox ComboBoxScreens;
     }
 }
