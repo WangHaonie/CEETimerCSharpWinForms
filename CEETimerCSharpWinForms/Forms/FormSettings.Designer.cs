@@ -589,9 +589,8 @@
             this.CheckBoxSwPptSvc.AutoSize = true;
             this.CheckBoxSwPptSvc.Location = new System.Drawing.Point(9, 52);
             this.CheckBoxSwPptSvc.Name = "CheckBoxSwPptSvc";
-            this.CheckBoxSwPptSvc.Size = new System.Drawing.Size(106, 19);
+            this.CheckBoxSwPptSvc.Size = new System.Drawing.Size(15, 14);
             this.CheckBoxSwPptSvc.TabIndex = 3;
-            this.CheckBoxSwPptSvc.Text = "启用此功能(&X)";
             this.CheckBoxSwPptSvc.UseVisualStyleBackColor = true;
             this.CheckBoxSwPptSvc.CheckedChanged += new System.EventHandler(this.SettingsChanged);
             // 

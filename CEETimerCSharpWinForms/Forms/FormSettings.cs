@@ -18,6 +18,11 @@ namespace CEETimerCSharpWinForms.Forms
             public int Value { get; set; }
         }
 
+        private enum WorkingArea
+        {
+            Funny, SyncTime, SetPPTService
+        }
+
         public static bool FeatureMOEnabled { get; set; }
         public static bool FeatureVDMEnabled { get; set; }
         public static bool IsDaysOnly { get; set; }
@@ -39,7 +44,6 @@ namespace CEETimerCSharpWinForms.Forms
 
         private bool IsSyncingTime = false;
         private bool IsSettingsChanged;
-        private enum WorkingArea { Funny, SyncTime }
         private readonly FontConverter fontConverter = new();
 
         public FormSettings()
@@ -101,6 +105,8 @@ namespace CEETimerCSharpWinForms.Forms
                 CheckBoxSetUniTopMost.Checked = false;
                 CheckBoxSetUniTopMost.Enabled = false;
             }
+
+            ChangeWorkingStyle(CheckBoxSetTopMost.Checked, WorkingArea.SetPPTService);
         }
 
         private void CheckBoxShowEnd_CheckedChanged(object sender, EventArgs e)
@@ -265,6 +271,11 @@ namespace CEETimerCSharpWinForms.Forms
                     LabelLine10.Text = IsWorking ? "" : "以确保窗口的文字不会变模糊。";
                     ButtonRestart.Text = IsWorking ? "点击关闭(&L)" : "点击重启(&R)";
                     break;
+                case WorkingArea.SetPPTService:
+                    CheckBoxSwPptSvc.Enabled = IsWorking;
+                    CheckBoxSwPptSvc.Checked = IsWorking && IsPPTService;
+                    CheckBoxSwPptSvc.Text = IsWorking ? "启用此功能(&X)" : "此功能暂不可用，因为倒计时没有顶置，不会引起冲突";
+                    break;
             }
         }
 
@@ -299,7 +310,6 @@ namespace CEETimerCSharpWinForms.Forms
         private void RefreshSettings()
         {
             CheckBoxStartup.Checked = (Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true)?.GetValue("CEETimerCSharpWinForms") is string regvalue) && regvalue.Equals($"\"{LaunchManager.CurrentExecutable}\"", StringComparison.OrdinalIgnoreCase);
-            CheckBoxSwPptSvc.Checked = IsAccessible;
 
             CheckBoxSetTopMost.Checked = TopMostChecked;
             TextBoxExamName.Text = ExamName;
@@ -317,11 +327,11 @@ namespace CEETimerCSharpWinForms.Forms
             ComboBoxScreens.SelectedValue = ScreenIndex;
 
             ChangeFont(new Font(CountdownFont, CountdownFontStyle));
+            ChangeWorkingStyle(FormMain.IsTopMost, WorkingArea.SetPPTService);
 
             if (LaunchManager.CurrentWindowsVersion < 10)
             {
-                CheckBoxEnableVDM.Enabled = false;
-                CheckBoxEnableVDM.Checked = false;
+                CheckBoxEnableVDM.Enabled = CheckBoxEnableVDM.Checked = false;
                 CheckBoxEnableVDM.Text = $"此功能在当前系统上不可用";
             }
         }

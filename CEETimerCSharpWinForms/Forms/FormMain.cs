@@ -12,6 +12,7 @@ namespace CEETimerCSharpWinForms.Forms
     public partial class FormMain : Form
     {
         public static bool IsUniTopMost { get; private set; }
+        public static bool IsTopMost { get; private set; }
         private bool IsDaysOnly;
         private bool IsDragable;
         private bool IsFeatureMOEnabled;
@@ -81,8 +82,7 @@ namespace CEETimerCSharpWinForms.Forms
             ConfigManager.MountConfig(true);
 
             ExamName = ConfigManager.ReadConfig("ExamName");
-            TopMost = !bool.TryParse(ConfigManager.ReadConfig("TopMost"), out bool tmpa) || tmpa;
-            ShowInTaskbar = !TopMost;
+            TopMost = IsTopMost = !bool.TryParse(ConfigManager.ReadConfig("TopMost"), out bool tmpa) || tmpa;
             IsFeatureVDMEnabled = bool.TryParse(ConfigManager.ReadConfig("FeatureVDM"), out bool tmpb) && tmpb;
             IsFeatureMOEnabled = bool.TryParse(ConfigManager.ReadConfig("FeatureMO"), out bool tmpc) && tmpc;
             IsDaysOnly = bool.TryParse(ConfigManager.ReadConfig("DaysOnly"), out bool tmpd) && tmpd;
@@ -98,6 +98,7 @@ namespace CEETimerCSharpWinForms.Forms
             int.TryParse(ConfigManager.ReadConfig("PosX"), out int x);
             int.TryParse(ConfigManager.ReadConfig("PosY"), out int y);
 
+            ShowInTaskbar = !TopMost;
             IsShowPast = IsShowPast && IsShowEnd;
             IsRounding = IsRounding && IsDaysOnly;
             IsUniTopMost = IsUniTopMost && TopMost;
@@ -369,7 +370,7 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void CompatibleWithPPTService()
         {
-            if (IsPPTService)
+            if (IsPPTService && TopMost)
             {
                 Rectangle ValidArea = Screen.GetWorkingArea(this);
 
