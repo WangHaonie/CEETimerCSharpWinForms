@@ -40,6 +40,7 @@ namespace CEETimerCSharpWinForms.Forms
         public FormMain()
         {
             InitializeComponent();
+            RefreshSettings(null, EventArgs.Empty);
             InitializeExtra();
         }
 
@@ -73,8 +74,6 @@ namespace CEETimerCSharpWinForms.Forms
                 vdm = new VirtualDesktopManager();
                 IsFeatureVDMEnabled = true;
             }
-
-            RefreshSettings(sender, e);
         }
 
         private void RefreshSettings(object sender, EventArgs e)
