@@ -99,10 +99,6 @@ namespace CEETimerCSharpWinForms.Modules
         {
             cmanager = null;
             manager = null;
-            Marshal.ReleaseComObject(cmanager);
-            Marshal.ReleaseComObject(manager);
-            Marshal.FinalReleaseComObject(cmanager);
-            Marshal.FinalReleaseComObject(manager);
             GC.SuppressFinalize(this);
         }
     }
