@@ -40,8 +40,8 @@ namespace CEETimerCSharpWinForms.Forms
         public FormMain()
         {
             InitializeComponent();
-            RefreshSettings(null, EventArgs.Empty);
             InitializeExtra();
+            RefreshSettings(null, EventArgs.Empty);
         }
 
         private void InitializeExtra()
