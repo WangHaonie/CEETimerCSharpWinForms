@@ -72,7 +72,6 @@ namespace CEETimerCSharpWinForms.Forms
             if (LaunchManager.CurrentWindowsVersion >= 10)
             {
                 vdm = new VirtualDesktopManager();
-                IsFeatureVDMEnabled = true;
             }
         }
 
