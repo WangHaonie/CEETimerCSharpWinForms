@@ -44,7 +44,7 @@
             // 
             this.LabelInfo.AutoSize = true;
             this.LabelInfo.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LabelInfo.Location = new System.Drawing.Point(60, 3);
+            this.LabelInfo.Location = new System.Drawing.Point(39, 3);
             this.LabelInfo.Name = "LabelInfo";
             this.LabelInfo.Size = new System.Drawing.Size(72, 15);
             this.LabelInfo.TabIndex = 1;
@@ -54,7 +54,7 @@
             // 
             this.LabelAuthor.AutoSize = true;
             this.LabelAuthor.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LabelAuthor.Location = new System.Drawing.Point(60, 48);
+            this.LabelAuthor.Location = new System.Drawing.Point(5, 48);
             this.LabelAuthor.Name = "LabelAuthor";
             this.LabelAuthor.Size = new System.Drawing.Size(0, 15);
             this.LabelAuthor.TabIndex = 3;
@@ -63,7 +63,7 @@
             // 
             this.ButtonClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.ButtonClose.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ButtonClose.Location = new System.Drawing.Point(165, 66);
+            this.ButtonClose.Location = new System.Drawing.Point(130, 66);
             this.ButtonClose.Name = "ButtonClose";
             this.ButtonClose.Size = new System.Drawing.Size(75, 25);
             this.ButtonClose.TabIndex = 5;
@@ -75,7 +75,7 @@
             // 
             this.LabelLicense.AutoSize = true;
             this.LabelLicense.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LabelLicense.Location = new System.Drawing.Point(60, 33);
+            this.LabelLicense.Location = new System.Drawing.Point(5, 33);
             this.LabelLicense.Name = "LabelLicense";
             this.LabelLicense.Size = new System.Drawing.Size(180, 15);
             this.LabelLicense.TabIndex = 7;
@@ -86,7 +86,7 @@
             this.LableVersion.AutoSize = true;
             this.LableVersion.Cursor = System.Windows.Forms.Cursors.Help;
             this.LableVersion.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LableVersion.Location = new System.Drawing.Point(60, 18);
+            this.LableVersion.Location = new System.Drawing.Point(39, 18);
             this.LableVersion.Name = "LableVersion";
             this.LableVersion.Size = new System.Drawing.Size(0, 15);
             this.LableVersion.TabIndex = 2;
@@ -105,14 +105,14 @@
             this.PanelMain.Controls.Add(this.LabelAuthor);
             this.PanelMain.Location = new System.Drawing.Point(0, 0);
             this.PanelMain.Name = "PanelMain";
-            this.PanelMain.Size = new System.Drawing.Size(243, 94);
+            this.PanelMain.Size = new System.Drawing.Size(208, 94);
             this.PanelMain.TabIndex = 8;
             // 
             // LinkGitHub
             // 
             this.LinkGitHub.ActiveLinkColor = System.Drawing.Color.Blue;
             this.LinkGitHub.AutoSize = true;
-            this.LinkGitHub.Location = new System.Drawing.Point(3, 71);
+            this.LinkGitHub.Location = new System.Drawing.Point(5, 71);
             this.LinkGitHub.Name = "LinkGitHub";
             this.LinkGitHub.Size = new System.Drawing.Size(45, 15);
             this.LinkGitHub.TabIndex = 8;
@@ -124,9 +124,9 @@
             // PBoxLogo
             // 
             this.PBoxLogo.Image = global::CEETimerCSharpWinForms.Properties.Resources.AppIcon_256;
-            this.PBoxLogo.Location = new System.Drawing.Point(6, 6);
+            this.PBoxLogo.Location = new System.Drawing.Point(6, 3);
             this.PBoxLogo.Name = "PBoxLogo";
-            this.PBoxLogo.Size = new System.Drawing.Size(50, 50);
+            this.PBoxLogo.Size = new System.Drawing.Size(31, 31);
             this.PBoxLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.PBoxLogo.TabIndex = 9;
             this.PBoxLogo.TabStop = false;
@@ -138,7 +138,7 @@
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.CancelButton = this.ButtonClose;
-            this.ClientSize = new System.Drawing.Size(243, 94);
+            this.ClientSize = new System.Drawing.Size(208, 94);
             this.Controls.Add(this.PanelMain);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
