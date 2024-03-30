@@ -50,6 +50,14 @@ namespace CEETimerCSharpWinForms.Forms
             FormSettings.ConfigChanged += RefreshSettings;
             LableCountdown.TextChanged += LableCountdown_TextChanged;
 
+            TimerCountdown = new Timer()
+            {
+                Interval = 1000
+            };
+
+            TimerCountdown.Tick += StartCountdown;
+            TimerCountdown.Start();
+
             TimerLocationWatcher = new Timer()
             {
                 Interval = 3000
@@ -135,26 +143,8 @@ namespace CEETimerCSharpWinForms.Forms
                 form.TopMost = IsUniTopMost;
             }
 
-            TimerCountdown?.Stop();
-            TimerCountdown?.Dispose();
             TimerMORunner?.Dispose();
             TimerVDMRunner?.Dispose();
-
-            if (IsReady)
-            {
-                TimerCountdown = new Timer()
-                {
-                    Interval = 1000
-                };
-
-                TimerCountdown.Tick += StartCountdown;
-                TimerCountdown.Start();
-            }
-            else
-            {
-                LableCountdown.ForeColor = Color.Black;
-                LableCountdown.Text = "欢迎使用高考倒计时，请右键点击此处到设置里添加考试信息";
-            }
 
             if (IsFeatureMOEnabled)
                 TimerMORunner = new System.Threading.Timer(MemoryManager.OptimizeMemory, null, TimeSpan.Zero, TimeSpan.FromMinutes(5));
@@ -259,61 +249,64 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void StartCountdown(object sender, EventArgs e)
         {
-            if (DateTime.Now < ExamStartTime)
+            if (IsReady)
             {
-                TimeSpan TimeLeft = ExamStartTime - DateTime.Now;
-                LableCountdown.ForeColor = Color.Red;
-
-                if (IsDaysOnly)
+                if (DateTime.Now < ExamStartTime)
                 {
-                    LableCountdown.Text = $"距离{ExamName}还有{TimeLeft.Days}天";
+                    TimeSpan TimeLeft = ExamStartTime - DateTime.Now;
+                    LableCountdown.ForeColor = Color.Red;
 
-                    if (IsRounding)
+                    if (IsDaysOnly)
                     {
-                        LableCountdown.Text = $"距离{ExamName}还有{TimeLeft.Days + 1}天";
+                        LableCountdown.Text = $"距离{ExamName}还有{TimeLeft.Days}天";
+
+                        if (IsRounding)
+                        {
+                            LableCountdown.Text = $"距离{ExamName}还有{TimeLeft.Days + 1}天";
+                        }
+                    }
+                    else
+                    {
+                        LableCountdown.Text = $"距离{ExamName}还有{TimeLeft.Days}天{TimeLeft.Hours:00}时{TimeLeft.Minutes:00}分{TimeLeft.Seconds:00}秒";
                     }
                 }
-                else
+                else if (DateTime.Now >= ExamStartTime && DateTime.Now < ExamEndTime && IsShowEnd)
                 {
-                    LableCountdown.Text = $"距离{ExamName}还有{TimeLeft.Days}天{TimeLeft.Hours:00}时{TimeLeft.Minutes:00}分{TimeLeft.Seconds:00}秒";
-                }
-            }
-            else if (DateTime.Now >= ExamStartTime && DateTime.Now < ExamEndTime && IsShowEnd)
-            {
-                TimeSpan TimeLeftPast = ExamEndTime - DateTime.Now;
-                LableCountdown.ForeColor = Color.Green;
+                    TimeSpan TimeLeftPast = ExamEndTime - DateTime.Now;
+                    LableCountdown.ForeColor = Color.Green;
 
-                if (IsDaysOnly)
-                {
-                    LableCountdown.Text = $"距离{ExamName}结束还有{TimeLeftPast.Days}天";
-
-                    if (IsRounding)
+                    if (IsDaysOnly)
                     {
-                        LableCountdown.Text = $"距离{ExamName}结束还有{TimeLeftPast.Days + 1}天";
+                        LableCountdown.Text = $"距离{ExamName}结束还有{TimeLeftPast.Days}天";
+
+                        if (IsRounding)
+                        {
+                            LableCountdown.Text = $"距离{ExamName}结束还有{TimeLeftPast.Days + 1}天";
+                        }
+                    }
+                    else
+                    {
+                        LableCountdown.Text = $"距离{ExamName}结束还有{TimeLeftPast.Days}天{TimeLeftPast.Hours:00}时{TimeLeftPast.Minutes:00}分{TimeLeftPast.Seconds:00}秒";
                     }
                 }
-                else
+                else if (DateTime.Now >= ExamEndTime && IsShowPast)
                 {
-                    LableCountdown.Text = $"距离{ExamName}结束还有{TimeLeftPast.Days}天{TimeLeftPast.Hours:00}时{TimeLeftPast.Minutes:00}分{TimeLeftPast.Seconds:00}秒";
-                }
-            }
-            else if (DateTime.Now >= ExamEndTime && IsShowPast)
-            {
-                TimeSpan TimePast = DateTime.Now - ExamEndTime;
-                LableCountdown.ForeColor = Color.Black;
+                    TimeSpan TimePast = DateTime.Now - ExamEndTime;
+                    LableCountdown.ForeColor = Color.Black;
 
-                if (IsDaysOnly)
-                {
-                    LableCountdown.Text = $"距离{ExamName}已过去了{TimePast.Days}天";
-
-                    if (IsRounding)
+                    if (IsDaysOnly)
                     {
-                        LableCountdown.Text = $"距离{ExamName}已过去了{TimePast.Days + 1}天";
+                        LableCountdown.Text = $"距离{ExamName}已过去了{TimePast.Days}天";
+
+                        if (IsRounding)
+                        {
+                            LableCountdown.Text = $"距离{ExamName}已过去了{TimePast.Days + 1}天";
+                        }
                     }
-                }
-                else
-                {
-                    LableCountdown.Text = $"距离{ExamName}已过去了{TimePast.Days}天{TimePast.Hours:00}时{TimePast.Minutes:00}分{TimePast.Seconds:00}秒";
+                    else
+                    {
+                        LableCountdown.Text = $"距离{ExamName}已过去了{TimePast.Days}天{TimePast.Hours:00}时{TimePast.Minutes:00}分{TimePast.Seconds:00}秒";
+                    }
                 }
             }
             else
@@ -339,25 +332,31 @@ namespace CEETimerCSharpWinForms.Forms
             {
                 BeginInvoke(new Action(() =>
                 {
-                    using VirtualDesktopManager vdm = new();
-                    using NewWindow nw = new();
-                    Forms = GetCurrentForms();
-                    foreach (Form form in Forms)
+                    try
                     {
-                        if (!vdm.IsWindowOnCurrentVirtualDesktop(form.Handle))
+                        using VirtualDesktopManager vdm = new();
+                        using NewWindow nw = new();
+                        Forms = GetCurrentForms();
+                        foreach (Form form in Forms)
                         {
-                            nw.Show(null);
-                            vdm.MoveWindowToDesktop(form.Handle, vdm.GetWindowDesktopId(nw.Handle));
-                            form.Activate();
+                            if (!vdm.IsWindowOnCurrentVirtualDesktop(form.Handle))
+                            {
+                                nw.Show(null);
+                                vdm.MoveWindowToDesktop(form.Handle, vdm.GetWindowDesktopId(nw.Handle));
+                                form.Activate();
+                            }
                         }
+                    }
+                    catch
+                    {
+                        // Form that is already visible cannot be displayed as a modal dialog box. Set the form's visible property to false before calling Show.
                     }
                 }));
             }
             catch
             {
-
+                // Invoke or BeginInvoke cannot be called on a control until the window handle has been created.
             }
-
             #endregion
         }
 
