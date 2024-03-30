@@ -2,9 +2,9 @@
 [![GitHub all releases](https://img.shields.io/github/downloads/WangHaonie/CEETimerCSharpWinForms/total?logo=github&label=%E4%B8%8B%E8%BD%BD%E9%87%8F&color=%23DC67A5)](#) [![GitHub release (with filter)](https://img.shields.io/github/v/release/WangHaonie/CEETimerCSharpWinForms?logo=github&label=%E6%9C%80%E6%96%B0%E7%89%88&color=%23178600)](https://github.com/WangHaonie/CEETimerCSharpWinForms/releases/latest/) [![GitHub Repo stars](https://img.shields.io/github/stars/WangHaonie/CEETimerCSharpWinForms?logo=github&label=Stars&color=%23E5B84E)](#) [![GitHub](https://img.shields.io/github/license/WangHaonie/CEETimerCSharpWinForms?logo=github&label=%E8%AE%B8%E5%8F%AF%E8%AF%81&color=%233C9DF8)](https://github.com/WangHaonie/CEETimerCSharpWinForms/blob/main/LICENSE)
 ## 简介
 CEETimerCSharpWinForms，适用于 Windows 系统的高考倒计时，支持自定义考试名称。
-> 开发环境：Windows 11 Pro x64 (22635.3350)，Visual Studio 2022 (17.9.4)，C# (12.0)，WinForms，.NET Framework 4.7.2
+> 开发环境：Windows 11 Pro x64 (22635.3420)，Visual Studio 2022 (17.9.5)，C# (12.0)，WinForms，.NET Framework 4.7.2
 ## 运行截图
-> v2.9，Windows 10，1920x1080，125% 缩放
+> v3.0.0，Windows 10，1920x1080，125% 缩放
 
 ![主窗口](./Screenshot.jpg)
 ## 主要功能
@@ -24,7 +24,7 @@ CEETimerCSharpWinForms，适用于 Windows 系统的高考倒计时，支持自�
 + ✅ 同步网络时钟，确保系统时间准确无误 (因涉及到修改系统设置，使用此功能可能会弹出 UAC 对话框，请手动点击允许)；
 
 ## 系统要求
-+ 适用于 Windows 7 以上的 x64 系统；
++ 适用于 Windows 7 及以上的 x64 系统；
 + 安装了 .NET Framework 4.7.2 (点此[链接](https://dotnet.microsoft.com/zh-cn/download/dotnet-framework/thank-you/net472-offline-installer)下载)。
 ## 食用方法
 ### 下载安装
@@ -53,17 +53,17 @@ CEETimerCSharpWinForms，适用于 Windows 系统的高考倒计时，支持自�
 ### 工具
 + **同步网络时钟**：一键同步网络时钟，需要管理员权限，同时会将系统默认网络时钟服务器设置为 ntp1.aliyun.com (国内的)，并且还会将 Windows Time 服务设置为自动启动
 + **重启倒计时**：一键重新启动倒计时，由于本程序采用的 WinForms 框架在更改了屏幕缩放后并不会自动调整而使得窗口文字显示模糊，故可以重新启动程序确保文字清晰 (此处有🌈🥚)
-+ **允许倒计时窗口被拖动**：开启后可以随意拖动倒计时窗口，防止遮挡屏幕上的某些内容，支持多显示器，并防止拖放到任务栏上被任务栏挡住
++ **将倒计时显示在屏幕...上**：可指定将倒计时显示在哪个屏幕上，前提是当前计算机拥有两个及以上的屏幕，也可以开启拖动将倒计时拖在其他屏幕上，但不会被固定
++ **允许拖动**：开启后可以随意拖动倒计时窗口，防止遮挡屏幕上的部分内容，支持多显示器，并防止拖放到任务栏上被任务栏挡住
 ### 高级
 + **虚拟桌面支持**：开启后当检测到虚拟桌面切换时，就自动将倒计时窗口移动到当前虚拟桌面上，目前此功能可能会在移动几次后逐渐失效，估计是系统接口有问题
 + **内存优化**：由于 C# 程序普遍存在内存占用问题，开启此功能后会定期检测当内存占用超过12MB才会触发清理
-+ **兼容希沃PPT小工具**：经测试当倒计时显示在默认左上角位置 (0, 0) 的地方时会使希沃PPT小工具的内置白板打开后底部工具栏消失的问题，开启后显示位置将调整为 (1, 0)
++ **兼容希沃PPT小工具**：经测试当倒计时显示在默认左上角位置时会使希沃PPT小工具的内置白板打开后底部工具栏消失的问题，开启后显示位置将向右挪动一个像素
 
 ## 程序其他特性
 + 程序启动时默认在后台检测更新，有更新会弹出更新提示，此特性无法设置
 + 手动点击关于窗口里的版本号可再次触发检查更新
 + 右键单击主窗口，选择 "打开程序文件夹" 可以快速打开程序安装文件夹
-+ 当程序遇到 Bug 时，可尝试删除程序文件夹内的 CEETimerCSharpWinForms.dll 配置文件并重新启动程序应该会好
 ## 开源许可证
 CEETimerCSharpWinForms is licensed under the GNU General Public License v3.0 (GPL-3.0)
 ## 打赏作者
