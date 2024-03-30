@@ -4,7 +4,7 @@ namespace CEETimerCSharpWinForms.Modules
 {
     public class MemoryManager
     {
-        public static void OptimizeMemory()
+        public static void OptimizeMemory(object state)
         {
             Process ProcessGetCurrentMemory = Process.Start(new ProcessStartInfo
             {

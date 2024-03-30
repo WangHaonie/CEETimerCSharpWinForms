@@ -13,6 +13,7 @@ namespace CEETimerCSharpWinForms.Forms
     {
         public static bool IsUniTopMost { get; private set; }
         public static bool IsTopMost { get; private set; }
+
         private bool IsDaysOnly;
         private bool IsDragable;
         private bool IsFeatureMOEnabled;
@@ -28,9 +29,10 @@ namespace CEETimerCSharpWinForms.Forms
         private DateTime ExamStartTime;
         private Font SelectedFont;
         private FontStyle SelectedFontStyle;
-        private int i;
-        private Timer TimerMain;
+        private Timer TimerCountdown;
         private Timer TimerLocationWatcher;
+        private System.Threading.Timer TimerMORunner;
+        private System.Threading.Timer TimerVDMRunner;
         private Point LastLocation;
         private readonly FontConverter fontConverter = new();
         private string ExamName;
@@ -47,14 +49,6 @@ namespace CEETimerCSharpWinForms.Forms
         {
             FormSettings.ConfigChanged += RefreshSettings;
             LableCountdown.TextChanged += LableCountdown_TextChanged;
-
-            TimerMain = new Timer()
-            {
-                Interval = 1000
-            };
-
-            TimerMain.Tick += TimerMain_Tick;
-            TimerMain.Start();
 
             TimerLocationWatcher = new Timer()
             {
@@ -116,11 +110,6 @@ namespace CEETimerCSharpWinForms.Forms
 
             IsReady = ConfigManager.IsValidData(ExamName) && ConfigManager.IsValidData(ExamStartTime) && ConfigManager.IsValidData(ExamEndTime) && (ExamEndTime > ExamStartTime || !IsShowEnd);
 
-            if (!IsReady)
-            {
-                LableCountdown.ForeColor = Color.Black;
-                LableCountdown.Text = "欢迎使用高考倒计时，请右键点击此处到设置里添加考试信息";
-            }
 
             LocationChanged -= Form_LocationChanged;
             LableCountdown.MouseDown -= Drag_MouseDown;
@@ -145,6 +134,32 @@ namespace CEETimerCSharpWinForms.Forms
                 if (form == this) continue;
                 form.TopMost = IsUniTopMost;
             }
+
+            TimerCountdown?.Stop();
+            TimerCountdown?.Dispose();
+            TimerMORunner?.Dispose();
+            TimerVDMRunner?.Dispose();
+
+            if (IsReady)
+            {
+                TimerCountdown = new Timer()
+                {
+                    Interval = 1000
+                };
+
+                TimerCountdown.Tick += StartCountdown;
+                TimerCountdown.Start();
+            }
+            else
+            {
+                LableCountdown.ForeColor = Color.Black;
+                LableCountdown.Text = "欢迎使用高考倒计时，请右键点击此处到设置里添加考试信息";
+            }
+
+            if (IsFeatureMOEnabled)
+                TimerMORunner = new System.Threading.Timer(MemoryManager.OptimizeMemory, null, TimeSpan.Zero, TimeSpan.FromMinutes(5));
+            if (IsFeatureVDMEnabled)
+                TimerVDMRunner = new System.Threading.Timer(DetectVirtualDesktop, null, TimeSpan.Zero, TimeSpan.FromSeconds(1));
         }
 
         private void LableCountdown_TextChanged(object sender, EventArgs e)
@@ -164,20 +179,6 @@ namespace CEETimerCSharpWinForms.Forms
             else
             {
                 TimerLocationWatcher.Start();
-            }
-        }
-
-        private void TimerMain_Tick(object sender, EventArgs e)
-        {
-            try
-            {
-                if (IsFeatureMOEnabled) OptimizeMemory(); else i = 0;
-                if (IsReady) StartCountdown();
-                if (IsFeatureVDMEnabled) DetectVirtualDesktop();
-            }
-            catch
-            {
-                
             }
         }
 
@@ -256,16 +257,7 @@ namespace CEETimerCSharpWinForms.Forms
             return Application.OpenForms.Cast<Form>().ToList();
         }
 
-        private void OptimizeMemory()
-        {
-            i++;
-            if (i % 300 == 0 || i == 5)
-            {
-                MemoryManager.OptimizeMemory();
-            }
-        }
-
-        private void StartCountdown()
+        private void StartCountdown(object sender, EventArgs e)
         {
             if (DateTime.Now < ExamStartTime)
             {
@@ -331,7 +323,7 @@ namespace CEETimerCSharpWinForms.Forms
             }
         }
 
-        private void DetectVirtualDesktop()
+        private void DetectVirtualDesktop(object state)
         {
             #region 来自网络
             /* 
@@ -343,18 +335,29 @@ namespace CEETimerCSharpWinForms.Forms
 
             */
 
-            using VirtualDesktopManager vdm = new();
-            using NewWindow nw = new();
-            Forms = GetCurrentForms();
-            foreach (Form form in Forms)
+            try
             {
-                if (!vdm.IsWindowOnCurrentVirtualDesktop(form.Handle))
+                BeginInvoke(new Action(() =>
                 {
-                    nw.Show(null);
-                    vdm.MoveWindowToDesktop(form.Handle, vdm.GetWindowDesktopId(nw.Handle));
-                    form.Activate();
-                }
+                    using VirtualDesktopManager vdm = new();
+                    using NewWindow nw = new();
+                    Forms = GetCurrentForms();
+                    foreach (Form form in Forms)
+                    {
+                        if (!vdm.IsWindowOnCurrentVirtualDesktop(form.Handle))
+                        {
+                            nw.Show(null);
+                            vdm.MoveWindowToDesktop(form.Handle, vdm.GetWindowDesktopId(nw.Handle));
+                            form.Activate();
+                        }
+                    }
+                }));
             }
+            catch
+            {
+
+            }
+
             #endregion
         }
 
