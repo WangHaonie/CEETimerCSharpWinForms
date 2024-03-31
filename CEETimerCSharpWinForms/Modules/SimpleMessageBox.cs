@@ -5,9 +5,7 @@ namespace CEETimerCSharpWinForms.Modules
 {
     public enum MessageLevel
     {
-        Info,
-        Warning,
-        Error
+        Info, Warning, Error
     }
 
     public class MessageX

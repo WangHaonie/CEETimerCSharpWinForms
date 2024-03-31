@@ -42,7 +42,7 @@ namespace CEETimerCSharpWinForms.Forms
         public delegate void ConfigChangedHandler(object sender, EventArgs e);
         public static ConfigChangedHandler ConfigChanged;
 
-        private bool IsSyncingTime = false;
+        private bool IsSyncingTime;
         private bool IsSettingsChanged;
         private readonly FontConverter fontConverter = new();
 
@@ -456,21 +456,21 @@ namespace CEETimerCSharpWinForms.Forms
                 ConfigManager.WriteConfig(new Dictionary<string, string>
                 {
                     { "ExamName", ExamName },
-                    { "ExamStartTime", DTPExamStart.Value.ToString("yyyyMMddHHmmss") },
-                    { "ExamEndTime", DTPExamEnd.Value.ToString("yyyyMMddHHmmss") },
-                    { "TopMost", CheckBoxSetTopMost.Checked.ToString() },
-                    { "FeatureVDM", CheckBoxEnableVDM.Checked.ToString() },
-                    { "FeatureMO", CheckBoxEnableMO.Checked.ToString() },
+                    { "ExamStartTime", $"{DTPExamStart.Value:yyyyMMddHHmmss}" },
+                    { "ExamEndTime", $"{DTPExamEnd.Value:yyyyMMddHHmmss}" },
+                    { "TopMost", $"{CheckBoxSetTopMost.Checked}" },
+                    { "FeatureVDM", $"{CheckBoxEnableVDM.Checked}" },
+                    { "FeatureMO", $"{CheckBoxEnableMO.Checked}" },
                     { "Font", $"{CountdownFont.Name}, {CountdownFont.Size}pt" },
-                    { "FontStyle", CountdownFontStyle.ToString() },
-                    { "DaysOnly", CheckBoxSetDaysOnly.Checked.ToString() },
-                    { "Rounding", CheckBoxSetRounding.Checked.ToString() },
-                    { "ShowEnd", CheckBoxShowEnd.Checked.ToString() },
-                    { "ShowPast", CheckBoxShowPast.Checked.ToString() },
-                    { "Dragable", CheckBoxEnableDragable.Checked.ToString() },
-                    { "UniTopMost", CheckBoxSetUniTopMost.Checked.ToString() },
-                    { "PPTService", CheckBoxSwPptSvc.Checked.ToString() },
-                    { "Screen", ComboBoxScreens.SelectedValue.ToString() }
+                    { "FontStyle", $"{CountdownFontStyle}" },
+                    { "DaysOnly", $"{CheckBoxSetDaysOnly.Checked}" },
+                    { "Rounding", $"{CheckBoxSetRounding.Checked}" },
+                    { "ShowEnd", $"{CheckBoxShowEnd.Checked}" },
+                    { "ShowPast", $"{CheckBoxShowPast.Checked}" },
+                    { "Dragable", $"{CheckBoxEnableDragable.Checked}" },
+                    { "UniTopMost", $"{CheckBoxSetUniTopMost.Checked}" },
+                    { "PPTService", $"{CheckBoxSwPptSvc.Checked}" },
+                    { "Screen", $"{ComboBoxScreens.SelectedValue}" }
                 });
             }
             catch

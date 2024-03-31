@@ -72,7 +72,7 @@ namespace CEETimerCSharpWinForms.Modules
                 ConfigObject[Data.Key] = JToken.FromObject(Data.Value);
             }
 
-            File.WriteAllText(ConfigFile, ConfigObject.ToString());
+            File.WriteAllText(ConfigFile, $"{ConfigObject}");
         }
         #endregion
 
