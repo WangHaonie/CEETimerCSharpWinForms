@@ -149,6 +149,22 @@ namespace CEETimerCSharpWinForms.Forms
                 TimerMORunner = new System.Threading.Timer(MemoryManager.OptimizeMemory, null, TimeSpan.Zero, TimeSpan.FromMinutes(5));
             if (IsFeatureVDMEnabled)
                 TimerVDMRunner = new System.Threading.Timer(DetectVirtualDesktop, null, TimeSpan.Zero, TimeSpan.FromSeconds(1));
+            
+            FormSettings.FeatureMOEnabled = IsFeatureMOEnabled;
+            FormSettings.FeatureVDMEnabled = IsFeatureVDMEnabled;
+            FormSettings.TopMostChecked = TopMost;
+            FormSettings.ExamStartTime = ExamStartTime;
+            FormSettings.ExamEndTime = ExamEndTime;
+            FormSettings.CountdownFont = LableCountdown.Font;
+            FormSettings.CountdownFontStyle = LableCountdown.Font.Style;
+            FormSettings.ExamName = ExamName;
+            FormSettings.IsDaysOnly = IsDaysOnly;
+            FormSettings.IsShowEnd = IsShowEnd;
+            FormSettings.IsShowPast = IsShowPast;
+            FormSettings.IsRounding = IsRounding;
+            FormSettings.IsDragable = IsDragable;
+            FormSettings.IsPPTService = IsPPTService;
+            FormSettings.ScreenIndex = ScreenIndex;
         }
 
         private void LableCountdown_TextChanged(object sender, EventArgs e)
@@ -200,22 +216,6 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void ContextMenuSettings_Click(object sender, EventArgs e)
         {
-            FormSettings.FeatureMOEnabled = IsFeatureMOEnabled;
-            FormSettings.FeatureVDMEnabled = IsFeatureVDMEnabled;
-            FormSettings.TopMostChecked = TopMost;
-            FormSettings.ExamStartTime = ExamStartTime;
-            FormSettings.ExamEndTime = ExamEndTime;
-            FormSettings.CountdownFont = LableCountdown.Font;
-            FormSettings.CountdownFontStyle = LableCountdown.Font.Style;
-            FormSettings.ExamName = ExamName;
-            FormSettings.IsDaysOnly = IsDaysOnly;
-            FormSettings.IsShowEnd = IsShowEnd;
-            FormSettings.IsShowPast = IsShowPast;
-            FormSettings.IsRounding = IsRounding;
-            FormSettings.IsDragable = IsDragable;
-            FormSettings.IsPPTService = IsPPTService;
-            FormSettings.ScreenIndex = ScreenIndex;
-
             SingleInstanceRunner<FormSettings>.GetInstance().Show();
         }
 
