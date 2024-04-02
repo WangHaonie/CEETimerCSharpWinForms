@@ -1,3 +1,4 @@
+RequestExecutionLevel user
 ManifestDPIAware true
 SetFont "Segoe UI" 9
 
