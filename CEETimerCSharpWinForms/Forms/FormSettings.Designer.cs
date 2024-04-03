@@ -46,6 +46,7 @@
             this.LabelExamNameCounter = new System.Windows.Forms.Label();
             this.TabPageDisplay = new System.Windows.Forms.TabPage();
             this.GBoxContent = new System.Windows.Forms.GroupBox();
+            this.ComboBoxShowOnly = new System.Windows.Forms.ComboBox();
             this.CheckBoxSetUniTopMost = new System.Windows.Forms.CheckBox();
             this.CheckBoxShowPast = new System.Windows.Forms.CheckBox();
             this.CheckBoxShowEnd = new System.Windows.Forms.CheckBox();
@@ -57,6 +58,23 @@
             this.LabelPreviewFont = new System.Windows.Forms.Label();
             this.LabelFontInfo = new System.Windows.Forms.Label();
             this.LabelLine11 = new System.Windows.Forms.Label();
+            this.TabPageColor = new System.Windows.Forms.TabPage();
+            this.GBoxColors = new System.Windows.Forms.GroupBox();
+            this.LabelPreviewCorlor1 = new System.Windows.Forms.Label();
+            this.LabelPreviewCorlor2 = new System.Windows.Forms.Label();
+            this.LabelPreviewCorlor3 = new System.Windows.Forms.Label();
+            this.LabelLine14 = new System.Windows.Forms.Label();
+            this.ButtonColorDefault = new System.Windows.Forms.Button();
+            this.ButtonColorApply = new System.Windows.Forms.Button();
+            this.LabelColor32 = new System.Windows.Forms.Label();
+            this.LabelColor31 = new System.Windows.Forms.Label();
+            this.LabelColor22 = new System.Windows.Forms.Label();
+            this.LabelColor21 = new System.Windows.Forms.Label();
+            this.LabelColor12 = new System.Windows.Forms.Label();
+            this.LabelColor11 = new System.Windows.Forms.Label();
+            this.LabelLine17 = new System.Windows.Forms.Label();
+            this.LabelLine16 = new System.Windows.Forms.Label();
+            this.LabelLine15 = new System.Windows.Forms.Label();
             this.TabPageTools = new System.Windows.Forms.TabPage();
             this.GBoxRestart = new System.Windows.Forms.GroupBox();
             this.LabelLine10 = new System.Windows.Forms.Label();
@@ -83,7 +101,6 @@
             this.CheckBoxEnableVDM = new System.Windows.Forms.CheckBox();
             this.LabelLine2 = new System.Windows.Forms.Label();
             this.LabelLine1 = new System.Windows.Forms.Label();
-            this.ComboBoxShowOnly = new System.Windows.Forms.ComboBox();
             this.TabControlMain.SuspendLayout();
             this.TabPageGeneral.SuspendLayout();
             this.GBoxStartup.SuspendLayout();
@@ -93,6 +110,8 @@
             this.TabPageDisplay.SuspendLayout();
             this.GBoxContent.SuspendLayout();
             this.GBoxChangeFont.SuspendLayout();
+            this.TabPageColor.SuspendLayout();
+            this.GBoxColors.SuspendLayout();
             this.TabPageTools.SuspendLayout();
             this.GBoxRestart.SuspendLayout();
             this.GBoxSetDragable.SuspendLayout();
@@ -183,6 +202,7 @@
             // 
             this.TabControlMain.Controls.Add(this.TabPageGeneral);
             this.TabControlMain.Controls.Add(this.TabPageDisplay);
+            this.TabControlMain.Controls.Add(this.TabPageColor);
             this.TabControlMain.Controls.Add(this.TabPageTools);
             this.TabControlMain.Controls.Add(this.TabPageAdvanced);
             this.TabControlMain.Location = new System.Drawing.Point(7, 4);
@@ -307,6 +327,18 @@
             this.GBoxContent.TabStop = false;
             this.GBoxContent.Text = "倒计时内容";
             // 
+            // ComboBoxShowOnly
+            // 
+            this.ComboBoxShowOnly.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ComboBoxShowOnly.Enabled = false;
+            this.ComboBoxShowOnly.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.ComboBoxShowOnly.Location = new System.Drawing.Point(70, 19);
+            this.ComboBoxShowOnly.MaxDropDownItems = 1;
+            this.ComboBoxShowOnly.Name = "ComboBoxShowOnly";
+            this.ComboBoxShowOnly.Size = new System.Drawing.Size(38, 23);
+            this.ComboBoxShowOnly.TabIndex = 5;
+            this.ComboBoxShowOnly.SelectedIndexChanged += new System.EventHandler(this.ComboBoxShowOnly_SelectedIndexChanged);
+            // 
             // CheckBoxSetUniTopMost
             // 
             this.CheckBoxSetUniTopMost.AutoSize = true;
@@ -424,6 +456,192 @@
             this.LabelLine11.Size = new System.Drawing.Size(163, 15);
             this.LabelLine11.TabIndex = 0;
             this.LabelLine11.Text = "更改倒计时的字体和大小。";
+            // 
+            // TabPageColor
+            // 
+            this.TabPageColor.Controls.Add(this.GBoxColors);
+            this.TabPageColor.Location = new System.Drawing.Point(4, 24);
+            this.TabPageColor.Name = "TabPageColor";
+            this.TabPageColor.Padding = new System.Windows.Forms.Padding(3);
+            this.TabPageColor.Size = new System.Drawing.Size(421, 267);
+            this.TabPageColor.TabIndex = 4;
+            this.TabPageColor.Text = "颜色";
+            this.TabPageColor.UseVisualStyleBackColor = true;
+            // 
+            // GBoxColors
+            // 
+            this.GBoxColors.Controls.Add(this.LabelPreviewCorlor1);
+            this.GBoxColors.Controls.Add(this.LabelPreviewCorlor2);
+            this.GBoxColors.Controls.Add(this.LabelPreviewCorlor3);
+            this.GBoxColors.Controls.Add(this.LabelLine14);
+            this.GBoxColors.Controls.Add(this.ButtonColorDefault);
+            this.GBoxColors.Controls.Add(this.ButtonColorApply);
+            this.GBoxColors.Controls.Add(this.LabelColor32);
+            this.GBoxColors.Controls.Add(this.LabelColor31);
+            this.GBoxColors.Controls.Add(this.LabelColor22);
+            this.GBoxColors.Controls.Add(this.LabelColor21);
+            this.GBoxColors.Controls.Add(this.LabelColor12);
+            this.GBoxColors.Controls.Add(this.LabelColor11);
+            this.GBoxColors.Controls.Add(this.LabelLine17);
+            this.GBoxColors.Controls.Add(this.LabelLine16);
+            this.GBoxColors.Controls.Add(this.LabelLine15);
+            this.GBoxColors.Location = new System.Drawing.Point(7, 6);
+            this.GBoxColors.Name = "GBoxColors";
+            this.GBoxColors.Size = new System.Drawing.Size(408, 132);
+            this.GBoxColors.TabIndex = 0;
+            this.GBoxColors.TabStop = false;
+            this.GBoxColors.Text = "设置颜色";
+            // 
+            // LabelPreviewCorlor1
+            // 
+            this.LabelPreviewCorlor1.AutoSize = true;
+            this.LabelPreviewCorlor1.Location = new System.Drawing.Point(202, 38);
+            this.LabelPreviewCorlor1.Name = "LabelPreviewCorlor1";
+            this.LabelPreviewCorlor1.Size = new System.Drawing.Size(77, 15);
+            this.LabelPreviewCorlor1.TabIndex = 15;
+            this.LabelPreviewCorlor1.Text = "距离...还有...";
+            // 
+            // LabelPreviewCorlor2
+            // 
+            this.LabelPreviewCorlor2.AutoSize = true;
+            this.LabelPreviewCorlor2.Location = new System.Drawing.Point(202, 60);
+            this.LabelPreviewCorlor2.Name = "LabelPreviewCorlor2";
+            this.LabelPreviewCorlor2.Size = new System.Drawing.Size(103, 15);
+            this.LabelPreviewCorlor2.TabIndex = 14;
+            this.LabelPreviewCorlor2.Text = "距离...结束还有...";
+            // 
+            // LabelPreviewCorlor3
+            // 
+            this.LabelPreviewCorlor3.AutoSize = true;
+            this.LabelPreviewCorlor3.Location = new System.Drawing.Point(202, 82);
+            this.LabelPreviewCorlor3.Name = "LabelPreviewCorlor3";
+            this.LabelPreviewCorlor3.Size = new System.Drawing.Size(103, 15);
+            this.LabelPreviewCorlor3.TabIndex = 13;
+            this.LabelPreviewCorlor3.Text = "距离...已过去了...";
+            // 
+            // LabelLine14
+            // 
+            this.LabelLine14.AutoSize = true;
+            this.LabelLine14.Location = new System.Drawing.Point(6, 19);
+            this.LabelLine14.Name = "LabelLine14";
+            this.LabelLine14.Size = new System.Drawing.Size(384, 15);
+            this.LabelLine14.TabIndex = 12;
+            this.LabelLine14.Text = "请点击色块来挑选颜色。两个色块分别对应文字颜色、背景颜色。";
+            // 
+            // ButtonColorDefault
+            // 
+            this.ButtonColorDefault.AutoSize = true;
+            this.ButtonColorDefault.Location = new System.Drawing.Point(99, 101);
+            this.ButtonColorDefault.Name = "ButtonColorDefault";
+            this.ButtonColorDefault.Size = new System.Drawing.Size(85, 25);
+            this.ButtonColorDefault.TabIndex = 11;
+            this.ButtonColorDefault.Text = "恢复默认(&D)";
+            this.ButtonColorDefault.UseVisualStyleBackColor = true;
+            this.ButtonColorDefault.Click += new System.EventHandler(this.ButtonColorDefault_Click);
+            // 
+            // ButtonColorApply
+            // 
+            this.ButtonColorApply.AutoSize = true;
+            this.ButtonColorApply.Location = new System.Drawing.Point(9, 101);
+            this.ButtonColorApply.Name = "ButtonColorApply";
+            this.ButtonColorApply.Size = new System.Drawing.Size(84, 25);
+            this.ButtonColorApply.TabIndex = 10;
+            this.ButtonColorApply.Text = "应用全部(&Y)";
+            this.ButtonColorApply.UseVisualStyleBackColor = true;
+            this.ButtonColorApply.Click += new System.EventHandler(this.ButtonColorApply_Click);
+            // 
+            // LabelColor32
+            // 
+            this.LabelColor32.AutoSize = true;
+            this.LabelColor32.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.LabelColor32.Location = new System.Drawing.Point(112, 81);
+            this.LabelColor32.Name = "LabelColor32";
+            this.LabelColor32.Size = new System.Drawing.Size(39, 17);
+            this.LabelColor32.TabIndex = 9;
+            this.LabelColor32.Text = "          ";
+            this.LabelColor32.Click += new System.EventHandler(this.ColorLabels_Click);
+            // 
+            // LabelColor31
+            // 
+            this.LabelColor31.AutoSize = true;
+            this.LabelColor31.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.LabelColor31.Location = new System.Drawing.Point(157, 81);
+            this.LabelColor31.Name = "LabelColor31";
+            this.LabelColor31.Size = new System.Drawing.Size(39, 17);
+            this.LabelColor31.TabIndex = 8;
+            this.LabelColor31.Text = "          ";
+            this.LabelColor31.Click += new System.EventHandler(this.ColorLabels_Click);
+            // 
+            // LabelColor22
+            // 
+            this.LabelColor22.AutoSize = true;
+            this.LabelColor22.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.LabelColor22.Location = new System.Drawing.Point(112, 59);
+            this.LabelColor22.Name = "LabelColor22";
+            this.LabelColor22.Size = new System.Drawing.Size(39, 17);
+            this.LabelColor22.TabIndex = 7;
+            this.LabelColor22.Text = "          ";
+            this.LabelColor22.Click += new System.EventHandler(this.ColorLabels_Click);
+            // 
+            // LabelColor21
+            // 
+            this.LabelColor21.AutoSize = true;
+            this.LabelColor21.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.LabelColor21.Location = new System.Drawing.Point(157, 59);
+            this.LabelColor21.Name = "LabelColor21";
+            this.LabelColor21.Size = new System.Drawing.Size(39, 17);
+            this.LabelColor21.TabIndex = 6;
+            this.LabelColor21.Text = "          ";
+            this.LabelColor21.Click += new System.EventHandler(this.ColorLabels_Click);
+            // 
+            // LabelColor12
+            // 
+            this.LabelColor12.AutoSize = true;
+            this.LabelColor12.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.LabelColor12.Location = new System.Drawing.Point(112, 37);
+            this.LabelColor12.Name = "LabelColor12";
+            this.LabelColor12.Size = new System.Drawing.Size(39, 17);
+            this.LabelColor12.TabIndex = 5;
+            this.LabelColor12.Text = "          ";
+            this.LabelColor12.Click += new System.EventHandler(this.ColorLabels_Click);
+            // 
+            // LabelColor11
+            // 
+            this.LabelColor11.AutoSize = true;
+            this.LabelColor11.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.LabelColor11.Location = new System.Drawing.Point(157, 37);
+            this.LabelColor11.Name = "LabelColor11";
+            this.LabelColor11.Size = new System.Drawing.Size(39, 17);
+            this.LabelColor11.TabIndex = 0;
+            this.LabelColor11.Text = "          ";
+            this.LabelColor11.Click += new System.EventHandler(this.ColorLabels_Click);
+            // 
+            // LabelLine17
+            // 
+            this.LabelLine17.AutoSize = true;
+            this.LabelLine17.Location = new System.Drawing.Point(6, 82);
+            this.LabelLine17.Name = "LabelLine17";
+            this.LabelLine17.Size = new System.Drawing.Size(102, 15);
+            this.LabelLine17.TabIndex = 4;
+            this.LabelLine17.Text = "考试已结束时 (3)";
+            // 
+            // LabelLine16
+            // 
+            this.LabelLine16.AutoSize = true;
+            this.LabelLine16.Location = new System.Drawing.Point(6, 60);
+            this.LabelLine16.Name = "LabelLine16";
+            this.LabelLine16.Size = new System.Drawing.Size(102, 15);
+            this.LabelLine16.TabIndex = 3;
+            this.LabelLine16.Text = "考试已开始时 (2)";
+            // 
+            // LabelLine15
+            // 
+            this.LabelLine15.AutoSize = true;
+            this.LabelLine15.Location = new System.Drawing.Point(6, 38);
+            this.LabelLine15.Name = "LabelLine15";
+            this.LabelLine15.Size = new System.Drawing.Size(102, 15);
+            this.LabelLine15.TabIndex = 2;
+            this.LabelLine15.Text = "考试未开始时 (1)";
             // 
             // TabPageTools
             // 
@@ -696,18 +914,6 @@
             this.LabelLine1.TabIndex = 0;
             this.LabelLine1.Text = "跟随虚拟桌面的切换而移动窗口，仅适用于 Windows 10 以上的系统。";
             // 
-            // ComboBoxShowOnly
-            // 
-            this.ComboBoxShowOnly.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.ComboBoxShowOnly.Enabled = false;
-            this.ComboBoxShowOnly.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.ComboBoxShowOnly.Location = new System.Drawing.Point(70, 19);
-            this.ComboBoxShowOnly.MaxDropDownItems = 1;
-            this.ComboBoxShowOnly.Name = "ComboBoxShowOnly";
-            this.ComboBoxShowOnly.Size = new System.Drawing.Size(38, 23);
-            this.ComboBoxShowOnly.TabIndex = 5;
-            this.ComboBoxShowOnly.SelectedIndexChanged += new System.EventHandler(this.ComboBoxShowOnly_SelectedIndexChanged);
-            // 
             // FormSettings
             // 
             this.AcceptButton = this.ButtonSave;
@@ -744,6 +950,9 @@
             this.GBoxContent.PerformLayout();
             this.GBoxChangeFont.ResumeLayout(false);
             this.GBoxChangeFont.PerformLayout();
+            this.TabPageColor.ResumeLayout(false);
+            this.GBoxColors.ResumeLayout(false);
+            this.GBoxColors.PerformLayout();
             this.TabPageTools.ResumeLayout(false);
             this.GBoxRestart.ResumeLayout(false);
             this.GBoxRestart.PerformLayout();
@@ -819,5 +1028,22 @@
         private System.Windows.Forms.Label LabelScreens;
         private System.Windows.Forms.ComboBox ComboBoxScreens;
         private System.Windows.Forms.ComboBox ComboBoxShowOnly;
+        private System.Windows.Forms.TabPage TabPageColor;
+        private System.Windows.Forms.GroupBox GBoxColors;
+        private System.Windows.Forms.Label LabelColor32;
+        private System.Windows.Forms.Label LabelColor31;
+        private System.Windows.Forms.Label LabelColor22;
+        private System.Windows.Forms.Label LabelColor21;
+        private System.Windows.Forms.Label LabelColor12;
+        private System.Windows.Forms.Label LabelColor11;
+        private System.Windows.Forms.Label LabelLine17;
+        private System.Windows.Forms.Label LabelLine16;
+        private System.Windows.Forms.Label LabelLine15;
+        private System.Windows.Forms.Button ButtonColorApply;
+        private System.Windows.Forms.Button ButtonColorDefault;
+        private System.Windows.Forms.Label LabelLine14;
+        private System.Windows.Forms.Label LabelPreviewCorlor1;
+        private System.Windows.Forms.Label LabelPreviewCorlor2;
+        private System.Windows.Forms.Label LabelPreviewCorlor3;
     }
 }

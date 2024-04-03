@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace CEETimerCSharpWinForms.Forms
@@ -24,6 +25,12 @@ namespace CEETimerCSharpWinForms.Forms
         private bool IsReady;
         private bool IsRounding;
         private bool IsPPTService;
+        private Color Back1;
+        private Color Back2;
+        private Color Back3;
+        private Color Fore1;
+        private Color Fore2;
+        private Color Fore3;
         private int ScreenIndex;
         private int ShowOnlyIndex;
         private DateTime ExamEndTime;
@@ -69,6 +76,34 @@ namespace CEETimerCSharpWinForms.Forms
             LastLocation = Location;
         }
 
+        private bool TryParseRGB(string Text, out Color ThisColor)
+        {
+            ThisColor = Color.Empty;
+
+            if (Regex.IsMatch(Text, @"^\d{1,3},\d{1,3},\d{1,3}$"))
+            {
+                string[] RGB = Text.Split(',');
+                int R = int.Parse(RGB[0]);
+                int G = int.Parse(RGB[1]);
+                int B = int.Parse(RGB[2]);
+
+                if (!(R >= 0 && R <= 255 && G >= 0 && G <= 255 && B >= 0 && B <= 255))
+                {
+                    return false;
+                }
+                else
+                {
+                    ThisColor = Color.FromArgb(R, G, B);
+                }
+            }
+            else
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         private void RefreshSettings(object sender, EventArgs e)
         {
             ConfigManager.MountConfig(true);
@@ -86,6 +121,12 @@ namespace CEETimerCSharpWinForms.Forms
             IsPPTService = bool.TryParse(ConfigManager.ReadConfig("PPTService"), out bool tmpj) && tmpj;
             ScreenIndex = int.TryParse(ConfigManager.ReadConfig("Screen"), out int tmpk) ? tmpk : 0;
             ShowOnlyIndex = int.TryParse(ConfigManager.ReadConfig("ShowValue"), out int tmpl) ? tmpl : 0;
+            Back1 = TryParseRGB(ConfigManager.ReadConfig("Back1"), out Color tmpm) ? tmpm : Color.White;
+            Back2 = TryParseRGB(ConfigManager.ReadConfig("Back2"), out Color tmpn) ? tmpn : Color.White;
+            Back3 = TryParseRGB(ConfigManager.ReadConfig("Back3"), out Color tmpo) ? tmpo : Color.White;
+            Fore1 = TryParseRGB(ConfigManager.ReadConfig("Fore1"), out Color tmpp) ? tmpp : Color.Red;
+            Fore2 = TryParseRGB(ConfigManager.ReadConfig("Fore2"), out Color tmpq) ? tmpq : Color.Green;
+            Fore3 = TryParseRGB(ConfigManager.ReadConfig("Fore3"), out Color tmpr) ? tmpr : Color.Black;
             DateTime.TryParseExact(ConfigManager.ReadConfig("ExamStartTime"), "yyyyMMddHHmmss", null, DateTimeStyles.None, out ExamStartTime);
             DateTime.TryParseExact(ConfigManager.ReadConfig("ExamEndTime"), "yyyyMMddHHmmss", null, DateTimeStyles.None, out ExamEndTime);
             int.TryParse(ConfigManager.ReadConfig("PosX"), out int x);
@@ -98,6 +139,22 @@ namespace CEETimerCSharpWinForms.Forms
             IsFeatureVDMEnabled = IsFeatureVDMEnabled && LaunchManager.CurrentWindowsVersion >= 10;
             if (ScreenIndex > Screen.AllScreens.Length) ScreenIndex = 0;
             if (ShowOnlyIndex > 3) ShowOnlyIndex = 0;
+
+            if (!ColorHelper.IsNiceContrast(Fore1, Back1))
+            {
+                Fore1 = Color.Red;
+                Back1 = Color.White;
+            }
+            if (!ColorHelper.IsNiceContrast(Fore2, Back2))
+            {
+                Fore2 = Color.Green;
+                Back2 = Color.White;
+            }
+            if (!ColorHelper.IsNiceContrast(Fore3, Back3))
+            {
+                Fore3 = Color.Black;
+                Back3 = Color.White;
+            }
 
             try
             {
@@ -152,7 +209,7 @@ namespace CEETimerCSharpWinForms.Forms
                 TimerMORunner = new System.Threading.Timer(MemoryManager.OptimizeMemory, null, TimeSpan.Zero, TimeSpan.FromMinutes(5));
             if (IsFeatureVDMEnabled)
                 TimerVDMRunner = new System.Threading.Timer(DetectVirtualDesktop, null, TimeSpan.Zero, TimeSpan.FromSeconds(1));
-            
+
             FormSettings.FeatureMOEnabled = IsFeatureMOEnabled;
             FormSettings.FeatureVDMEnabled = IsFeatureVDMEnabled;
             FormSettings.TopMostChecked = TopMost;
@@ -169,6 +226,12 @@ namespace CEETimerCSharpWinForms.Forms
             FormSettings.IsDragable = IsDragable;
             FormSettings.IsPPTService = IsPPTService;
             FormSettings.ScreenIndex = ScreenIndex;
+            FormSettings.Back1 = Back1;
+            FormSettings.Back2 = Back2;
+            FormSettings.Back3 = Back3;
+            FormSettings.Fore1 = Fore1;
+            FormSettings.Fore2 = Fore2;
+            FormSettings.Fore3 = Fore3;
         }
 
         private void LableCountdown_TextChanged(object sender, EventArgs e)
@@ -255,7 +318,8 @@ namespace CEETimerCSharpWinForms.Forms
             if (IsReady && DateTime.Now < ExamStartTime)
             {
                 TimeSpan TimeLeft = ExamStartTime - DateTime.Now;
-                LableCountdown.ForeColor = Color.Red;
+                BackColor = Back1;
+                LableCountdown.ForeColor = Fore1;
 
                 if (IsShowOnly)
                 {
@@ -283,7 +347,8 @@ namespace CEETimerCSharpWinForms.Forms
             else if (IsReady && IsShowEnd && DateTime.Now >= ExamStartTime && DateTime.Now < ExamEndTime)
             {
                 TimeSpan TimeLeftPast = ExamEndTime - DateTime.Now;
-                LableCountdown.ForeColor = Color.Green;
+                BackColor = Back2;
+                LableCountdown.ForeColor = Fore2;
 
                 if (IsShowOnly)
                 {
@@ -311,7 +376,8 @@ namespace CEETimerCSharpWinForms.Forms
             else if (IsReady && IsShowEnd && DateTime.Now >= ExamEndTime && IsShowPast)
             {
                 TimeSpan TimePast = DateTime.Now - ExamEndTime;
-                LableCountdown.ForeColor = Color.Black;
+                BackColor = Back3;
+                LableCountdown.ForeColor = Fore3;
 
                 if (IsShowOnly)
                 {
@@ -338,6 +404,7 @@ namespace CEETimerCSharpWinForms.Forms
             }
             else
             {
+                BackColor = Color.White;
                 LableCountdown.ForeColor = Color.Black;
                 LableCountdown.Text = "欢迎使用高考倒计时，请右键点击此处到设置里添加考试信息";
             }

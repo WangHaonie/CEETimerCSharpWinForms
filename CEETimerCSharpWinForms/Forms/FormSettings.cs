@@ -29,6 +29,12 @@ namespace CEETimerCSharpWinForms.Forms
             Funny, SyncTime, SetPPTService
         }
 
+        public static Color Fore1 { get; set; }
+        public static Color Fore2 { get; set; }
+        public static Color Fore3 { get; set; }
+        public static Color Back1 { get; set; }
+        public static Color Back2 { get; set; }
+        public static Color Back3 { get; set; }
         public static bool FeatureMOEnabled { get; set; }
         public static bool FeatureVDMEnabled { get; set; }
         public static bool IsShowOnly { get; set; }
@@ -72,6 +78,8 @@ namespace CEETimerCSharpWinForms.Forms
             ComboBoxShowOnly.DataSource = Shows;
             ComboBoxShowOnly.DisplayMember = "Type";
             ComboBoxShowOnly.ValueMember = "Value";
+
+            ChangeColor(0);
         }
 
         private void FormSettings_KeyDown(object sender, KeyEventArgs e)
@@ -162,8 +170,8 @@ namespace CEETimerCSharpWinForms.Forms
 
             if (FontDialogMain.ShowDialog() == DialogResult.OK)
             {
-                ChangeFont(FontDialogMain.Font);
                 SettingsChanged(sender, e);
+                ChangeFont(FontDialogMain.Font);
             }
 
             FontDialogMain.Dispose();
@@ -173,6 +181,39 @@ namespace CEETimerCSharpWinForms.Forms
         {
             ChangeFont(new((Font)fontConverter.ConvertFromString(LaunchManager.OriginalFontString), FontStyle.Bold));
             SettingsChanged(sender, e);
+        }
+
+        private void ColorLabels_Click(object sender, EventArgs e)
+        {
+            Label LabelColor = (Label)sender;
+
+            ColorDialog ColorDialogMain = new()
+            {
+                AllowFullOpen = true,
+                Color = LabelColor.BackColor,
+                FullOpen = true
+            };
+
+            if (ColorDialogMain.ShowDialog() == DialogResult.OK)
+            {
+                SettingsChanged(sender, e);
+                LabelColor.BackColor = ColorDialogMain.Color;
+                ChangeColor(1);
+            }
+
+            ColorDialogMain.Dispose();
+        }
+
+        private void ButtonColorApply_Click(object sender, EventArgs e)
+        {
+            SettingsChanged(sender, e);
+            ChangeColor(2);
+        }
+
+        private void ButtonColorDefault_Click(object sender, EventArgs e)
+        {
+            SettingsChanged(sender, e);
+            ChangeColor(3);
         }
 
         private void ButtonRestart_MouseDown(object sender, MouseEventArgs e)
@@ -418,6 +459,28 @@ namespace CEETimerCSharpWinForms.Forms
                 }
             }
 
+            
+            string ColorCheckMsg = "";
+            if (!ColorHelper.IsNiceContrast(LabelPreviewCorlor1.ForeColor, LabelPreviewCorlor1.BackColor))
+            {
+                ColorCheckMsg = "1";
+            }
+            else if (!ColorHelper.IsNiceContrast(LabelPreviewCorlor2.ForeColor, LabelPreviewCorlor2.BackColor))
+            {
+                ColorCheckMsg = "2";
+            }
+            else if (!ColorHelper.IsNiceContrast(LabelPreviewCorlor3.ForeColor, LabelPreviewCorlor3.BackColor))
+            {
+                ColorCheckMsg = "3";
+            }
+
+            if (!string.IsNullOrEmpty(ColorCheckMsg))
+            {
+                TabControlMain.SelectedTab = TabPageColor;
+                MessageX.Popup($"第{ColorCheckMsg}组的颜色相似或对比度较低，将无法看清文字，请尝试更换其它背景颜色或文字颜色！", MessageLevel.Error);
+                return false;
+            }
+
             return true;
         }
 
@@ -470,6 +533,41 @@ namespace CEETimerCSharpWinForms.Forms
             LabelFontInfo.Text = $"当前字体: {NewFont.Name}, {NewFont.Size}pt, {NewFont.Style}";
         }
 
+        private void ChangeColor(int Where)
+        {
+            switch (Where)
+            {
+                case 0:
+                    LabelPreviewCorlor1.BackColor = LabelColor11.BackColor = Back1;
+                    LabelPreviewCorlor2.BackColor = LabelColor21.BackColor = Back2;
+                    LabelPreviewCorlor3.BackColor = LabelColor31.BackColor = Back3;
+                    LabelPreviewCorlor1.ForeColor = LabelColor12.BackColor = Fore1;
+                    LabelPreviewCorlor2.ForeColor = LabelColor22.BackColor = Fore2;
+                    LabelPreviewCorlor3.ForeColor = LabelColor32.BackColor = Fore3;
+                    break;
+                case 1:
+                    LabelPreviewCorlor1.BackColor = LabelColor11.BackColor;
+                    LabelPreviewCorlor2.BackColor = LabelColor21.BackColor;
+                    LabelPreviewCorlor3.BackColor = LabelColor31.BackColor;
+                    LabelPreviewCorlor1.ForeColor = LabelColor12.BackColor;
+                    LabelPreviewCorlor2.ForeColor = LabelColor22.BackColor;
+                    LabelPreviewCorlor3.ForeColor = LabelColor32.BackColor;
+                    break;
+                case 2:
+                    LabelColor31.BackColor = LabelColor21.BackColor = LabelPreviewCorlor3.BackColor = LabelPreviewCorlor2.BackColor = LabelColor11.BackColor;
+                    LabelColor32.BackColor = LabelColor22.BackColor = LabelPreviewCorlor3.ForeColor = LabelPreviewCorlor2.ForeColor = LabelColor12.BackColor;
+                    break;
+                case 3:
+                    LabelPreviewCorlor1.BackColor = LabelColor11.BackColor = 
+                    LabelPreviewCorlor2.BackColor = LabelColor21.BackColor = 
+                    LabelPreviewCorlor3.BackColor = LabelColor31.BackColor = Color.White;
+                    LabelPreviewCorlor1.ForeColor = LabelColor12.BackColor = Color.Red;
+                    LabelPreviewCorlor2.ForeColor = LabelColor22.BackColor = Color.Green;
+                    LabelPreviewCorlor3.ForeColor = LabelColor32.BackColor = Color.Black;
+                    break;
+            }
+        }
+
         private void SaveSettings()
         {
             try
@@ -495,6 +593,12 @@ namespace CEETimerCSharpWinForms.Forms
                     { "FeatureMO", $"{CheckBoxEnableMO.Checked}" },
                     { "Font", $"{CountdownFont.Name}, {CountdownFont.Size}pt" },
                     { "FontStyle", $"{CountdownFontStyle}" },
+                    { "Back1", $"{LabelPreviewCorlor1.BackColor.R},{LabelPreviewCorlor1.BackColor.G},{LabelPreviewCorlor1.BackColor.B}" },
+                    { "Fore1", $"{LabelPreviewCorlor1.ForeColor.R},{LabelPreviewCorlor1.ForeColor.G},{LabelPreviewCorlor1.ForeColor.B}" },
+                    { "Back2", $"{LabelPreviewCorlor2.BackColor.R},{LabelPreviewCorlor2.BackColor.G},{LabelPreviewCorlor2.BackColor.B}" },
+                    { "Fore2", $"{LabelPreviewCorlor2.ForeColor.R},{LabelPreviewCorlor2.ForeColor.G},{LabelPreviewCorlor2.ForeColor.B}" },
+                    { "Back3", $"{LabelPreviewCorlor3.BackColor.R},{LabelPreviewCorlor3.BackColor.G},{LabelPreviewCorlor3.BackColor.B}" },
+                    { "Fore3", $"{LabelPreviewCorlor3.ForeColor.R},{LabelPreviewCorlor3.ForeColor.G},{LabelPreviewCorlor3.ForeColor.B}" },
                     { "ShowOnly", $"{CheckBoxShowOnly.Checked}" },
                     { "ShowValue", $"{ComboBoxShowOnly.SelectedValue}" },
                     { "Rounding", $"{CheckBoxSetRounding.Checked}" },

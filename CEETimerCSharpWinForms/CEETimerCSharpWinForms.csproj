@@ -164,6 +164,7 @@
     <Compile Include="Forms\FormSettings.Designer.cs">
       <DependentUpon>FormSettings.cs</DependentUpon>
     </Compile>
+    <Compile Include="Modules\ColorHelper.cs" />
     <Compile Include="Modules\SimpleUpdateChecker.cs" />
     <Compile Include="Modules\ConfigManager.cs" />
     <Compile Include="Modules\Extensions.cs" />
