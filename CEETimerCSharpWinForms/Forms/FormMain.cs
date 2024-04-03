@@ -262,8 +262,7 @@ namespace CEETimerCSharpWinForms.Forms
                     switch (ShowOnlyIndex)
                     {
                         case 0:
-                            LableCountdown.Text = $"距离{ExamName}还有{TimeLeft.Days}天";
-                            if (IsRounding) LableCountdown.Text = $"距离{ExamName}还有{TimeLeft.Days + 1}天";
+                            LableCountdown.Text = IsRounding ? $"距离{ExamName}还有{TimeLeft.Days + 1}天" : $"距离{ExamName}还有{TimeLeft.Days}天";
                             break;
                         case 1:
                             LableCountdown.Text = $"距离{ExamName}还有{TimeLeft.TotalHours:0}小时";
@@ -291,8 +290,7 @@ namespace CEETimerCSharpWinForms.Forms
                     switch (ShowOnlyIndex)
                     {
                         case 0:
-                            LableCountdown.Text = $"距离{ExamName}结束还有{TimeLeftPast.Days}天";
-                            if (IsRounding) LableCountdown.Text = $"距离{ExamName}结束还有{TimeLeftPast.Days + 1}天";
+                            LableCountdown.Text = IsRounding ? $"距离{ExamName}结束还有{TimeLeftPast.Days + 1}天" : $"距离{ExamName}结束还有{TimeLeftPast.Days}天";
                             break;
                         case 1:
                             LableCountdown.Text = $"距离{ExamName}结束还有{TimeLeftPast.TotalHours:0}小时";
@@ -320,8 +318,7 @@ namespace CEETimerCSharpWinForms.Forms
                     switch (ShowOnlyIndex)
                     {
                         case 0:
-                            LableCountdown.Text = $"距离{ExamName}已过去了{TimePast.Days}天";
-                            if (IsRounding) LableCountdown.Text = $"距离{ExamName}已过去了{TimePast.Days + 1}天";
+                            LableCountdown.Text = IsRounding ? $"距离{ExamName}已过去了{TimePast.Days + 1}天" : $"距离{ExamName}已过去了{TimePast.Days}天";
                             break;
                         case 1:
                             LableCountdown.Text = $"距离{ExamName}已过去了{TimePast.TotalHours:0}小时";
