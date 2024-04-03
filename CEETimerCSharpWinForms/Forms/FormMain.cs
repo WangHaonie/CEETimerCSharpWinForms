@@ -14,7 +14,7 @@ namespace CEETimerCSharpWinForms.Forms
         public static bool IsUniTopMost { get; private set; }
         public static bool IsTopMost { get; private set; }
 
-        private bool IsDaysOnly;
+        private bool IsShowOnly;
         private bool IsDragable;
         private bool IsFeatureMOEnabled;
         private bool IsFeatureVDMEnabled;
@@ -25,6 +25,7 @@ namespace CEETimerCSharpWinForms.Forms
         private bool IsRounding;
         private bool IsPPTService;
         private int ScreenIndex;
+        private int ShowOnlyIndex;
         private DateTime ExamEndTime;
         private DateTime ExamStartTime;
         private Font SelectedFont;
@@ -76,7 +77,7 @@ namespace CEETimerCSharpWinForms.Forms
             TopMost = IsTopMost = !bool.TryParse(ConfigManager.ReadConfig("TopMost"), out bool tmpa) || tmpa;
             IsFeatureVDMEnabled = bool.TryParse(ConfigManager.ReadConfig("FeatureVDM"), out bool tmpb) && tmpb;
             IsFeatureMOEnabled = bool.TryParse(ConfigManager.ReadConfig("FeatureMO"), out bool tmpc) && tmpc;
-            IsDaysOnly = bool.TryParse(ConfigManager.ReadConfig("DaysOnly"), out bool tmpd) && tmpd;
+            IsShowOnly = bool.TryParse(ConfigManager.ReadConfig("ShowOnly"), out bool tmpd) && tmpd;
             IsRounding = bool.TryParse(ConfigManager.ReadConfig("Rounding"), out bool tmpe) && tmpe;
             IsShowPast = bool.TryParse(ConfigManager.ReadConfig("ShowPast"), out bool tmpg) && tmpg;
             IsShowEnd = bool.TryParse(ConfigManager.ReadConfig("ShowEnd"), out bool tmpf) && tmpf;
@@ -84,6 +85,7 @@ namespace CEETimerCSharpWinForms.Forms
             IsUniTopMost = bool.TryParse(ConfigManager.ReadConfig("UniTopMost"), out bool tmpi) && tmpi;
             IsPPTService = bool.TryParse(ConfigManager.ReadConfig("PPTService"), out bool tmpj) && tmpj;
             ScreenIndex = int.TryParse(ConfigManager.ReadConfig("Screen"), out int tmpk) ? tmpk : 0;
+            ShowOnlyIndex = int.TryParse(ConfigManager.ReadConfig("ShowValue"), out int tmpl) ? tmpl : 0;
             DateTime.TryParseExact(ConfigManager.ReadConfig("ExamStartTime"), "yyyyMMddHHmmss", null, DateTimeStyles.None, out ExamStartTime);
             DateTime.TryParseExact(ConfigManager.ReadConfig("ExamEndTime"), "yyyyMMddHHmmss", null, DateTimeStyles.None, out ExamEndTime);
             int.TryParse(ConfigManager.ReadConfig("PosX"), out int x);
@@ -91,10 +93,11 @@ namespace CEETimerCSharpWinForms.Forms
 
             ShowInTaskbar = !TopMost;
             IsShowPast = IsShowPast && IsShowEnd;
-            IsRounding = IsRounding && IsDaysOnly;
+            IsRounding = IsRounding && IsShowOnly && ShowOnlyIndex == 0;
             IsUniTopMost = IsUniTopMost && TopMost;
             IsFeatureVDMEnabled = IsFeatureVDMEnabled && LaunchManager.CurrentWindowsVersion >= 10;
             if (ScreenIndex > Screen.AllScreens.Length) ScreenIndex = 0;
+            if (ShowOnlyIndex > 3) ShowOnlyIndex = 0;
 
             try
             {
@@ -158,7 +161,8 @@ namespace CEETimerCSharpWinForms.Forms
             FormSettings.CountdownFont = LableCountdown.Font;
             FormSettings.CountdownFontStyle = LableCountdown.Font.Style;
             FormSettings.ExamName = ExamName;
-            FormSettings.IsDaysOnly = IsDaysOnly;
+            FormSettings.IsShowOnly = IsShowOnly;
+            FormSettings.ShowOnlyIndex = ShowOnlyIndex;
             FormSettings.IsShowEnd = IsShowEnd;
             FormSettings.IsShowPast = IsShowPast;
             FormSettings.IsRounding = IsRounding;
@@ -253,13 +257,23 @@ namespace CEETimerCSharpWinForms.Forms
                 TimeSpan TimeLeft = ExamStartTime - DateTime.Now;
                 LableCountdown.ForeColor = Color.Red;
 
-                if (IsDaysOnly)
+                if (IsShowOnly)
                 {
-                    LableCountdown.Text = $"距离{ExamName}还有{TimeLeft.Days}天";
-
-                    if (IsRounding)
+                    switch (ShowOnlyIndex)
                     {
-                        LableCountdown.Text = $"距离{ExamName}还有{TimeLeft.Days + 1}天";
+                        case 0:
+                            LableCountdown.Text = $"距离{ExamName}还有{TimeLeft.Days}天";
+                            if (IsRounding) LableCountdown.Text = $"距离{ExamName}还有{TimeLeft.Days + 1}天";
+                            break;
+                        case 1:
+                            LableCountdown.Text = $"距离{ExamName}还有{TimeLeft.TotalHours:0}小时";
+                            break;
+                        case 2:
+                            LableCountdown.Text = $"距离{ExamName}还有{TimeLeft.TotalMinutes:0}分钟";
+                            break;
+                        case 3:
+                            LableCountdown.Text = $"距离{ExamName}还有{TimeLeft.TotalSeconds:0}秒";
+                            break;
                     }
                 }
                 else
@@ -272,13 +286,23 @@ namespace CEETimerCSharpWinForms.Forms
                 TimeSpan TimeLeftPast = ExamEndTime - DateTime.Now;
                 LableCountdown.ForeColor = Color.Green;
 
-                if (IsDaysOnly)
+                if (IsShowOnly)
                 {
-                    LableCountdown.Text = $"距离{ExamName}结束还有{TimeLeftPast.Days}天";
-
-                    if (IsRounding)
+                    switch (ShowOnlyIndex)
                     {
-                        LableCountdown.Text = $"距离{ExamName}结束还有{TimeLeftPast.Days + 1}天";
+                        case 0:
+                            LableCountdown.Text = $"距离{ExamName}结束还有{TimeLeftPast.Days}天";
+                            if (IsRounding) LableCountdown.Text = $"距离{ExamName}结束还有{TimeLeftPast.Days + 1}天";
+                            break;
+                        case 1:
+                            LableCountdown.Text = $"距离{ExamName}结束还有{TimeLeftPast.TotalHours:0}小时";
+                            break;
+                        case 2:
+                            LableCountdown.Text = $"距离{ExamName}结束还有{TimeLeftPast.TotalMinutes:0}分钟";
+                            break;
+                        case 3:
+                            LableCountdown.Text = $"距离{ExamName}结束还有{TimeLeftPast.TotalSeconds:0}秒";
+                            break;
                     }
                 }
                 else
@@ -291,13 +315,23 @@ namespace CEETimerCSharpWinForms.Forms
                 TimeSpan TimePast = DateTime.Now - ExamEndTime;
                 LableCountdown.ForeColor = Color.Black;
 
-                if (IsDaysOnly)
+                if (IsShowOnly)
                 {
-                    LableCountdown.Text = $"距离{ExamName}已过去了{TimePast.Days}天";
-
-                    if (IsRounding)
+                    switch (ShowOnlyIndex)
                     {
-                        LableCountdown.Text = $"距离{ExamName}已过去了{TimePast.Days + 1}天";
+                        case 0:
+                            LableCountdown.Text = $"距离{ExamName}已过去了{TimePast.Days}天";
+                            if (IsRounding) LableCountdown.Text = $"距离{ExamName}已过去了{TimePast.Days + 1}天";
+                            break;
+                        case 1:
+                            LableCountdown.Text = $"距离{ExamName}已过去了{TimePast.TotalHours:0}小时";
+                            break;
+                        case 2:
+                            LableCountdown.Text = $"距离{ExamName}已过去了{TimePast.TotalMinutes:0}分钟";
+                            break;
+                        case 3:
+                            LableCountdown.Text = $"距离{ExamName}已过去了{TimePast.TotalSeconds:0}秒";
+                            break;
                     }
                 }
                 else

@@ -50,7 +50,7 @@
             this.CheckBoxShowPast = new System.Windows.Forms.CheckBox();
             this.CheckBoxShowEnd = new System.Windows.Forms.CheckBox();
             this.CheckBoxSetRounding = new System.Windows.Forms.CheckBox();
-            this.CheckBoxSetDaysOnly = new System.Windows.Forms.CheckBox();
+            this.CheckBoxShowOnly = new System.Windows.Forms.CheckBox();
             this.GBoxChangeFont = new System.Windows.Forms.GroupBox();
             this.ButtonRestoreFont = new System.Windows.Forms.Button();
             this.ButtonChooseFont = new System.Windows.Forms.Button();
@@ -83,6 +83,7 @@
             this.CheckBoxEnableVDM = new System.Windows.Forms.CheckBox();
             this.LabelLine2 = new System.Windows.Forms.Label();
             this.LabelLine1 = new System.Windows.Forms.Label();
+            this.ComboBoxShowOnly = new System.Windows.Forms.ComboBox();
             this.TabControlMain.SuspendLayout();
             this.TabPageGeneral.SuspendLayout();
             this.GBoxStartup.SuspendLayout();
@@ -293,11 +294,12 @@
             // 
             // GBoxContent
             // 
+            this.GBoxContent.Controls.Add(this.ComboBoxShowOnly);
             this.GBoxContent.Controls.Add(this.CheckBoxSetUniTopMost);
             this.GBoxContent.Controls.Add(this.CheckBoxShowPast);
             this.GBoxContent.Controls.Add(this.CheckBoxShowEnd);
             this.GBoxContent.Controls.Add(this.CheckBoxSetRounding);
-            this.GBoxContent.Controls.Add(this.CheckBoxSetDaysOnly);
+            this.GBoxContent.Controls.Add(this.CheckBoxShowOnly);
             this.GBoxContent.Location = new System.Drawing.Point(7, 6);
             this.GBoxContent.Name = "GBoxContent";
             this.GBoxContent.Size = new System.Drawing.Size(405, 120);
@@ -342,7 +344,7 @@
             // 
             this.CheckBoxSetRounding.AutoSize = true;
             this.CheckBoxSetRounding.Enabled = false;
-            this.CheckBoxSetRounding.Location = new System.Drawing.Point(120, 22);
+            this.CheckBoxSetRounding.Location = new System.Drawing.Point(114, 22);
             this.CheckBoxSetRounding.Name = "CheckBoxSetRounding";
             this.CheckBoxSetRounding.Size = new System.Drawing.Size(199, 19);
             this.CheckBoxSetRounding.TabIndex = 1;
@@ -350,16 +352,16 @@
             this.CheckBoxSetRounding.UseVisualStyleBackColor = true;
             this.CheckBoxSetRounding.CheckedChanged += new System.EventHandler(this.SettingsChanged);
             // 
-            // CheckBoxSetDaysOnly
+            // CheckBoxShowOnly
             // 
-            this.CheckBoxSetDaysOnly.AutoSize = true;
-            this.CheckBoxSetDaysOnly.Location = new System.Drawing.Point(6, 22);
-            this.CheckBoxSetDaysOnly.Name = "CheckBoxSetDaysOnly";
-            this.CheckBoxSetDaysOnly.Size = new System.Drawing.Size(108, 19);
-            this.CheckBoxSetDaysOnly.TabIndex = 0;
-            this.CheckBoxSetDaysOnly.Text = "只显示天数(&O)";
-            this.CheckBoxSetDaysOnly.UseVisualStyleBackColor = true;
-            this.CheckBoxSetDaysOnly.CheckedChanged += new System.EventHandler(this.CheckBoxSetDaysOnly_CheckedChanged);
+            this.CheckBoxShowOnly.AutoSize = true;
+            this.CheckBoxShowOnly.Location = new System.Drawing.Point(6, 22);
+            this.CheckBoxShowOnly.Name = "CheckBoxShowOnly";
+            this.CheckBoxShowOnly.Size = new System.Drawing.Size(65, 19);
+            this.CheckBoxShowOnly.TabIndex = 0;
+            this.CheckBoxShowOnly.Text = "只显示";
+            this.CheckBoxShowOnly.UseVisualStyleBackColor = true;
+            this.CheckBoxShowOnly.CheckedChanged += new System.EventHandler(this.CheckBoxShowOnly_CheckedChanged);
             // 
             // GBoxChangeFont
             // 
@@ -694,6 +696,18 @@
             this.LabelLine1.TabIndex = 0;
             this.LabelLine1.Text = "跟随虚拟桌面的切换而移动窗口，仅适用于 Windows 10 以上的系统。";
             // 
+            // ComboBoxShowOnly
+            // 
+            this.ComboBoxShowOnly.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ComboBoxShowOnly.Enabled = false;
+            this.ComboBoxShowOnly.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.ComboBoxShowOnly.Location = new System.Drawing.Point(70, 19);
+            this.ComboBoxShowOnly.MaxDropDownItems = 1;
+            this.ComboBoxShowOnly.Name = "ComboBoxShowOnly";
+            this.ComboBoxShowOnly.Size = new System.Drawing.Size(38, 23);
+            this.ComboBoxShowOnly.TabIndex = 5;
+            this.ComboBoxShowOnly.SelectedIndexChanged += new System.EventHandler(this.ComboBoxShowOnly_SelectedIndexChanged);
+            // 
             // FormSettings
             // 
             this.AcceptButton = this.ButtonSave;
@@ -790,7 +804,7 @@
         private System.Windows.Forms.Button ButtonChooseFont;
         private System.Windows.Forms.Button ButtonRestoreFont;
         private System.Windows.Forms.GroupBox GBoxContent;
-        private System.Windows.Forms.CheckBox CheckBoxSetDaysOnly;
+        private System.Windows.Forms.CheckBox CheckBoxShowOnly;
         private System.Windows.Forms.CheckBox CheckBoxShowPast;
         private System.Windows.Forms.CheckBox CheckBoxShowEnd;
         private System.Windows.Forms.CheckBox CheckBoxSetRounding;
@@ -804,5 +818,6 @@
         private System.Windows.Forms.Label LabelScreensHint;
         private System.Windows.Forms.Label LabelScreens;
         private System.Windows.Forms.ComboBox ComboBoxScreens;
+        private System.Windows.Forms.ComboBox ComboBoxShowOnly;
     }
 }

@@ -18,6 +18,12 @@ namespace CEETimerCSharpWinForms.Forms
             public int Value { get; set; }
         }
 
+        private class DataShowOnly
+        {
+            public string Type { get; set; }
+            public int Value { get; set; }
+        }
+
         private enum WorkingArea
         {
             Funny, SyncTime, SetPPTService
@@ -25,7 +31,7 @@ namespace CEETimerCSharpWinForms.Forms
 
         public static bool FeatureMOEnabled { get; set; }
         public static bool FeatureVDMEnabled { get; set; }
-        public static bool IsDaysOnly { get; set; }
+        public static bool IsShowOnly { get; set; }
         public static bool IsDragable { get; set; }
         public static bool IsShowEnd { get; set; }
         public static bool IsShowPast { get; set; }
@@ -33,6 +39,7 @@ namespace CEETimerCSharpWinForms.Forms
         public static bool IsPPTService { get; set; }
         public static bool TopMostChecked { get; set; }
         public static int ScreenIndex { get; set; }
+        public static int ShowOnlyIndex { get; set; }
         public static DateTime ExamStartTime { get; set; }
         public static DateTime ExamEndTime { get; set; }
         public static Font CountdownFont { get; set; }
@@ -49,6 +56,22 @@ namespace CEETimerCSharpWinForms.Forms
         public FormSettings()
         {
             InitializeComponent();
+            InitializeExtra();
+        }
+
+        private void InitializeExtra()
+        {
+            List<DataShowOnly> Shows =
+            [
+                new DataShowOnly { Type = "天", Value = 0},
+                new DataShowOnly { Type = "时", Value = 1},
+                new DataShowOnly { Type = "分", Value = 2},
+                new DataShowOnly { Type = "秒", Value = 3}
+            ];
+
+            ComboBoxShowOnly.DataSource = Shows;
+            ComboBoxShowOnly.DisplayMember = "Type";
+            ComboBoxShowOnly.ValueMember = "Value";
         }
 
         private void FormSettings_KeyDown(object sender, KeyEventArgs e)
@@ -83,12 +106,13 @@ namespace CEETimerCSharpWinForms.Forms
             LabelExamNameCounter.ForeColor = CharCount > 15 ? Color.Red : Color.Black;
         }
 
-        private void CheckBoxSetDaysOnly_CheckedChanged(object sender, EventArgs e)
+        private void CheckBoxShowOnly_CheckedChanged(object sender, EventArgs e)
         {
             SettingsChanged(sender, e);
-            CheckBoxSetRounding.Enabled = CheckBoxSetDaysOnly.Checked;
+            CheckBoxSetRounding.Enabled = ComboBoxShowOnly.Enabled = CheckBoxShowOnly.Checked;
+            ComboBoxShowOnly.SelectedIndex = CheckBoxShowOnly.Checked ? ShowOnlyIndex : 0;
 
-            if (CheckBoxSetRounding.Checked && !CheckBoxSetDaysOnly.Checked)
+            if (CheckBoxSetRounding.Checked && !CheckBoxShowOnly.Checked)
             {
                 CheckBoxSetRounding.Checked = false;
                 CheckBoxSetRounding.Enabled = false;
@@ -222,6 +246,12 @@ namespace CEETimerCSharpWinForms.Forms
             #endregion
         }
 
+        private void ComboBoxShowOnly_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            SettingsChanged(sender, e);
+            CheckBoxSetRounding.Visible = ComboBoxShowOnly.SelectedIndex == 0;
+        }
+
         private void FormSettings_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (IsSyncingTime)
@@ -318,14 +348,14 @@ namespace CEETimerCSharpWinForms.Forms
             CheckBoxEnableVDM.Checked = FeatureVDMEnabled;
             CheckBoxEnableMO.Checked = FeatureMOEnabled;
             CheckBoxEnableDragable.Checked = IsDragable;
-            CheckBoxSetDaysOnly.Checked = IsDaysOnly;
+            CheckBoxShowOnly.Checked = IsShowOnly;
             CheckBoxSetRounding.Checked = IsRounding;
             CheckBoxShowEnd.Checked = DTPExamEnd.Enabled = IsShowEnd;
             CheckBoxShowPast.Checked = IsShowPast;
             CheckBoxSwPptSvc.Checked = IsPPTService;
             CheckBoxSetUniTopMost.Checked = TopMost;
             ComboBoxScreens.SelectedValue = ScreenIndex;
-
+            ComboBoxShowOnly.SelectedValue = ShowOnlyIndex;
             ChangeFont(new Font(CountdownFont, CountdownFontStyle));
             ChangeWorkingStyle(FormMain.IsTopMost, WorkingArea.SetPPTService);
 
@@ -334,6 +364,8 @@ namespace CEETimerCSharpWinForms.Forms
                 CheckBoxEnableVDM.Enabled = CheckBoxEnableVDM.Checked = false;
                 CheckBoxEnableVDM.Text = $"此功能在当前系统上不可用";
             }
+
+            ComboBoxShowOnly.SelectedIndex = IsShowOnly ? ShowOnlyIndex : 0;
         }
 
         private bool ValidateInput()
@@ -463,7 +495,8 @@ namespace CEETimerCSharpWinForms.Forms
                     { "FeatureMO", $"{CheckBoxEnableMO.Checked}" },
                     { "Font", $"{CountdownFont.Name}, {CountdownFont.Size}pt" },
                     { "FontStyle", $"{CountdownFontStyle}" },
-                    { "DaysOnly", $"{CheckBoxSetDaysOnly.Checked}" },
+                    { "ShowOnly", $"{CheckBoxShowOnly.Checked}" },
+                    { "ShowValue", $"{ComboBoxShowOnly.SelectedValue}" },
                     { "Rounding", $"{CheckBoxSetRounding.Checked}" },
                     { "ShowEnd", $"{CheckBoxShowEnd.Checked}" },
                     { "ShowPast", $"{CheckBoxShowPast.Checked}" },
