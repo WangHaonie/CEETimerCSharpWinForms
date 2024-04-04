@@ -337,6 +337,7 @@
             this.ComboBoxShowOnly.Name = "ComboBoxShowOnly";
             this.ComboBoxShowOnly.Size = new System.Drawing.Size(38, 23);
             this.ComboBoxShowOnly.TabIndex = 5;
+            this.ComboBoxShowOnly.DropDown += new System.EventHandler(this.ComboBoxes_DropDown);
             this.ComboBoxShowOnly.SelectedIndexChanged += new System.EventHandler(this.ComboBoxShowOnly_SelectedIndexChanged);
             // 
             // CheckBoxSetUniTopMost
@@ -734,7 +735,7 @@
             this.ComboBoxScreens.Name = "ComboBoxScreens";
             this.ComboBoxScreens.Size = new System.Drawing.Size(100, 23);
             this.ComboBoxScreens.TabIndex = 4;
-            this.ComboBoxScreens.DropDown += new System.EventHandler(this.ComboBoxScreens_DropDown);
+            this.ComboBoxScreens.DropDown += new System.EventHandler(this.ComboBoxes_DropDown);
             this.ComboBoxScreens.SelectedIndexChanged += new System.EventHandler(this.SettingsChanged);
             // 
             // GBoxSyncTime

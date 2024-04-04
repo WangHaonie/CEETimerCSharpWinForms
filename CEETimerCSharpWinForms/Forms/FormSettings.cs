@@ -18,7 +18,7 @@ namespace CEETimerCSharpWinForms.Forms
             public int Value { get; set; }
         }
 
-        private class DataShowOnly
+        private class ShowOnlyData
         {
             public string Type { get; set; }
             public int Value { get; set; }
@@ -67,12 +67,12 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void InitializeExtra()
         {
-            List<DataShowOnly> Shows =
+            List<ShowOnlyData> Shows =
             [
-                new DataShowOnly { Type = "天", Value = 0},
-                new DataShowOnly { Type = "时", Value = 1},
-                new DataShowOnly { Type = "分", Value = 2},
-                new DataShowOnly { Type = "秒", Value = 3}
+                new ShowOnlyData { Type = "天", Value = 0},
+                new ShowOnlyData { Type = "时", Value = 1},
+                new ShowOnlyData { Type = "分", Value = 2},
+                new ShowOnlyData { Type = "秒", Value = 3}
             ];
 
             ComboBoxShowOnly.DataSource = Shows;
@@ -185,7 +185,7 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void ColorLabels_Click(object sender, EventArgs e)
         {
-            Label LabelColor = (Label)sender;
+            var LabelColor = (Label)sender;
 
             ColorDialog ColorDialogMain = new()
             {
@@ -245,7 +245,7 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void ButtonSave_Click(object sender, EventArgs e)
         {
-            if (ValidateInput())
+            if (IsSettingsFormatValid())
             {
                 IsSettingsChanged = false;
                 SaveSettings();
@@ -261,7 +261,7 @@ namespace CEETimerCSharpWinForms.Forms
             LabelScreens.Enabled = LabelScreensHint.Enabled = ComboBoxScreens.Enabled = !CheckBoxEnableDragable.Checked;
         }
 
-        private void ComboBoxScreens_DropDown(object sender, EventArgs e)
+        private void ComboBoxes_DropDown(object sender, EventArgs e)
         {
             #region
             /*
@@ -275,14 +275,15 @@ namespace CEETimerCSharpWinForms.Forms
              
              */
 
+            var ComboBoxes = (ComboBox)sender; 
             int MaxWidth = 0;
 
-            foreach (var Item in ComboBoxScreens.Items)
+            foreach (var Item in ComboBoxes.Items)
             {
-                MaxWidth = Math.Max(MaxWidth, TextRenderer.MeasureText(ComboBoxScreens.GetItemText(Item), ComboBoxScreens.Font).Width);
+                MaxWidth = Math.Max(MaxWidth, TextRenderer.MeasureText(ComboBoxes.GetItemText(Item), ComboBoxes.Font).Width);
             }
 
-            ComboBoxScreens.DropDownWidth = MaxWidth + SystemInformation.VerticalScrollBarWidth;
+            ComboBoxes.DropDownWidth = MaxWidth + SystemInformation.VerticalScrollBarWidth;
 
             #endregion
         }
@@ -291,6 +292,7 @@ namespace CEETimerCSharpWinForms.Forms
         {
             SettingsChanged(sender, e);
             CheckBoxSetRounding.Visible = ComboBoxShowOnly.SelectedIndex == 0;
+            CheckBoxSetRounding.Checked = ComboBoxShowOnly.SelectedIndex == 0 && IsRounding;
         }
 
         private void FormSettings_FormClosing(object sender, FormClosingEventArgs e)
@@ -409,7 +411,7 @@ namespace CEETimerCSharpWinForms.Forms
             ComboBoxShowOnly.SelectedIndex = IsShowOnly ? ShowOnlyIndex : 0;
         }
 
-        private bool ValidateInput()
+        private bool IsSettingsFormatValid()
         {
             ExamName = TextBoxExamName.Text.RemoveAllBadChars();
             TimeSpan ExamTimeSpan = DTPExamEnd.Value - DTPExamStart.Value;
@@ -459,7 +461,6 @@ namespace CEETimerCSharpWinForms.Forms
                 }
             }
 
-            
             string ColorCheckMsg = "";
             if (!ColorHelper.IsNiceContrast(LabelPreviewCorlor1.ForeColor, LabelPreviewCorlor1.BackColor))
             {
@@ -554,8 +555,10 @@ namespace CEETimerCSharpWinForms.Forms
                     LabelPreviewCorlor3.ForeColor = LabelColor32.BackColor;
                     break;
                 case 2:
-                    LabelColor31.BackColor = LabelColor21.BackColor = LabelPreviewCorlor3.BackColor = LabelPreviewCorlor2.BackColor = LabelColor11.BackColor;
-                    LabelColor32.BackColor = LabelColor22.BackColor = LabelPreviewCorlor3.ForeColor = LabelPreviewCorlor2.ForeColor = LabelColor12.BackColor;
+                    LabelColor31.BackColor = LabelColor21.BackColor = 
+                    LabelPreviewCorlor3.BackColor = LabelPreviewCorlor2.BackColor = LabelColor11.BackColor;
+                    LabelColor32.BackColor = LabelColor22.BackColor = 
+                    LabelPreviewCorlor3.ForeColor = LabelPreviewCorlor2.ForeColor = LabelColor12.BackColor;
                     break;
                 case 3:
                     LabelPreviewCorlor1.BackColor = LabelColor11.BackColor = 
