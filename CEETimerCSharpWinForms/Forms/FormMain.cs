@@ -153,6 +153,8 @@ namespace CEETimerCSharpWinForms.Forms
             }
 
             LableCountdown.Font = new Font(SelectedFont, SelectedFontStyle);
+            LableCountdown.ForeColor = Fore4;
+            BackColor = Back4;
 
             ConfigManager.MountConfig(false);
 
