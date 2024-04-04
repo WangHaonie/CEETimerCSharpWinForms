@@ -62,7 +62,18 @@ namespace CEETimerCSharpWinForms.Modules
             double Contrast = (Math.Max(ForeLuminance, BackLuminance) + 0.05) / (Math.Min(ForeLuminance, BackLuminance) + 0.05);
             double ColorDifference = Math.Sqrt(2 * Math.Pow(Fore.R - Back.R, 2) + 4 * Math.Pow(Fore.G - Back.G, 2) + 3 * Math.Pow(Fore.B - Back.B, 2));
 
-            return Contrast >= 3 && ColorDifference > 500;
+            if (Contrast >= 1000 && ColorDifference < 300)
+                return false;
+            else if (Contrast >= 1800)
+                return true;
+            else if (ColorDifference < 400)
+                return false;
+            else if (Contrast < 2 && ColorDifference >= 400 && ColorDifference < 500)
+                return false;
+            else if (Contrast >= 2 && Contrast < 15 && ColorDifference >= 400 && ColorDifference < 500)
+                return true;
+            else
+                return Contrast >= 2 && ColorDifference >= 500 && ColorDifference < 1500;
             #endregion
         }
     }
