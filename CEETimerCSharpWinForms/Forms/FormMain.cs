@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace CEETimerCSharpWinForms.Forms
@@ -76,34 +75,6 @@ namespace CEETimerCSharpWinForms.Forms
             LastLocation = Location;
         }
 
-        private bool TryParseRGB(string Text, out Color ThisColor)
-        {
-            ThisColor = Color.Empty;
-
-            if (Regex.IsMatch(Text, @"^\d{1,3},\d{1,3},\d{1,3}$"))
-            {
-                string[] RGB = Text.Split(',');
-                int R = int.Parse(RGB[0]);
-                int G = int.Parse(RGB[1]);
-                int B = int.Parse(RGB[2]);
-
-                if (!(R >= 0 && R <= 255 && G >= 0 && G <= 255 && B >= 0 && B <= 255))
-                {
-                    return false;
-                }
-                else
-                {
-                    ThisColor = Color.FromArgb(R, G, B);
-                }
-            }
-            else
-            {
-                return false;
-            }
-
-            return true;
-        }
-
         private void RefreshSettings(object sender, EventArgs e)
         {
             ConfigManager.MountConfig(true);
@@ -121,12 +92,12 @@ namespace CEETimerCSharpWinForms.Forms
             IsPPTService = bool.TryParse(ConfigManager.ReadConfig("PPTService"), out bool tmpj) && tmpj;
             ScreenIndex = int.TryParse(ConfigManager.ReadConfig("Screen"), out int tmpk) ? tmpk : 0;
             ShowOnlyIndex = int.TryParse(ConfigManager.ReadConfig("ShowValue"), out int tmpl) ? tmpl : 0;
-            Back1 = TryParseRGB(ConfigManager.ReadConfig("Back1"), out Color tmpm) ? tmpm : Color.White;
-            Back2 = TryParseRGB(ConfigManager.ReadConfig("Back2"), out Color tmpn) ? tmpn : Color.White;
-            Back3 = TryParseRGB(ConfigManager.ReadConfig("Back3"), out Color tmpo) ? tmpo : Color.White;
-            Fore1 = TryParseRGB(ConfigManager.ReadConfig("Fore1"), out Color tmpp) ? tmpp : Color.Red;
-            Fore2 = TryParseRGB(ConfigManager.ReadConfig("Fore2"), out Color tmpq) ? tmpq : Color.Green;
-            Fore3 = TryParseRGB(ConfigManager.ReadConfig("Fore3"), out Color tmpr) ? tmpr : Color.Black;
+            Back1 = ColorHelper.TryParseRGB(ConfigManager.ReadConfig("Back1"), out Color tmpm) ? tmpm : Color.White;
+            Back2 = ColorHelper.TryParseRGB(ConfigManager.ReadConfig("Back2"), out Color tmpn) ? tmpn : Color.White;
+            Back3 = ColorHelper.TryParseRGB(ConfigManager.ReadConfig("Back3"), out Color tmpo) ? tmpo : Color.White;
+            Fore1 = ColorHelper.TryParseRGB(ConfigManager.ReadConfig("Fore1"), out Color tmpp) ? tmpp : Color.Red;
+            Fore2 = ColorHelper.TryParseRGB(ConfigManager.ReadConfig("Fore2"), out Color tmpq) ? tmpq : Color.Green;
+            Fore3 = ColorHelper.TryParseRGB(ConfigManager.ReadConfig("Fore3"), out Color tmpr) ? tmpr : Color.Black;
             DateTime.TryParseExact(ConfigManager.ReadConfig("ExamStartTime"), "yyyyMMddHHmmss", null, DateTimeStyles.None, out ExamStartTime);
             DateTime.TryParseExact(ConfigManager.ReadConfig("ExamEndTime"), "yyyyMMddHHmmss", null, DateTimeStyles.None, out ExamEndTime);
             int.TryParse(ConfigManager.ReadConfig("PosX"), out int x);

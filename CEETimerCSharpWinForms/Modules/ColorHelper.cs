@@ -1,10 +1,39 @@
 ﻿using System;
 using System.Drawing;
+using System.Text.RegularExpressions;
 
 namespace CEETimerCSharpWinForms.Modules
 {
     public class ColorHelper
     {
+        public static bool TryParseRGB(string Text, out Color TargetColor)
+        {
+            TargetColor = Color.Empty;
+
+            if (Regex.IsMatch(Text, @"^\d{1,3},\d{1,3},\d{1,3}$"))
+            {
+                string[] RGB = Text.Split(',');
+                int R = int.Parse(RGB[0]);
+                int G = int.Parse(RGB[1]);
+                int B = int.Parse(RGB[2]);
+
+                if (!(R >= 0 && R <= 255 && G >= 0 && G <= 255 && B >= 0 && B <= 255))
+                {
+                    return false;
+                }
+                else
+                {
+                    TargetColor = Color.FromArgb(R, G, B);
+                }
+            }
+            else
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         public static bool IsNiceContrast(Color Fore, Color Back)
         {
             #region 来自网络
