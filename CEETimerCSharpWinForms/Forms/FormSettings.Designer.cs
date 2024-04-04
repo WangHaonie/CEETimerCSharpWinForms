@@ -101,6 +101,10 @@
             this.CheckBoxEnableVDM = new System.Windows.Forms.CheckBox();
             this.LabelLine2 = new System.Windows.Forms.Label();
             this.LabelLine1 = new System.Windows.Forms.Label();
+            this.LabelPreviewCorlor4 = new System.Windows.Forms.Label();
+            this.LabelColor42 = new System.Windows.Forms.Label();
+            this.LabelColor41 = new System.Windows.Forms.Label();
+            this.LabelLine18 = new System.Windows.Forms.Label();
             this.TabControlMain.SuspendLayout();
             this.TabPageGeneral.SuspendLayout();
             this.GBoxStartup.SuspendLayout();
@@ -471,6 +475,10 @@
             // 
             // GBoxColors
             // 
+            this.GBoxColors.Controls.Add(this.LabelPreviewCorlor4);
+            this.GBoxColors.Controls.Add(this.LabelColor42);
+            this.GBoxColors.Controls.Add(this.LabelColor41);
+            this.GBoxColors.Controls.Add(this.LabelLine18);
             this.GBoxColors.Controls.Add(this.LabelPreviewCorlor1);
             this.GBoxColors.Controls.Add(this.LabelPreviewCorlor2);
             this.GBoxColors.Controls.Add(this.LabelPreviewCorlor3);
@@ -488,7 +496,7 @@
             this.GBoxColors.Controls.Add(this.LabelLine15);
             this.GBoxColors.Location = new System.Drawing.Point(7, 6);
             this.GBoxColors.Name = "GBoxColors";
-            this.GBoxColors.Size = new System.Drawing.Size(408, 132);
+            this.GBoxColors.Size = new System.Drawing.Size(408, 153);
             this.GBoxColors.TabIndex = 0;
             this.GBoxColors.TabStop = false;
             this.GBoxColors.Text = "设置颜色";
@@ -532,7 +540,7 @@
             // ButtonColorDefault
             // 
             this.ButtonColorDefault.AutoSize = true;
-            this.ButtonColorDefault.Location = new System.Drawing.Point(99, 101);
+            this.ButtonColorDefault.Location = new System.Drawing.Point(99, 122);
             this.ButtonColorDefault.Name = "ButtonColorDefault";
             this.ButtonColorDefault.Size = new System.Drawing.Size(85, 25);
             this.ButtonColorDefault.TabIndex = 11;
@@ -543,7 +551,7 @@
             // ButtonColorApply
             // 
             this.ButtonColorApply.AutoSize = true;
-            this.ButtonColorApply.Location = new System.Drawing.Point(9, 101);
+            this.ButtonColorApply.Location = new System.Drawing.Point(9, 122);
             this.ButtonColorApply.Name = "ButtonColorApply";
             this.ButtonColorApply.Size = new System.Drawing.Size(84, 25);
             this.ButtonColorApply.TabIndex = 10;
@@ -915,6 +923,46 @@
             this.LabelLine1.TabIndex = 0;
             this.LabelLine1.Text = "跟随虚拟桌面的切换而移动窗口，仅适用于 Windows 10 以上的系统。";
             // 
+            // LabelPreviewCorlor4
+            // 
+            this.LabelPreviewCorlor4.AutoSize = true;
+            this.LabelPreviewCorlor4.Location = new System.Drawing.Point(202, 104);
+            this.LabelPreviewCorlor4.Name = "LabelPreviewCorlor4";
+            this.LabelPreviewCorlor4.Size = new System.Drawing.Size(133, 15);
+            this.LabelPreviewCorlor4.TabIndex = 19;
+            this.LabelPreviewCorlor4.Text = "欢迎使用高考倒计时...";
+            // 
+            // LabelColor42
+            // 
+            this.LabelColor42.AutoSize = true;
+            this.LabelColor42.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.LabelColor42.Location = new System.Drawing.Point(112, 103);
+            this.LabelColor42.Name = "LabelColor42";
+            this.LabelColor42.Size = new System.Drawing.Size(39, 17);
+            this.LabelColor42.TabIndex = 18;
+            this.LabelColor42.Text = "          ";
+            this.LabelColor42.Click += new System.EventHandler(this.ColorLabels_Click);
+            // 
+            // LabelColor41
+            // 
+            this.LabelColor41.AutoSize = true;
+            this.LabelColor41.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.LabelColor41.Location = new System.Drawing.Point(157, 103);
+            this.LabelColor41.Name = "LabelColor41";
+            this.LabelColor41.Size = new System.Drawing.Size(39, 17);
+            this.LabelColor41.TabIndex = 17;
+            this.LabelColor41.Text = "          ";
+            this.LabelColor41.Click += new System.EventHandler(this.ColorLabels_Click);
+            // 
+            // LabelLine18
+            // 
+            this.LabelLine18.AutoSize = true;
+            this.LabelLine18.Location = new System.Drawing.Point(6, 104);
+            this.LabelLine18.Name = "LabelLine18";
+            this.LabelLine18.Size = new System.Drawing.Size(102, 15);
+            this.LabelLine18.TabIndex = 16;
+            this.LabelLine18.Text = "程序欢迎界面 (4)";
+            // 
             // FormSettings
             // 
             this.AcceptButton = this.ButtonSave;
@@ -1046,5 +1094,9 @@
         private System.Windows.Forms.Label LabelPreviewCorlor1;
         private System.Windows.Forms.Label LabelPreviewCorlor2;
         private System.Windows.Forms.Label LabelPreviewCorlor3;
+        private System.Windows.Forms.Label LabelPreviewCorlor4;
+        private System.Windows.Forms.Label LabelColor42;
+        private System.Windows.Forms.Label LabelColor41;
+        private System.Windows.Forms.Label LabelLine18;
     }
 }

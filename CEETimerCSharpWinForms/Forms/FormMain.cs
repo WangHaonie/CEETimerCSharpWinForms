@@ -27,9 +27,11 @@ namespace CEETimerCSharpWinForms.Forms
         private Color Back1;
         private Color Back2;
         private Color Back3;
+        private Color Back4;
         private Color Fore1;
         private Color Fore2;
         private Color Fore3;
+        private Color Fore4;
         private int ScreenIndex;
         private int ShowOnlyIndex;
         private DateTime ExamEndTime;
@@ -95,9 +97,11 @@ namespace CEETimerCSharpWinForms.Forms
             Back1 = ColorHelper.TryParseRGB(ConfigManager.ReadConfig("Back1"), out Color tmpm) ? tmpm : Color.White;
             Back2 = ColorHelper.TryParseRGB(ConfigManager.ReadConfig("Back2"), out Color tmpn) ? tmpn : Color.White;
             Back3 = ColorHelper.TryParseRGB(ConfigManager.ReadConfig("Back3"), out Color tmpo) ? tmpo : Color.White;
-            Fore1 = ColorHelper.TryParseRGB(ConfigManager.ReadConfig("Fore1"), out Color tmpp) ? tmpp : Color.Red;
-            Fore2 = ColorHelper.TryParseRGB(ConfigManager.ReadConfig("Fore2"), out Color tmpq) ? tmpq : Color.Green;
-            Fore3 = ColorHelper.TryParseRGB(ConfigManager.ReadConfig("Fore3"), out Color tmpr) ? tmpr : Color.Black;
+            Back4 = ColorHelper.TryParseRGB(ConfigManager.ReadConfig("Back4"), out Color tmpp) ? tmpp : Color.White;
+            Fore1 = ColorHelper.TryParseRGB(ConfigManager.ReadConfig("Fore1"), out Color tmpq) ? tmpq : Color.Red;
+            Fore2 = ColorHelper.TryParseRGB(ConfigManager.ReadConfig("Fore2"), out Color tmpr) ? tmpr : Color.Green;
+            Fore3 = ColorHelper.TryParseRGB(ConfigManager.ReadConfig("Fore3"), out Color tmps) ? tmps : Color.Black;
+            Fore4 = ColorHelper.TryParseRGB(ConfigManager.ReadConfig("Fore4"), out Color tmpt) ? tmpt : Color.Black;
             DateTime.TryParseExact(ConfigManager.ReadConfig("ExamStartTime"), "yyyyMMddHHmmss", null, DateTimeStyles.None, out ExamStartTime);
             DateTime.TryParseExact(ConfigManager.ReadConfig("ExamEndTime"), "yyyyMMddHHmmss", null, DateTimeStyles.None, out ExamEndTime);
             int.TryParse(ConfigManager.ReadConfig("PosX"), out int x);
@@ -125,6 +129,11 @@ namespace CEETimerCSharpWinForms.Forms
             {
                 Fore3 = Color.Black;
                 Back3 = Color.White;
+            }
+            if (!ColorHelper.IsNiceContrast(Fore4, Back4))
+            {
+                Fore4 = Color.Black;
+                Back4 = Color.White;
             }
 
             try
@@ -200,9 +209,11 @@ namespace CEETimerCSharpWinForms.Forms
             FormSettings.Back1 = Back1;
             FormSettings.Back2 = Back2;
             FormSettings.Back3 = Back3;
+            FormSettings.Back4 = Back4;
             FormSettings.Fore1 = Fore1;
             FormSettings.Fore2 = Fore2;
             FormSettings.Fore3 = Fore3;
+            FormSettings.Fore4 = Fore4;
         }
 
         private void LableCountdown_TextChanged(object sender, EventArgs e)
@@ -375,8 +386,8 @@ namespace CEETimerCSharpWinForms.Forms
             }
             else
             {
-                BackColor = Color.White;
-                LableCountdown.ForeColor = Color.Black;
+                BackColor = Back4;
+                LableCountdown.ForeColor = Fore4;
                 LableCountdown.Text = "欢迎使用高考倒计时，请右键点击此处到设置里添加考试信息";
             }
         }
