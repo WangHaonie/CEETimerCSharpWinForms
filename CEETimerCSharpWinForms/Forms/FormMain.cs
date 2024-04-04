@@ -57,7 +57,7 @@ namespace CEETimerCSharpWinForms.Forms
         private void InitializeExtra()
         {
             FormSettings.ConfigChanged += RefreshSettings;
-            LableCountdown.TextChanged += LableCountdown_TextChanged;
+            LabelCountdown.TextChanged += LableCountdown_TextChanged;
 
             TimerCountdown = new Timer()
             {
@@ -152,21 +152,19 @@ namespace CEETimerCSharpWinForms.Forms
                 SelectedFontStyle = FontStyle.Bold;
             }
 
-            LableCountdown.Font = new Font(SelectedFont, SelectedFontStyle);
-            LableCountdown.ForeColor = Fore4;
-            BackColor = Back4;
+            LabelCountdown.Font = new Font(SelectedFont, SelectedFontStyle);
 
             ConfigManager.MountConfig(false);
 
             IsReady = ConfigManager.IsValidData(ExamName) && ConfigManager.IsValidData(ExamStartTime) && ConfigManager.IsValidData(ExamEndTime) && (ExamEndTime > ExamStartTime || !IsShowEnd);
 
             LocationChanged -= Form_LocationChanged;
-            LableCountdown.MouseDown -= Drag_MouseDown;
+            LabelCountdown.MouseDown -= Drag_MouseDown;
 
             if (IsDragable)
             {
                 LocationChanged += Form_LocationChanged;
-                LableCountdown.MouseDown += Drag_MouseDown;
+                LabelCountdown.MouseDown += Drag_MouseDown;
                 Location = new Point(x, y);
                 SaveLocation(new Point(Location.X, Location.Y));
             }
@@ -197,8 +195,8 @@ namespace CEETimerCSharpWinForms.Forms
             FormSettings.TopMostChecked = TopMost;
             FormSettings.ExamStartTime = ExamStartTime;
             FormSettings.ExamEndTime = ExamEndTime;
-            FormSettings.CountdownFont = LableCountdown.Font;
-            FormSettings.CountdownFontStyle = LableCountdown.Font.Style;
+            FormSettings.CountdownFont = LabelCountdown.Font;
+            FormSettings.CountdownFontStyle = LabelCountdown.Font.Style;
             FormSettings.ExamName = ExamName;
             FormSettings.IsShowOnly = IsShowOnly;
             FormSettings.ShowOnlyIndex = ShowOnlyIndex;
@@ -303,94 +301,94 @@ namespace CEETimerCSharpWinForms.Forms
             {
                 TimeSpan TimeLeft = ExamStartTime - DateTime.Now;
                 BackColor = Back1;
-                LableCountdown.ForeColor = Fore1;
+                LabelCountdown.ForeColor = Fore1;
 
                 if (IsShowOnly)
                 {
                     switch (ShowOnlyIndex)
                     {
                         case 0:
-                            LableCountdown.Text = IsRounding ? $"距离{ExamName}还有{TimeLeft.Days + 1}天" : $"距离{ExamName}还有{TimeLeft.Days}天";
+                            LabelCountdown.Text = IsRounding ? $"距离{ExamName}还有{TimeLeft.Days + 1}天" : $"距离{ExamName}还有{TimeLeft.Days}天";
                             break;
                         case 1:
-                            LableCountdown.Text = $"距离{ExamName}还有{TimeLeft.TotalHours:0}小时";
+                            LabelCountdown.Text = $"距离{ExamName}还有{TimeLeft.TotalHours:0}小时";
                             break;
                         case 2:
-                            LableCountdown.Text = $"距离{ExamName}还有{TimeLeft.TotalMinutes:0}分钟";
+                            LabelCountdown.Text = $"距离{ExamName}还有{TimeLeft.TotalMinutes:0}分钟";
                             break;
                         case 3:
-                            LableCountdown.Text = $"距离{ExamName}还有{TimeLeft.TotalSeconds:0}秒";
+                            LabelCountdown.Text = $"距离{ExamName}还有{TimeLeft.TotalSeconds:0}秒";
                             break;
                     }
                 }
                 else
                 {
-                    LableCountdown.Text = $"距离{ExamName}还有{TimeLeft.Days}天{TimeLeft.Hours:00}时{TimeLeft.Minutes:00}分{TimeLeft.Seconds:00}秒";
+                    LabelCountdown.Text = $"距离{ExamName}还有{TimeLeft.Days}天{TimeLeft.Hours:00}时{TimeLeft.Minutes:00}分{TimeLeft.Seconds:00}秒";
                 }
             }
             else if (IsReady && IsShowEnd && DateTime.Now >= ExamStartTime && DateTime.Now < ExamEndTime)
             {
                 TimeSpan TimeLeftPast = ExamEndTime - DateTime.Now;
                 BackColor = Back2;
-                LableCountdown.ForeColor = Fore2;
+                LabelCountdown.ForeColor = Fore2;
 
                 if (IsShowOnly)
                 {
                     switch (ShowOnlyIndex)
                     {
                         case 0:
-                            LableCountdown.Text = IsRounding ? $"距离{ExamName}结束还有{TimeLeftPast.Days + 1}天" : $"距离{ExamName}结束还有{TimeLeftPast.Days}天";
+                            LabelCountdown.Text = IsRounding ? $"距离{ExamName}结束还有{TimeLeftPast.Days + 1}天" : $"距离{ExamName}结束还有{TimeLeftPast.Days}天";
                             break;
                         case 1:
-                            LableCountdown.Text = $"距离{ExamName}结束还有{TimeLeftPast.TotalHours:0}小时";
+                            LabelCountdown.Text = $"距离{ExamName}结束还有{TimeLeftPast.TotalHours:0}小时";
                             break;
                         case 2:
-                            LableCountdown.Text = $"距离{ExamName}结束还有{TimeLeftPast.TotalMinutes:0}分钟";
+                            LabelCountdown.Text = $"距离{ExamName}结束还有{TimeLeftPast.TotalMinutes:0}分钟";
                             break;
                         case 3:
-                            LableCountdown.Text = $"距离{ExamName}结束还有{TimeLeftPast.TotalSeconds:0}秒";
+                            LabelCountdown.Text = $"距离{ExamName}结束还有{TimeLeftPast.TotalSeconds:0}秒";
                             break;
                     }
                 }
                 else
                 {
-                    LableCountdown.Text = $"距离{ExamName}结束还有{TimeLeftPast.Days}天{TimeLeftPast.Hours:00}时{TimeLeftPast.Minutes:00}分{TimeLeftPast.Seconds:00}秒";
+                    LabelCountdown.Text = $"距离{ExamName}结束还有{TimeLeftPast.Days}天{TimeLeftPast.Hours:00}时{TimeLeftPast.Minutes:00}分{TimeLeftPast.Seconds:00}秒";
                 }
             }
             else if (IsReady && IsShowEnd && DateTime.Now >= ExamEndTime && IsShowPast)
             {
                 TimeSpan TimePast = DateTime.Now - ExamEndTime;
                 BackColor = Back3;
-                LableCountdown.ForeColor = Fore3;
+                LabelCountdown.ForeColor = Fore3;
 
                 if (IsShowOnly)
                 {
                     switch (ShowOnlyIndex)
                     {
                         case 0:
-                            LableCountdown.Text = IsRounding ? $"距离{ExamName}已过去了{TimePast.Days + 1}天" : $"距离{ExamName}已过去了{TimePast.Days}天";
+                            LabelCountdown.Text = IsRounding ? $"距离{ExamName}已过去了{TimePast.Days + 1}天" : $"距离{ExamName}已过去了{TimePast.Days}天";
                             break;
                         case 1:
-                            LableCountdown.Text = $"距离{ExamName}已过去了{TimePast.TotalHours:0}小时";
+                            LabelCountdown.Text = $"距离{ExamName}已过去了{TimePast.TotalHours:0}小时";
                             break;
                         case 2:
-                            LableCountdown.Text = $"距离{ExamName}已过去了{TimePast.TotalMinutes:0}分钟";
+                            LabelCountdown.Text = $"距离{ExamName}已过去了{TimePast.TotalMinutes:0}分钟";
                             break;
                         case 3:
-                            LableCountdown.Text = $"距离{ExamName}已过去了{TimePast.TotalSeconds:0}秒";
+                            LabelCountdown.Text = $"距离{ExamName}已过去了{TimePast.TotalSeconds:0}秒";
                             break;
                     }
                 }
                 else
                 {
-                    LableCountdown.Text = $"距离{ExamName}已过去了{TimePast.Days}天{TimePast.Hours:00}时{TimePast.Minutes:00}分{TimePast.Seconds:00}秒";
+                    LabelCountdown.Text = $"距离{ExamName}已过去了{TimePast.Days}天{TimePast.Hours:00}时{TimePast.Minutes:00}分{TimePast.Seconds:00}秒";
                 }
             }
             else
             {
                 BackColor = Back4;
-                LableCountdown.ForeColor = Fore4;
-                LableCountdown.Text = "欢迎使用高考倒计时，请右键点击此处到设置里添加考试信息";
+                LabelCountdown.ForeColor = Fore4;
+                LabelCountdown.Text = "欢迎使用高考倒计时，请右键点击此处到设置里添加考试信息";
             }
         }
 

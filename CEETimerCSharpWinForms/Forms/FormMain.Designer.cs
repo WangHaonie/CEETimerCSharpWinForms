@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.LableCountdown = new System.Windows.Forms.Label();
+            this.LabelCountdown = new System.Windows.Forms.Label();
             this.ContextMenuMain = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.ContextMenuSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextMenuAbout = new System.Windows.Forms.ToolStripMenuItem();
@@ -38,18 +38,18 @@
             this.ContextMenuMain.SuspendLayout();
             this.SuspendLayout();
             // 
-            // LableCountdown
+            // LabelCountdown
             // 
-            this.LableCountdown.AutoSize = true;
-            this.LableCountdown.BackColor = System.Drawing.Color.Transparent;
-            this.LableCountdown.ContextMenuStrip = this.ContextMenuMain;
-            this.LableCountdown.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.LableCountdown.ForeColor = System.Drawing.Color.Black;
-            this.LableCountdown.Location = new System.Drawing.Point(0, 0);
-            this.LableCountdown.Name = "LableCountdown";
-            this.LableCountdown.Size = new System.Drawing.Size(263, 15);
-            this.LableCountdown.TabIndex = 0;
-            this.LableCountdown.Text = "欢迎使用高考倒计时，正在加载中，请稍候...";
+            this.LabelCountdown.AutoSize = true;
+            this.LabelCountdown.BackColor = System.Drawing.Color.Transparent;
+            this.LabelCountdown.ContextMenuStrip = this.ContextMenuMain;
+            this.LabelCountdown.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.LabelCountdown.ForeColor = System.Drawing.Color.Black;
+            this.LabelCountdown.Location = new System.Drawing.Point(0, 0);
+            this.LabelCountdown.Name = "LabelCountdown";
+            this.LabelCountdown.Size = new System.Drawing.Size(55, 15);
+            this.LabelCountdown.TabIndex = 0;
+            this.LabelCountdown.Text = "加载中...";
             // 
             // ContextMenuMain
             // 
@@ -95,11 +95,10 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(265, 23);
+            this.ClientSize = new System.Drawing.Size(10, 10);
             this.ContextMenuStrip = this.ContextMenuMain;
             this.ControlBox = false;
-            this.Controls.Add(this.LableCountdown);
+            this.Controls.Add(this.LabelCountdown);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.ImeMode = System.Windows.Forms.ImeMode.Off;
@@ -121,7 +120,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Label LableCountdown;
+        private System.Windows.Forms.Label LabelCountdown;
         private System.Windows.Forms.ContextMenuStrip ContextMenuMain;
         private System.Windows.Forms.ToolStripMenuItem ContextMenuAbout;
         private System.Windows.Forms.ToolStripMenuItem ContextMenuSettings;
