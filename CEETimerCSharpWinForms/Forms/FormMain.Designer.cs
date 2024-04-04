@@ -47,9 +47,9 @@
             this.LabelCountdown.ForeColor = System.Drawing.Color.Black;
             this.LabelCountdown.Location = new System.Drawing.Point(0, 0);
             this.LabelCountdown.Name = "LabelCountdown";
-            this.LabelCountdown.Size = new System.Drawing.Size(55, 15);
+            this.LabelCountdown.Size = new System.Drawing.Size(204, 15);
             this.LabelCountdown.TabIndex = 0;
-            this.LabelCountdown.Text = "加载中...";
+            this.LabelCountdown.Text = "欢迎使用高考倒计时, 正在加载中...";
             // 
             // ContextMenuMain
             // 
@@ -95,7 +95,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(10, 10);
+            this.ClientSize = new System.Drawing.Size(204, 23);
             this.ContextMenuStrip = this.ContextMenuMain;
             this.ControlBox = false;
             this.Controls.Add(this.LabelCountdown);
