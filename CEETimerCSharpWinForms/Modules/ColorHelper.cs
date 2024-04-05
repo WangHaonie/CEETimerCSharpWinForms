@@ -62,18 +62,44 @@ namespace CEETimerCSharpWinForms.Modules
             double Contrast = (Math.Max(ForeLuminance, BackLuminance) + 0.05) / (Math.Min(ForeLuminance, BackLuminance) + 0.05);
             double ColorDifference = Math.Sqrt(2 * Math.Pow(Fore.R - Back.R, 2) + 4 * Math.Pow(Fore.G - Back.G, 2) + 3 * Math.Pow(Fore.B - Back.B, 2));
 
-            if (Contrast >= 1000 && ColorDifference < 300)
-                return false;
-            else if (Contrast >= 1800)
+            //Console.WriteLine($"{Contrast}<>{ColorDifference}");
+
+            if (Contrast >= 1800)
+            {
+                //Console.WriteLine("1");
                 return true;
+            }
+            else if (Contrast >= 1000 && ColorDifference < 300)
+            {
+                //Console.WriteLine("2");
+                return false;
+            }
+            else if (Contrast >= 1000 && ColorDifference > 360 && ColorDifference < 400)
+            {
+                //Console.WriteLine("3");
+                return true;
+            }
             else if (ColorDifference < 400)
+            {
+                //Console.WriteLine("4");
                 return false;
-            else if (Contrast < 2 && ColorDifference >= 400 && ColorDifference < 500)
+            }
+            else if (ColorDifference >= 400 && ColorDifference < 500 && Contrast < 2)
+            {
+                //Console.WriteLine("5");
                 return false;
-            else if (Contrast >= 2 && Contrast < 15 && ColorDifference >= 400 && ColorDifference < 500)
+            }
+            else if (ColorDifference >= 400 && ColorDifference < 500 && Contrast >= 2 && Contrast < 15)
+            {
+                //Console.WriteLine("6");
                 return true;
+            }
             else
+            {
+                //Console.WriteLine("7");
                 return Contrast >= 2 && ColorDifference >= 500 && ColorDifference < 1500;
+            }
+
             #endregion
         }
     }

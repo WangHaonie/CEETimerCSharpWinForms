@@ -480,6 +480,7 @@ namespace CEETimerCSharpWinForms.Forms
             {
                 ColorCheckMsg = "4";
             }
+            //Console.WriteLine("##########################");
 
             if (!string.IsNullOrEmpty(ColorCheckMsg))
             {
@@ -565,10 +566,10 @@ namespace CEETimerCSharpWinForms.Forms
                     LabelPreviewCorlor4.ForeColor = LabelColor42.BackColor;
                     break;
                 case 2:
-                    LabelColor41.BackColor = LabelColor31.BackColor = LabelColor21.BackColor = 
-                    LabelPreviewCorlor3.BackColor = LabelPreviewCorlor2.BackColor = LabelColor11.BackColor;
-                    LabelColor42.BackColor = LabelColor32.BackColor = LabelColor22.BackColor = 
-                    LabelPreviewCorlor3.ForeColor = LabelPreviewCorlor2.ForeColor = LabelColor12.BackColor;
+                    LabelColor41.BackColor = LabelColor31.BackColor = LabelColor21.BackColor =
+                    LabelPreviewCorlor4.BackColor = LabelPreviewCorlor3.BackColor = LabelPreviewCorlor2.BackColor = LabelColor11.BackColor;
+                    LabelColor42.BackColor = LabelColor32.BackColor = LabelColor22.BackColor =
+                    LabelPreviewCorlor4.ForeColor = LabelPreviewCorlor3.ForeColor = LabelPreviewCorlor2.ForeColor = LabelColor12.BackColor;
                     break;
                 case 3:
                     LabelPreviewCorlor1.BackColor = LabelColor11.BackColor =
