@@ -64,15 +64,15 @@ namespace CEETimerCSharpWinForms.Modules
 
             //Console.WriteLine($"{Contrast}<>{ColorDifference}");
 
-            if (Contrast >= 1800)
+            if (Contrast >= 1000 && ColorDifference < 320)
             {
-                //Console.WriteLine("1");
-                return true;
+                //Console.WriteLine("1 X");
+                return false;
             }
-            else if (Contrast >= 1000 && ColorDifference < 300)
+            else if (Contrast >= 1800)
             {
                 //Console.WriteLine("2");
-                return false;
+                return true;
             }
             else if (Contrast >= 1000 && ColorDifference > 360 && ColorDifference < 400)
             {
@@ -81,22 +81,22 @@ namespace CEETimerCSharpWinForms.Modules
             }
             else if (ColorDifference < 400)
             {
-                //Console.WriteLine("4");
+                //Console.WriteLine("4 X");
                 return false;
             }
-            else if (ColorDifference >= 400 && ColorDifference < 500 && Contrast < 2)
+            else if (Contrast < 2 && ColorDifference >= 400 && ColorDifference < 500)
             {
-                //Console.WriteLine("5");
+                //Console.WriteLine("5 X");
                 return false;
             }
-            else if (ColorDifference >= 400 && ColorDifference < 500 && Contrast >= 2 && Contrast < 15)
+            else if (Contrast >= 2 && Contrast < 15 && ColorDifference >= 400 && ColorDifference < 500)
             {
                 //Console.WriteLine("6");
                 return true;
             }
             else
             {
-                //Console.WriteLine("7");
+                //Console.WriteLine("7 I");
                 return Contrast >= 2 && ColorDifference >= 500 && ColorDifference < 1500;
             }
 
