@@ -484,7 +484,7 @@ namespace CEETimerCSharpWinForms.Forms
 
             if (!string.IsNullOrEmpty(ColorCheckMsg))
             {
-                TabControlMain.SelectedTab = TabPageColor;
+                TabControlMain.SelectedTab = TabPageStyle;
                 MessageX.Popup($"第{ColorCheckMsg}组的颜色相似或对比度较低，将无法看清文字，请尝试更换其它背景颜色或文字颜色！", MessageLevel.Error);
                 return false;
             }
