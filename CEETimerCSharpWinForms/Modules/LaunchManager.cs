@@ -21,11 +21,13 @@ namespace CEETimerCSharpWinForms.Modules
         public const string CopyrightInfo = "Copyright © 2023-2024 WangHaonie";
         public const string OriginalFontString = "Microsoft YaHei, 17.25pt";
         public const string RequestUA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36";
+        public const string OriginalFileName = "CEETimerCSharpWinForms.exe";
+
         public static readonly int CurrentWindowsVersion = Environment.OSVersion.Version.Major;
         public static readonly string CurrentExecutablePath = AppDomain.CurrentDomain.BaseDirectory;
         public static readonly string CurrentExecutable = Application.ExecutablePath;
+
         private static readonly string CurrentExecutableName = Path.GetFileName(CurrentExecutable);
-        private static readonly string OriginalFileName = "CEETimerCSharpWinForms.exe";
 
         public static void StartProgram()
         {
