@@ -99,15 +99,6 @@ namespace CEETimerCSharpWinForms.Modules
             }
         }
 
-        public static bool IsValidData(string ExamName)
-        {
-            if (string.IsNullOrEmpty(ExamName) || ExamName.Length < 2 || ExamName.Length > 15)
-            {
-                return false;
-            }
-            return true;
-        }
-
         public static bool IsValidData(DateTime ExamTime)
         {
             if (ExamTime < new DateTime(1753, 1, 1, 0, 0, 0) || ExamTime > new DateTime(9998, 12, 31, 23, 59, 59))

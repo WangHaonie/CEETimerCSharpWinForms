@@ -114,6 +114,8 @@ namespace CEETimerCSharpWinForms.Forms
             IsFeatureVDMEnabled = IsFeatureVDMEnabled && LaunchManager.CurrentWindowsVersion >= 10;
             if (ScreenIndex > Screen.AllScreens.Length) ScreenIndex = 0;
             if (ShowOnlyIndex > 3) ShowOnlyIndex = 0;
+            if (ExamName.Length > 15 || ExamName.Length < 2) ExamName = "";
+            IsReady = !string.IsNullOrWhiteSpace(ExamName) && ConfigManager.IsValidData(ExamStartTime) && ConfigManager.IsValidData(ExamEndTime) && (ExamEndTime > ExamStartTime || !IsShowEnd);
 
             if (!ColorHelper.IsNiceContrast(Fore1, Back1))
             {
@@ -156,8 +158,6 @@ namespace CEETimerCSharpWinForms.Forms
             LabelCountdown.Font = new Font(SelectedFont, SelectedFontStyle);
 
             ConfigManager.MountConfig(false);
-
-            IsReady = ConfigManager.IsValidData(ExamName) && ConfigManager.IsValidData(ExamStartTime) && ConfigManager.IsValidData(ExamEndTime) && (ExamEndTime > ExamStartTime || !IsShowEnd);
 
             LocationChanged -= Form_LocationChanged;
             LabelCountdown.MouseDown -= Drag_MouseDown;
