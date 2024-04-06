@@ -33,6 +33,7 @@ namespace CEETimerCSharpWinForms.Forms
         private Color Fore3;
         private Color Fore4;
         private int ScreenIndex;
+        private int PositionIndex;
         private int ShowOnlyIndex;
         private DateTime ExamEndTime;
         private DateTime ExamStartTime;
@@ -46,18 +47,20 @@ namespace CEETimerCSharpWinForms.Forms
         private readonly FontConverter fontConverter = new();
         private string ExamName;
         private List<Form> Forms;
+        private Rectangle SelectedScreen;
 
         public FormMain()
         {
             InitializeComponent();
             InitializeExtra();
             RefreshSettings(null, EventArgs.Empty);
-            LabelCountdown.ForeColor = Fore4;
-            BackColor = Back4;
         }
 
         private void InitializeExtra()
         {
+            LabelCountdown.ForeColor = Fore4;
+            BackColor = Back4;
+
             FormSettings.ConfigChanged += RefreshSettings;
             LabelCountdown.TextChanged += LableCountdown_TextChanged;
 
@@ -95,6 +98,7 @@ namespace CEETimerCSharpWinForms.Forms
             IsUniTopMost = bool.TryParse(ConfigManager.ReadConfig("UniTopMost"), out bool tmpi) && tmpi;
             IsPPTService = bool.TryParse(ConfigManager.ReadConfig("PPTService"), out bool tmpj) && tmpj;
             ScreenIndex = int.TryParse(ConfigManager.ReadConfig("Screen"), out int tmpk) ? tmpk : 0;
+            PositionIndex = int.TryParse(ConfigManager.ReadConfig("Pos"), out int tmpu) ? tmpu : 0;
             ShowOnlyIndex = int.TryParse(ConfigManager.ReadConfig("ShowValue"), out int tmpl) ? tmpl : 0;
             Back1 = ColorHelper.TryParseRGB(ConfigManager.ReadConfig("Back1"), out Color tmpm) ? tmpm : Color.White;
             Back2 = ColorHelper.TryParseRGB(ConfigManager.ReadConfig("Back2"), out Color tmpn) ? tmpn : Color.White;
@@ -114,7 +118,8 @@ namespace CEETimerCSharpWinForms.Forms
             IsRounding = IsRounding && IsShowOnly && ShowOnlyIndex == 0;
             IsUniTopMost = IsUniTopMost && TopMost;
             IsFeatureVDMEnabled = IsFeatureVDMEnabled && LaunchManager.CurrentWindowsVersion >= 10;
-            if (ScreenIndex > Screen.AllScreens.Length) ScreenIndex = 0;
+            if (ScreenIndex < 0 && ScreenIndex > Screen.AllScreens.Length) ScreenIndex = 0;
+            if (PositionIndex < 0 && PositionIndex > 8) PositionIndex = 0;
             if (ShowOnlyIndex > 3) ShowOnlyIndex = 0;
             if (ExamName.Length > 15 || ExamName.Length < 2) ExamName = "";
             IsReady = !string.IsNullOrWhiteSpace(ExamName) && ConfigManager.IsValidData(ExamStartTime) && ConfigManager.IsValidData(ExamEndTime) && (ExamEndTime > ExamStartTime || !IsShowEnd);
@@ -173,9 +178,10 @@ namespace CEETimerCSharpWinForms.Forms
             }
             else
             {
-                Location = Screen.AllScreens[ScreenIndex - 1 == -1 ? 0 : ScreenIndex - 1].Bounds.Location;
+                SelectedScreen = Screen.AllScreens[ScreenIndex - 1 == -1 ? 0 : ScreenIndex - 1].WorkingArea;
             }
 
+            ApplyLocation();
             CompatibleWithPPTService();
 
             Forms = GetCurrentForms();
@@ -209,6 +215,7 @@ namespace CEETimerCSharpWinForms.Forms
             FormSettings.IsDragable = IsDragable;
             FormSettings.IsPPTService = IsPPTService;
             FormSettings.ScreenIndex = ScreenIndex;
+            FormSettings.PositionIndex = PositionIndex;
             FormSettings.Back1 = Back1;
             FormSettings.Back2 = Back2;
             FormSettings.Back3 = Back3;
@@ -221,6 +228,7 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void LableCountdown_TextChanged(object sender, EventArgs e)
         {
+            ApplyLocation();
             KeepOnScreen();
         }
 
@@ -253,7 +261,7 @@ namespace CEETimerCSharpWinForms.Forms
             KeepOnScreen();
             CompatibleWithPPTService();
 
-            if (IsMoving)
+            if (IsMoving && IsDragable)
             {
                 LastLocation = Location;
             }
@@ -439,12 +447,52 @@ namespace CEETimerCSharpWinForms.Forms
             #endregion
         }
 
+        private void ApplyLocation()
+        {
+            if (IsDragable == false)
+            {
+                var Position = new Point();
+
+                switch (PositionIndex)
+                {
+                    case 0:
+                        Position = SelectedScreen.Location;
+                        break;
+                    case 1:
+                        Position = new Point(SelectedScreen.Left, SelectedScreen.Top + SelectedScreen.Height / 2 - Height / 2);
+                        break;
+                    case 2:
+                        Position = new Point(SelectedScreen.Left, SelectedScreen.Bottom - Height);
+                        break;
+                    case 3:
+                        Position = new Point(SelectedScreen.Left + SelectedScreen.Width / 2 - Width / 2, SelectedScreen.Top);
+                        break;
+                    case 4:
+                        Position = new Point(SelectedScreen.Left + SelectedScreen.Width / 2 - Width / 2, SelectedScreen.Top + SelectedScreen.Height / 2 - Height / 2);
+                        break;
+                    case 5:
+                        Position = new Point(SelectedScreen.Left + SelectedScreen.Width / 2 - Width / 2, SelectedScreen.Bottom - Height);
+                        break;
+                    case 6:
+                        Position = new Point(SelectedScreen.Right - Width, SelectedScreen.Top);
+                        break;
+                    case 7:
+                        Position = new Point(SelectedScreen.Right - Width, SelectedScreen.Top + SelectedScreen.Height / 2 - Height / 2);
+                        break;
+                    case 8:
+                        Position = new Point(SelectedScreen.Right - Width, SelectedScreen.Bottom - Height);
+                        break;
+                }
+
+                Location = Position;
+            }
+        }
+
         private void CompatibleWithPPTService()
         {
             if (IsPPTService && TopMost)
             {
-                Rectangle ValidArea = Screen.GetWorkingArea(this);
-
+                var ValidArea = Screen.GetWorkingArea(this);
                 if (Left == ValidArea.Left && Top == ValidArea.Top)
                 {
                     Left = ValidArea.Left + 1;
@@ -454,7 +502,7 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void KeepOnScreen()
         {
-            Rectangle ValidArea = Screen.GetWorkingArea(this);
+            var ValidArea = Screen.GetWorkingArea(this);
 
             if (Left < ValidArea.Left)
                 Left = ValidArea.Left;

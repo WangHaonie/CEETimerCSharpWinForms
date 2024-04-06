@@ -59,7 +59,6 @@
             this.CheckBoxShowOnly = new System.Windows.Forms.CheckBox();
             this.GBoxSetDragable = new System.Windows.Forms.GroupBox();
             this.CheckBoxEnableDragable = new System.Windows.Forms.CheckBox();
-            this.LabelScreensHint = new System.Windows.Forms.Label();
             this.LabelScreens = new System.Windows.Forms.Label();
             this.ComboBoxScreens = new System.Windows.Forms.ComboBox();
             this.TabPageStyle = new System.Windows.Forms.TabPage();
@@ -101,6 +100,8 @@
             this.LabelLine7 = new System.Windows.Forms.Label();
             this.LabelLine6 = new System.Windows.Forms.Label();
             this.LabelLine5 = new System.Windows.Forms.Label();
+            this.ComboBoxPosition = new System.Windows.Forms.ComboBox();
+            this.LabelScreensHint = new System.Windows.Forms.Label();
             this.TabControlMain.SuspendLayout();
             this.TabPageGeneral.SuspendLayout();
             this.GBoxStartup.SuspendLayout();
@@ -448,6 +449,7 @@
             // 
             // GBoxSetDragable
             // 
+            this.GBoxSetDragable.Controls.Add(this.ComboBoxPosition);
             this.GBoxSetDragable.Controls.Add(this.CheckBoxEnableDragable);
             this.GBoxSetDragable.Controls.Add(this.LabelScreensHint);
             this.GBoxSetDragable.Controls.Add(this.LabelScreens);
@@ -470,15 +472,6 @@
             this.CheckBoxEnableDragable.UseVisualStyleBackColor = true;
             this.CheckBoxEnableDragable.CheckedChanged += new System.EventHandler(this.CheckBoxEnableDragable_CheckedChanged);
             // 
-            // LabelScreensHint
-            // 
-            this.LabelScreensHint.AutoSize = true;
-            this.LabelScreensHint.Location = new System.Drawing.Point(235, 21);
-            this.LabelScreensHint.Name = "LabelScreensHint";
-            this.LabelScreensHint.Size = new System.Drawing.Size(20, 15);
-            this.LabelScreensHint.TabIndex = 6;
-            this.LabelScreensHint.Text = "上";
-            // 
             // LabelScreens
             // 
             this.LabelScreens.AutoSize = true;
@@ -498,7 +491,7 @@
             this.ComboBoxScreens.Size = new System.Drawing.Size(100, 23);
             this.ComboBoxScreens.TabIndex = 4;
             this.ComboBoxScreens.DropDown += new System.EventHandler(this.ComboBoxes_DropDown);
-            this.ComboBoxScreens.SelectedIndexChanged += new System.EventHandler(this.SettingsChanged);
+            this.ComboBoxScreens.SelectedIndexChanged += new System.EventHandler(this.ComboBoxScreens_SelectedIndexChanged);
             // 
             // TabPageStyle
             // 
@@ -916,6 +909,27 @@
             this.LabelLine5.TabIndex = 20;
             this.LabelLine5.Text = "通过运行系统命令将当前系统时间与网络同步以确保准确无误。";
             // 
+            // ComboBoxPosition
+            // 
+            this.ComboBoxPosition.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ComboBoxPosition.Enabled = false;
+            this.ComboBoxPosition.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.ComboBoxPosition.Location = new System.Drawing.Point(256, 17);
+            this.ComboBoxPosition.Name = "ComboBoxPosition";
+            this.ComboBoxPosition.Size = new System.Drawing.Size(76, 23);
+            this.ComboBoxPosition.TabIndex = 7;
+            this.ComboBoxPosition.DropDown += new System.EventHandler(this.ComboBoxes_DropDown);
+            this.ComboBoxPosition.SelectedIndexChanged += new System.EventHandler(this.SettingsChanged);
+            // 
+            // LabelScreensHint
+            // 
+            this.LabelScreensHint.AutoSize = true;
+            this.LabelScreensHint.Location = new System.Drawing.Point(234, 21);
+            this.LabelScreensHint.Name = "LabelScreensHint";
+            this.LabelScreensHint.Size = new System.Drawing.Size(20, 15);
+            this.LabelScreensHint.TabIndex = 6;
+            this.LabelScreensHint.Text = "的";
+            // 
             // FormSettings
             // 
             this.AcceptButton = this.ButtonSave;
@@ -1019,7 +1033,6 @@
         private System.Windows.Forms.GroupBox GBoxPPTService;
         private System.Windows.Forms.Label LabelLine13;
         private System.Windows.Forms.CheckBox CheckBoxSwPptSvc;
-        private System.Windows.Forms.Label LabelScreensHint;
         private System.Windows.Forms.Label LabelScreens;
         private System.Windows.Forms.ComboBox ComboBoxScreens;
         private System.Windows.Forms.ComboBox ComboBoxShowOnly;
@@ -1044,5 +1057,7 @@
         private System.Windows.Forms.Label LabelColor42;
         private System.Windows.Forms.Label LabelColor41;
         private System.Windows.Forms.Label LabelLine18;
+        private System.Windows.Forms.ComboBox ComboBoxPosition;
+        private System.Windows.Forms.Label LabelScreensHint;
     }
 }

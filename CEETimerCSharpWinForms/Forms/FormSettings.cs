@@ -12,15 +12,9 @@ namespace CEETimerCSharpWinForms.Forms
 {
     public partial class FormSettings : Form
     {
-        private class UserMonitorsInfo
+        private class ComboSource
         {
-            public string DisplayName { get; set; }
-            public int Value { get; set; }
-        }
-
-        private class ShowOnlyData
-        {
-            public string Type { get; set; }
+            public string Item { get; set; }
             public int Value { get; set; }
         }
 
@@ -48,6 +42,7 @@ namespace CEETimerCSharpWinForms.Forms
         public static bool TopMostChecked { get; set; }
         public static int ScreenIndex { get; set; }
         public static int ShowOnlyIndex { get; set; }
+        public static int PositionIndex { get; set; }
         public static DateTime ExamStartTime { get; set; }
         public static DateTime ExamEndTime { get; set; }
         public static Font CountdownFont { get; set; }
@@ -69,19 +64,36 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void InitializeExtra()
         {
-            List<ShowOnlyData> Shows =
+            ChangeColor(WorkingArea.LastColor);
+
+            List<ComboSource> Shows =
             [
-                new ShowOnlyData { Type = "天", Value = 0},
-                new ShowOnlyData { Type = "时", Value = 1},
-                new ShowOnlyData { Type = "分", Value = 2},
-                new ShowOnlyData { Type = "秒", Value = 3}
+                new ComboSource { Item = "天", Value = 0 },
+                new ComboSource { Item = "时", Value = 1 },
+                new ComboSource { Item = "分", Value = 2 },
+                new ComboSource { Item = "秒", Value = 3 }
             ];
 
             ComboBoxShowOnly.DataSource = Shows;
-            ComboBoxShowOnly.DisplayMember = "Type";
+            ComboBoxShowOnly.DisplayMember = "Item";
             ComboBoxShowOnly.ValueMember = "Value";
 
-            ChangeColor(WorkingArea.LastColor);
+            List<ComboSource> Positions = 
+            [
+                new ComboSource { Item = "左上角", Value = 0 },
+                new ComboSource { Item = "左部中央", Value = 1 },
+                new ComboSource { Item = "左下角", Value = 2 },
+                new ComboSource { Item = "上部中央", Value = 3 },
+                new ComboSource { Item = "中央", Value = 4 },
+                new ComboSource { Item = "下部中央", Value = 5 },
+                new ComboSource { Item = "右上角", Value = 6 },
+                new ComboSource { Item = "右部中央", Value = 7 },
+                new ComboSource { Item = "右下角", Value = 8 }
+            ];
+
+            ComboBoxPosition.DataSource = Positions;
+            ComboBoxPosition.DisplayMember = "Item";
+            ComboBoxPosition.ValueMember = "Value";
         }
 
         private void FormSettings_KeyDown(object sender, KeyEventArgs e)
@@ -260,6 +272,7 @@ namespace CEETimerCSharpWinForms.Forms
         {
             SettingsChanged(sender, e);
             ComboBoxScreens.SelectedValue = CheckBoxEnableDragable.Checked ? 0 : ScreenIndex;
+            ComboBoxPosition.SelectedValue = CheckBoxEnableDragable.Checked ? 0 : PositionIndex;
             LabelScreens.Enabled = LabelScreensHint.Enabled = ComboBoxScreens.Enabled = !CheckBoxEnableDragable.Checked;
         }
 
@@ -295,6 +308,14 @@ namespace CEETimerCSharpWinForms.Forms
             SettingsChanged(sender, e);
             CheckBoxSetRounding.Visible = ComboBoxShowOnly.SelectedIndex == 0;
             CheckBoxSetRounding.Checked = ComboBoxShowOnly.SelectedIndex == 0 && IsRounding;
+        }
+
+        private void ComboBoxScreens_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            SettingsChanged(sender, e);
+
+            ComboBoxPosition.Enabled = !CheckBoxEnableDragable.Checked && ComboBoxScreens.SelectedIndex != 0;
+            ComboBoxPosition.SelectedIndex = ComboBoxPosition.Enabled ? PositionIndex : 0;
         }
 
         private void FormSettings_FormClosing(object sender, FormClosingEventArgs e)
@@ -357,12 +378,12 @@ namespace CEETimerCSharpWinForms.Forms
         private void RefreshScreens()
         {
             Screen[] CurrentScreens = Screen.AllScreens;
-            List<UserMonitorsInfo> Monitors = [];
+            List<ComboSource> Monitors = [];
             int i = 0;
 
-            Monitors.Add(new UserMonitorsInfo
+            Monitors.Add(new ComboSource
             {
-                DisplayName = "<请选择>",
+                Item = "<请选择>",
                 Value = 0,
             });
 
@@ -370,15 +391,15 @@ namespace CEETimerCSharpWinForms.Forms
             {
                 i++;
 
-                Monitors.Add(new UserMonitorsInfo
+                Monitors.Add(new ComboSource
                 {
-                    DisplayName = $"{i} {CurrentScreen.DeviceName} ({CurrentScreen.Bounds.Width}x{CurrentScreen.Bounds.Height})",
+                    Item = $"{i} {CurrentScreen.DeviceName} ({CurrentScreen.Bounds.Width}x{CurrentScreen.Bounds.Height})",
                     Value = i
                 });
             }
 
             ComboBoxScreens.DataSource = Monitors;
-            ComboBoxScreens.DisplayMember = "DisplayName";
+            ComboBoxScreens.DisplayMember = "Item";
             ComboBoxScreens.ValueMember = "Value";
         }
 
@@ -400,6 +421,7 @@ namespace CEETimerCSharpWinForms.Forms
             CheckBoxSwPptSvc.Checked = IsPPTService;
             CheckBoxSetUniTopMost.Checked = TopMost;
             ComboBoxScreens.SelectedValue = ScreenIndex;
+            ComboBoxPosition.SelectedValue = PositionIndex;
             ComboBoxShowOnly.SelectedValue = ShowOnlyIndex;
             ChangeFont(new Font(CountdownFont, CountdownFontStyle));
             ChangeWorkingStyle(FormMain.IsTopMost, WorkingArea.SetPPTService);
@@ -617,6 +639,8 @@ namespace CEETimerCSharpWinForms.Forms
                     { "Back3", $"{LabelColor31.BackColor.R},{LabelColor31.BackColor.G},{LabelColor31.BackColor.B}" },
                     { "Fore4", $"{LabelColor42.BackColor.R},{LabelColor42.BackColor.G},{LabelColor42.BackColor.B}" },
                     { "Back4", $"{LabelColor41.BackColor.R},{LabelColor41.BackColor.G},{LabelColor41.BackColor.B}" },
+                    { "Screen", $"{ComboBoxScreens.SelectedValue}" },
+                    { "Pos", $"{ComboBoxPosition.SelectedValue}" },
                     { "ShowOnly", $"{CheckBoxShowOnly.Checked}" },
                     { "ShowValue", $"{ComboBoxShowOnly.SelectedValue}" },
                     { "Rounding", $"{CheckBoxSetRounding.Checked}" },
@@ -624,8 +648,7 @@ namespace CEETimerCSharpWinForms.Forms
                     { "ShowPast", $"{CheckBoxShowPast.Checked}" },
                     { "Dragable", $"{CheckBoxEnableDragable.Checked}" },
                     { "UniTopMost", $"{CheckBoxSetUniTopMost.Checked}" },
-                    { "PPTService", $"{CheckBoxSwPptSvc.Checked}" },
-                    { "Screen", $"{ComboBoxScreens.SelectedValue}" }
+                    { "PPTService", $"{CheckBoxSwPptSvc.Checked}" }
                 });
             }
             catch
