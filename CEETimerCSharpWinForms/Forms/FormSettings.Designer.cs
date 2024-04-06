@@ -64,13 +64,13 @@
             this.ComboBoxScreens = new System.Windows.Forms.ComboBox();
             this.TabPageStyle = new System.Windows.Forms.TabPage();
             this.GBoxColors = new System.Windows.Forms.GroupBox();
-            this.LabelPreviewCorlor4 = new System.Windows.Forms.Label();
+            this.LabelPreviewColor4 = new System.Windows.Forms.Label();
             this.LabelColor42 = new System.Windows.Forms.Label();
             this.LabelColor41 = new System.Windows.Forms.Label();
             this.LabelLine18 = new System.Windows.Forms.Label();
-            this.LabelPreviewCorlor1 = new System.Windows.Forms.Label();
-            this.LabelPreviewCorlor2 = new System.Windows.Forms.Label();
-            this.LabelPreviewCorlor3 = new System.Windows.Forms.Label();
+            this.LabelPreviewColor1 = new System.Windows.Forms.Label();
+            this.LabelPreviewColor2 = new System.Windows.Forms.Label();
+            this.LabelPreviewColor3 = new System.Windows.Forms.Label();
             this.LabelLine14 = new System.Windows.Forms.Label();
             this.ButtonColorDefault = new System.Windows.Forms.Button();
             this.ButtonColorApply = new System.Windows.Forms.Button();
@@ -514,13 +514,13 @@
             // 
             // GBoxColors
             // 
-            this.GBoxColors.Controls.Add(this.LabelPreviewCorlor4);
+            this.GBoxColors.Controls.Add(this.LabelPreviewColor4);
             this.GBoxColors.Controls.Add(this.LabelColor42);
             this.GBoxColors.Controls.Add(this.LabelColor41);
             this.GBoxColors.Controls.Add(this.LabelLine18);
-            this.GBoxColors.Controls.Add(this.LabelPreviewCorlor1);
-            this.GBoxColors.Controls.Add(this.LabelPreviewCorlor2);
-            this.GBoxColors.Controls.Add(this.LabelPreviewCorlor3);
+            this.GBoxColors.Controls.Add(this.LabelPreviewColor1);
+            this.GBoxColors.Controls.Add(this.LabelPreviewColor2);
+            this.GBoxColors.Controls.Add(this.LabelPreviewColor3);
             this.GBoxColors.Controls.Add(this.LabelLine14);
             this.GBoxColors.Controls.Add(this.ButtonColorDefault);
             this.GBoxColors.Controls.Add(this.ButtonColorApply);
@@ -540,14 +540,14 @@
             this.GBoxColors.TabStop = false;
             this.GBoxColors.Text = "字体颜色";
             // 
-            // LabelPreviewCorlor4
+            // LabelPreviewColor4
             // 
-            this.LabelPreviewCorlor4.AutoSize = true;
-            this.LabelPreviewCorlor4.Location = new System.Drawing.Point(200, 104);
-            this.LabelPreviewCorlor4.Name = "LabelPreviewCorlor4";
-            this.LabelPreviewCorlor4.Size = new System.Drawing.Size(133, 15);
-            this.LabelPreviewCorlor4.TabIndex = 19;
-            this.LabelPreviewCorlor4.Text = "欢迎使用高考倒计时...";
+            this.LabelPreviewColor4.AutoSize = true;
+            this.LabelPreviewColor4.Location = new System.Drawing.Point(200, 104);
+            this.LabelPreviewColor4.Name = "LabelPreviewColor4";
+            this.LabelPreviewColor4.Size = new System.Drawing.Size(133, 15);
+            this.LabelPreviewColor4.TabIndex = 19;
+            this.LabelPreviewColor4.Text = "欢迎使用高考倒计时...";
             // 
             // LabelColor42
             // 
@@ -580,32 +580,32 @@
             this.LabelLine18.TabIndex = 16;
             this.LabelLine18.Text = "[4]程序欢迎界面";
             // 
-            // LabelPreviewCorlor1
+            // LabelPreviewColor1
             // 
-            this.LabelPreviewCorlor1.AutoSize = true;
-            this.LabelPreviewCorlor1.Location = new System.Drawing.Point(200, 38);
-            this.LabelPreviewCorlor1.Name = "LabelPreviewCorlor1";
-            this.LabelPreviewCorlor1.Size = new System.Drawing.Size(77, 15);
-            this.LabelPreviewCorlor1.TabIndex = 15;
-            this.LabelPreviewCorlor1.Text = "距离...还有...";
+            this.LabelPreviewColor1.AutoSize = true;
+            this.LabelPreviewColor1.Location = new System.Drawing.Point(200, 38);
+            this.LabelPreviewColor1.Name = "LabelPreviewColor1";
+            this.LabelPreviewColor1.Size = new System.Drawing.Size(77, 15);
+            this.LabelPreviewColor1.TabIndex = 15;
+            this.LabelPreviewColor1.Text = "距离...还有...";
             // 
-            // LabelPreviewCorlor2
+            // LabelPreviewColor2
             // 
-            this.LabelPreviewCorlor2.AutoSize = true;
-            this.LabelPreviewCorlor2.Location = new System.Drawing.Point(200, 60);
-            this.LabelPreviewCorlor2.Name = "LabelPreviewCorlor2";
-            this.LabelPreviewCorlor2.Size = new System.Drawing.Size(103, 15);
-            this.LabelPreviewCorlor2.TabIndex = 14;
-            this.LabelPreviewCorlor2.Text = "距离...结束还有...";
+            this.LabelPreviewColor2.AutoSize = true;
+            this.LabelPreviewColor2.Location = new System.Drawing.Point(200, 60);
+            this.LabelPreviewColor2.Name = "LabelPreviewColor2";
+            this.LabelPreviewColor2.Size = new System.Drawing.Size(103, 15);
+            this.LabelPreviewColor2.TabIndex = 14;
+            this.LabelPreviewColor2.Text = "距离...结束还有...";
             // 
-            // LabelPreviewCorlor3
+            // LabelPreviewColor3
             // 
-            this.LabelPreviewCorlor3.AutoSize = true;
-            this.LabelPreviewCorlor3.Location = new System.Drawing.Point(200, 82);
-            this.LabelPreviewCorlor3.Name = "LabelPreviewCorlor3";
-            this.LabelPreviewCorlor3.Size = new System.Drawing.Size(103, 15);
-            this.LabelPreviewCorlor3.TabIndex = 13;
-            this.LabelPreviewCorlor3.Text = "距离...已过去了...";
+            this.LabelPreviewColor3.AutoSize = true;
+            this.LabelPreviewColor3.Location = new System.Drawing.Point(200, 82);
+            this.LabelPreviewColor3.Name = "LabelPreviewColor3";
+            this.LabelPreviewColor3.Size = new System.Drawing.Size(103, 15);
+            this.LabelPreviewColor3.TabIndex = 13;
+            this.LabelPreviewColor3.Text = "距离...已过去了...";
             // 
             // LabelLine14
             // 
@@ -1037,10 +1037,10 @@
         private System.Windows.Forms.Button ButtonColorApply;
         private System.Windows.Forms.Button ButtonColorDefault;
         private System.Windows.Forms.Label LabelLine14;
-        private System.Windows.Forms.Label LabelPreviewCorlor1;
-        private System.Windows.Forms.Label LabelPreviewCorlor2;
-        private System.Windows.Forms.Label LabelPreviewCorlor3;
-        private System.Windows.Forms.Label LabelPreviewCorlor4;
+        private System.Windows.Forms.Label LabelPreviewColor1;
+        private System.Windows.Forms.Label LabelPreviewColor2;
+        private System.Windows.Forms.Label LabelPreviewColor3;
+        private System.Windows.Forms.Label LabelPreviewColor4;
         private System.Windows.Forms.Label LabelColor42;
         private System.Windows.Forms.Label LabelColor41;
         private System.Windows.Forms.Label LabelLine18;

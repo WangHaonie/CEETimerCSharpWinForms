@@ -52,6 +52,8 @@ namespace CEETimerCSharpWinForms.Forms
             InitializeComponent();
             InitializeExtra();
             RefreshSettings(null, EventArgs.Empty);
+            LabelCountdown.ForeColor = Fore4;
+            BackColor = Back4;
         }
 
         private void InitializeExtra()

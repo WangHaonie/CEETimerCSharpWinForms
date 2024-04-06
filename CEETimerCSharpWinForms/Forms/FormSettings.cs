@@ -26,7 +26,7 @@ namespace CEETimerCSharpWinForms.Forms
 
         private enum WorkingArea
         {
-            Funny, SyncTime, SetPPTService
+            Funny, SyncTime, SetPPTService, LastColor, SelectedColor, ColorToAll, DefaultColor
         }
 
         public static Color Fore1 { get; set; }
@@ -81,7 +81,7 @@ namespace CEETimerCSharpWinForms.Forms
             ComboBoxShowOnly.DisplayMember = "Type";
             ComboBoxShowOnly.ValueMember = "Value";
 
-            ChangeColor(0);
+            ChangeColor(WorkingArea.LastColor);
         }
 
         private void FormSettings_KeyDown(object sender, KeyEventArgs e)
@@ -200,7 +200,7 @@ namespace CEETimerCSharpWinForms.Forms
             {
                 SettingsChanged(sender, e);
                 LabelColor.BackColor = ColorDialogMain.Color;
-                ChangeColor(1);
+                ChangeColor(WorkingArea.SelectedColor);
             }
 
             ColorDialogMain.Dispose();
@@ -209,13 +209,13 @@ namespace CEETimerCSharpWinForms.Forms
         private void ButtonColorApply_Click(object sender, EventArgs e)
         {
             SettingsChanged(sender, e);
-            ChangeColor(2);
+            ChangeColor(WorkingArea.ColorToAll);
         }
 
         private void ButtonColorDefault_Click(object sender, EventArgs e)
         {
             SettingsChanged(sender, e);
-            ChangeColor(3);
+            ChangeColor(WorkingArea.DefaultColor);
         }
 
         private void ButtonRestart_MouseDown(object sender, MouseEventArgs e)
@@ -464,19 +464,19 @@ namespace CEETimerCSharpWinForms.Forms
             }
 
             string ColorCheckMsg = "";
-            if (!ColorHelper.IsNiceContrast(LabelPreviewCorlor1.ForeColor, LabelPreviewCorlor1.BackColor))
+            if (!ColorHelper.IsNiceContrast(LabelPreviewColor1.ForeColor, LabelPreviewColor1.BackColor))
             {
                 ColorCheckMsg = "1";
             }
-            else if (!ColorHelper.IsNiceContrast(LabelPreviewCorlor2.ForeColor, LabelPreviewCorlor2.BackColor))
+            else if (!ColorHelper.IsNiceContrast(LabelPreviewColor2.ForeColor, LabelPreviewColor2.BackColor))
             {
                 ColorCheckMsg = "2";
             }
-            else if (!ColorHelper.IsNiceContrast(LabelPreviewCorlor3.ForeColor, LabelPreviewCorlor3.BackColor))
+            else if (!ColorHelper.IsNiceContrast(LabelPreviewColor3.ForeColor, LabelPreviewColor3.BackColor))
             {
                 ColorCheckMsg = "3";
             }
-            else if (!ColorHelper.IsNiceContrast(LabelPreviewCorlor4.ForeColor, LabelPreviewCorlor4.BackColor))
+            else if (!ColorHelper.IsNiceContrast(LabelPreviewColor4.ForeColor, LabelPreviewColor4.BackColor))
             {
                 ColorCheckMsg = "4";
             }
@@ -541,45 +541,45 @@ namespace CEETimerCSharpWinForms.Forms
             LabelFontInfo.Text = $"当前字体: {NewFont.Name}, {NewFont.Size}pt, {NewFont.Style}";
         }
 
-        private void ChangeColor(int Where)
+        private void ChangeColor(WorkingArea Where)
         {
             switch (Where)
             {
-                case 0:
-                    LabelPreviewCorlor1.BackColor = LabelColor11.BackColor = Back1;
-                    LabelPreviewCorlor2.BackColor = LabelColor21.BackColor = Back2;
-                    LabelPreviewCorlor3.BackColor = LabelColor31.BackColor = Back3;
-                    LabelPreviewCorlor4.BackColor = LabelColor41.BackColor = Back4;
-                    LabelPreviewCorlor1.ForeColor = LabelColor12.BackColor = Fore1;
-                    LabelPreviewCorlor2.ForeColor = LabelColor22.BackColor = Fore2;
-                    LabelPreviewCorlor3.ForeColor = LabelColor32.BackColor = Fore3;
-                    LabelPreviewCorlor4.ForeColor = LabelColor42.BackColor = Fore4;
+                case WorkingArea.LastColor:
+                    LabelPreviewColor1.BackColor = LabelColor11.BackColor = Back1;
+                    LabelPreviewColor2.BackColor = LabelColor21.BackColor = Back2;
+                    LabelPreviewColor3.BackColor = LabelColor31.BackColor = Back3;
+                    LabelPreviewColor4.BackColor = LabelColor41.BackColor = Back4;
+                    LabelPreviewColor1.ForeColor = LabelColor12.BackColor = Fore1;
+                    LabelPreviewColor2.ForeColor = LabelColor22.BackColor = Fore2;
+                    LabelPreviewColor3.ForeColor = LabelColor32.BackColor = Fore3;
+                    LabelPreviewColor4.ForeColor = LabelColor42.BackColor = Fore4;
                     break;
-                case 1:
-                    LabelPreviewCorlor1.BackColor = LabelColor11.BackColor;
-                    LabelPreviewCorlor2.BackColor = LabelColor21.BackColor;
-                    LabelPreviewCorlor3.BackColor = LabelColor31.BackColor;
-                    LabelPreviewCorlor4.BackColor = LabelColor41.BackColor;
-                    LabelPreviewCorlor1.ForeColor = LabelColor12.BackColor;
-                    LabelPreviewCorlor2.ForeColor = LabelColor22.BackColor;
-                    LabelPreviewCorlor3.ForeColor = LabelColor32.BackColor;
-                    LabelPreviewCorlor4.ForeColor = LabelColor42.BackColor;
+                case WorkingArea.SelectedColor:
+                    LabelPreviewColor1.BackColor = LabelColor11.BackColor;
+                    LabelPreviewColor2.BackColor = LabelColor21.BackColor;
+                    LabelPreviewColor3.BackColor = LabelColor31.BackColor;
+                    LabelPreviewColor4.BackColor = LabelColor41.BackColor;
+                    LabelPreviewColor1.ForeColor = LabelColor12.BackColor;
+                    LabelPreviewColor2.ForeColor = LabelColor22.BackColor;
+                    LabelPreviewColor3.ForeColor = LabelColor32.BackColor;
+                    LabelPreviewColor4.ForeColor = LabelColor42.BackColor;
                     break;
-                case 2:
+                case WorkingArea.ColorToAll:
                     LabelColor41.BackColor = LabelColor31.BackColor = LabelColor21.BackColor =
-                    LabelPreviewCorlor4.BackColor = LabelPreviewCorlor3.BackColor = LabelPreviewCorlor2.BackColor = LabelColor11.BackColor;
+                    LabelPreviewColor4.BackColor = LabelPreviewColor3.BackColor = LabelPreviewColor2.BackColor = LabelColor11.BackColor;
                     LabelColor42.BackColor = LabelColor32.BackColor = LabelColor22.BackColor =
-                    LabelPreviewCorlor4.ForeColor = LabelPreviewCorlor3.ForeColor = LabelPreviewCorlor2.ForeColor = LabelColor12.BackColor;
+                    LabelPreviewColor4.ForeColor = LabelPreviewColor3.ForeColor = LabelPreviewColor2.ForeColor = LabelColor12.BackColor;
                     break;
-                case 3:
-                    LabelPreviewCorlor1.BackColor = LabelColor11.BackColor =
-                    LabelPreviewCorlor2.BackColor = LabelColor21.BackColor =
-                    LabelPreviewCorlor3.BackColor = LabelColor31.BackColor =
-                    LabelPreviewCorlor4.BackColor = LabelColor41.BackColor = Color.White;
-                    LabelPreviewCorlor1.ForeColor = LabelColor12.BackColor = Color.Red;
-                    LabelPreviewCorlor2.ForeColor = LabelColor22.BackColor = Color.Green;
-                    LabelPreviewCorlor3.ForeColor = LabelColor32.BackColor =
-                    LabelPreviewCorlor4.ForeColor = LabelColor42.BackColor = Color.Black;
+                case WorkingArea.DefaultColor:
+                    LabelPreviewColor1.BackColor = LabelColor11.BackColor =
+                    LabelPreviewColor2.BackColor = LabelColor21.BackColor =
+                    LabelPreviewColor3.BackColor = LabelColor31.BackColor =
+                    LabelPreviewColor4.BackColor = LabelColor41.BackColor = Color.White;
+                    LabelPreviewColor1.ForeColor = LabelColor12.BackColor = Color.Red;
+                    LabelPreviewColor2.ForeColor = LabelColor22.BackColor = Color.Green;
+                    LabelPreviewColor3.ForeColor = LabelColor32.BackColor =
+                    LabelPreviewColor4.ForeColor = LabelColor42.BackColor = Color.Black;
                     break;
             }
         }
@@ -609,14 +609,14 @@ namespace CEETimerCSharpWinForms.Forms
                     { "FeatureMO", $"{CheckBoxEnableMO.Checked}" },
                     { "Font", $"{CountdownFont.Name}, {CountdownFont.Size}pt" },
                     { "FontStyle", $"{CountdownFontStyle}" },
-                    { "Back1", $"{LabelPreviewCorlor1.BackColor.R},{LabelPreviewCorlor1.BackColor.G},{LabelPreviewCorlor1.BackColor.B}" },
-                    { "Fore1", $"{LabelPreviewCorlor1.ForeColor.R},{LabelPreviewCorlor1.ForeColor.G},{LabelPreviewCorlor1.ForeColor.B}" },
-                    { "Back2", $"{LabelPreviewCorlor2.BackColor.R},{LabelPreviewCorlor2.BackColor.G},{LabelPreviewCorlor2.BackColor.B}" },
-                    { "Fore2", $"{LabelPreviewCorlor2.ForeColor.R},{LabelPreviewCorlor2.ForeColor.G},{LabelPreviewCorlor2.ForeColor.B}" },
-                    { "Back3", $"{LabelPreviewCorlor3.BackColor.R},{LabelPreviewCorlor3.BackColor.G},{LabelPreviewCorlor3.BackColor.B}" },
-                    { "Fore3", $"{LabelPreviewCorlor3.ForeColor.R},{LabelPreviewCorlor3.ForeColor.G},{LabelPreviewCorlor3.ForeColor.B}" },
-                    { "Back4", $"{LabelPreviewCorlor4.BackColor.R},{LabelPreviewCorlor4.BackColor.G},{LabelPreviewCorlor4.BackColor.B}" },
-                    { "Fore4", $"{LabelPreviewCorlor4.ForeColor.R},{LabelPreviewCorlor4.ForeColor.G},{LabelPreviewCorlor4.ForeColor.B}" },
+                    { "Fore1", $"{LabelColor12.BackColor.R},{LabelColor12.BackColor.G},{LabelColor12.BackColor.B}" },
+                    { "Back1", $"{LabelColor11.BackColor.R},{LabelColor11.BackColor.G},{LabelColor11.BackColor.B}" },
+                    { "Fore2", $"{LabelColor22.BackColor.R},{LabelColor22.BackColor.G},{LabelColor22.BackColor.B}" },
+                    { "Back2", $"{LabelColor21.BackColor.R},{LabelColor21.BackColor.G},{LabelColor21.BackColor.B}" },
+                    { "Fore3", $"{LabelColor32.BackColor.R},{LabelColor32.BackColor.G},{LabelColor32.BackColor.B}" },
+                    { "Back3", $"{LabelColor31.BackColor.R},{LabelColor31.BackColor.G},{LabelColor31.BackColor.B}" },
+                    { "Fore4", $"{LabelColor42.BackColor.R},{LabelColor42.BackColor.G},{LabelColor42.BackColor.B}" },
+                    { "Back4", $"{LabelColor41.BackColor.R},{LabelColor41.BackColor.G},{LabelColor41.BackColor.B}" },
                     { "ShowOnly", $"{CheckBoxShowOnly.Checked}" },
                     { "ShowValue", $"{ComboBoxShowOnly.SelectedValue}" },
                     { "Rounding", $"{CheckBoxSetRounding.Checked}" },
