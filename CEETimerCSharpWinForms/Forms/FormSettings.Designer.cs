@@ -770,7 +770,7 @@
             // LabelPreviewFont
             // 
             this.LabelPreviewFont.AutoSize = true;
-            this.LabelPreviewFont.Location = new System.Drawing.Point(6, 49);
+            this.LabelPreviewFont.Location = new System.Drawing.Point(6, 47);
             this.LabelPreviewFont.Name = "LabelPreviewFont";
             this.LabelPreviewFont.Size = new System.Drawing.Size(176, 15);
             this.LabelPreviewFont.TabIndex = 3;
