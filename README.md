@@ -27,7 +27,7 @@ CEETimerCSharpWinForms，适用于 Windows 系统的高考倒计时，支持自�
 ## 运行截图
 > v3.0.1，Windows 11，1920x1080，125% 缩放
 
-![主窗口](./Screenshot.png)
+![主窗口](./Screenshot.jpg)
 
 ## 系统要求
 + 适用于 Windows 7 及以上的 x64 系统；
