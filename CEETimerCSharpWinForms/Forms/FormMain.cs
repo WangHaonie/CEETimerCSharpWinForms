@@ -117,8 +117,8 @@ namespace CEETimerCSharpWinForms.Forms
             IsRounding = IsRounding && IsShowOnly && ShowOnlyIndex == 0;
             IsUniTopMost = IsUniTopMost && TopMost;
             IsFeatureVDMEnabled = IsFeatureVDMEnabled && LaunchManager.CurrentWindowsVersion >= 10;
-            if (ScreenIndex < 0 && ScreenIndex > Screen.AllScreens.Length) ScreenIndex = 0;
-            if (PositionIndex < 0 && PositionIndex > 8) PositionIndex = 0;
+            if (ScreenIndex < 0 || ScreenIndex > Screen.AllScreens.Length) ScreenIndex = 0;
+            if (PositionIndex < 0 || PositionIndex > 8) PositionIndex = 0;
             if (ShowOnlyIndex > 3) ShowOnlyIndex = 0;
             if (ExamName.Length > 15 || ExamName.Length < 2) ExamName = "";
             IsReady = !string.IsNullOrWhiteSpace(ExamName) && ConfigManager.IsValidData(ExamStartTime) && ConfigManager.IsValidData(ExamEndTime) && (ExamEndTime > ExamStartTime || !IsShowEnd);
