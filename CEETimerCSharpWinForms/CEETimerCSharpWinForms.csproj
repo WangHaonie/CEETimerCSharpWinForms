@@ -172,9 +172,6 @@
     <Compile Include="Modules\MemoryManager.cs" />
     <Compile Include="Modules\SimpleMessageBox.cs" />
     <Compile Include="Modules\SingleInstanceRunner.cs" />
-    <Compile Include="Modules\VirtualDesktopSwitch.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Modules\WindowsAPI.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

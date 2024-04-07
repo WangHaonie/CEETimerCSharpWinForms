@@ -32,7 +32,6 @@ namespace CEETimerCSharpWinForms.Forms
         public static Color Back3 { get; set; }
         public static Color Back4 { get; set; }
         public static bool FeatureMOEnabled { get; set; }
-        public static bool FeatureVDMEnabled { get; set; }
         public static bool IsShowOnly { get; set; }
         public static bool IsDragable { get; set; }
         public static bool IsShowEnd { get; set; }
@@ -403,7 +402,6 @@ namespace CEETimerCSharpWinForms.Forms
             TextBoxExamName.Text = ExamName;
             DTPExamStart.Value = ConfigManager.IsValidData(ExamStartTime) ? ExamStartTime : DateTime.Now;
             DTPExamEnd.Value = ConfigManager.IsValidData(ExamEndTime) ? ExamEndTime : DateTime.Now;
-            CheckBoxEnableVDM.Checked = FeatureVDMEnabled;
             CheckBoxEnableMO.Checked = FeatureMOEnabled;
             CheckBoxEnableDragable.Checked = IsDragable;
             CheckBoxShowOnly.Checked = IsShowOnly;
@@ -417,12 +415,6 @@ namespace CEETimerCSharpWinForms.Forms
             ComboBoxShowOnly.SelectedValue = ShowOnlyIndex;
             ChangeFont(new Font(CountdownFont, CountdownFontStyle));
             ChangeWorkingStyle(FormMain.IsTopMost, WorkingArea.SetPPTService);
-
-            if (LaunchManager.CurrentWindowsVersion < 10)
-            {
-                CheckBoxEnableVDM.Enabled = CheckBoxEnableVDM.Checked = false;
-                CheckBoxEnableVDM.Text = $"此功能在当前系统上不可用";
-            }
 
             ComboBoxShowOnly.SelectedIndex = IsShowOnly ? ShowOnlyIndex : 0;
         }
@@ -619,7 +611,6 @@ namespace CEETimerCSharpWinForms.Forms
                     { "ExamStartTime", $"{DTPExamStart.Value:yyyyMMddHHmmss}" },
                     { "ExamEndTime", $"{DTPExamEnd.Value:yyyyMMddHHmmss}" },
                     { "TopMost", $"{CheckBoxSetTopMost.Checked}" },
-                    { "FeatureVDM", $"{CheckBoxEnableVDM.Checked}" },
                     { "FeatureMO", $"{CheckBoxEnableMO.Checked}" },
                     { "Font", $"{CountdownFont.Name}, {CountdownFont.Size}pt" },
                     { "FontStyle", $"{CountdownFontStyle}" },

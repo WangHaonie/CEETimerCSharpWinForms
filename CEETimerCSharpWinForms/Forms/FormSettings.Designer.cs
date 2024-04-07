@@ -91,10 +91,6 @@
             this.LabelFontInfo = new System.Windows.Forms.Label();
             this.LabelLine11 = new System.Windows.Forms.Label();
             this.TabPageTools = new System.Windows.Forms.TabPage();
-            this.GBoxVDM = new System.Windows.Forms.GroupBox();
-            this.CheckBoxEnableVDM = new System.Windows.Forms.CheckBox();
-            this.LabelLine2 = new System.Windows.Forms.Label();
-            this.LabelLine1 = new System.Windows.Forms.Label();
             this.GBoxRestart = new System.Windows.Forms.GroupBox();
             this.LabelLine10 = new System.Windows.Forms.Label();
             this.LabelLine9 = new System.Windows.Forms.Label();
@@ -116,7 +112,6 @@
             this.GBoxColors.SuspendLayout();
             this.GBoxChangeFont.SuspendLayout();
             this.TabPageTools.SuspendLayout();
-            this.GBoxVDM.SuspendLayout();
             this.GBoxRestart.SuspendLayout();
             this.GBoxSyncTime.SuspendLayout();
             this.SuspendLayout();
@@ -809,7 +804,6 @@
             // 
             // TabPageTools
             // 
-            this.TabPageTools.Controls.Add(this.GBoxVDM);
             this.TabPageTools.Controls.Add(this.GBoxRestart);
             this.TabPageTools.Controls.Add(this.GBoxSyncTime);
             this.TabPageTools.Location = new System.Drawing.Point(4, 24);
@@ -820,53 +814,12 @@
             this.TabPageTools.Text = "工具";
             this.TabPageTools.UseVisualStyleBackColor = true;
             // 
-            // GBoxVDM
-            // 
-            this.GBoxVDM.Controls.Add(this.CheckBoxEnableVDM);
-            this.GBoxVDM.Controls.Add(this.LabelLine2);
-            this.GBoxVDM.Controls.Add(this.LabelLine1);
-            this.GBoxVDM.Location = new System.Drawing.Point(7, 110);
-            this.GBoxVDM.Name = "GBoxVDM";
-            this.GBoxVDM.Size = new System.Drawing.Size(405, 78);
-            this.GBoxVDM.TabIndex = 0;
-            this.GBoxVDM.TabStop = false;
-            this.GBoxVDM.Text = "虚拟桌面支持";
-            // 
-            // CheckBoxEnableVDM
-            // 
-            this.CheckBoxEnableVDM.AutoSize = true;
-            this.CheckBoxEnableVDM.Location = new System.Drawing.Point(9, 52);
-            this.CheckBoxEnableVDM.Name = "CheckBoxEnableVDM";
-            this.CheckBoxEnableVDM.Size = new System.Drawing.Size(106, 19);
-            this.CheckBoxEnableVDM.TabIndex = 2;
-            this.CheckBoxEnableVDM.Text = "启用此功能(&V)";
-            this.CheckBoxEnableVDM.UseVisualStyleBackColor = true;
-            this.CheckBoxEnableVDM.CheckedChanged += new System.EventHandler(this.SettingsChanged);
-            // 
-            // LabelLine2
-            // 
-            this.LabelLine2.AutoSize = true;
-            this.LabelLine2.Location = new System.Drawing.Point(6, 34);
-            this.LabelLine2.Name = "LabelLine2";
-            this.LabelLine2.Size = new System.Drawing.Size(306, 15);
-            this.LabelLine2.TabIndex = 1;
-            this.LabelLine2.Text = "目前该功能在部分情况下可能会很快失效，请慎用。";
-            // 
-            // LabelLine1
-            // 
-            this.LabelLine1.AutoSize = true;
-            this.LabelLine1.Location = new System.Drawing.Point(6, 19);
-            this.LabelLine1.Name = "LabelLine1";
-            this.LabelLine1.Size = new System.Drawing.Size(402, 15);
-            this.LabelLine1.TabIndex = 0;
-            this.LabelLine1.Text = "跟随虚拟桌面的切换而移动窗口，仅适用于 Windows 10 以上的系统。";
-            // 
             // GBoxRestart
             // 
             this.GBoxRestart.Controls.Add(this.LabelLine10);
             this.GBoxRestart.Controls.Add(this.LabelLine9);
             this.GBoxRestart.Controls.Add(this.ButtonRestart);
-            this.GBoxRestart.Location = new System.Drawing.Point(7, 194);
+            this.GBoxRestart.Location = new System.Drawing.Point(7, 110);
             this.GBoxRestart.Name = "GBoxRestart";
             this.GBoxRestart.Size = new System.Drawing.Size(405, 85);
             this.GBoxRestart.TabIndex = 45;
@@ -974,8 +927,6 @@
             this.GBoxChangeFont.ResumeLayout(false);
             this.GBoxChangeFont.PerformLayout();
             this.TabPageTools.ResumeLayout(false);
-            this.GBoxVDM.ResumeLayout(false);
-            this.GBoxVDM.PerformLayout();
             this.GBoxRestart.ResumeLayout(false);
             this.GBoxRestart.PerformLayout();
             this.GBoxSyncTime.ResumeLayout(false);
@@ -1009,10 +960,6 @@
         private System.Windows.Forms.Label LabelLine7;
         private System.Windows.Forms.Label LabelLine6;
         private System.Windows.Forms.Label LabelLine5;
-        private System.Windows.Forms.GroupBox GBoxVDM;
-        private System.Windows.Forms.Label LabelLine1;
-        private System.Windows.Forms.CheckBox CheckBoxEnableVDM;
-        private System.Windows.Forms.Label LabelLine2;
         private System.Windows.Forms.CheckBox CheckBoxEnableMO;
         private System.Windows.Forms.TabPage TabPageDisplay;
         private System.Windows.Forms.GroupBox GBoxChangeFont;

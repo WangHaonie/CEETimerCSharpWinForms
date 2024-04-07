@@ -14,16 +14,6 @@ namespace CEETimerCSharpWinForms.Forms
         public static bool IsUniTopMost { get; private set; }
         public static bool IsTopMost { get; private set; }
 
-        private bool IsShowOnly;
-        private bool IsDragable;
-        private bool IsFeatureMOEnabled;
-        private bool IsFeatureVDMEnabled;
-        private bool IsMoving;
-        private bool IsShowPast;
-        private bool IsShowEnd;
-        private bool IsReady;
-        private bool IsRounding;
-        private bool IsPPTService;
         private Color Back1;
         private Color Back2;
         private Color Back3;
@@ -32,6 +22,13 @@ namespace CEETimerCSharpWinForms.Forms
         private Color Fore2;
         private Color Fore3;
         private Color Fore4;
+        private bool IsFeatureMOEnabled;
+        private bool IsShowOnly;
+        private bool IsDragable;
+        private bool IsShowEnd;
+        private bool IsShowPast;
+        private bool IsRounding;
+        private bool IsPPTService;
         private int ScreenIndex;
         private int PositionIndex;
         private int ShowOnlyIndex;
@@ -39,13 +36,15 @@ namespace CEETimerCSharpWinForms.Forms
         private DateTime ExamStartTime;
         private Font SelectedFont;
         private FontStyle SelectedFontStyle;
+        private string ExamName;
+
+        private bool IsMoving;
+        private bool IsReady;
+        private readonly FontConverter fontConverter = new();
         private Timer TimerCountdown;
         private Timer TimerLocationWatcher;
         private System.Threading.Timer TimerMORunner;
-        private System.Threading.Timer TimerVDMRunner;
         private Point LastLocation;
-        private readonly FontConverter fontConverter = new();
-        private string ExamName;
         private List<Form> Forms;
         private Rectangle SelectedScreen;
 
@@ -87,7 +86,6 @@ namespace CEETimerCSharpWinForms.Forms
 
             ExamName = ConfigManager.ReadConfig("ExamName");
             TopMost = IsTopMost = !bool.TryParse(ConfigManager.ReadConfig("TopMost"), out bool tmpa) || tmpa;
-            IsFeatureVDMEnabled = bool.TryParse(ConfigManager.ReadConfig("FeatureVDM"), out bool tmpb) && tmpb;
             IsFeatureMOEnabled = bool.TryParse(ConfigManager.ReadConfig("FeatureMO"), out bool tmpc) && tmpc;
             IsShowOnly = bool.TryParse(ConfigManager.ReadConfig("ShowOnly"), out bool tmpd) && tmpd;
             IsRounding = bool.TryParse(ConfigManager.ReadConfig("Rounding"), out bool tmpe) && tmpe;
@@ -116,7 +114,6 @@ namespace CEETimerCSharpWinForms.Forms
             IsShowPast = IsShowPast && IsShowEnd;
             IsRounding = IsRounding && IsShowOnly && ShowOnlyIndex == 0;
             IsUniTopMost = IsUniTopMost && TopMost;
-            IsFeatureVDMEnabled = IsFeatureVDMEnabled && LaunchManager.CurrentWindowsVersion >= 10;
             if (ScreenIndex < 0 || ScreenIndex > Screen.AllScreens.Length) ScreenIndex = 0;
             if (PositionIndex < 0 || PositionIndex > 8) PositionIndex = 0;
             if (ShowOnlyIndex > 3) ShowOnlyIndex = 0;
@@ -191,15 +188,11 @@ namespace CEETimerCSharpWinForms.Forms
             }
 
             TimerMORunner?.Dispose();
-            TimerVDMRunner?.Dispose();
 
             if (IsFeatureMOEnabled)
                 TimerMORunner = new System.Threading.Timer(MemoryManager.OptimizeMemory, null, TimeSpan.Zero, TimeSpan.FromMinutes(5));
-            if (IsFeatureVDMEnabled)
-                TimerVDMRunner = new System.Threading.Timer(DetectVirtualDesktop, null, TimeSpan.Zero, TimeSpan.FromSeconds(1));
 
             FormSettings.FeatureMOEnabled = IsFeatureMOEnabled;
-            FormSettings.FeatureVDMEnabled = IsFeatureVDMEnabled;
             FormSettings.TopMostChecked = TopMost;
             FormSettings.ExamStartTime = ExamStartTime;
             FormSettings.ExamEndTime = ExamEndTime;
@@ -400,50 +393,6 @@ namespace CEETimerCSharpWinForms.Forms
                 LabelCountdown.ForeColor = Fore4;
                 LabelCountdown.Text = "欢迎使用高考倒计时, 请右键点击此处到设置里添加考试信息";
             }
-        }
-
-        private void DetectVirtualDesktop(object state)
-        {
-            #region 来自网络
-            /* 
-
-            自动将窗口移动到当前虚拟桌面 (Windows 10 以上) 参考：
-
-            Virtual Desktop Switching in Windows 10 | Microsoft Learn
-            https://learn.microsoft.com/en-us/archive/blogs/winsdk/virtual-desktop-switching-in-windows-10
-
-            */
-
-            try
-            {
-                BeginInvoke(new Action(() =>
-                {
-                    try
-                    {
-                        using VirtualDesktopManager vdm = new();
-                        using NewWindow nw = new();
-                        Forms = GetCurrentForms();
-                        foreach (Form form in Forms)
-                        {
-                            if (!vdm.IsWindowOnCurrentVirtualDesktop(form.Handle))
-                            {
-                                nw.Show(null);
-                                vdm.MoveWindowToDesktop(form.Handle, vdm.GetWindowDesktopId(nw.Handle));
-                                form.Activate();
-                            }
-                        }
-                    }
-                    catch
-                    {
-                        // Form that is already visible cannot be displayed as a modal dialog box. Set the form's visible property to false before calling Show.
-                    }
-                }));
-            }
-            catch
-            {
-                // Invoke or BeginInvoke cannot be called on a control until the window handle has been created.
-            }
-            #endregion
         }
 
         private void ApplyLocation()
