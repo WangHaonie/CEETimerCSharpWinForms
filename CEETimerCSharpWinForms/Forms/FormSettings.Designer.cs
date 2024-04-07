@@ -58,7 +58,9 @@
             this.CheckBoxSetRounding = new System.Windows.Forms.CheckBox();
             this.CheckBoxShowOnly = new System.Windows.Forms.CheckBox();
             this.GBoxSetDragable = new System.Windows.Forms.GroupBox();
+            this.ComboBoxPosition = new System.Windows.Forms.ComboBox();
             this.CheckBoxEnableDragable = new System.Windows.Forms.CheckBox();
+            this.LabelScreensHint = new System.Windows.Forms.Label();
             this.LabelScreens = new System.Windows.Forms.Label();
             this.ComboBoxScreens = new System.Windows.Forms.ComboBox();
             this.TabPageStyle = new System.Windows.Forms.TabPage();
@@ -100,8 +102,6 @@
             this.LabelLine7 = new System.Windows.Forms.Label();
             this.LabelLine6 = new System.Windows.Forms.Label();
             this.LabelLine5 = new System.Windows.Forms.Label();
-            this.ComboBoxPosition = new System.Windows.Forms.ComboBox();
-            this.LabelScreensHint = new System.Windows.Forms.Label();
             this.TabControlMain.SuspendLayout();
             this.TabPageGeneral.SuspendLayout();
             this.GBoxStartup.SuspendLayout();
@@ -461,6 +461,18 @@
             this.GBoxSetDragable.TabStop = false;
             this.GBoxSetDragable.Text = "多显示器与拖动";
             // 
+            // ComboBoxPosition
+            // 
+            this.ComboBoxPosition.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ComboBoxPosition.Enabled = false;
+            this.ComboBoxPosition.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.ComboBoxPosition.Location = new System.Drawing.Point(256, 17);
+            this.ComboBoxPosition.Name = "ComboBoxPosition";
+            this.ComboBoxPosition.Size = new System.Drawing.Size(76, 23);
+            this.ComboBoxPosition.TabIndex = 7;
+            this.ComboBoxPosition.DropDown += new System.EventHandler(this.ComboBoxes_DropDown);
+            this.ComboBoxPosition.SelectedIndexChanged += new System.EventHandler(this.SettingsChanged);
+            // 
             // CheckBoxEnableDragable
             // 
             this.CheckBoxEnableDragable.AutoSize = true;
@@ -471,6 +483,15 @@
             this.CheckBoxEnableDragable.Text = "允许倒计时窗口被拖动(&D)";
             this.CheckBoxEnableDragable.UseVisualStyleBackColor = true;
             this.CheckBoxEnableDragable.CheckedChanged += new System.EventHandler(this.CheckBoxEnableDragable_CheckedChanged);
+            // 
+            // LabelScreensHint
+            // 
+            this.LabelScreensHint.AutoSize = true;
+            this.LabelScreensHint.Location = new System.Drawing.Point(234, 21);
+            this.LabelScreensHint.Name = "LabelScreensHint";
+            this.LabelScreensHint.Size = new System.Drawing.Size(20, 15);
+            this.LabelScreensHint.TabIndex = 6;
+            this.LabelScreensHint.Text = "的";
             // 
             // LabelScreens
             // 
@@ -909,32 +930,12 @@
             this.LabelLine5.TabIndex = 20;
             this.LabelLine5.Text = "通过运行系统命令将当前系统时间与网络同步以确保准确无误。";
             // 
-            // ComboBoxPosition
-            // 
-            this.ComboBoxPosition.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.ComboBoxPosition.Enabled = false;
-            this.ComboBoxPosition.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.ComboBoxPosition.Location = new System.Drawing.Point(256, 17);
-            this.ComboBoxPosition.Name = "ComboBoxPosition";
-            this.ComboBoxPosition.Size = new System.Drawing.Size(76, 23);
-            this.ComboBoxPosition.TabIndex = 7;
-            this.ComboBoxPosition.DropDown += new System.EventHandler(this.ComboBoxes_DropDown);
-            this.ComboBoxPosition.SelectedIndexChanged += new System.EventHandler(this.SettingsChanged);
-            // 
-            // LabelScreensHint
-            // 
-            this.LabelScreensHint.AutoSize = true;
-            this.LabelScreensHint.Location = new System.Drawing.Point(234, 21);
-            this.LabelScreensHint.Name = "LabelScreensHint";
-            this.LabelScreensHint.Size = new System.Drawing.Size(20, 15);
-            this.LabelScreensHint.TabIndex = 6;
-            this.LabelScreensHint.Text = "的";
-            // 
             // FormSettings
             // 
             this.AcceptButton = this.ButtonSave;
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.CancelButton = this.ButtonClose;
             this.ClientSize = new System.Drawing.Size(443, 360);
             this.Controls.Add(this.TabControlMain);
             this.Controls.Add(this.ButtonSave);
@@ -952,7 +953,6 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormSettings_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormSettings_FormClosed);
             this.Load += new System.EventHandler(this.FormSettings_Load);
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FormSettings_KeyDown);
             this.TabControlMain.ResumeLayout(false);
             this.TabPageGeneral.ResumeLayout(false);
             this.GBoxStartup.ResumeLayout(false);

@@ -96,14 +96,6 @@ namespace CEETimerCSharpWinForms.Forms
             ComboBoxPosition.ValueMember = "Value";
         }
 
-        private void FormSettings_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Escape)
-            {
-                Close();
-            }
-        }
-
         private void FormSettings_Load(object sender, EventArgs e)
         {
             TopMost = FormMain.IsUniTopMost;

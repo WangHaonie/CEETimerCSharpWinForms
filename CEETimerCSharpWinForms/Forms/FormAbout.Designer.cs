@@ -34,8 +34,8 @@
             this.LabelLicense = new System.Windows.Forms.Label();
             this.LableVersion = new System.Windows.Forms.Label();
             this.PanelMain = new System.Windows.Forms.Panel();
-            this.LinkGitHub = new System.Windows.Forms.LinkLabel();
             this.PBoxLogo = new System.Windows.Forms.PictureBox();
+            this.LinkGitHub = new System.Windows.Forms.LinkLabel();
             this.PanelMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PBoxLogo)).BeginInit();
             this.SuspendLayout();
@@ -108,6 +108,16 @@
             this.PanelMain.Size = new System.Drawing.Size(208, 94);
             this.PanelMain.TabIndex = 8;
             // 
+            // PBoxLogo
+            // 
+            this.PBoxLogo.Image = global::CEETimerCSharpWinForms.Properties.Resources.AppIcon_256;
+            this.PBoxLogo.Location = new System.Drawing.Point(6, 3);
+            this.PBoxLogo.Name = "PBoxLogo";
+            this.PBoxLogo.Size = new System.Drawing.Size(31, 31);
+            this.PBoxLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.PBoxLogo.TabIndex = 9;
+            this.PBoxLogo.TabStop = false;
+            // 
             // LinkGitHub
             // 
             this.LinkGitHub.ActiveLinkColor = System.Drawing.Color.Blue;
@@ -121,18 +131,9 @@
             this.LinkGitHub.VisitedLinkColor = System.Drawing.Color.Blue;
             this.LinkGitHub.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkGitHub_LinkClicked);
             // 
-            // PBoxLogo
-            // 
-            this.PBoxLogo.Image = global::CEETimerCSharpWinForms.Properties.Resources.AppIcon_256;
-            this.PBoxLogo.Location = new System.Drawing.Point(6, 3);
-            this.PBoxLogo.Name = "PBoxLogo";
-            this.PBoxLogo.Size = new System.Drawing.Size(31, 31);
-            this.PBoxLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.PBoxLogo.TabIndex = 9;
-            this.PBoxLogo.TabStop = false;
-            // 
             // FormAbout
             // 
+            this.AcceptButton = this.ButtonClose;
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoSize = true;
