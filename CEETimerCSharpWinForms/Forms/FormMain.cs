@@ -38,14 +38,13 @@ namespace CEETimerCSharpWinForms.Forms
         private FontStyle SelectedFontStyle;
         private string ExamName;
 
-        private bool IsMoving;
+        private bool IsReadyToMove;
         private bool IsReady;
         private readonly FontConverter fontConverter = new();
         private Timer TimerCountdown;
-        private Timer TimerLocationWatcher;
         private System.Threading.Timer TimerMORunner;
         private Point LastLocation;
-        private List<Form> Forms;
+        private Point LastMouseLocation;
         private Rectangle SelectedScreen;
 
         public FormMain()
@@ -69,15 +68,6 @@ namespace CEETimerCSharpWinForms.Forms
 
             TimerCountdown.Tick += StartCountdown;
             TimerCountdown.Start();
-
-            TimerLocationWatcher = new Timer()
-            {
-                Interval = 3000
-            };
-
-            TimerLocationWatcher.Tick += TimerLocationWatcher_Tick;
-            TimerLocationWatcher.Start();
-            LastLocation = Location;
         }
 
         private void RefreshSettings(object sender, EventArgs e)
@@ -162,15 +152,16 @@ namespace CEETimerCSharpWinForms.Forms
 
             ConfigManager.MountConfig(false);
 
-            LocationChanged -= Form_LocationChanged;
-            LabelCountdown.MouseDown -= Drag_MouseDown;
+            LabelCountdown.MouseDown -= LabelCountdown_MouseDown;
+            LabelCountdown.MouseMove -= LabelCountdown_MouseMove;
+            LabelCountdown.MouseUp -= LabelCountdown_MouseUp;
 
             if (IsDragable)
             {
-                LocationChanged += Form_LocationChanged;
-                LabelCountdown.MouseDown += Drag_MouseDown;
+                LabelCountdown.MouseDown += LabelCountdown_MouseDown;
+                LabelCountdown.MouseMove += LabelCountdown_MouseMove;
+                LabelCountdown.MouseUp += LabelCountdown_MouseUp;
                 Location = new Point(x, y);
-                SaveLocation(new Point(Location.X, Location.Y));
             }
             else
             {
@@ -180,8 +171,8 @@ namespace CEETimerCSharpWinForms.Forms
             ApplyLocation();
             CompatibleWithPPTService();
 
-            Forms = GetCurrentForms();
-            foreach (Form form in Forms)
+            var OpeningForms = Application.OpenForms.Cast<Form>().ToList();
+            foreach (Form form in OpeningForms)
             {
                 if (form == this) continue;
                 form.TopMost = IsUniTopMost;
@@ -218,51 +209,54 @@ namespace CEETimerCSharpWinForms.Forms
             FormSettings.Fore4 = Fore4;
         }
 
-        private void LableCountdown_TextChanged(object sender, EventArgs e)
-        {
-            ApplyLocation();
-            KeepOnScreen();
-        }
+        #region 来自网络
+        /*
+        
+        无边框窗口的拖动 参考：
 
-        private void TimerLocationWatcher_Tick(object sender, EventArgs e)
-        {
-            TimerLocationWatcher.Stop();
+        C#创建无边框可拖动窗口 - 掘金
+        https://juejin.cn/post/6989144829607280648
 
-            if (LastLocation == Location && IsMoving)
-            {
-                SaveLocation(Location);
-                IsMoving = false;
-            }
-            else
-            {
-                TimerLocationWatcher.Start();
-            }
-        }
-
-        private void Drag_MouseDown(object sender, MouseEventArgs e)
+         */
+        private void LabelCountdown_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
-                WindowsAPI.ReleaseCapture();
-                WindowsAPI.SendMessage(Handle, 0xA1, 0x2, 0);
+                IsReadyToMove = true;
+                Cursor = Cursors.SizeAll;
+                LastMouseLocation = e.Location;
+                LastLocation = Location;
             }
         }
 
-        private void Form_LocationChanged(object sender, EventArgs e)
+        private void LabelCountdown_MouseMove(object sender, MouseEventArgs e)
         {
-            KeepOnScreen();
-            CompatibleWithPPTService();
-
-            if (IsMoving && IsDragable)
+            if (IsReadyToMove)
             {
-                LastLocation = Location;
+                Location = new Point(MousePosition.X - LastMouseLocation.X, MousePosition.Y - LastMouseLocation.Y);
             }
-            else
+        }
+
+        private void LabelCountdown_MouseUp(object sender, MouseEventArgs e)
+        {
+            IsReadyToMove = false;
+            Cursor = Cursors.Default;
+
+            if (LastLocation != Location)
             {
-                IsMoving = true;
-                TimerLocationWatcher.Stop();
-                LastLocation = Location;
-                TimerLocationWatcher.Start();
+                KeepOnScreen();
+                CompatibleWithPPTService();
+                SaveLocation(Location);
+            }
+        }
+        #endregion
+
+        private void LableCountdown_TextChanged(object sender, EventArgs e)
+        {
+            if (!IsReadyToMove)
+            {
+                ApplyLocation();
+                KeepOnScreen();
             }
         }
 
@@ -291,11 +285,6 @@ namespace CEETimerCSharpWinForms.Forms
             {
                 e.Cancel = true;
             }
-        }
-
-        private List<Form> GetCurrentForms()
-        {
-            return Application.OpenForms.Cast<Form>().ToList();
         }
 
         private void StartCountdown(object sender, EventArgs e)
@@ -397,7 +386,7 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void ApplyLocation()
         {
-            if (IsDragable == false)
+            if (!IsDragable)
             {
                 var Position = new Point();
 
@@ -452,14 +441,10 @@ namespace CEETimerCSharpWinForms.Forms
         {
             var ValidArea = Screen.GetWorkingArea(this);
 
-            if (Left < ValidArea.Left)
-                Left = ValidArea.Left;
-            if (Top < ValidArea.Top)
-                Top = ValidArea.Top;
-            if (Right > ValidArea.Right)
-                Left = ValidArea.Right - Width;
-            if (Bottom > ValidArea.Bottom)
-                Top = ValidArea.Bottom - Height;
+            if (Left < ValidArea.Left) Left = ValidArea.Left;
+            if (Top < ValidArea.Top) Top = ValidArea.Top;
+            if (Right > ValidArea.Right) Left = ValidArea.Right - Width;
+            if (Bottom > ValidArea.Bottom) Top = ValidArea.Bottom - Height;
         }
 
         private void SaveLocation(Point NewLocation)
