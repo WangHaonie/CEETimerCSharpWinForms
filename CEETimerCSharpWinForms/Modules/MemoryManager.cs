@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 
 namespace CEETimerCSharpWinForms.Modules
 {
@@ -23,7 +24,7 @@ namespace CEETimerCSharpWinForms.Modules
 
                 if (MemoryUsage > 9437184) // 9 MB
                 {
-                    throw new System.Exception();
+                    throw new Exception();
                 }
             }
             catch
