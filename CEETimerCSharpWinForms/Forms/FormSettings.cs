@@ -435,28 +435,28 @@ namespace CEETimerCSharpWinForms.Forms
 
             if (DTPExamEnd.Enabled)
             {
-                if (DTPExamStart.Value >= DTPExamEnd.Value)
+                if (DTPExamEnd.Value <= DTPExamStart.Value)
                 {
                     TabControlMain.SelectedTab = TabPageGeneral;
-                    MessageX.Popup("考试开始时间必须在结束时间之前！", MessageLevel.Error);
+                    MessageX.Popup("考试结束时间必须在开始时间之后！", MessageLevel.Error);
                     return false;
                 }
                 else if (ExamTimeSpan.TotalDays > 4)
                 {
-                    TimeMsg = $"{ExamTimeSpan.TotalDays:0.0} 天";
+                    TimeMsg = $"{ExamTimeSpan.TotalDays:0} 天";
                 }
                 else if (ExamTimeSpan.TotalMinutes < 40 && ExamTimeSpan.TotalSeconds > 60)
                 {
-                    TimeMsg = $"{ExamTimeSpan.TotalMinutes:0.0} 分钟";
+                    TimeMsg = $"{ExamTimeSpan.TotalMinutes:0} 分钟";
                 }
                 else if (ExamTimeSpan.TotalSeconds < 60)
                 {
-                    TimeMsg = $"{ExamTimeSpan.TotalSeconds:0.0} 秒";
+                    TimeMsg = $"{ExamTimeSpan.TotalSeconds:0} 秒";
                 }
 
                 if (!string.IsNullOrEmpty(TimeMsg))
                 {
-                    UniMsg = $"检测到设置的考试时长太长或太短！\n\n当前考试时长: {TimeMsg}。\n\n如果你确定当前设置的是正确的考试时间，请点击确定，否则请点击取消。";
+                    UniMsg = $"检测到设置的考试时间太长或太短！\n\n当前考试时长: {TimeMsg}。\n\n如果你确认当前设置的是正确的考试时间，请点击确定，否则请点击取消。";
                 }
 
                 if (!string.IsNullOrEmpty(UniMsg))
