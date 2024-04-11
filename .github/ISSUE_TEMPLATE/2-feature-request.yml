@@ -1,0 +1,36 @@
+name: ✨ 功能建议
+description: 您希望我们可以添加的功能
+title: "✨ [New] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢您致力于帮助本程序变得更实用！
+
+  - type: checkboxes
+    id: verify
+    attributes:
+      label: ⭕ 确认功能
+      description: 请根据真实情况勾选下列选项以确认是否添加此功能
+      options:
+        - label: 我正在使用的是最新版本
+          required: true
+        - label: 我确定我建议的功能没有重复
+          required: true
+
+  - type: textarea
+    id: suggest
+    attributes:
+      label: ⭕ 功能描述
+      description: 请详细说明有关该功能的描述，以及为什么要添加此功能
+    validations:
+      required: true
+
+  - type: textarea
+    id: details
+    attributes:
+      label: 🌈 可能的实现方法 (选填)
+      description: 请详细说明实现此功能的大致方法，内容可以是文字描述或者是相关代码
+    validations:
+      required: false

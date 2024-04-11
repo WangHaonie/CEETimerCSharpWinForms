@@ -1,0 +1,58 @@
+name: 🪲 问题反馈
+description: 报告您在使用本程序过程中遇到的问题
+title: "🪲 [Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢您抽出宝贵的时间来填写此问题报告！
+
+  - type: checkboxes
+    id: verify
+    attributes:
+      label: ⭕ 确认问题
+      description: 请根据真实情况勾选下列选项以确认是否真的出现了问题
+      options:
+        - label: 我正在使用的是最新版本
+          required: true
+        - label: 本程序是在 GitHub 下载的，而不是在其他网站或渠道
+          required: true
+        - label: 我没有更改过程序的配置文件
+          required: true
+        - label: 我没有在程序的安装目录修改、删除了某些必要文件或更改了它们的访问权限
+          required: true
+
+  - type: textarea
+    id: report
+    attributes:
+      label: ⭕ 问题描述
+      description: 请详细说明该问题是怎样发生的
+    validations:
+      required: true
+
+  - type: textarea
+    id: details
+    attributes:
+      label: 🌈 错误详情 (选填)
+      description: 如果在发生该错误的时候弹出了 .NET 的错误提示框，请展开详细信息并将错误详情粘贴到此处
+      placeholder: "也就是大概长这个样子的内容: 
+See the end of this message for details on invoking 
+just-in-time (JIT) debugging instead of this dialog box.
+
+************** Exception Text **************
+System.....Exception: ...
+   at ...
+   at ...
+   at ...
+   at ..."
+    validations:
+      required: false
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: 🌈 可能的解决方法 (选填)
+      description: 请详细说明可能会解决此问题的方法，内容可以是文字描述或者是相关代码
+    validations:
+      required: false
