@@ -69,5 +69,10 @@ namespace CEETimerCSharpWinForms.Forms
         {
             Process.Start("https://github.com/WangHaonie/CEETimerCSharpWinForms");
         }
+
+        private void LinkFeedback_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start("https://github.com/WangHaonie/CEETimerCSharpWinForms/issues/new/choose");
+        }
     }
 }

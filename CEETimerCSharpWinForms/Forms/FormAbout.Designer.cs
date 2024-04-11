@@ -34,8 +34,9 @@
             this.LabelLicense = new System.Windows.Forms.Label();
             this.LableVersion = new System.Windows.Forms.Label();
             this.PanelMain = new System.Windows.Forms.Panel();
-            this.PBoxLogo = new System.Windows.Forms.PictureBox();
             this.LinkGitHub = new System.Windows.Forms.LinkLabel();
+            this.LinkFeedback = new System.Windows.Forms.LinkLabel();
+            this.PBoxLogo = new System.Windows.Forms.PictureBox();
             this.PanelMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PBoxLogo)).BeginInit();
             this.SuspendLayout();
@@ -96,6 +97,7 @@
             // 
             this.PanelMain.AutoSize = true;
             this.PanelMain.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.PanelMain.Controls.Add(this.LinkFeedback);
             this.PanelMain.Controls.Add(this.PBoxLogo);
             this.PanelMain.Controls.Add(this.LinkGitHub);
             this.PanelMain.Controls.Add(this.LabelInfo);
@@ -107,16 +109,6 @@
             this.PanelMain.Name = "PanelMain";
             this.PanelMain.Size = new System.Drawing.Size(208, 94);
             this.PanelMain.TabIndex = 8;
-            // 
-            // PBoxLogo
-            // 
-            this.PBoxLogo.Image = global::CEETimerCSharpWinForms.Properties.Resources.AppIcon_256;
-            this.PBoxLogo.Location = new System.Drawing.Point(6, 3);
-            this.PBoxLogo.Name = "PBoxLogo";
-            this.PBoxLogo.Size = new System.Drawing.Size(31, 31);
-            this.PBoxLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.PBoxLogo.TabIndex = 9;
-            this.PBoxLogo.TabStop = false;
             // 
             // LinkGitHub
             // 
@@ -130,6 +122,29 @@
             this.LinkGitHub.Text = "GitHub";
             this.LinkGitHub.VisitedLinkColor = System.Drawing.Color.Blue;
             this.LinkGitHub.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkGitHub_LinkClicked);
+            // 
+            // LinkFeedback
+            // 
+            this.LinkFeedback.ActiveLinkColor = System.Drawing.Color.Blue;
+            this.LinkFeedback.AutoSize = true;
+            this.LinkFeedback.Location = new System.Drawing.Point(56, 71);
+            this.LinkFeedback.Name = "LinkFeedback";
+            this.LinkFeedback.Size = new System.Drawing.Size(33, 15);
+            this.LinkFeedback.TabIndex = 10;
+            this.LinkFeedback.TabStop = true;
+            this.LinkFeedback.Text = "反馈";
+            this.LinkFeedback.VisitedLinkColor = System.Drawing.Color.Blue;
+            this.LinkFeedback.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkFeedback_LinkClicked);
+            // 
+            // PBoxLogo
+            // 
+            this.PBoxLogo.Image = global::CEETimerCSharpWinForms.Properties.Resources.AppIcon_256;
+            this.PBoxLogo.Location = new System.Drawing.Point(6, 3);
+            this.PBoxLogo.Name = "PBoxLogo";
+            this.PBoxLogo.Size = new System.Drawing.Size(31, 31);
+            this.PBoxLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.PBoxLogo.TabIndex = 9;
+            this.PBoxLogo.TabStop = false;
             // 
             // FormAbout
             // 
@@ -167,5 +182,6 @@
         private System.Windows.Forms.Panel PanelMain;
         private System.Windows.Forms.LinkLabel LinkGitHub;
         private System.Windows.Forms.PictureBox PBoxLogo;
+        private System.Windows.Forms.LinkLabel LinkFeedback;
     }
 }
