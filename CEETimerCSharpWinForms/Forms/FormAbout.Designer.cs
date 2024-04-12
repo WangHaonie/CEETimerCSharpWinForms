@@ -34,9 +34,9 @@
             this.LabelLicense = new System.Windows.Forms.Label();
             this.LableVersion = new System.Windows.Forms.Label();
             this.PanelMain = new System.Windows.Forms.Panel();
-            this.LinkGitHub = new System.Windows.Forms.LinkLabel();
             this.LinkFeedback = new System.Windows.Forms.LinkLabel();
             this.PBoxLogo = new System.Windows.Forms.PictureBox();
+            this.LinkGitHub = new System.Windows.Forms.LinkLabel();
             this.PanelMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PBoxLogo)).BeginInit();
             this.SuspendLayout();
@@ -47,9 +47,8 @@
             this.LabelInfo.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LabelInfo.Location = new System.Drawing.Point(39, 3);
             this.LabelInfo.Name = "LabelInfo";
-            this.LabelInfo.Size = new System.Drawing.Size(72, 15);
+            this.LabelInfo.Size = new System.Drawing.Size(0, 15);
             this.LabelInfo.TabIndex = 1;
-            this.LabelInfo.Text = "高考倒计时";
             // 
             // LabelAuthor
             // 
@@ -110,19 +109,6 @@
             this.PanelMain.Size = new System.Drawing.Size(208, 94);
             this.PanelMain.TabIndex = 8;
             // 
-            // LinkGitHub
-            // 
-            this.LinkGitHub.ActiveLinkColor = System.Drawing.Color.Blue;
-            this.LinkGitHub.AutoSize = true;
-            this.LinkGitHub.Location = new System.Drawing.Point(5, 71);
-            this.LinkGitHub.Name = "LinkGitHub";
-            this.LinkGitHub.Size = new System.Drawing.Size(45, 15);
-            this.LinkGitHub.TabIndex = 8;
-            this.LinkGitHub.TabStop = true;
-            this.LinkGitHub.Text = "GitHub";
-            this.LinkGitHub.VisitedLinkColor = System.Drawing.Color.Blue;
-            this.LinkGitHub.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkGitHub_LinkClicked);
-            // 
             // LinkFeedback
             // 
             this.LinkFeedback.ActiveLinkColor = System.Drawing.Color.Blue;
@@ -145,6 +131,19 @@
             this.PBoxLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.PBoxLogo.TabIndex = 9;
             this.PBoxLogo.TabStop = false;
+            // 
+            // LinkGitHub
+            // 
+            this.LinkGitHub.ActiveLinkColor = System.Drawing.Color.Blue;
+            this.LinkGitHub.AutoSize = true;
+            this.LinkGitHub.Location = new System.Drawing.Point(5, 71);
+            this.LinkGitHub.Name = "LinkGitHub";
+            this.LinkGitHub.Size = new System.Drawing.Size(45, 15);
+            this.LinkGitHub.TabIndex = 8;
+            this.LinkGitHub.TabStop = true;
+            this.LinkGitHub.Text = "GitHub";
+            this.LinkGitHub.VisitedLinkColor = System.Drawing.Color.Blue;
+            this.LinkGitHub.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkGitHub_LinkClicked);
             // 
             // FormAbout
             // 

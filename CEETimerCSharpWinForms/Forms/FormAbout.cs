@@ -21,6 +21,7 @@ namespace CEETimerCSharpWinForms.Forms
             TopMost = FormMain.IsUniTopMost;
             LableVersion.Text = LaunchManager.AppVersionText;
             LabelAuthor.Text = LaunchManager.CopyrightInfo;
+            LabelInfo.Text = LaunchManager.AppName;
 
             CheckUpdateTip = new()
             {
