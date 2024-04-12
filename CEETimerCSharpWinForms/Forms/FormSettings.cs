@@ -23,6 +23,7 @@ namespace CEETimerCSharpWinForms.Forms
             Funny, SyncTime, SetPPTService, LastColor, SelectedColor, ColorToAll, DefaultColor
         }
 
+        public static event EventHandler ConfigChanged;
         public static Color Fore1 { get; set; }
         public static Color Fore2 { get; set; }
         public static Color Fore3 { get; set; }
@@ -47,9 +48,6 @@ namespace CEETimerCSharpWinForms.Forms
         public static Font CountdownFont { get; set; }
         public static FontStyle CountdownFontStyle { get; set; }
         public static string ExamName { get; set; }
-
-        public delegate void ConfigChangedHandler(object sender, EventArgs e);
-        public static ConfigChangedHandler ConfigChanged;
 
         private bool IsSyncingTime;
         private bool IsSettingsChanged;
@@ -254,7 +252,7 @@ namespace CEETimerCSharpWinForms.Forms
             {
                 IsSettingsChanged = false;
                 SaveSettings();
-                OnConfigChanged();
+                ConfigChanged?.Invoke(this, EventArgs.Empty);
                 Close();
             }
         }
@@ -637,11 +635,6 @@ namespace CEETimerCSharpWinForms.Forms
             catch
             {
             }
-        }
-
-        protected virtual void OnConfigChanged()
-        {
-            ConfigChanged?.Invoke(this, EventArgs.Empty);
         }
 
         #region
