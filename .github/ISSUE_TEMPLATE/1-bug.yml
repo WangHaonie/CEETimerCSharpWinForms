@@ -1,7 +1,7 @@
 name: 🪲 问题反馈
 description: 报告您在使用本程序过程中遇到的问题
 title: "🪲 [Bug] "
-labels: ["bug"]
+labels: ["Bug"]
 body:
   - type: markdown
     attributes:

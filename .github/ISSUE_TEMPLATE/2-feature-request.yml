@@ -1,7 +1,7 @@
 name: ✨ 功能建议
 description: 您希望我们可以添加的功能
 title: "✨ [New] "
-labels: ["enhancement"]
+labels: ["新功能"]
 body:
   - type: markdown
     attributes:
