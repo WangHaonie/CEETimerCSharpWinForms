@@ -35,8 +35,8 @@
             this.LableVersion = new System.Windows.Forms.Label();
             this.PanelMain = new System.Windows.Forms.Panel();
             this.LinkFeedback = new System.Windows.Forms.LinkLabel();
-            this.PBoxLogo = new System.Windows.Forms.PictureBox();
             this.LinkGitHub = new System.Windows.Forms.LinkLabel();
+            this.PBoxLogo = new System.Windows.Forms.PictureBox();
             this.PanelMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PBoxLogo)).BeginInit();
             this.SuspendLayout();
@@ -113,7 +113,7 @@
             // 
             this.LinkFeedback.ActiveLinkColor = System.Drawing.Color.Blue;
             this.LinkFeedback.AutoSize = true;
-            this.LinkFeedback.Location = new System.Drawing.Point(56, 71);
+            this.LinkFeedback.Location = new System.Drawing.Point(49, 71);
             this.LinkFeedback.Name = "LinkFeedback";
             this.LinkFeedback.Size = new System.Drawing.Size(33, 15);
             this.LinkFeedback.TabIndex = 10;
@@ -121,16 +121,6 @@
             this.LinkFeedback.Text = "反馈";
             this.LinkFeedback.VisitedLinkColor = System.Drawing.Color.Blue;
             this.LinkFeedback.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkFeedback_LinkClicked);
-            // 
-            // PBoxLogo
-            // 
-            this.PBoxLogo.Image = global::CEETimerCSharpWinForms.Properties.Resources.AppIcon_256;
-            this.PBoxLogo.Location = new System.Drawing.Point(6, 3);
-            this.PBoxLogo.Name = "PBoxLogo";
-            this.PBoxLogo.Size = new System.Drawing.Size(31, 31);
-            this.PBoxLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.PBoxLogo.TabIndex = 9;
-            this.PBoxLogo.TabStop = false;
             // 
             // LinkGitHub
             // 
@@ -144,6 +134,16 @@
             this.LinkGitHub.Text = "GitHub";
             this.LinkGitHub.VisitedLinkColor = System.Drawing.Color.Blue;
             this.LinkGitHub.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkGitHub_LinkClicked);
+            // 
+            // PBoxLogo
+            // 
+            this.PBoxLogo.Image = global::CEETimerCSharpWinForms.Properties.Resources.AppIcon_256;
+            this.PBoxLogo.Location = new System.Drawing.Point(6, 3);
+            this.PBoxLogo.Name = "PBoxLogo";
+            this.PBoxLogo.Size = new System.Drawing.Size(31, 31);
+            this.PBoxLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.PBoxLogo.TabIndex = 9;
+            this.PBoxLogo.TabStop = false;
             // 
             // FormAbout
             // 
