@@ -40,6 +40,7 @@ namespace CEETimerCSharpWinForms.Forms
 
         private bool IsReadyToMove;
         private bool IsReady;
+        private readonly int PptsvcThreshold = 1;
         private readonly FontConverter fontConverter = new();
         private Timer TimerCountdown;
         private System.Threading.Timer TimerMORunner;
@@ -394,7 +395,7 @@ namespace CEETimerCSharpWinForms.Forms
                 switch (PositionIndex)
                 {
                     case 0:
-                        Position = SelectedScreen.Location;
+                        Position = IsPPTService ? new Point(SelectedScreen.Location.X + PptsvcThreshold, SelectedScreen.Location.Y) : SelectedScreen.Location;
                         break;
                     case 1:
                         Position = new Point(SelectedScreen.Left, SelectedScreen.Top + SelectedScreen.Height / 2 - Height / 2);
@@ -433,7 +434,7 @@ namespace CEETimerCSharpWinForms.Forms
                 var ValidArea = Screen.GetWorkingArea(this);
                 if (Left == ValidArea.Left && Top == ValidArea.Top)
                 {
-                    Left = ValidArea.Left + 1;
+                    Left = ValidArea.Left + PptsvcThreshold;
                 }
             }
         }
