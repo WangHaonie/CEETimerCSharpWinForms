@@ -466,7 +466,7 @@
             this.ComboBoxPosition.Size = new System.Drawing.Size(76, 23);
             this.ComboBoxPosition.TabIndex = 7;
             this.ComboBoxPosition.DropDown += new System.EventHandler(this.ComboBoxes_DropDown);
-            this.ComboBoxPosition.SelectedIndexChanged += new System.EventHandler(this.SettingsChanged);
+            this.ComboBoxPosition.SelectedIndexChanged += new System.EventHandler(this.ChangePptsvcCtrlStyle);
             // 
             // CheckBoxEnableDragable
             // 

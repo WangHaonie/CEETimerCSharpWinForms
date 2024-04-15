@@ -109,6 +109,7 @@ namespace CEETimerCSharpWinForms.Forms
             if (ShowOnlyIndex > 3) ShowOnlyIndex = 0;
             if (ExamName.Length > 15 || ExamName.Length < 2) ExamName = "";
             IsReady = !string.IsNullOrWhiteSpace(ExamName) && ConfigManager.IsValidData(ExamStartTime) && ConfigManager.IsValidData(ExamEndTime) && (ExamEndTime > ExamStartTime || !IsShowEnd);
+            IsPPTService = IsPPTService && ((TopMost && ShowOnlyIndex == 0) || IsDragable);
 
             if (!ColorHelper.IsNiceContrast(Fore1, Back1))
             {

@@ -75,7 +75,7 @@ namespace CEETimerCSharpWinForms.Forms
             ComboBoxShowOnly.DisplayMember = "Item";
             ComboBoxShowOnly.ValueMember = "Value";
 
-            List<ComboSource> Positions = 
+            List<ComboSource> Positions =
             [
                 new ComboSource { Item = "左上角", Value = 0 },
                 new ComboSource { Item = "左部中央", Value = 1 },
@@ -132,7 +132,7 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void CheckBoxSetTopMost_CheckedChanged(object sender, EventArgs e)
         {
-            SettingsChanged(sender, e);
+            ChangePptsvcCtrlStyle(sender, e);
             CheckBoxSetUniTopMost.Enabled = CheckBoxSetTopMost.Checked;
 
             if (CheckBoxSetUniTopMost.Checked && !CheckBoxSetTopMost.Checked)
@@ -140,8 +140,6 @@ namespace CEETimerCSharpWinForms.Forms
                 CheckBoxSetUniTopMost.Checked = false;
                 CheckBoxSetUniTopMost.Enabled = false;
             }
-
-            ChangeWorkingStyle(CheckBoxSetTopMost.Checked, WorkingArea.SetPPTService);
         }
 
         private void CheckBoxShowEnd_CheckedChanged(object sender, EventArgs e)
@@ -279,7 +277,7 @@ namespace CEETimerCSharpWinForms.Forms
              
              */
 
-            var ComboBoxes = (ComboBox)sender; 
+            var ComboBoxes = (ComboBox)sender;
             int MaxWidth = 0;
 
             foreach (var Item in ComboBoxes.Items)
@@ -340,7 +338,7 @@ namespace CEETimerCSharpWinForms.Forms
             ButtonRestart.Click += ButtonRestart_Click;
         }
 
-        private void ChangeWorkingStyle(bool IsWorking, WorkingArea Where)
+        private void ChangeWorkingStyle(bool IsWorking, WorkingArea Where, int SubCase = 0)
         {
             switch (Where)
             {
@@ -359,8 +357,30 @@ namespace CEETimerCSharpWinForms.Forms
                 case WorkingArea.SetPPTService:
                     CheckBoxSwPptSvc.Enabled = IsWorking;
                     CheckBoxSwPptSvc.Checked = IsWorking && IsPPTService;
-                    CheckBoxSwPptSvc.Text = IsWorking ? "启用此功能(&X)" : "此功能暂不可用，因为倒计时没有顶置，不会引起冲突";
+                    CheckBoxSwPptSvc.Text = IsWorking ? "启用此功能(&X)" : $"此项暂不可用，因为倒计时没有{(SubCase == 0 ? "顶置" : "在左上角")}，不会引起冲突";
                     break;
+            }
+        }
+
+        private void ChangePptsvcCtrlStyle(object sender, EventArgs e)
+        {
+            SettingsChanged(sender, e);
+
+            var a = CheckBoxSetTopMost.Checked;
+            var b = ComboBoxPosition.SelectedIndex;
+            var c = CheckBoxEnableDragable.Checked;
+
+            if ((a && b == 0) || c)
+            {
+                ChangeWorkingStyle(true, WorkingArea.SetPPTService);
+            }
+            else if ((!a && b == 0) || (!a && b != 0))
+            {
+                ChangeWorkingStyle(false, WorkingArea.SetPPTService);
+            }
+            else
+            {
+                ChangeWorkingStyle(false, WorkingArea.SetPPTService, 1);
             }
         }
 
@@ -412,7 +432,7 @@ namespace CEETimerCSharpWinForms.Forms
             ComboBoxPosition.SelectedValue = PositionIndex;
             ComboBoxShowOnly.SelectedValue = ShowOnlyIndex;
             ChangeFont(new Font(CountdownFont, CountdownFontStyle));
-            ChangeWorkingStyle(FormMain.IsTopMost, WorkingArea.SetPPTService);
+            ChangePptsvcCtrlStyle(null, EventArgs.Empty);
 
             ComboBoxShowOnly.SelectedIndex = IsShowOnly ? ShowOnlyIndex : 0;
         }
