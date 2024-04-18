@@ -131,7 +131,10 @@ namespace CEETimerCSharpWinForms.Forms
                 Fore4 = Color.Black;
                 Back4 = Color.White;
             }
-            //Console.WriteLine("##########################");
+
+#if DEBUG
+            Console.WriteLine("##########################");
+#endif
 
             try
             {

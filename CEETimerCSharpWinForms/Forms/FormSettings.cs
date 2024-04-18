@@ -504,7 +504,10 @@ namespace CEETimerCSharpWinForms.Forms
             {
                 ColorCheckMsg = "4";
             }
-            //Console.WriteLine("##########################");
+
+#if DEBUG
+            Console.WriteLine("##########################");
+#endif
 
             if (!string.IsNullOrEmpty(ColorCheckMsg))
             {
