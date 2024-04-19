@@ -12,6 +12,8 @@ namespace CEETimerCSharpWinForms.Modules
 {
     public class LaunchManager
     {
+        public static bool IsAdmin { get; private set; } = false;
+
         public const string AppVersion = "3.0.1";
         public const string AppVersionText = $"版本 v{AppVersion} x64 (2024/04/07)";
         public const string InfoMsg = "提示 - 高考倒计时";
@@ -67,13 +69,14 @@ namespace CEETimerCSharpWinForms.Modules
 
                 if (!CurrentExecutableName.Equals(OriginalFileName, StringComparison.OrdinalIgnoreCase))
                 {
-                    MessageX.Popup($"为了您的使用体验，请不要更改程序文件名! 程序将在该对话框关闭后尝试自动恢复到原文件名，若自动恢复失败请手动改回。\n\n当前文件名：{CurrentExecutableName}\n原始文件名：{OriginalFileName}", MessageLevel.Error);
+                    MessageX.Popup($"为了您的使用体验，请不要更改程序文件名! 程序将在该消息框关闭后尝试自动恢复到原文件名，若自动恢复失败请手动改回。\n\n当前文件名：{CurrentExecutableName}\n原始文件名：{OriginalFileName}", MessageLevel.Error);
                     ProcessHelper.RunProcess("cmd.exe", $"/c ren \"{CurrentExecutable}\" {OriginalFileName} & start \"\" \"{CurrentExecutablePath}{OriginalFileName}\"");
                     Environment.Exit(4);
                 }
                 else
                 {
                     Task.Run(() => SimpleUpdateChecker.CheckUpdate(true, null));
+                    Task.Run(CheckAdmin);
                     Application.Run(new FormMain());
                 }
             }
@@ -91,6 +94,17 @@ namespace CEETimerCSharpWinForms.Modules
         public static void Shutdown()
         {
             ProcessHelper.RunProcess("cmd.exe", $"/c taskkill /f /fi \"PID eq {Process.GetCurrentProcess().Id}\" /im {CurrentExecutableName}");
+        }
+
+        public static void CheckAdmin()
+        {
+            Process AdminChecker = ProcessHelper.RunProcess("cmd.exe", "/c net session");
+            AdminChecker.WaitForExit();
+
+            if (AdminChecker.ExitCode == 0)
+            {
+                IsAdmin = true;
+            }
         }
     }
 }
