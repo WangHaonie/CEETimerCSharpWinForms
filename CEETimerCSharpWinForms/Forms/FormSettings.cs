@@ -318,7 +318,7 @@ namespace CEETimerCSharpWinForms.Forms
             }
             else if (IsSettingsChanged)
             {
-                if (MessageX.Popup("检测到设置被更改但没有被保存，是否立即进行保存？", MessageLevel.Warning, MessageBoxButtons.YesNo) == DialogResult.Yes)
+                if (MessageX.Popup("检测到设置被更改但没有被保存，是否立即进行保存？", MessageLevel.Warning, Buttons: MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
                     e.Cancel = true;
                     ButtonSave_Click(sender, e);
@@ -451,8 +451,7 @@ namespace CEETimerCSharpWinForms.Forms
 
             if (string.IsNullOrWhiteSpace(ExamName) || (ExamName.Length < 2) || (ExamName.Length > 15))
             {
-                TabControlMain.SelectedTab = TabPageGeneral;
-                MessageX.Popup("输入的考试名称有误！\n\n请检查输入的考试名称是否太长或太短！", MessageLevel.Error);
+                MessageX.Popup("输入的考试名称有误！\n\n请检查输入的考试名称是否太长或太短！", MessageLevel.Error, this, TabControlMain, TabPageGeneral);
                 return false;
             }
 
@@ -460,8 +459,7 @@ namespace CEETimerCSharpWinForms.Forms
             {
                 if (DTPExamEnd.Value <= DTPExamStart.Value)
                 {
-                    TabControlMain.SelectedTab = TabPageGeneral;
-                    MessageX.Popup("考试结束时间必须在开始时间之后！", MessageLevel.Error);
+                    MessageX.Popup("考试结束时间必须在开始时间之后！", MessageLevel.Error, this, TabControlMain, TabPageGeneral);
                     return false;
                 }
                 else if (ExamTimeSpan.TotalDays > 4)
@@ -484,8 +482,7 @@ namespace CEETimerCSharpWinForms.Forms
 
                 if (!string.IsNullOrEmpty(UniMsg))
                 {
-                    TabControlMain.SelectedTab = TabPageGeneral;
-                    if (MessageX.Popup(UniMsg, MessageLevel.Warning, MessageBoxButtons.OKCancel) == DialogResult.Cancel)
+                    if (MessageX.Popup(UniMsg, MessageLevel.Warning, this, TabControlMain, TabPageGeneral, MessageBoxButtons.OKCancel) == DialogResult.Cancel)
                     {
                         return false;
                     }
@@ -516,8 +513,7 @@ namespace CEETimerCSharpWinForms.Forms
 
             if (!string.IsNullOrEmpty(ColorCheckMsg))
             {
-                TabControlMain.SelectedTab = TabPageStyle;
-                MessageX.Popup($"第{ColorCheckMsg}组的颜色相似或对比度较低，将无法看清文字，请尝试更换其它背景颜色或文字颜色！", MessageLevel.Error);
+                MessageX.Popup($"第{ColorCheckMsg}组的颜色相似或对比度较低，将无法看清文字，请尝试更换其它背景颜色或文字颜色！", MessageLevel.Error, this, TabControlMain, TabPageStyle);
                 return false;
             }
 
@@ -528,9 +524,9 @@ namespace CEETimerCSharpWinForms.Forms
         {
             try
             {
-                if (!LaunchManager.IsAdmin) 
+                if (!LaunchManager.IsAdmin)
                     MessageX.Popup("检测到当前用户不具有管理员权限，运行该操作会发生错误。\n\n程序将在此消息框关闭后尝试弹出 UAC 提示框，前提要把系统的 UAC 设置为 \"仅当应用尝试更改我的计算机时通知我\" 或及以上，否则将无法进行授权。\n\n稍后若没有看见提示框，请更改 UAC 设置：Win+S 搜索 uac", MessageLevel.Warning, this);
-                
+
                 Process SyncTimeProcess = ProcessHelper.RunProcess("cmd.exe", "/c net stop w32time & sc config w32time start= auto & net start w32time && w32tm /config /manualpeerlist:ntp1.aliyun.com /syncfromflags:manual /reliable:YES /update && w32tm /resync && w32tm /resync", AdminRequired: true);
 
                 SyncTimeProcess.WaitForExit();
