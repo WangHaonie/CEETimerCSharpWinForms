@@ -10,7 +10,7 @@ namespace CEETimerCSharpWinForms.Modules
             {
                 FileName = ProcessPath,
                 Arguments = Args,
-                UseShellExecute = false,
+                UseShellExecute = AdminRequired,
                 CreateNoWindow = true,
                 WindowStyle = ProcessWindowStyle.Hidden,
                 RedirectStandardOutput = RedirectOutput,
