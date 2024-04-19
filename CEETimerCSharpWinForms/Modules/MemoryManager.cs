@@ -9,15 +9,7 @@ namespace CEETimerCSharpWinForms.Modules
         {
             try
             {
-                Process ProcessGetCurrentMemory = Process.Start(new ProcessStartInfo
-                {
-                    FileName = "powershell.exe",
-                    Arguments = $"-Command (Get-Counter \\\"\\Process({LaunchManager.OriginalFileName.Replace(".exe", "")})\\Working Set - Private\\\").CounterSamples.CookedValue",
-                    WindowStyle = ProcessWindowStyle.Hidden,
-                    CreateNoWindow = true,
-                    RedirectStandardOutput = true,
-                    UseShellExecute = false
-                });
+                Process ProcessGetCurrentMemory = ProcessHelper.RunProcess("powershell.exe", $"-Command (Get-Counter \\\"\\Process({LaunchManager.OriginalFileName.Replace(".exe", "")})\\Working Set - Private\\\").CounterSamples.CookedValue", RedirectOutput: true);
 
                 ProcessGetCurrentMemory.WaitForExit();
                 int MemoryUsage = int.Parse(ProcessGetCurrentMemory.StandardOutput.ReadToEnd().Trim());

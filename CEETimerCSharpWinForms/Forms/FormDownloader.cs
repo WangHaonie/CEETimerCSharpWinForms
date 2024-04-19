@@ -77,13 +77,7 @@ namespace CEETimerCSharpWinForms.Forms
                     ButtonRetry.Enabled = false;
 
                     await Task.Delay(1800);
-                    Process.Start(new ProcessStartInfo
-                    {
-                        FileName = "cmd.exe",
-                        Arguments = $"/c start \"\" \"{DownloadPath}\" /S",
-                        CreateNoWindow = true,
-                        WindowStyle = ProcessWindowStyle.Hidden
-                    });
+                    ProcessHelper.RunProcess("cmd.exe", $"/c start \"\" \"{DownloadPath}\" /S");
                     Close();
                     Environment.Exit(0);
                 }

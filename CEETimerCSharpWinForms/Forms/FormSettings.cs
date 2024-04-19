@@ -528,15 +528,7 @@ namespace CEETimerCSharpWinForms.Forms
         {
             try
             {
-                Process SyncTimeProcess = Process.Start(new ProcessStartInfo
-                {
-                    UseShellExecute = true,
-                    FileName = "cmd.exe",
-                    Arguments = "/c net stop w32time & sc config w32time start= auto & net start w32time && w32tm /config /manualpeerlist:ntp1.aliyun.com /syncfromflags:manual /reliable:YES /update && w32tm /resync && w32tm /resync",
-                    Verb = "runas",
-                    CreateNoWindow = true,
-                    WindowStyle = ProcessWindowStyle.Hidden
-                });
+                Process SyncTimeProcess = ProcessHelper.RunProcess("cmd.exe", "/c net stop w32time & sc config w32time start= auto & net start w32time && w32tm /config /manualpeerlist:ntp1.aliyun.com /syncfromflags:manual /reliable:YES /update && w32tm /resync && w32tm /resync", AdminRequired: true);
 
                 SyncTimeProcess.WaitForExit();
                 var ExitCode = SyncTimeProcess.ExitCode;
