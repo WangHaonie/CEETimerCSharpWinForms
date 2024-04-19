@@ -28,16 +28,15 @@ CEETimerCSharpWinForms，适用于 Windows 系统的高考倒计时，支持自�
 > v3.0.1，Windows 11，1920x1080，125% 缩放
 
 ![主窗口](./Screenshot.jpg)
-
-## 系统要求
-+ 适用于 Windows 7 及以上的 x64 系统；
-+ 安装了 .NET Framework 4.7.2 (点此[链接](https://dotnet.microsoft.com/zh-cn/download/dotnet-framework/thank-you/net472-offline-installer)下载)。
 ## 食用方法
+### 系统要求
++ 适用于 Windows 7 及以上的 x64 系统；
++ 安装了 [.NET Framework 4.7.2](https://dotnet.microsoft.com/zh-cn/download/dotnet-framework/thank-you/net472-offline-installer) 或更高版本。
 ### 下载安装
-+ 先安装 [.NET Framework 4.7.2](https://dotnet.microsoft.com/zh-cn/download/dotnet-framework/thank-you/net472-offline-installer) 运行库 (新版 Windows 10/11 可能内置了 .NET Framework 4.8 或更高版本，可以不用安装)
++ 先安装 [.NET Framework 4.7.2](https://dotnet.microsoft.com/zh-cn/download/dotnet-framework/thank-you/net472-offline-installer) (新版 Windows 10/11 可能内置了 .NET Framework 4.8 或更高版本，可以不用安装)
 + 到 [Releases](https://github.com/WangHaonie/CEETimerCSharpWinForms/releases/latest) 下载 CEETimerCSharpWinForms_X.X_x64_Setup.exe；
 + 按照提示安装就行；
-+ 右键倒计时会出现右键菜单。
++ 右键倒计时会出现右键菜单 (具体设置项说明请看[这里](#设置界面介绍))。
 ### 如何显示在所有虚拟桌面上
 + 本程序在 v3.0.1 移除了虚拟桌面功能 (Windows 10 及以上)，该功能可以在用户切换虚拟桌面的时候也把自身窗口移动到相应的虚拟桌面上，但由于该功能始终处于不稳定状态且系统早有相应的功能，故移除了此功能
 + 后续若实现该功能，可以使用组合键 Win+Tab 打开任务视图，右键本程序窗口，勾选 "在所有桌面上显示此窗口" 或 "在所有桌面上显示此应用的窗口" 即可，后者需在打开本程序2个或多个窗口后方可勾选
@@ -71,5 +70,3 @@ Windows 11 Pro x64 (22635.3430)，Visual Studio 2022 (17.9.5)，C# (12.0)，WinF
 CEETimerCSharpWinForms is licensed under the GNU General Public License v3.0 (GPL-3.0)
 ## 打赏作者
 [传送门](https://wanghaonie.github.io/files/Reward.jpg)
-
-
