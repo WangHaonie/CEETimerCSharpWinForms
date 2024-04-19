@@ -79,6 +79,13 @@ namespace CEETimerCSharpWinForms.Modules
 #endif
                 return true;
             }
+            else if (Contrast >= 1.6 && Contrast < 2 && ColorDifference >=500 && ColorDifference < 535)
+            {
+#if DEBUG
+                Console.WriteLine("17");
+#endif
+                return true;
+            }
             else if (Contrast < 2 && ColorDifference >= 400 && ColorDifference < 500)
             {
 #if DEBUG
@@ -100,6 +107,13 @@ namespace CEETimerCSharpWinForms.Modules
 #endif
                 return true;
             }
+            else if (Contrast >= 2 && Contrast < 2.5 && ColorDifference >= 440 && ColorDifference < 450)
+            {
+#if DEBUG
+                Console.WriteLine("16");
+#endif
+                return true;
+            }
             else if (Contrast >= 2 && Contrast < 3 && ColorDifference >= 400 && ColorDifference < 520)
             {
 #if DEBUG
@@ -118,6 +132,13 @@ namespace CEETimerCSharpWinForms.Modules
             {
 #if DEBUG
                 Console.WriteLine("12 X");
+#endif
+                return false;
+            }
+            else if (Contrast > 2 && Contrast < 2.5 && ColorDifference > 280 && ColorDifference < 300)
+            {
+#if DEBUG
+                Console.WriteLine("15 X");
 #endif
                 return false;
             }
