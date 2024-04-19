@@ -74,31 +74,31 @@ namespace CEETimerCSharpWinForms.Forms
         {
             ConfigManager.MountConfig(true);
 
-            ExamName = ConfigManager.ReadConfig("ExamName");
-            TopMost = IsTopMost = !bool.TryParse(ConfigManager.ReadConfig("TopMost"), out bool tmpa) || tmpa;
-            IsFeatureMOEnabled = bool.TryParse(ConfigManager.ReadConfig("FeatureMO"), out bool tmpc) && tmpc;
-            IsShowOnly = bool.TryParse(ConfigManager.ReadConfig("ShowOnly"), out bool tmpd) && tmpd;
-            IsRounding = bool.TryParse(ConfigManager.ReadConfig("Rounding"), out bool tmpe) && tmpe;
-            IsShowPast = bool.TryParse(ConfigManager.ReadConfig("ShowPast"), out bool tmpg) && tmpg;
-            IsShowEnd = bool.TryParse(ConfigManager.ReadConfig("ShowEnd"), out bool tmpf) && tmpf;
-            IsDragable = bool.TryParse(ConfigManager.ReadConfig("Dragable"), out bool tmph) && tmph;
-            IsUniTopMost = bool.TryParse(ConfigManager.ReadConfig("UniTopMost"), out bool tmpi) && tmpi;
-            IsPPTService = bool.TryParse(ConfigManager.ReadConfig("PPTService"), out bool tmpj) && tmpj;
-            ScreenIndex = int.TryParse(ConfigManager.ReadConfig("Screen"), out int tmpk) ? tmpk : 0;
-            PositionIndex = int.TryParse(ConfigManager.ReadConfig("Pos"), out int tmpu) ? tmpu : 0;
-            ShowOnlyIndex = int.TryParse(ConfigManager.ReadConfig("ShowValue"), out int tmpl) ? tmpl : 0;
-            Back1 = ColorHelper.TryParseRGB(ConfigManager.ReadConfig("Back1"), out Color tmpm) ? tmpm : Color.White;
-            Back2 = ColorHelper.TryParseRGB(ConfigManager.ReadConfig("Back2"), out Color tmpn) ? tmpn : Color.White;
-            Back3 = ColorHelper.TryParseRGB(ConfigManager.ReadConfig("Back3"), out Color tmpo) ? tmpo : Color.White;
-            Back4 = ColorHelper.TryParseRGB(ConfigManager.ReadConfig("Back4"), out Color tmpp) ? tmpp : Color.White;
-            Fore1 = ColorHelper.TryParseRGB(ConfigManager.ReadConfig("Fore1"), out Color tmpq) ? tmpq : Color.Red;
-            Fore2 = ColorHelper.TryParseRGB(ConfigManager.ReadConfig("Fore2"), out Color tmpr) ? tmpr : Color.Green;
-            Fore3 = ColorHelper.TryParseRGB(ConfigManager.ReadConfig("Fore3"), out Color tmps) ? tmps : Color.Black;
-            Fore4 = ColorHelper.TryParseRGB(ConfigManager.ReadConfig("Fore4"), out Color tmpt) ? tmpt : Color.Black;
-            DateTime.TryParseExact(ConfigManager.ReadConfig("ExamStartTime"), "yyyyMMddHHmmss", null, DateTimeStyles.None, out ExamStartTime);
-            DateTime.TryParseExact(ConfigManager.ReadConfig("ExamEndTime"), "yyyyMMddHHmmss", null, DateTimeStyles.None, out ExamEndTime);
-            int.TryParse(ConfigManager.ReadConfig("PosX"), out int x);
-            int.TryParse(ConfigManager.ReadConfig("PosY"), out int y);
+            ExamName = ConfigManager.ReadConfig(ConfigItems.ExamName);
+            TopMost = IsTopMost = !bool.TryParse(ConfigManager.ReadConfig(ConfigItems.TopMost), out bool tmpa) || tmpa;
+            IsFeatureMOEnabled = bool.TryParse(ConfigManager.ReadConfig(ConfigItems.MemOpti), out bool tmpc) && tmpc;
+            IsShowOnly = bool.TryParse(ConfigManager.ReadConfig(ConfigItems.ShowOnly), out bool tmpd) && tmpd;
+            IsRounding = bool.TryParse(ConfigManager.ReadConfig(ConfigItems.Rounding), out bool tmpe) && tmpe;
+            IsShowPast = bool.TryParse(ConfigManager.ReadConfig(ConfigItems.ShowPast), out bool tmpg) && tmpg;
+            IsShowEnd = bool.TryParse(ConfigManager.ReadConfig(ConfigItems.ShowEnd), out bool tmpf) && tmpf;
+            IsDragable = bool.TryParse(ConfigManager.ReadConfig(ConfigItems.Dragable), out bool tmph) && tmph;
+            IsUniTopMost = bool.TryParse(ConfigManager.ReadConfig(ConfigItems.UniTopMost), out bool tmpi) && tmpi;
+            IsPPTService = bool.TryParse(ConfigManager.ReadConfig(ConfigItems.SeewoPptSvc), out bool tmpj) && tmpj;
+            ScreenIndex = int.TryParse(ConfigManager.ReadConfig(ConfigItems.Screen), out int tmpk) ? tmpk : 0;
+            PositionIndex = int.TryParse(ConfigManager.ReadConfig(ConfigItems.Position), out int tmpu) ? tmpu : 0;
+            ShowOnlyIndex = int.TryParse(ConfigManager.ReadConfig(ConfigItems.ShowValue), out int tmpl) ? tmpl : 0;
+            Back1 = ColorHelper.TryParseRGB(ConfigManager.ReadConfig(ConfigItems.Back1), out Color tmpm) ? tmpm : Color.White;
+            Back2 = ColorHelper.TryParseRGB(ConfigManager.ReadConfig(ConfigItems.Back2), out Color tmpn) ? tmpn : Color.White;
+            Back3 = ColorHelper.TryParseRGB(ConfigManager.ReadConfig(ConfigItems.Back3), out Color tmpo) ? tmpo : Color.White;
+            Back4 = ColorHelper.TryParseRGB(ConfigManager.ReadConfig(ConfigItems.Back4), out Color tmpp) ? tmpp : Color.White;
+            Fore1 = ColorHelper.TryParseRGB(ConfigManager.ReadConfig(ConfigItems.Fore1), out Color tmpq) ? tmpq : Color.Red;
+            Fore2 = ColorHelper.TryParseRGB(ConfigManager.ReadConfig(ConfigItems.Fore2), out Color tmpr) ? tmpr : Color.Green;
+            Fore3 = ColorHelper.TryParseRGB(ConfigManager.ReadConfig(ConfigItems.Fore3), out Color tmps) ? tmps : Color.Black;
+            Fore4 = ColorHelper.TryParseRGB(ConfigManager.ReadConfig(ConfigItems.Fore4), out Color tmpt) ? tmpt : Color.Black;
+            DateTime.TryParseExact(ConfigManager.ReadConfig(ConfigItems.StartTime), "yyyyMMddHHmmss", null, DateTimeStyles.None, out ExamStartTime);
+            DateTime.TryParseExact(ConfigManager.ReadConfig(ConfigItems.EndTime), "yyyyMMddHHmmss", null, DateTimeStyles.None, out ExamEndTime);
+            int.TryParse(ConfigManager.ReadConfig(ConfigItems.PosX), out int x);
+            int.TryParse(ConfigManager.ReadConfig(ConfigItems.PosY), out int y);
 
             ShowInTaskbar = !TopMost;
             IsShowPast = IsShowPast && IsShowEnd;
@@ -138,8 +138,8 @@ namespace CEETimerCSharpWinForms.Forms
 
             try
             {
-                SelectedFont = (Font)fontConverter.ConvertFromString(ConfigManager.ReadConfig("Font"));
-                SelectedFontStyle = (FontStyle)Enum.Parse(typeof(FontStyle), ConfigManager.ReadConfig("FontStyle"));
+                SelectedFont = (Font)fontConverter.ConvertFromString(ConfigManager.ReadConfig(ConfigItems.Font));
+                SelectedFontStyle = (FontStyle)Enum.Parse(typeof(FontStyle), ConfigManager.ReadConfig(ConfigItems.FontStyle));
 
                 if (SelectedFont.Size > 24 || SelectedFont.Size < 10)
                 {
@@ -452,8 +452,8 @@ namespace CEETimerCSharpWinForms.Forms
         {
             ConfigManager.WriteConfig(new Dictionary<string, string>
             {
-                { "PosX", $"{NewLocation.X}" },
-                { "PosY", $"{NewLocation.Y}" }
+                { ConfigItems.PosX, $"{NewLocation.X}" },
+                { ConfigItems.PosY, $"{NewLocation.Y}" }
             });
         }
     }

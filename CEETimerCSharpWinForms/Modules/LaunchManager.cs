@@ -20,7 +20,7 @@ namespace CEETimerCSharpWinForms.Modules
         public const string AppName = "高考倒计时 by WangHaonie";
         public const string CopyrightInfo = "Copyright © 2023-2024 WangHaonie";
         public const string OriginalFontString = "Microsoft YaHei, 17.25pt";
-        public const string RequestUA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36";
+        public const string RequestUA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36";
         public const string OriginalFileName = "CEETimerCSharpWinForms.exe";
 
         public static readonly int CurrentWindowsVersion = Environment.OSVersion.Version.Major;

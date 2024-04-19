@@ -81,6 +81,7 @@ Section -POST
   Delete "$INSTDIR\uninst.exe"
   Delete "$INSTDIR\Newtonsoft.Json.dll"
   Delete "$INSTDIR\CEETimerCSharpWinForms.exe"
+  Delete "$INSTDIR\CEETimerCSharpWinForms.dll"
   WriteUninstaller "$INSTDIR\uninst.exe"
   CreateDirectory "$SMPROGRAMS\高考倒计时"
   CreateShortCut "$SMPROGRAMS\高考倒计时\高考倒计时.lnk" "$INSTDIR\CEETimerCSharpWinForms.exe"
