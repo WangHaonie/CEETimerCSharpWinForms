@@ -107,7 +107,7 @@ namespace CEETimerCSharpWinForms.Forms
             if (ScreenIndex < 0 || ScreenIndex > Screen.AllScreens.Length) ScreenIndex = 0;
             if (PositionIndex < 0 || PositionIndex > 8) PositionIndex = 0;
             if (ShowOnlyIndex > 3) ShowOnlyIndex = 0;
-            if (ExamName.Length > 15 || ExamName.Length < 2) ExamName = "";
+            if (ExamName.Length > ConfigPolicy.MaxExamNameLength || ExamName.Length < ConfigPolicy.MinExamNameLength) ExamName = "";
             IsReady = !string.IsNullOrWhiteSpace(ExamName) && ConfigManager.IsValidData(ExamStartTime) && ConfigManager.IsValidData(ExamEndTime) && (ExamEndTime > ExamStartTime || !IsShowEnd);
             IsPPTService = IsPPTService && ((TopMost && ShowOnlyIndex == 0) || IsDragable);
 
@@ -141,14 +141,14 @@ namespace CEETimerCSharpWinForms.Forms
                 SelectedFont = (Font)fontConverter.ConvertFromString(ConfigManager.ReadConfig(ConfigItems.Font));
                 SelectedFontStyle = (FontStyle)Enum.Parse(typeof(FontStyle), ConfigManager.ReadConfig(ConfigItems.FontStyle));
 
-                if (SelectedFont.Size > 24 || SelectedFont.Size < 10)
+                if (SelectedFont.Size > ConfigPolicy.MaxFontSize || SelectedFont.Size < ConfigPolicy.MinFontSize)
                 {
                     throw new Exception();
                 }
             }
             catch
             {
-                SelectedFont = (Font)fontConverter.ConvertFromString(LaunchManager.OriginalFontString);
+                SelectedFont = (Font)fontConverter.ConvertFromString(ConfigPolicy.DefaultFont);
                 SelectedFontStyle = FontStyle.Bold;
             }
 

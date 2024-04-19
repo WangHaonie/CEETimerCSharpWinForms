@@ -139,4 +139,13 @@ namespace CEETimerCSharpWinForms.Modules
         public const string PosX = "F4E3";
         public const string PosY = "B337";
     }
+
+    public class ConfigPolicy
+    {
+        public const int MinExamNameLength = 2;
+        public const int MaxExamNameLength = 10;
+        public const int MinFontSize = 10;
+        public const int MaxFontSize = 24;
+        public const string DefaultFont = "Microsoft YaHei, 17.25pt";
+    }
 }

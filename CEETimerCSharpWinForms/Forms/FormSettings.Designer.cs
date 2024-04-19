@@ -142,7 +142,6 @@
             // TextBoxExamName
             // 
             this.TextBoxExamName.Location = new System.Drawing.Point(9, 22);
-            this.TextBoxExamName.MaxLength = 99;
             this.TextBoxExamName.Name = "TextBoxExamName";
             this.TextBoxExamName.Size = new System.Drawing.Size(357, 23);
             this.TextBoxExamName.TabIndex = 34;
@@ -294,7 +293,6 @@
             this.GBoxExamName.Size = new System.Drawing.Size(405, 58);
             this.GBoxExamName.TabIndex = 40;
             this.GBoxExamName.TabStop = false;
-            this.GBoxExamName.Text = "考试名称 (2~15字)";
             // 
             // LabelExamNameCounter
             // 
@@ -302,9 +300,8 @@
             this.LabelExamNameCounter.AutoSize = true;
             this.LabelExamNameCounter.Location = new System.Drawing.Point(367, 25);
             this.LabelExamNameCounter.Name = "LabelExamNameCounter";
-            this.LabelExamNameCounter.Size = new System.Drawing.Size(30, 15);
+            this.LabelExamNameCounter.Size = new System.Drawing.Size(0, 15);
             this.LabelExamNameCounter.TabIndex = 35;
-            this.LabelExamNameCounter.Text = "0/15";
             // 
             // TabPageDisplay
             // 
@@ -345,7 +342,7 @@
             this.LabelLine12.AutoSize = true;
             this.LabelLine12.Location = new System.Drawing.Point(6, 34);
             this.LabelLine12.Name = "LabelLine12";
-            this.LabelLine12.Size = new System.Drawing.Size(353, 15);
+            this.LabelLine12.Size = new System.Drawing.Size(327, 15);
             this.LabelLine12.TabIndex = 0;
             this.LabelLine12.Text = "(或者你也可以开启拖动功能，将倒计时窗口拖动到其他位置)";
             // 
@@ -779,7 +776,7 @@
             // LabelPreviewFont
             // 
             this.LabelPreviewFont.AutoSize = true;
-            this.LabelPreviewFont.Location = new System.Drawing.Point(6, 49);
+            this.LabelPreviewFont.Location = new System.Drawing.Point(6, 48);
             this.LabelPreviewFont.Name = "LabelPreviewFont";
             this.LabelPreviewFont.Size = new System.Drawing.Size(176, 15);
             this.LabelPreviewFont.TabIndex = 3;

@@ -61,6 +61,10 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void InitializeExtra()
         {
+            LabelExamNameCounter.Text = $"0/{ConfigPolicy.MaxExamNameLength}";
+            LabelExamNameCounter.ForeColor = Color.Red;
+            TextBoxExamName.MaxLength = ConfigPolicy.MaxExamNameLength;
+            GBoxExamName.Text = $"考试名称 ({ConfigPolicy.MinExamNameLength}~{ConfigPolicy.MaxExamNameLength}字)";
             ChangeColor(WorkingArea.LastColor);
 
             List<ComboSource> Shows =
@@ -112,9 +116,10 @@ namespace CEETimerCSharpWinForms.Forms
         private void TextBoxExamName_TextChanged(object sender, EventArgs e)
         {
             SettingsChanged(sender, e);
+            var Max = ConfigPolicy.MaxExamNameLength;
             int CharCount = TextBoxExamName.Text.RemoveAllBadChars().Length;
-            LabelExamNameCounter.Text = $"{CharCount}/15";
-            LabelExamNameCounter.ForeColor = CharCount > 15 ? Color.Red : Color.Black;
+            LabelExamNameCounter.Text = $"{CharCount}/{Max}";
+            LabelExamNameCounter.ForeColor = (CharCount > Max || CharCount < ConfigPolicy.MinExamNameLength) ? Color.Red : Color.Black;
         }
 
         private void CheckBoxShowOnly_CheckedChanged(object sender, EventArgs e)
@@ -163,8 +168,8 @@ namespace CEETimerCSharpWinForms.Forms
                 AllowVerticalFonts = false,
                 Font = CountdownFont,
                 FontMustExist = true,
-                MinSize = 10,
-                MaxSize = 24,
+                MinSize = ConfigPolicy.MinFontSize,
+                MaxSize = ConfigPolicy.MaxFontSize,
                 ScriptsOnly = true,
                 ShowEffects = false
             };
@@ -180,7 +185,7 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void ButtonRestoreFont_Click(object sender, EventArgs e)
         {
-            ChangeFont(new((Font)fontConverter.ConvertFromString(LaunchManager.OriginalFontString), FontStyle.Bold));
+            ChangeFont(new((Font)fontConverter.ConvertFromString(ConfigPolicy.DefaultFont), FontStyle.Bold));
             SettingsChanged(sender, e);
         }
 
