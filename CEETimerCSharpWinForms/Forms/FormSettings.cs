@@ -257,7 +257,7 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void CheckBoxEnableDragable_CheckedChanged(object sender, EventArgs e)
         {
-            SettingsChanged(sender, e);
+            ChangePptsvcCtrlStyle(sender, e);
             ComboBoxScreens.SelectedValue = CheckBoxEnableDragable.Checked ? 0 : ScreenIndex;
             ComboBoxPosition.SelectedValue = CheckBoxEnableDragable.Checked ? 0 : PositionIndex;
             LabelScreens.Enabled = LabelScreensHint.Enabled = ComboBoxScreens.Enabled = !CheckBoxEnableDragable.Checked;
@@ -367,16 +367,16 @@ namespace CEETimerCSharpWinForms.Forms
             SettingsChanged(sender, e);
 
             var a = CheckBoxSetTopMost.Checked;
-            var b = ComboBoxPosition.SelectedIndex;
+            var b = ComboBoxPosition.SelectedIndex == 0;
             var c = CheckBoxEnableDragable.Checked;
 
-            if ((a && b == 0) || c)
-            {
-                ChangeWorkingStyle(true, WorkingArea.SetPPTService);
-            }
-            else if ((!a && b == 0) || (!a && b != 0))
+            if (!a)
             {
                 ChangeWorkingStyle(false, WorkingArea.SetPPTService);
+            }
+            else if ((a && c) || (a && b))
+            {
+                ChangeWorkingStyle(true, WorkingArea.SetPPTService);
             }
             else
             {
