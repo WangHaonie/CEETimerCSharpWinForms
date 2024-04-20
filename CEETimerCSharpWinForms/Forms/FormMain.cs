@@ -1,4 +1,5 @@
 ﻿using CEETimerCSharpWinForms.Modules;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -50,6 +51,7 @@ namespace CEETimerCSharpWinForms.Forms
 
         private bool IsReadyToMove;
         private bool IsReady;
+        private bool DisplaySettingsChangedEventInvoked;
         private readonly int PptsvcThreshold = 1;
         private readonly FontConverter fontConverter = new();
         private CountdownState SelectedState;
@@ -71,6 +73,7 @@ namespace CEETimerCSharpWinForms.Forms
         private void InitializeExtra()
         {
             FormSettings.ConfigChanged += RefreshSettings;
+            SystemEvents.DisplaySettingsChanged += SystemEvents_DisplaySettingsChanged;
 
             TimerCountdown = new Timer()
             {
@@ -79,6 +82,14 @@ namespace CEETimerCSharpWinForms.Forms
 
             TimerCountdown.Tick += StartCountdown;
             TimerCountdown.Start();
+        }
+
+        private void SystemEvents_DisplaySettingsChanged(object sender, EventArgs e)
+        {
+            if (DisplaySettingsChangedEventInvoked) return;
+            DisplaySettingsChangedEventInvoked = true;
+            if (MessageX.Popup("检测到显示设置发生了更改，如果你刚刚更改的是缩放，推荐重启倒计时以确保文字不会变模糊、功能不会出现异常。\n\n是否立即重启倒计时？\n(也可以在 设置 >工具 里手动重启倒计时)", MessageLevel.Warning, Buttons: MessageBoxButtons.YesNo) == DialogResult.Yes) LaunchManager.Restart();
+            DisplaySettingsChangedEventInvoked = false;
         }
 
         private void RefreshSettings(object sender, EventArgs e)
