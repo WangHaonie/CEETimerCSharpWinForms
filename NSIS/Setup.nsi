@@ -43,8 +43,8 @@ launch:
 
 !include "MUI2.nsh"
 !define PRODUCT_NAME "¸ß¿¼µ¹¼ÆÊ±"
-!define PRODUCT_VERSION "v3.0.1"
-!define SETUP_FILENAME_NO_V "3.0.1"
+!define SETUP_FILENAME_NO_V "3.0.2"
+!define PRODUCT_VERSION "v${SETUP_FILENAME_NO_V}"
 !define PRODUCT_PUBLISHER "WangHaonie"
 !define PRODUCT_WEB_SITE "https://github.com/WangHaonie/CEETimerCSharpWinForms"
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
