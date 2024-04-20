@@ -38,10 +38,21 @@ namespace CEETimerCSharpWinForms.Forms
         private FontStyle SelectedFontStyle;
         private string ExamName;
 
+        private enum CountdownState
+        {
+            Normal,
+            DaysOnly,
+            DaysOnlyWithRounding,
+            HoursOnly,
+            MinutesOnly,
+            SecondsOnly
+        }
+
         private bool IsReadyToMove;
         private bool IsReady;
         private readonly int PptsvcThreshold = 1;
         private readonly FontConverter fontConverter = new();
+        private CountdownState SelectedState;
         private Timer TimerCountdown;
         private System.Threading.Timer TimerMORunner;
         private Point LastLocation;
@@ -110,6 +121,8 @@ namespace CEETimerCSharpWinForms.Forms
             if (ExamName.Length > ConfigPolicy.MaxExamNameLength || ExamName.Length < ConfigPolicy.MinExamNameLength) ExamName = "";
             IsReady = !string.IsNullOrWhiteSpace(ExamName) && ConfigManager.IsValidData(ExamStartTime) && ConfigManager.IsValidData(ExamEndTime) && (ExamEndTime > ExamStartTime || !IsShowEnd);
             IsPPTService = IsPPTService && ((TopMost && ShowOnlyIndex == 0) || IsDragable);
+
+            DetermineCountdownState();
 
             if (!ColorHelper.IsNiceContrast(Fore1, Back1))
             {
@@ -282,6 +295,23 @@ namespace CEETimerCSharpWinForms.Forms
             }
         }
 
+        private void DetermineCountdownState()
+        {
+            SelectedState = CountdownState.Normal;
+
+            if (IsShowOnly)
+            {
+                SelectedState = ShowOnlyIndex switch
+                {
+                    0 => IsRounding ? CountdownState.DaysOnlyWithRounding : CountdownState.DaysOnly,
+                    1 => CountdownState.HoursOnly,
+                    2 => CountdownState.MinutesOnly,
+                    3 => CountdownState.SecondsOnly,
+                    _ => CountdownState.Normal
+                };
+            }
+        }
+
         private void StartCountdown(object sender, EventArgs e)
         {
             if (IsReady && DateTime.Now < ExamStartTime)
@@ -290,28 +320,16 @@ namespace CEETimerCSharpWinForms.Forms
                 BackColor = Back1;
                 LabelCountdown.ForeColor = Fore1;
 
-                if (IsShowOnly)
+                LabelCountdown.Text = SelectedState switch
                 {
-                    switch (ShowOnlyIndex)
-                    {
-                        case 0:
-                            LabelCountdown.Text = IsRounding ? $"距离{ExamName}还有{TimeLeft.Days + 1}天" : $"距离{ExamName}还有{TimeLeft.Days}天";
-                            break;
-                        case 1:
-                            LabelCountdown.Text = $"距离{ExamName}还有{TimeLeft.TotalHours:0}小时";
-                            break;
-                        case 2:
-                            LabelCountdown.Text = $"距离{ExamName}还有{TimeLeft.TotalMinutes:0}分钟";
-                            break;
-                        case 3:
-                            LabelCountdown.Text = $"距离{ExamName}还有{TimeLeft.TotalSeconds:0}秒";
-                            break;
-                    }
-                }
-                else
-                {
-                    LabelCountdown.Text = $"距离{ExamName}还有{TimeLeft.Days}天{TimeLeft.Hours:00}时{TimeLeft.Minutes:00}分{TimeLeft.Seconds:00}秒";
-                }
+                    CountdownState.Normal => $"距离{ExamName}还有{TimeLeft.Days}天{TimeLeft.Hours:00}时{TimeLeft.Minutes:00}分{TimeLeft.Seconds:00}秒",
+                    CountdownState.DaysOnly => $"距离{ExamName}还有{TimeLeft.Days}天",
+                    CountdownState.DaysOnlyWithRounding => $"距离{ExamName}还有{TimeLeft.Days + 1}天",
+                    CountdownState.HoursOnly => $"距离{ExamName}还有{TimeLeft.TotalHours:0}小时",
+                    CountdownState.MinutesOnly => $"距离{ExamName}还有{TimeLeft.TotalMinutes:0}分钟",
+                    CountdownState.SecondsOnly => $"距离{ExamName}还有{TimeLeft.TotalSeconds:0}秒",
+                    _ => ""
+                };
             }
             else if (IsReady && IsShowEnd && DateTime.Now >= ExamStartTime && DateTime.Now < ExamEndTime)
             {
@@ -319,28 +337,16 @@ namespace CEETimerCSharpWinForms.Forms
                 BackColor = Back2;
                 LabelCountdown.ForeColor = Fore2;
 
-                if (IsShowOnly)
+                LabelCountdown.Text = SelectedState switch
                 {
-                    switch (ShowOnlyIndex)
-                    {
-                        case 0:
-                            LabelCountdown.Text = IsRounding ? $"距离{ExamName}结束还有{TimeLeftPast.Days + 1}天" : $"距离{ExamName}结束还有{TimeLeftPast.Days}天";
-                            break;
-                        case 1:
-                            LabelCountdown.Text = $"距离{ExamName}结束还有{TimeLeftPast.TotalHours:0}小时";
-                            break;
-                        case 2:
-                            LabelCountdown.Text = $"距离{ExamName}结束还有{TimeLeftPast.TotalMinutes:0}分钟";
-                            break;
-                        case 3:
-                            LabelCountdown.Text = $"距离{ExamName}结束还有{TimeLeftPast.TotalSeconds:0}秒";
-                            break;
-                    }
-                }
-                else
-                {
-                    LabelCountdown.Text = $"距离{ExamName}结束还有{TimeLeftPast.Days}天{TimeLeftPast.Hours:00}时{TimeLeftPast.Minutes:00}分{TimeLeftPast.Seconds:00}秒";
-                }
+                    CountdownState.Normal => $"距离{ExamName}结束还有{TimeLeftPast.Days}天{TimeLeftPast.Hours:00}时{TimeLeftPast.Minutes:00}分{TimeLeftPast.Seconds:00}秒",
+                    CountdownState.DaysOnly => $"距离{ExamName}结束还有{TimeLeftPast.Days}天",
+                    CountdownState.DaysOnlyWithRounding => $"距离{ExamName}结束还有{TimeLeftPast.Days + 1}天",
+                    CountdownState.HoursOnly => $"距离{ExamName}结束还有{TimeLeftPast.TotalHours:0}小时",
+                    CountdownState.MinutesOnly => $"距离{ExamName}结束还有{TimeLeftPast.TotalMinutes:0}分钟",
+                    CountdownState.SecondsOnly => $"距离{ExamName}结束还有{TimeLeftPast.TotalSeconds:0}秒",
+                    _ => ""
+                };
             }
             else if (IsReady && IsShowEnd && DateTime.Now >= ExamEndTime && IsShowPast)
             {
@@ -348,28 +354,16 @@ namespace CEETimerCSharpWinForms.Forms
                 BackColor = Back3;
                 LabelCountdown.ForeColor = Fore3;
 
-                if (IsShowOnly)
+                LabelCountdown.Text = SelectedState switch
                 {
-                    switch (ShowOnlyIndex)
-                    {
-                        case 0:
-                            LabelCountdown.Text = IsRounding ? $"距离{ExamName}已过去了{TimePast.Days + 1}天" : $"距离{ExamName}已过去了{TimePast.Days}天";
-                            break;
-                        case 1:
-                            LabelCountdown.Text = $"距离{ExamName}已过去了{TimePast.TotalHours:0}小时";
-                            break;
-                        case 2:
-                            LabelCountdown.Text = $"距离{ExamName}已过去了{TimePast.TotalMinutes:0}分钟";
-                            break;
-                        case 3:
-                            LabelCountdown.Text = $"距离{ExamName}已过去了{TimePast.TotalSeconds:0}秒";
-                            break;
-                    }
-                }
-                else
-                {
-                    LabelCountdown.Text = $"距离{ExamName}已过去了{TimePast.Days}天{TimePast.Hours:00}时{TimePast.Minutes:00}分{TimePast.Seconds:00}秒";
-                }
+                    CountdownState.Normal => $"距离{ExamName}已过去了{TimePast.Days}天{TimePast.Hours:00}时{TimePast.Minutes:00}分{TimePast.Seconds:00}秒",
+                    CountdownState.DaysOnly => $"距离{ExamName}已过去了{TimePast.Days}天",
+                    CountdownState.DaysOnlyWithRounding => $"距离{ExamName}已过去了{TimePast.Days + 1}天",
+                    CountdownState.HoursOnly => $"距离{ExamName}已过去了{TimePast.TotalHours:0}小时",
+                    CountdownState.MinutesOnly => $"距离{ExamName}已过去了{TimePast.TotalMinutes:0}分钟",
+                    CountdownState.SecondsOnly => $"距离{ExamName}已过去了{TimePast.TotalSeconds:0}秒",
+                    _ => ""
+                };
             }
             else
             {

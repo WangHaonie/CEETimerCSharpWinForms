@@ -12,17 +12,6 @@ namespace CEETimerCSharpWinForms.Forms
 {
     public partial class FormSettings : Form
     {
-        private class ComboSource
-        {
-            public string Item { get; set; }
-            public int Value { get; set; }
-        }
-
-        private enum WorkingArea
-        {
-            Funny, SyncTime, SetPPTService, LastColor, SelectedColor, ColorToAll, DefaultColor
-        }
-
         public static event EventHandler ConfigChanged;
         public static Color Fore1 { get; set; }
         public static Color Fore2 { get; set; }
@@ -49,6 +38,24 @@ namespace CEETimerCSharpWinForms.Forms
         public static FontStyle CountdownFontStyle { get; set; }
         public static string ExamName { get; set; }
 
+        private class ComboSource
+        {
+            public string Item { get; set; }
+            public int Value { get; set; }
+        }
+
+        private enum WorkingArea
+        {
+            Funny,
+            SyncTime,
+            SetPPTService,
+            LastColor,
+            SelectedColor,
+            ColorToAll,
+            DefaultColor,
+            ChangeFont
+        }
+
         private bool IsSyncingTime;
         private bool IsSettingsChanged;
         private readonly FontConverter fontConverter = new();
@@ -65,7 +72,7 @@ namespace CEETimerCSharpWinForms.Forms
             LabelExamNameCounter.ForeColor = Color.Red;
             TextBoxExamName.MaxLength = ConfigPolicy.MaxExamNameLength;
             GBoxExamName.Text = $"考试名称 ({ConfigPolicy.MinExamNameLength}~{ConfigPolicy.MaxExamNameLength}字)";
-            ChangeColor(WorkingArea.LastColor);
+            ChangeWorkingStyle(WorkingArea.LastColor);
 
             List<ComboSource> Shows =
             [
@@ -100,7 +107,7 @@ namespace CEETimerCSharpWinForms.Forms
         private void FormSettings_Load(object sender, EventArgs e)
         {
             TopMost = FormMain.IsUniTopMost;
-            ChangeWorkingStyle(false, WorkingArea.Funny);
+            ChangeWorkingStyle(WorkingArea.Funny, false);
             RefreshScreens();
             RefreshSettings();
             IsSettingsChanged = false;
@@ -177,7 +184,7 @@ namespace CEETimerCSharpWinForms.Forms
             if (FontDialogMain.ShowDialog() == DialogResult.OK)
             {
                 SettingsChanged(sender, e);
-                ChangeFont(FontDialogMain.Font);
+                ChangeWorkingStyle(WorkingArea.ChangeFont, NewFont: FontDialogMain.Font);
             }
 
             FontDialogMain.Dispose();
@@ -185,7 +192,7 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void ButtonRestoreFont_Click(object sender, EventArgs e)
         {
-            ChangeFont(new((Font)fontConverter.ConvertFromString(ConfigPolicy.DefaultFont), FontStyle.Bold));
+            ChangeWorkingStyle(WorkingArea.ChangeFont, NewFont: new((Font)fontConverter.ConvertFromString(ConfigPolicy.DefaultFont), FontStyle.Bold));
             SettingsChanged(sender, e);
         }
 
@@ -204,7 +211,7 @@ namespace CEETimerCSharpWinForms.Forms
             {
                 SettingsChanged(sender, e);
                 LabelColor.BackColor = ColorDialogMain.Color;
-                ChangeColor(WorkingArea.SelectedColor);
+                ChangeWorkingStyle(WorkingArea.SelectedColor);
             }
 
             ColorDialogMain.Dispose();
@@ -213,13 +220,13 @@ namespace CEETimerCSharpWinForms.Forms
         private void ButtonColorApply_Click(object sender, EventArgs e)
         {
             SettingsChanged(sender, e);
-            ChangeColor(WorkingArea.ColorToAll);
+            ChangeWorkingStyle(WorkingArea.ColorToAll);
         }
 
         private void ButtonColorDefault_Click(object sender, EventArgs e)
         {
             SettingsChanged(sender, e);
-            ChangeColor(WorkingArea.DefaultColor);
+            ChangeWorkingStyle(WorkingArea.DefaultColor);
         }
 
         private void ButtonRestart_MouseDown(object sender, MouseEventArgs e)
@@ -228,7 +235,7 @@ namespace CEETimerCSharpWinForms.Forms
             {
                 ButtonRestart.Click -= ButtonRestart_Click;
                 ButtonRestart.Click += ButtonRestart_Funny_Click;
-                ChangeWorkingStyle(true, WorkingArea.Funny);
+                ChangeWorkingStyle(WorkingArea.Funny);
             }
         }
 
@@ -244,9 +251,9 @@ namespace CEETimerCSharpWinForms.Forms
 
         private async void ButtonSyncTime_Click(object sender, EventArgs e)
         {
-            ChangeWorkingStyle(true, WorkingArea.SyncTime);
+            ChangeWorkingStyle(WorkingArea.SyncTime);
             await Task.Run(StartSyncTime);
-            ChangeWorkingStyle(false, WorkingArea.SyncTime);
+            ChangeWorkingStyle(WorkingArea.SyncTime, false);
         }
 
         private void ButtonSave_Click(object sender, EventArgs e)
@@ -338,33 +345,9 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void FormSettings_FormClosed(object sender, FormClosedEventArgs e)
         {
-            ChangeWorkingStyle(false, WorkingArea.Funny);
+            ChangeWorkingStyle(WorkingArea.Funny, false);
             ButtonRestart.Click -= ButtonRestart_Funny_Click;
             ButtonRestart.Click += ButtonRestart_Click;
-        }
-
-        private void ChangeWorkingStyle(bool IsWorking, WorkingArea Where, int SubCase = 0)
-        {
-            switch (Where)
-            {
-                case WorkingArea.SyncTime:
-                    IsSyncingTime = IsWorking;
-                    ButtonSyncTime.Enabled = !IsWorking;
-                    ButtonRestart.Enabled = !IsWorking;
-                    ButtonSyncTime.Text = IsWorking ? "正在同步中，请稍候..." : "立即同步(&S)";
-                    break;
-                case WorkingArea.Funny:
-                    GBoxRestart.Text = IsWorking ? "关闭倒计时" : "重启倒计时";
-                    LabelLine9.Text = IsWorking ? "当然, 你也可以关闭此倒计时。(●'◡'●)" : "用于更改了屏幕缩放或者分辨率之后, 可以点击此按钮来重启倒计时";
-                    LabelLine10.Text = IsWorking ? "" : "以确保窗口的文字不会变模糊。";
-                    ButtonRestart.Text = IsWorking ? "点击关闭(&L)" : "点击重启(&R)";
-                    break;
-                case WorkingArea.SetPPTService:
-                    CheckBoxSwPptSvc.Enabled = IsWorking;
-                    CheckBoxSwPptSvc.Checked = IsWorking && IsPPTService;
-                    CheckBoxSwPptSvc.Text = IsWorking ? "启用此功能(&X)" : $"此项暂不可用，因为倒计时没有{(SubCase == 0 ? "顶置" : "在左上角")}，不会引起冲突";
-                    break;
-            }
         }
 
         private void ChangePptsvcCtrlStyle(object sender, EventArgs e)
@@ -377,15 +360,15 @@ namespace CEETimerCSharpWinForms.Forms
 
             if (!a)
             {
-                ChangeWorkingStyle(false, WorkingArea.SetPPTService);
+                ChangeWorkingStyle(WorkingArea.SetPPTService, false);
             }
             else if ((a && c) || (a && b))
             {
-                ChangeWorkingStyle(true, WorkingArea.SetPPTService);
+                ChangeWorkingStyle(WorkingArea.SetPPTService);
             }
             else
             {
-                ChangeWorkingStyle(false, WorkingArea.SetPPTService, 1);
+                ChangeWorkingStyle(WorkingArea.SetPPTService, false, 1);
             }
         }
 
@@ -436,7 +419,7 @@ namespace CEETimerCSharpWinForms.Forms
             ComboBoxScreens.SelectedValue = ScreenIndex;
             ComboBoxPosition.SelectedValue = PositionIndex;
             ComboBoxShowOnly.SelectedValue = ShowOnlyIndex;
-            ChangeFont(new Font(CountdownFont, CountdownFontStyle));
+            ChangeWorkingStyle(WorkingArea.ChangeFont, NewFont: new Font(CountdownFont, CountdownFontStyle));
             ChangePptsvcCtrlStyle(null, EventArgs.Empty);
 
             ComboBoxShowOnly.SelectedIndex = IsShowOnly ? ShowOnlyIndex : 0;
@@ -524,8 +507,7 @@ namespace CEETimerCSharpWinForms.Forms
         {
             try
             {
-                if (!LaunchManager.IsAdmin)
-                    MessageX.Popup("检测到当前用户不具有管理员权限，运行该操作会发生错误。\n\n程序将在此消息框关闭后尝试弹出 UAC 提示框，前提要把系统的 UAC 设置为 \"仅当应用尝试更改我的计算机时通知我\" 或及以上，否则将无法进行授权。\n\n稍后若没有看见提示框，请更改 UAC 设置：Win+S 搜索 uac", MessageLevel.Warning, this);
+                if (!LaunchManager.IsAdmin) MessageX.Popup("检测到当前用户不具有管理员权限，运行该操作会发生错误。\n\n程序将在此消息框关闭后尝试弹出 UAC 提示框，前提要把系统的 UAC 设置为 \"仅当应用尝试更改我的计算机时通知我\" 或及以上，否则将无法进行授权。\n\n稍后若没有看见提示框，请更改 UAC 设置：Win+S 搜索 uac", MessageLevel.Warning, this);
 
                 Process SyncTimeProcess = ProcessHelper.RunProcess("cmd.exe", "/c net stop w32time & sc config w32time start= auto & net start w32time && w32tm /config /manualpeerlist:ntp1.aliyun.com /syncfromflags:manual /reliable:YES /update && w32tm /resync && w32tm /resync", AdminRequired: true);
 
@@ -556,18 +538,33 @@ namespace CEETimerCSharpWinForms.Forms
             }
         }
 
-        private void ChangeFont(Font NewFont)
-        {
-            CountdownFont = NewFont;
-            CountdownFontStyle = NewFont.Style;
-            LabelPreviewFont.Font = NewFont;
-            LabelFontInfo.Text = $"当前字体: {NewFont.Name}, {NewFont.Size}pt, {NewFont.Style}";
-        }
-
-        private void ChangeColor(WorkingArea Where)
+        private void ChangeWorkingStyle(WorkingArea Where, bool IsWorking = true, int SubCase = 0, Font NewFont = null)
         {
             switch (Where)
             {
+                case WorkingArea.SyncTime:
+                    IsSyncingTime = IsWorking;
+                    ButtonSyncTime.Enabled = !IsWorking;
+                    ButtonRestart.Enabled = !IsWorking;
+                    ButtonSyncTime.Text = IsWorking ? "正在同步中，请稍候..." : "立即同步(&S)";
+                    break;
+                case WorkingArea.Funny:
+                    GBoxRestart.Text = IsWorking ? "关闭倒计时" : "重启倒计时";
+                    LabelLine9.Text = IsWorking ? "当然, 你也可以关闭此倒计时。(●'◡'●)" : "用于更改了屏幕缩放或者分辨率之后, 可以点击此按钮来重启倒计时";
+                    LabelLine10.Text = IsWorking ? "" : "以确保窗口的文字不会变模糊。";
+                    ButtonRestart.Text = IsWorking ? "点击关闭(&L)" : "点击重启(&R)";
+                    break;
+                case WorkingArea.SetPPTService:
+                    CheckBoxSwPptSvc.Enabled = IsWorking;
+                    CheckBoxSwPptSvc.Checked = IsWorking && IsPPTService;
+                    CheckBoxSwPptSvc.Text = IsWorking ? "启用此功能(&X)" : $"此项暂不可用，因为倒计时没有{(SubCase == 0 ? "顶置" : "在左上角")}，不会引起冲突";
+                    break;
+                case WorkingArea.ChangeFont:
+                    CountdownFont = NewFont;
+                    CountdownFontStyle = NewFont.Style;
+                    LabelPreviewFont.Font = NewFont;
+                    LabelFontInfo.Text = $"当前字体: {NewFont.Name}, {NewFont.Size}pt, {NewFont.Style}";
+                    break;
                 case WorkingArea.LastColor:
                     LabelPreviewColor1.BackColor = LabelColor11.BackColor = Back1;
                     LabelPreviewColor2.BackColor = LabelColor21.BackColor = Back2;

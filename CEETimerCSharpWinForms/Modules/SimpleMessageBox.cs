@@ -66,26 +66,13 @@ namespace CEETimerCSharpWinForms.Modules
 
         private static (MessageBoxIcon, string) GetIconTitle(MessageLevel Level)
         {
-            MessageBoxIcon Icon = MessageBoxIcon.None;
-            string Title = "";
-
-            switch (Level)
+            return Level switch
             {
-                case MessageLevel.Info:
-                    Icon = MessageBoxIcon.Information;
-                    Title = LaunchManager.InfoMsg;
-                    break;
-                case MessageLevel.Warning:
-                    Icon = MessageBoxIcon.Warning;
-                    Title = LaunchManager.WarnMsg;
-                    break;
-                case MessageLevel.Error:
-                    Icon = MessageBoxIcon.Error;
-                    Title = LaunchManager.ErrMsg;
-                    break;
-            }
-
-            return (Icon, Title);
+                MessageLevel.Info => (MessageBoxIcon.Information, LaunchManager.InfoMsg),
+                MessageLevel.Warning => (MessageBoxIcon.Warning, LaunchManager.WarnMsg),
+                MessageLevel.Error => (MessageBoxIcon.Error, LaunchManager.ErrMsg),
+                _ => (MessageBoxIcon.None, "")
+            };
         }
     }
 }
