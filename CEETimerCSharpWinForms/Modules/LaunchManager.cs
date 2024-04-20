@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CEETimerCSharpWinForms.Forms;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -6,13 +7,12 @@ using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using CEETimerCSharpWinForms.Forms;
 
 namespace CEETimerCSharpWinForms.Modules
 {
     public class LaunchManager
     {
-        public static bool IsAdmin { get; private set; } = false;
+        public static bool IsAdmin { get; private set; }
 
         public const string AppVersion = "3.0.1";
         public const string AppVersionText = $"版本 v{AppVersion} x64 (2024/04/07)";
@@ -100,11 +100,7 @@ namespace CEETimerCSharpWinForms.Modules
         {
             Process AdminChecker = ProcessHelper.RunProcess("cmd.exe", "/c net session");
             AdminChecker.WaitForExit();
-
-            if (AdminChecker.ExitCode == 0)
-            {
-                IsAdmin = true;
-            }
+            IsAdmin = AdminChecker.ExitCode == 0;
         }
     }
 }
