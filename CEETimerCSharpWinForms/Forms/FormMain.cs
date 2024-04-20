@@ -389,40 +389,19 @@ namespace CEETimerCSharpWinForms.Forms
         {
             if (!IsDragable)
             {
-                var Position = new Point();
-
-                switch (PositionIndex)
+                Location = PositionIndex switch
                 {
-                    case 0:
-                        Position = IsPPTService ? new Point(SelectedScreen.Location.X + PptsvcThreshold, SelectedScreen.Location.Y) : SelectedScreen.Location;
-                        break;
-                    case 1:
-                        Position = new Point(SelectedScreen.Left, SelectedScreen.Top + SelectedScreen.Height / 2 - Height / 2);
-                        break;
-                    case 2:
-                        Position = new Point(SelectedScreen.Left, SelectedScreen.Bottom - Height);
-                        break;
-                    case 3:
-                        Position = new Point(SelectedScreen.Left + SelectedScreen.Width / 2 - Width / 2, SelectedScreen.Top);
-                        break;
-                    case 4:
-                        Position = new Point(SelectedScreen.Left + SelectedScreen.Width / 2 - Width / 2, SelectedScreen.Top + SelectedScreen.Height / 2 - Height / 2);
-                        break;
-                    case 5:
-                        Position = new Point(SelectedScreen.Left + SelectedScreen.Width / 2 - Width / 2, SelectedScreen.Bottom - Height);
-                        break;
-                    case 6:
-                        Position = new Point(SelectedScreen.Right - Width, SelectedScreen.Top);
-                        break;
-                    case 7:
-                        Position = new Point(SelectedScreen.Right - Width, SelectedScreen.Top + SelectedScreen.Height / 2 - Height / 2);
-                        break;
-                    case 8:
-                        Position = new Point(SelectedScreen.Right - Width, SelectedScreen.Bottom - Height);
-                        break;
-                }
-
-                Location = Position;
+                    0 => IsPPTService ? new Point(SelectedScreen.Location.X + PptsvcThreshold, SelectedScreen.Location.Y) : SelectedScreen.Location,
+                    1 => new Point(SelectedScreen.Left, SelectedScreen.Top + SelectedScreen.Height / 2 - Height / 2),
+                    2 => new Point(SelectedScreen.Left, SelectedScreen.Bottom - Height),
+                    3 => new Point(SelectedScreen.Left + SelectedScreen.Width / 2 - Width / 2, SelectedScreen.Top),
+                    4 => new Point(SelectedScreen.Left + SelectedScreen.Width / 2 - Width / 2, SelectedScreen.Top + SelectedScreen.Height / 2 - Height / 2),
+                    5 => new Point(SelectedScreen.Left + SelectedScreen.Width / 2 - Width / 2, SelectedScreen.Bottom - Height),
+                    6 => new Point(SelectedScreen.Right - Width, SelectedScreen.Top),
+                    7 => new Point(SelectedScreen.Right - Width, SelectedScreen.Top + SelectedScreen.Height / 2 - Height / 2),
+                    8 => new Point(SelectedScreen.Right - Width, SelectedScreen.Bottom - Height),
+                    _ => Location
+                };
             }
         }
 
