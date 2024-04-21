@@ -118,13 +118,20 @@ Section Uninstall
 SectionEnd
 
 Function .onInit
-!insertmacro SingleInstanceMutex
-FunctionEnd
- 
-Function un.onInit
-!insertmacro SingleInstanceMutex
+  !insertmacro SingleInstanceMutex
 FunctionEnd
 
 Function .onInstSuccess
   Exec "$INSTDIR\CEETimerCSharpWinForms.exe"
+FunctionEnd
+ 
+Function un.onInit
+  !insertmacro SingleInstanceMutex
+  MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "确认卸载 $(^Name)？" IDYES +2
+  Abort
+FunctionEnd
+
+Function un.onUninstSuccess
+  HideWindow
+  MessageBox MB_ICONINFORMATION|MB_OK "$(^Name) 已成功从你的计算机中移除。感谢你的使用！"
 FunctionEnd
