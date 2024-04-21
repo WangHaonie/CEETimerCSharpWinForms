@@ -73,6 +73,7 @@ namespace CEETimerCSharpWinForms.Forms
         private void InitializeExtra()
         {
             FormSettings.ConfigChanged += RefreshSettings;
+            SystemEvents.DisplaySettingsChanged += SystemEvents_DisplaySettingsChanged;
 
             TimerCountdown = new Timer()
             {
@@ -125,7 +126,6 @@ namespace CEETimerCSharpWinForms.Forms
             IsPPTService = IsPPTService && ((TopMost && ShowOnlyIndex == 0) || IsDragable);
 
             DetermineCountdownState();
-            SystemEvents.DisplaySettingsChanged += SystemEvents_DisplaySettingsChanged;
 
             if (!ColorHelper.IsNiceContrast(Fore1, Back1))
             {
