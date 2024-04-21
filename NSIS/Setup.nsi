@@ -101,18 +101,19 @@ SectionEnd
 
 Section Uninstall
   nsExec::Exec '"taskkill" /F /IM "CEETimerCSharpWinForms.exe"'
-  Delete "$INSTDIR\${PRODUCT_NAME}.url"
+  DeleteRegKey ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}"
+  DeleteRegValue ${PRODUCT_UNINST_ROOT_KEY} "SOFTWARE\Microsoft\Windows\CurrentVersion\Run" "CEETimerCSharpWinForms"
+  Delete "$INSTDIR\GitHub.url"
   Delete "$INSTDIR\uninst.exe"
   Delete "$INSTDIR\Newtonsoft.Json.dll"
   Delete "$INSTDIR\CEETimerCSharpWinForms.exe"
-  Delete "$INSTDIR\CEETimerCSharpWinForms.dll"
+  Delete "$INSTDIR\CEETimerCSharpWinForms.cfg"
   Delete "$SMPROGRAMS\高考倒计时\卸载 高考倒计时.lnk"
   Delete "$SMPROGRAMS\高考倒计时\GitHub.lnk"
   Delete "$DESKTOP\高考倒计时.lnk"
   Delete "$SMPROGRAMS\高考倒计时\高考倒计时.lnk"
   RMDir "$SMPROGRAMS\高考倒计时"
   RMDir "$INSTDIR"
-  DeleteRegKey ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}"
   SetAutoClose true
 SectionEnd
 
