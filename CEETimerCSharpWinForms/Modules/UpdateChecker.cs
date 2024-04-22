@@ -6,11 +6,8 @@ using System.Windows.Forms;
 
 namespace CEETimerCSharpWinForms.Modules
 {
-    public class SimpleUpdateChecker
+    public class UpdateChecker
     {
-        public static string CurrentLatest { get; private set; }
-        private const string GitHubAPI = "https://api.github.com/repos/WangHaonie/CEETimerCSharpWinForms/releases/latest";
-
         public static void CheckUpdate(bool IsProgramStart, Form ParentForm)
         {
             using var HttpClienMain = new HttpClient();
@@ -18,8 +15,8 @@ namespace CEETimerCSharpWinForms.Modules
 
             try
             {
-                string ResponseContent = HttpClienMain.GetAsync(GitHubAPI).Result.EnsureSuccessStatusCode().Content.ReadAsStringAsync().Result;
-                CurrentLatest = JObject.Parse(ResponseContent)["name"].ToString();
+                string ResponseContent = HttpClienMain.GetAsync(LaunchManager.GitHubAPI).Result.EnsureSuccessStatusCode().Content.ReadAsStringAsync().Result;
+                string CurrentLatest = LaunchManager.CurrentLatest = JObject.Parse(ResponseContent)["name"].ToString();
                 DateTime.TryParse(JObject.Parse(ResponseContent)["published_at"].ToString(), out DateTime result);
                 string PublishTime = result.AddHours(8).ToString("yyyy-MM-dd dddd HH:mm:ss");
                 string UpdateLog = JObject.Parse(ResponseContent)["body"].ToString().RemoveInvalidLogChars(CurrentLatest);

@@ -28,7 +28,7 @@ namespace CEETimerCSharpWinForms.Forms
         public async Task DownloadUpdate()
         {
             IsCancelled = false;
-            string LatestVersion = SimpleUpdateChecker.CurrentLatest;
+            string LatestVersion = LaunchManager.CurrentLatest;
             string DownloadUrl = $"https://wanghaonie.github.io/file-storages/github-repos/CEETimerCSharpWinForms/CEETimerCSharpWinForms_{LatestVersion}_x64_Setup.exe";
             string DownloadPath = Path.Combine(Path.GetTempPath(), $"CEETimerCSharpWinForms_{LatestVersion}_x64_Setup.exe");
 

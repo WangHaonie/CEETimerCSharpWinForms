@@ -13,8 +13,9 @@ namespace CEETimerCSharpWinForms.Modules
     public class LaunchManager
     {
         public static bool IsAdmin { get; private set; }
+        public static string CurrentLatest { get; set; } = AppVersion;
 
-        public const string AppVersion = "3.0.2";
+        public const string AppVersion = "3.0.1";
         public const string AppVersionText = $"版本 v{AppVersion} x64 (2024/04/20)";
         public const string InfoMsg = "提示 - 高考倒计时";
         public const string WarnMsg = "警告 - 高考倒计时";
@@ -23,6 +24,7 @@ namespace CEETimerCSharpWinForms.Modules
         public const string CopyrightInfo = "Copyright © 2023-2024 WangHaonie";
         public const string RequestUA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36";
         public const string OriginalFileName = "CEETimerCSharpWinForms.exe";
+        public const string GitHubAPI = "https://api.github.com/repos/WangHaonie/CEETimerCSharpWinForms/releases/latest";
 
         public static readonly int CurrentWindowsVersion = Environment.OSVersion.Version.Major;
         public static readonly string CurrentExecutablePath = AppDomain.CurrentDomain.BaseDirectory;
@@ -75,7 +77,7 @@ namespace CEETimerCSharpWinForms.Modules
                 }
                 else
                 {
-                    Task.Run(() => SimpleUpdateChecker.CheckUpdate(true, null));
+                    Task.Run(() => UpdateChecker.CheckUpdate(true, null));
                     Task.Run(CheckAdmin);
                     Application.Run(new FormMain());
                 }

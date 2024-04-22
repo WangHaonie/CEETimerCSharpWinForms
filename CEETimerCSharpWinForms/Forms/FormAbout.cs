@@ -44,7 +44,7 @@ namespace CEETimerCSharpWinForms.Forms
 
             try
             {
-                await Task.Run(() => SimpleUpdateChecker.CheckUpdate(false, this));
+                await Task.Run(() => UpdateChecker.CheckUpdate(false, this));
             }
             finally
             {
