@@ -63,9 +63,9 @@ namespace CEETimerCSharpWinForms.Properties {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
-        internal static System.Drawing.Bitmap AppIcon_256 {
+        internal static System.Drawing.Bitmap AppIcon100px {
             get {
-                object obj = ResourceManager.GetObject("AppIcon_256", resourceCulture);
+                object obj = ResourceManager.GetObject("AppIcon100px", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

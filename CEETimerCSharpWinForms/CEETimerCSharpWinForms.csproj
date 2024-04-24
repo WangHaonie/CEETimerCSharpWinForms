@@ -184,6 +184,7 @@
     </Compile>
     <None Include="Properties\app.manifest" />
     <None Include="packages.config" />
+    <None Include="Properties\AppIcon.ico" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
@@ -198,19 +199,13 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Properties\AppIcon.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Properties\AppIcon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\AppIcon_256.png" />
+    <None Include="Properties\AppIcon100px.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

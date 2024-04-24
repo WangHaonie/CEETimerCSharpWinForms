@@ -137,7 +137,7 @@
             // 
             // PBoxLogo
             // 
-            this.PBoxLogo.Image = global::CEETimerCSharpWinForms.Properties.Resources.AppIcon_256;
+            this.PBoxLogo.Image = global::CEETimerCSharpWinForms.Properties.Resources.AppIcon100px;
             this.PBoxLogo.Location = new System.Drawing.Point(6, 3);
             this.PBoxLogo.Name = "PBoxLogo";
             this.PBoxLogo.Size = new System.Drawing.Size(31, 31);
