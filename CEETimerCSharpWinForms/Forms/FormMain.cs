@@ -119,6 +119,7 @@ namespace CEETimerCSharpWinForms.Forms
             IsShowPast = IsShowPast && IsShowEnd;
             IsRounding = IsRounding && IsShowOnly && ShowOnlyIndex == 0;
             IsUniTopMost = IsUniTopMost && TopMost;
+            WarnDChanges = WarnDChanges && LaunchManager.IsWindows10Above;
             if (ScreenIndex < 0 || ScreenIndex > Screen.AllScreens.Length) ScreenIndex = 0;
             if (PositionIndex < 0 || PositionIndex > 8) PositionIndex = 0;
             if (ShowOnlyIndex > 3) ShowOnlyIndex = 0;

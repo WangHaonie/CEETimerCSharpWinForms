@@ -440,8 +440,12 @@ namespace CEETimerCSharpWinForms.Forms
             ComboBoxShowOnly.SelectedValue = ShowOnlyIndex;
             ChangeWorkingStyle(WorkingArea.ChangeFont, NewFont: new Font(CountdownFont, CountdownFontStyle));
             ChangePptsvcCtrlStyle(null, EventArgs.Empty);
-
             ComboBoxShowOnly.SelectedIndex = IsShowOnly ? ShowOnlyIndex : 0;
+
+            if (!LaunchManager.IsWindows10Above)
+            {
+                CheckBoxDisplayChanges.Enabled = CheckBoxDisplayChanges.Visible = false;
+            }
         }
 
         private bool IsSettingsFormatValid()

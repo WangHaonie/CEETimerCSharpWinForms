@@ -26,6 +26,7 @@ namespace CEETimerCSharpWinForms.Modules
         public const string OriginalFileName = "CEETimerCSharpWinForms.exe";
         public const string GitHubAPI = "https://api.github.com/repos/WangHaonie/CEETimerCSharpWinForms/releases/latest";
 
+        public static readonly bool IsWindows10Above = Environment.OSVersion.Version.Major >= 10;
         public static readonly string CurrentExecutablePath = AppDomain.CurrentDomain.BaseDirectory;
         public static readonly string CurrentExecutable = Application.ExecutablePath;
 
