@@ -26,7 +26,7 @@ namespace CEETimerCSharpWinForms.Modules
                     FormMain MainForm = Application.OpenForms[0] as FormMain;
                     MainForm.Invoke(new Action(() =>
                     {
-                        if (MessageX.Popup($"检测到新版本，是否下载并安装？\n\n当前版本: v{LaunchManager.AppVersion}\n最新版本: v{CurrentLatest}\n发布日期: {PublishTime}\n\nv{CurrentLatest}更新日志: {UpdateLog}", MessageLevel.Info, Buttons: MessageBoxButtons.YesNo) == DialogResult.Yes)
+                        if (MessageX.Popup($"检测到新版本，是否下载并安装？\n\n当前版本: v{LaunchManager.AppVersion}\n最新版本: v{CurrentLatest}\n发布日期: {PublishTime}\n\nv{CurrentLatest}更新日志: \n{UpdateLog}", MessageLevel.Info, Buttons: MessageBoxButtons.YesNo) == DialogResult.Yes)
                         {
                             SingleInstanceRunner<FormDownloader>.GetInstance().Show();
                         }
@@ -34,7 +34,7 @@ namespace CEETimerCSharpWinForms.Modules
                 }
                 else if (!IsProgramStart)
                 {
-                    MessageX.Popup($"当前 v{LaunchManager.AppVersion} 已是最新版本。\n\n获取到的版本：v{CurrentLatest}\n发布日期: {PublishTime}\n\n当前版本更新日志: {UpdateLog}", MessageLevel.Info, ParentForm);
+                    MessageX.Popup($"当前 v{LaunchManager.AppVersion} 已是最新版本。\n\n获取到的版本：v{CurrentLatest}\n发布日期: {PublishTime}\n\n当前版本更新日志: \n{UpdateLog}", MessageLevel.Info, ParentForm);
                 }
             }
             catch (Exception ex)
