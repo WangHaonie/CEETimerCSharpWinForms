@@ -30,6 +30,7 @@ namespace CEETimerCSharpWinForms.Forms
         private bool IsShowPast;
         private bool IsRounding;
         private bool IsPPTService;
+        private bool WarnDChanges;
         private int ScreenIndex;
         private int PositionIndex;
         private int ShowOnlyIndex;
@@ -73,7 +74,6 @@ namespace CEETimerCSharpWinForms.Forms
         private void InitializeExtra()
         {
             FormSettings.ConfigChanged += RefreshSettings;
-            SystemEvents.DisplaySettingsChanged += SystemEvents_DisplaySettingsChanged;
 
             TimerCountdown = new Timer()
             {
@@ -109,6 +109,7 @@ namespace CEETimerCSharpWinForms.Forms
             Fore2 = ColorHelper.TryParseRGB(ConfigManager.ReadConfig(ConfigItems.Fore2), out Color tmpr) ? tmpr : Color.Green;
             Fore3 = ColorHelper.TryParseRGB(ConfigManager.ReadConfig(ConfigItems.Fore3), out Color tmps) ? tmps : Color.Black;
             Fore4 = ColorHelper.TryParseRGB(ConfigManager.ReadConfig(ConfigItems.Fore4), out Color tmpt) ? tmpt : Color.Black;
+            WarnDChanges = bool.TryParse(ConfigManager.ReadConfig(ConfigItems.DChanges), out bool tmpv) && tmpv;
             DateTime.TryParseExact(ConfigManager.ReadConfig(ConfigItems.StartTime), "yyyyMMddHHmmss", null, DateTimeStyles.None, out ExamStartTime);
             DateTime.TryParseExact(ConfigManager.ReadConfig(ConfigItems.EndTime), "yyyyMMddHHmmss", null, DateTimeStyles.None, out ExamEndTime);
             int.TryParse(ConfigManager.ReadConfig(ConfigItems.PosX), out int x);
@@ -170,7 +171,8 @@ namespace CEETimerCSharpWinForms.Forms
 
             LabelCountdown.Font = new Font(SelectedFont, SelectedFontStyle);
 
-            ConfigManager.MountConfig(false);
+            SystemEvents.DisplaySettingsChanged -= SystemEvents_DisplaySettingsChanged;
+            SystemEvents.DisplaySettingsChanged += SystemEvents_DisplaySettingsChanged;
 
             LabelCountdown.MouseDown -= LabelCountdown_MouseDown;
             LabelCountdown.MouseMove -= LabelCountdown_MouseMove;
@@ -227,13 +229,15 @@ namespace CEETimerCSharpWinForms.Forms
             FormSettings.Fore2 = Fore2;
             FormSettings.Fore3 = Fore3;
             FormSettings.Fore4 = Fore4;
+            FormSettings.WarnDChanges = WarnDChanges;
+            ConfigManager.MountConfig(false);
         }
 
         private void SystemEvents_DisplaySettingsChanged(object sender, EventArgs e)
         {
             RefreshScreen();
 
-            if (!DisplaySettingsChangedEventInvoked)
+            if (!DisplaySettingsChangedEventInvoked && WarnDChanges)
             {
                 DisplaySettingsChangedEventInvoked = true;
                 if (MessageX.Popup("检测到显示设置发生了更改，如果你刚刚更改的是缩放，推荐重启倒计时以确保文字不会变模糊、功能不会出现异常。\n\n是否立即重启倒计时？\n(也可以在 设置 >工具 里手动重启倒计时)", MessageLevel.Warning, Buttons: MessageBoxButtons.YesNo) == DialogResult.Yes) LaunchManager.Shutdown(Restart: true);

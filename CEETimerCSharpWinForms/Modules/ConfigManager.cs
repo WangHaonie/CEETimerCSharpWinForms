@@ -136,6 +136,7 @@ namespace CEETimerCSharpWinForms.Modules
         public const string Back3 = "8179";
         public const string Fore4 = "3B6F";
         public const string Back4 = "7A2D";
+        public const string DChanges = "E2A5";
         public const string PosX = "F4E3";
         public const string PosY = "B337";
     }

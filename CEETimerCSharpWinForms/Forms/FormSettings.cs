@@ -29,6 +29,7 @@ namespace CEETimerCSharpWinForms.Forms
         public static bool IsRounding { get; set; }
         public static bool IsPPTService { get; set; }
         public static bool TopMostChecked { get; set; }
+        public static bool WarnDChanges { get; set; }
         public static int ScreenIndex { get; set; }
         public static int ShowOnlyIndex { get; set; }
         public static int PositionIndex { get; set; }
@@ -37,6 +38,8 @@ namespace CEETimerCSharpWinForms.Forms
         public static Font CountdownFont { get; set; }
         public static FontStyle CountdownFontStyle { get; set; }
         public static string ExamName { get; set; }
+
+        private bool IsFormLoading;
 
         private class ComboSource
         {
@@ -106,12 +109,14 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void FormSettings_Load(object sender, EventArgs e)
         {
+            IsFormLoading = true;
             TopMost = FormMain.IsUniTopMost;
             ChangeWorkingStyle(WorkingArea.Funny, false);
             RefreshScreens();
             RefreshSettings();
             IsSettingsChanged = false;
             ButtonSave.Enabled = false;
+            IsFormLoading = false;
         }
 
         private void SettingsChanged(object sender, EventArgs e)
@@ -317,6 +322,24 @@ namespace CEETimerCSharpWinForms.Forms
             ComboBoxPosition.SelectedIndex = ComboBoxPosition.Enabled ? PositionIndex : 0;
         }
 
+        private void CheckBoxDisplayChanges_CheckedChanged(object sender, EventArgs e)
+        {
+            SettingsChanged(sender, e);
+
+            if (CheckBoxDisplayChanges.Checked && !IsFormLoading)
+            {
+                if (MessageX.Popup("由于技术原因，开启后将检测所有显示设置 (缩放、分辨率、刷新率等) 的更改，而不是只检测缩放的更改，故需要用户自行判断。\n\n是否仍要开启提示？", MessageLevel.Warning, Buttons: MessageBoxButtons.YesNo) == DialogResult.No)
+                {
+                    CheckBoxDisplayChanges.Checked = false;
+                }
+            }
+        }
+
+        private void ButtonClose_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
         private void FormSettings_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (IsSyncingTime)
@@ -336,11 +359,6 @@ namespace CEETimerCSharpWinForms.Forms
                     Close();
                 }
             }
-        }
-
-        private void ButtonClose_Click(object sender, EventArgs e)
-        {
-            Close();
         }
 
         private void FormSettings_FormClosed(object sender, FormClosedEventArgs e)
@@ -416,6 +434,7 @@ namespace CEETimerCSharpWinForms.Forms
             CheckBoxShowPast.Checked = IsShowPast;
             CheckBoxSwPptSvc.Checked = IsPPTService;
             CheckBoxSetUniTopMost.Checked = TopMost;
+            CheckBoxDisplayChanges.Checked = WarnDChanges;
             ComboBoxScreens.SelectedValue = ScreenIndex;
             ComboBoxPosition.SelectedValue = PositionIndex;
             ComboBoxShowOnly.SelectedValue = ShowOnlyIndex;
@@ -550,8 +569,8 @@ namespace CEETimerCSharpWinForms.Forms
                     break;
                 case WorkingArea.Funny:
                     GBoxRestart.Text = IsWorking ? "关闭倒计时" : "重启倒计时";
-                    LabelLine9.Text = IsWorking ? "当然, 你也可以关闭此倒计时。(●'◡'●)" : "用于更改了屏幕缩放或者分辨率之后, 可以点击此按钮来重启倒计时";
-                    LabelLine10.Text = IsWorking ? "" : "以确保窗口的文字不会变模糊。";
+                    LabelLine9.Text = IsWorking ? "当然, 你也可以关闭此倒计时。(●'◡'●)" : "用于更改了屏幕缩放之后, 可以点击此按钮来重启倒计时以确保窗口";
+                    LabelLine10.Text = IsWorking ? "" : "的文字不会变模糊。";
                     ButtonRestart.Text = IsWorking ? "点击关闭(&L)" : "点击重启(&R)";
                     break;
                 case WorkingArea.SetPPTService:
@@ -646,6 +665,7 @@ namespace CEETimerCSharpWinForms.Forms
                     { ConfigItems.Back3, $"{LabelColor31.BackColor.R},{LabelColor31.BackColor.G},{LabelColor31.BackColor.B}" },
                     { ConfigItems.Fore4, $"{LabelColor42.BackColor.R},{LabelColor42.BackColor.G},{LabelColor42.BackColor.B}" },
                     { ConfigItems.Back4, $"{LabelColor41.BackColor.R},{LabelColor41.BackColor.G},{LabelColor41.BackColor.B}" },
+                    { ConfigItems.DChanges, $"{CheckBoxDisplayChanges.Checked}" }
                 });
             }
             catch
