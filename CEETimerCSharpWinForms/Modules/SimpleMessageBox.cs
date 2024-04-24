@@ -23,7 +23,7 @@ namespace CEETimerCSharpWinForms.Modules
         public static DialogResult Popup(string Message, MessageLevel Level, Form ParentForm = null, TabControl ParentTabControl = null, TabPage ParentTabPage = null, MessageBoxButtons Buttons = MessageBoxButtons.OK)
         {
             var (Icon, Title) = GetIconTitle(Level);
-            return PopupCore(Message, Title, Buttons, Icon, ParentForm,ParentTabControl, ParentTabPage);
+            return PopupCore(Message, Title, Buttons, Icon, ParentForm, ParentTabControl, ParentTabPage);
         }
 
         /// <summary>

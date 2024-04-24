@@ -79,7 +79,7 @@ namespace CEETimerCSharpWinForms.Modules
 #endif
                 return true;
             }
-            else if (Contrast >= 1.6 && Contrast < 2 && ColorDifference >=500 && ColorDifference < 535)
+            else if (Contrast >= 1.6 && Contrast < 2 && ColorDifference >= 500 && ColorDifference < 535)
             {
 #if DEBUG
                 Console.WriteLine("17");

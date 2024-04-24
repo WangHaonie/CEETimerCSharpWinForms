@@ -13,9 +13,9 @@ namespace CEETimerCSharpWinForms.Modules
     public class LaunchManager
     {
         public static bool IsAdmin { get; private set; }
-        public static string CurrentLatest { get; set; } = AppVersion;
+        public static string CurrentLatest { get; set; }
 
-        public const string AppVersion = "3.0.1";
+        public const string AppVersion = "3.0.2";
         public const string AppVersionText = $"版本 v{AppVersion} x64 (2024/04/20)";
         public const string InfoMsg = "提示 - 高考倒计时";
         public const string WarnMsg = "警告 - 高考倒计时";
@@ -26,7 +26,6 @@ namespace CEETimerCSharpWinForms.Modules
         public const string OriginalFileName = "CEETimerCSharpWinForms.exe";
         public const string GitHubAPI = "https://api.github.com/repos/WangHaonie/CEETimerCSharpWinForms/releases/latest";
 
-        public static readonly int CurrentWindowsVersion = Environment.OSVersion.Version.Major;
         public static readonly string CurrentExecutablePath = AppDomain.CurrentDomain.BaseDirectory;
         public static readonly string CurrentExecutable = Application.ExecutablePath;
 
@@ -34,13 +33,14 @@ namespace CEETimerCSharpWinForms.Modules
 
         public static void StartProgram()
         {
-            using Mutex MutexMain = new(true, "CEETimerCSharpWinForms_MUTEX_61c0097d-3682-421c-84e6-70ca37dc31dd_[A3F8B92E6D14]", out bool IsNewProcess);
+            using var MutexMain = new Mutex(true, "CEETimerCSharpWinForms_MUTEX_61c0097d-3682-421c-84e6-70ca37dc31dd_[A3F8B92E6D14]", out bool IsNewProcess);
+
             if (IsNewProcess)
             {
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
 
-                Dictionary<string, string> DllHashes = new()
+                var DllHashes = new Dictionary<string, string>()
                 {
                     { "Newtonsoft.Json.dll", "E1E27AF7B07EEEDF5CE71A9255F0422816A6FC5849A483C6714E1B472044FA9D" }
                 };
@@ -61,6 +61,7 @@ namespace CEETimerCSharpWinForms.Modules
                         using FileStream fs = File.OpenRead(DllPath);
                         byte[] HashBytes = SHA256.Create().ComputeHash(fs);
                         string CurrentHash = BitConverter.ToString(HashBytes).Replace("-", "");
+
                         if (!string.Equals(CurrentHash, DllHash, StringComparison.OrdinalIgnoreCase))
                         {
                             MessageBox.Show($"{DllPath} 没有被指定在 Windows 上运行，或者它包含错误。请尝试使用原始安装介质重新安装程序，或联系你的系统管理员或软件供应商以获取支持。错误状态 0x00000003", $"{CurrentExecutableName} - 损坏的映像", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -88,19 +89,14 @@ namespace CEETimerCSharpWinForms.Modules
             }
         }
 
-        public static void Restart()
+        public static void Shutdown(bool Restart = false)
         {
-            ProcessHelper.RunProcess("cmd.exe", $"/c taskkill /f /fi \"PID eq {Process.GetCurrentProcess().Id}\" /im {CurrentExecutableName} & start \"\" \"{CurrentExecutable}\"");
-        }
-
-        public static void Shutdown()
-        {
-            ProcessHelper.RunProcess("cmd.exe", $"/c taskkill /f /fi \"PID eq {Process.GetCurrentProcess().Id}\" /im {CurrentExecutableName}");
+            ProcessHelper.RunProcess("cmd.exe", $"/c taskkill /f /fi \"PID eq {Process.GetCurrentProcess().Id}\" /im {CurrentExecutableName} {(Restart ? $"& start \"\" \"{CurrentExecutable}\"" : "")}");
         }
 
         public static void CheckAdmin()
         {
-            Process AdminChecker = ProcessHelper.RunProcess("cmd.exe", "/c net session");
+            var AdminChecker = ProcessHelper.RunProcess("cmd.exe", "/c net session");
             AdminChecker.WaitForExit();
             IsAdmin = AdminChecker.ExitCode == 0;
         }

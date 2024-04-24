@@ -60,20 +60,17 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void FormAbout_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (IsCheckingUpdate)
-            {
-                e.Cancel = true;
-            }
+            e.Cancel = IsCheckingUpdate;
         }
 
         private void LinkGitHub_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("https://github.com/WangHaonie/CEETimerCSharpWinForms");
+            if (e.Button == MouseButtons.Left) Process.Start("https://github.com/WangHaonie/CEETimerCSharpWinForms");
         }
 
         private void LinkFeedback_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("https://github.com/WangHaonie/CEETimerCSharpWinForms/issues/new/choose");
+            if (e.Button == MouseButtons.Left) Process.Start("https://github.com/WangHaonie/CEETimerCSharpWinForms/issues/new/choose");
         }
     }
 }

@@ -63,7 +63,7 @@
             this.LabelScreensHint = new System.Windows.Forms.Label();
             this.LabelScreens = new System.Windows.Forms.Label();
             this.ComboBoxScreens = new System.Windows.Forms.ComboBox();
-            this.TabPageStyle = new System.Windows.Forms.TabPage();
+            this.TabPageAppearance = new System.Windows.Forms.TabPage();
             this.GBoxColors = new System.Windows.Forms.GroupBox();
             this.LabelPreviewColor4 = new System.Windows.Forms.Label();
             this.LabelColor42 = new System.Windows.Forms.Label();
@@ -108,7 +108,7 @@
             this.GBoxPPTService.SuspendLayout();
             this.GBoxContent.SuspendLayout();
             this.GBoxSetDragable.SuspendLayout();
-            this.TabPageStyle.SuspendLayout();
+            this.TabPageAppearance.SuspendLayout();
             this.GBoxColors.SuspendLayout();
             this.GBoxChangeFont.SuspendLayout();
             this.TabPageTools.SuspendLayout();
@@ -195,7 +195,7 @@
             // 
             this.TabControlMain.Controls.Add(this.TabPageGeneral);
             this.TabControlMain.Controls.Add(this.TabPageDisplay);
-            this.TabControlMain.Controls.Add(this.TabPageStyle);
+            this.TabControlMain.Controls.Add(this.TabPageAppearance);
             this.TabControlMain.Controls.Add(this.TabPageTools);
             this.TabControlMain.Location = new System.Drawing.Point(7, 4);
             this.TabControlMain.Name = "TabControlMain";
@@ -342,7 +342,7 @@
             this.LabelLine12.AutoSize = true;
             this.LabelLine12.Location = new System.Drawing.Point(6, 34);
             this.LabelLine12.Name = "LabelLine12";
-            this.LabelLine12.Size = new System.Drawing.Size(327, 15);
+            this.LabelLine12.Size = new System.Drawing.Size(353, 15);
             this.LabelLine12.TabIndex = 0;
             this.LabelLine12.Text = "(或者你也可以开启拖动功能，将倒计时窗口拖动到其他位置)";
             // 
@@ -506,17 +506,17 @@
             this.ComboBoxScreens.DropDown += new System.EventHandler(this.ComboBoxes_DropDown);
             this.ComboBoxScreens.SelectedIndexChanged += new System.EventHandler(this.ComboBoxScreens_SelectedIndexChanged);
             // 
-            // TabPageStyle
+            // TabPageAppearance
             // 
-            this.TabPageStyle.Controls.Add(this.GBoxColors);
-            this.TabPageStyle.Controls.Add(this.GBoxChangeFont);
-            this.TabPageStyle.Location = new System.Drawing.Point(4, 24);
-            this.TabPageStyle.Name = "TabPageStyle";
-            this.TabPageStyle.Padding = new System.Windows.Forms.Padding(3);
-            this.TabPageStyle.Size = new System.Drawing.Size(421, 294);
-            this.TabPageStyle.TabIndex = 4;
-            this.TabPageStyle.Text = "样式";
-            this.TabPageStyle.UseVisualStyleBackColor = true;
+            this.TabPageAppearance.Controls.Add(this.GBoxColors);
+            this.TabPageAppearance.Controls.Add(this.GBoxChangeFont);
+            this.TabPageAppearance.Location = new System.Drawing.Point(4, 24);
+            this.TabPageAppearance.Name = "TabPageAppearance";
+            this.TabPageAppearance.Padding = new System.Windows.Forms.Padding(3);
+            this.TabPageAppearance.Size = new System.Drawing.Size(421, 294);
+            this.TabPageAppearance.TabIndex = 4;
+            this.TabPageAppearance.Text = "外观";
+            this.TabPageAppearance.UseVisualStyleBackColor = true;
             // 
             // GBoxColors
             // 
@@ -918,7 +918,7 @@
             this.GBoxContent.PerformLayout();
             this.GBoxSetDragable.ResumeLayout(false);
             this.GBoxSetDragable.PerformLayout();
-            this.TabPageStyle.ResumeLayout(false);
+            this.TabPageAppearance.ResumeLayout(false);
             this.GBoxColors.ResumeLayout(false);
             this.GBoxColors.PerformLayout();
             this.GBoxChangeFont.ResumeLayout(false);
@@ -980,7 +980,7 @@
         private System.Windows.Forms.Label LabelScreens;
         private System.Windows.Forms.ComboBox ComboBoxScreens;
         private System.Windows.Forms.ComboBox ComboBoxShowOnly;
-        private System.Windows.Forms.TabPage TabPageStyle;
+        private System.Windows.Forms.TabPage TabPageAppearance;
         private System.Windows.Forms.GroupBox GBoxColors;
         private System.Windows.Forms.Label LabelColor32;
         private System.Windows.Forms.Label LabelColor31;

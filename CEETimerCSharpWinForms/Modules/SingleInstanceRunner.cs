@@ -12,6 +12,7 @@ namespace CEETimerCSharpWinForms.Modules
             {
                 Instance = new T();
             }
+
             Instance.WindowState = FormWindowState.Normal;
             Instance.Activate();
             return Instance;

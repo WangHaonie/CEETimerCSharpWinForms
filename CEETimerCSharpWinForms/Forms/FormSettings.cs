@@ -241,7 +241,7 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void ButtonRestart_Click(object sender, EventArgs e)
         {
-            LaunchManager.Restart();
+            LaunchManager.Shutdown(Restart: true);
         }
 
         private void ButtonRestart_Funny_Click(object sender, EventArgs e)
@@ -496,7 +496,7 @@ namespace CEETimerCSharpWinForms.Forms
 
             if (!string.IsNullOrEmpty(ColorCheckMsg))
             {
-                MessageX.Popup($"第{ColorCheckMsg}组的颜色相似或对比度较低，将无法看清文字，请尝试更换其它背景颜色或文字颜色！", MessageLevel.Error, this, TabControlMain, TabPageStyle);
+                MessageX.Popup($"第{ColorCheckMsg}组的颜色相似或对比度较低，将无法看清文字，请尝试更换其它背景颜色或文字颜色！", MessageLevel.Error, this, TabControlMain, TabPageAppearance);
                 return false;
             }
 
