@@ -328,7 +328,7 @@ namespace CEETimerCSharpWinForms.Forms
 
             if (CheckBoxDisplayChanges.Checked && !IsFormLoading)
             {
-                if (MessageX.Popup("由于技术原因，开启后将检测所有显示设置 (缩放、分辨率、刷新率等) 的更改，而不是只检测缩放的更改，故需要用户自行判断。\n\n是否仍要开启提示？", MessageLevel.Warning, Buttons: MessageBoxButtons.YesNo) == DialogResult.No)
+                if (MessageX.Popup("由于技术原因，开启后将检测所有显示设置 (缩放、分辨率、刷新率等) 的更改，\n而不是只检测缩放的更改，故还是需要自行判断。\n\n是否仍要开启提示？", MessageLevel.Warning, Buttons: MessageBoxExButtons.YesNo) == DialogResult.No)
                 {
                     CheckBoxDisplayChanges.Checked = false;
                 }
@@ -348,7 +348,7 @@ namespace CEETimerCSharpWinForms.Forms
             }
             else if (IsSettingsChanged)
             {
-                if (MessageX.Popup("检测到设置被更改但没有被保存，是否立即进行保存？", MessageLevel.Warning, Buttons: MessageBoxButtons.YesNo) == DialogResult.Yes)
+                if (MessageX.Popup("检测到设置被更改但没有被保存，是否立即进行保存？  ", MessageLevel.Warning, Buttons: MessageBoxExButtons.YesNo) == DialogResult.Yes)
                 {
                     e.Cancel = true;
                     ButtonSave_Click(sender, e);
@@ -483,12 +483,13 @@ namespace CEETimerCSharpWinForms.Forms
 
                 if (!string.IsNullOrEmpty(TimeMsg))
                 {
-                    UniMsg = $"检测到设置的考试时间太长或太短！\n\n当前考试时长: {TimeMsg}。\n\n如果你确认当前设置的是正确的考试时间，请点击确定，否则请点击取消。";
+                    UniMsg = $"检测到设置的考试时间太长或太短！\n\n当前考试时长: {TimeMsg}。\n\n如果你确认当前设置的是正确的考试时间，请点击 是，否则请点击 否。";
                 }
 
                 if (!string.IsNullOrEmpty(UniMsg))
                 {
-                    if (MessageX.Popup(UniMsg, MessageLevel.Warning, this, TabControlMain, TabPageGeneral, MessageBoxButtons.OKCancel) == DialogResult.Cancel)
+                    TabControlMain.SelectedTab = TabPageGeneral;
+                    if (MessageX.Popup(UniMsg, MessageLevel.Warning, Buttons: MessageBoxExButtons.YesNo) == DialogResult.No)
                     {
                         return false;
                     }
@@ -519,7 +520,7 @@ namespace CEETimerCSharpWinForms.Forms
 
             if (!string.IsNullOrEmpty(ColorCheckMsg))
             {
-                MessageX.Popup($"第{ColorCheckMsg}组的颜色相似或对比度较低，将无法看清文字，请尝试更换其它背景颜色或文字颜色！", MessageLevel.Error, this, TabControlMain, TabPageAppearance);
+                MessageX.Popup($"第{ColorCheckMsg}组的颜色相似或对比度较低，将无法看清文字。\n\n请尝试更换其它背景颜色或文字颜色！", MessageLevel.Error, this, TabControlMain, TabPageAppearance);
                 return false;
             }
 
@@ -530,7 +531,7 @@ namespace CEETimerCSharpWinForms.Forms
         {
             try
             {
-                if (!LaunchManager.IsAdmin) MessageX.Popup("检测到当前用户不具有管理员权限，运行该操作会发生错误。\n\n程序将在此消息框关闭后尝试弹出 UAC 提示框，前提要把系统的 UAC 设置为 \"仅当应用尝试更改我的计算机时通知我\" 或及以上，否则将无法进行授权。\n\n稍后若没有看见提示框，请更改 UAC 设置：Win+S 搜索 uac", MessageLevel.Warning, this);
+                if (!LaunchManager.IsAdmin) MessageX.Popup("检测到当前用户不具有管理员权限，运行该操作会发生错误。\n\n程序将在此消息框关闭后尝试弹出 UAC 提示框，前提要把系统的 UAC 设置\n为 \"仅当应用尝试更改我的计算机时通知我\" 或及以上，否则将无法进行授权。\n\n稍后若没有看见提示框，请更改 UAC 设置：Win+S 搜索 uac", MessageLevel.Warning, this);
 
                 Process SyncTimeProcess = ProcessHelper.RunProcess("cmd.exe", "/c net stop w32time & sc config w32time start= auto & net start w32time && w32tm /config /manualpeerlist:ntp1.aliyun.com /syncfromflags:manual /reliable:YES /update && w32tm /resync && w32tm /resync", AdminRequired: true);
 

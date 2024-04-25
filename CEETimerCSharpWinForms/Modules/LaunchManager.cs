@@ -73,7 +73,7 @@ namespace CEETimerCSharpWinForms.Modules
 
                 if (!CurrentExecutableName.Equals(OriginalFileName, StringComparison.OrdinalIgnoreCase))
                 {
-                    MessageX.Popup($"为了您的使用体验，请不要更改程序文件名! 程序将在该消息框关闭后尝试自动恢复到原文件名，若自动恢复失败请手动改回。\n\n当前文件名：{CurrentExecutableName}\n原始文件名：{OriginalFileName}", MessageLevel.Error);
+                    MessageX.Popup($"为了您的使用体验，请不要更改程序文件名! \n程序将在该消息框关闭后尝试自动恢复到原文件名，若自动恢复失败请手动改回。\n\n当前文件名：{CurrentExecutableName}\n原始文件名：{OriginalFileName}", MessageLevel.Error, Position:FormStartPosition.CenterScreen);
                     ProcessHelper.RunProcess("cmd.exe", $"/c ren \"{CurrentExecutable}\" {OriginalFileName} & start \"\" \"{CurrentExecutablePath}{OriginalFileName}\"");
                     Environment.Exit(4);
                 }
