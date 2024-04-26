@@ -18,21 +18,66 @@ namespace CEETimerCSharpWinForms.Modules
 
     public class MessageX
     {
+        /// <summary>
+        /// 在指定的窗体或定位到其标签页上或直接显示一个具有 DialogResult 返回值的消息框
+        /// </summary>
+        /// <param name="Message">消息</param>
+        /// <param name="Level">消息等级</param>
+        /// <param name="ParentForm">[可选] 父窗体</param>
+        /// <param name="ParentTabControl">[可选] 父窗体的 TabControl</param>
+        /// <param name="ParentTabPage">[可选] 父窗体的 TabControl 的标签页</param>
+        /// <param name="Buttons">[可选] 要显示的按钮</param>
+        /// <param name="Position">[可选] 消息框出现的位置</param>
+        /// <returns>DialogResult</returns>
         public static DialogResult Popup(string Message, MessageLevel Level, Form ParentForm = null, TabControl ParentTabControl = null, TabPage ParentTabPage = null, MessageBoxExButtons Buttons = MessageBoxExButtons.OK, FormStartPosition Position = FormStartPosition.CenterParent)
         {
             return PopupCore(Message, Level, ParentForm, ParentTabControl, ParentTabPage, Buttons, Position);
         }
 
+        /// <summary>
+        /// 在指定的窗体或定位到其标签页上或直接显示一个专门用来显示错误的消息框
+        /// </summary>
+        /// <param name="Message">消息</param>
+        /// <param name="ex">异常</param>
+        /// <param name="ParentForm">[可选] 父窗体</param>
+        /// <param name="ParentTabControl">[可选] 父窗体的 TabControl</param>
+        /// <param name="ParentTabPage">[可选] 父窗体的 TabControl 的标签页</param>
+        /// <param name="Buttons">[可选] 要显示的按钮</param>
+        /// <param name="Position">[可选] 消息框出现的位置</param>
         public static void Popup(string Message, Exception ex, Form ParentForm = null, TabControl ParentTabControl = null, TabPage ParentTabPage = null, MessageBoxExButtons Buttons = MessageBoxExButtons.OK, FormStartPosition Position = FormStartPosition.CenterParent)
         {
             PopupCore($"{Message}\n\n错误信息: \n{ex.Message}\n\n错误详情: \n{ex}", MessageLevel.Error, ParentForm, ParentTabControl, ParentTabPage, Buttons, Position);
         }
 
+        /// <summary>
+        /// Popup 的核心方法，用于定位到父窗体的标签页和与 MessageBoxEx 交互
+        /// </summary>
+        /// <param name="Message">消息</param>
+        /// <param name="Level">消息等级</param>
+        /// <param name="ParentForm">父窗体</param>
+        /// <param name="ParentTabControl">父窗体的 TabControl</param>
+        /// <param name="ParentTabPage">父窗体的 TabControl 的标签页</param>
+        /// <param name="Buttons">要显示的按钮</param>
+        /// <param name="Position">消息框出现的位置</param>
+        /// <returns>DialogResult</returns>
         private static DialogResult PopupCore(string Message, MessageLevel Level, Form ParentForm, TabControl ParentTabControl, TabPage ParentTabPage, MessageBoxExButtons Buttons, FormStartPosition Position)
         {
+            var (Title, MessageBoxExIcon, Sound) = GetStuff(Level);
+            using var _MessageBox = new MessageBoxEx();
+
             if (ParentForm != null)
             {
-                ParentForm.Invoke(new Action(() =>
+                #region
+                /*
+                
+                在 Invoke 方法内部获取到 DialogResult 返回值 参考：
+
+                c# - Return Ivoke message DialogResult - Stack Overflow
+                https://stackoverflow.com/a/29256646/21094697
+
+                */
+
+                return (DialogResult)ParentForm.Invoke(new Func<DialogResult>(() =>
                 {
                     ParentForm.WindowState = FormWindowState.Normal;
                     ParentForm.Activate();
@@ -42,50 +87,43 @@ namespace CEETimerCSharpWinForms.Modules
                         ParentTabControl.SelectedTab = ParentTabPage;
                     }
 
-                    using var Mx = new MessageBoxEx();
-                    Mx.ShowCore(Message, Level, Buttons, Position);
-                    Mx.ShowDialog(ParentForm);
+                    return _MessageBox.ShowCore(Message, Title, MessageBoxExIcon, Sound, Buttons, Position);
+
                 }));
 
-                return DialogResult.None;
+                #endregion
             }
             else
             {
-                using var Mx = new MessageBoxEx();
-                Mx.ShowCore(Message, Level, Buttons, Position);
-                Mx.ShowDialog();
-                return Mx.DialogResultEx;
+                return _MessageBox.ShowCore(Message, Title, MessageBoxExIcon, Sound, Buttons, Position);
             }
         }
 
-        public static (SystemSound, Icon, string) GetStuff(MessageLevel Level)
+        public static (string, Icon, SystemSound) GetStuff(MessageLevel Level) => Level switch
         {
-            return Level switch
-            {
-                #region
-                /*
-                
-                获取 imageres.dll 里的 Info、Warning、Error 图标的索引参考：
+            #region
+            /*
 
-                Icons in imageres.dll
-                https://renenyffenegger.ch/development/Windows/PowerShell/examples/WinAPI/ExtractIconEx/imageres.html
+            获取 imageres.dll 里的 Info、Warning、Error 图标的索引参考：
+
+            Icons in imageres.dll
+            https://renenyffenegger.ch/development/Windows/PowerShell/examples/WinAPI/ExtractIconEx/imageres.html
 
 
-                播放与 MessageBox 同款音效参考：
+            播放与 MessageBox 同款音效参考：
 
-                c# - Selecting sounds from Windows and playing them - Stack Overflow
-                https://stackoverflow.com/a/5194223/21094697
+            c# - Selecting sounds from Windows and playing them - Stack Overflow
+            https://stackoverflow.com/a/5194223/21094697
 
-                 */
+             */
 
-                MessageLevel.Info => (SystemSounds.Asterisk, GetMessageBoxIcon(76), LaunchManager.InfoMsg),
-                MessageLevel.Warning => (SystemSounds.Exclamation, GetMessageBoxIcon(79), LaunchManager.WarnMsg),
-                MessageLevel.Error => (SystemSounds.Hand, GetMessageBoxIcon(93), LaunchManager.ErrMsg),
-                _ => (null, null, "")
+            MessageLevel.Info => (LaunchManager.InfoMsg, GetMessageBoxIcon(76), SystemSounds.Asterisk),
+            MessageLevel.Warning => (LaunchManager.WarnMsg, GetMessageBoxIcon(79), SystemSounds.Exclamation),
+            MessageLevel.Error => (LaunchManager.ErrMsg, GetMessageBoxIcon(93), SystemSounds.Hand),
+            _ => throw new Exception()
 
-                #endregion
-            };
-        }
+            #endregion
+        };
 
         private static Icon GetMessageBoxIcon(int IconIndex)
         {

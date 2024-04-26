@@ -488,8 +488,7 @@ namespace CEETimerCSharpWinForms.Forms
 
                 if (!string.IsNullOrEmpty(UniMsg))
                 {
-                    TabControlMain.SelectedTab = TabPageGeneral;
-                    if (MessageX.Popup(UniMsg, MessageLevel.Warning, Buttons: MessageBoxExButtons.YesNo) == DialogResult.No)
+                    if (MessageX.Popup(UniMsg, MessageLevel.Warning, this, TabControlMain, TabPageGeneral, Buttons: MessageBoxExButtons.YesNo) == DialogResult.No)
                     {
                         return false;
                     }

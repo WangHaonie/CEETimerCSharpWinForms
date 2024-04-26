@@ -1,14 +1,14 @@
 ﻿using CEETimerCSharpWinForms.Modules;
 using System;
 using System.Drawing;
+using System.Media;
 using System.Windows.Forms;
 
 namespace CEETimerCSharpWinForms.Forms
 {
     public partial class MessageBoxEx : Form
     {
-        public DialogResult DialogResultEx { get; set; }
-
+        private DialogResult DialogResultEx;
         private MessageBoxExButtons ButtonsEx;
 
         public MessageBoxEx()
@@ -17,11 +17,12 @@ namespace CEETimerCSharpWinForms.Forms
             TopMost = FormMain.IsUniTopMost;
         }
 
-        public void ShowCore(string Message, MessageLevel Level, MessageBoxExButtons Buttons, FormStartPosition Position)
+        public DialogResult ShowCore(string Message, string Title, Icon MessageBoxExIcon, SystemSound Sound, MessageBoxExButtons Buttons, FormStartPosition Position)
         {
-            StartPosition = Position;
-
-            var (Sound, Icon, Title) = MessageX.GetStuff(Level);
+            LabelMessage.Text = Message;
+            Text = Title;
+            PicBoxIcon.Image = MessageBoxExIcon.ToBitmap();
+            Sound.Play();
             ButtonsEx = Buttons;
 
             switch (Buttons)
@@ -36,12 +37,14 @@ namespace CEETimerCSharpWinForms.Forms
                     break;
             }
 
-            Sound.Play();
-            PicBoxIcon.Image = Icon.ToBitmap();
-            Text = Title;
-            LabelMessage.Text = Message;
+            StartPosition = Position;
+
             ButtonB.Location = new Point(Width - ButtonB.Width - 15, PanelHead.Height + 10);
             ButtonA.Location = new Point(ButtonB.Location.X - ButtonA.Width - 8, ButtonB.Location.Y);
+
+            ShowDialog();
+
+            return DialogResultEx;
         }
 
         private void ButtonA_Click(object sender, EventArgs e)

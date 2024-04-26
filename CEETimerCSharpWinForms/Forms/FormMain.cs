@@ -337,7 +337,7 @@ namespace CEETimerCSharpWinForms.Forms
                     1 => CountdownState.HoursOnly,
                     2 => CountdownState.MinutesOnly,
                     3 => CountdownState.SecondsOnly,
-                    _ => CountdownState.Normal
+                    _ => throw new Exception()
                 };
             }
         }
@@ -358,7 +358,7 @@ namespace CEETimerCSharpWinForms.Forms
                     CountdownState.HoursOnly => $"距离{ExamName}还有{TimeLeft.TotalHours:0}小时",
                     CountdownState.MinutesOnly => $"距离{ExamName}还有{TimeLeft.TotalMinutes:0}分钟",
                     CountdownState.SecondsOnly => $"距离{ExamName}还有{TimeLeft.TotalSeconds:0}秒",
-                    _ => ""
+                    _ => throw new Exception()
                 };
             }
             else if (IsReady && IsShowEnd && DateTime.Now >= ExamStartTime && DateTime.Now < ExamEndTime)
@@ -375,7 +375,7 @@ namespace CEETimerCSharpWinForms.Forms
                     CountdownState.HoursOnly => $"距离{ExamName}结束还有{TimeLeftPast.TotalHours:0}小时",
                     CountdownState.MinutesOnly => $"距离{ExamName}结束还有{TimeLeftPast.TotalMinutes:0}分钟",
                     CountdownState.SecondsOnly => $"距离{ExamName}结束还有{TimeLeftPast.TotalSeconds:0}秒",
-                    _ => ""
+                    _ => throw new Exception()
                 };
             }
             else if (IsReady && IsShowEnd && DateTime.Now >= ExamEndTime && IsShowPast)
@@ -392,7 +392,7 @@ namespace CEETimerCSharpWinForms.Forms
                     CountdownState.HoursOnly => $"距离{ExamName}已过去了{TimePast.TotalHours:0}小时",
                     CountdownState.MinutesOnly => $"距离{ExamName}已过去了{TimePast.TotalMinutes:0}分钟",
                     CountdownState.SecondsOnly => $"距离{ExamName}已过去了{TimePast.TotalSeconds:0}秒",
-                    _ => ""
+                    _ => throw new Exception()
                 };
             }
             else
@@ -424,7 +424,7 @@ namespace CEETimerCSharpWinForms.Forms
                     6 => new Point(SelectedScreen.Right - Width, SelectedScreen.Top),
                     7 => new Point(SelectedScreen.Right - Width, SelectedScreen.Top + SelectedScreen.Height / 2 - Height / 2),
                     8 => new Point(SelectedScreen.Right - Width, SelectedScreen.Bottom - Height),
-                    _ => Location
+                    _ => throw new Exception()
                 };
             }
         }
