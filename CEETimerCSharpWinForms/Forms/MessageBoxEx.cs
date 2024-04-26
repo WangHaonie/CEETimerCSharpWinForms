@@ -8,7 +8,7 @@ namespace CEETimerCSharpWinForms.Forms
 {
     public partial class MessageBoxEx : Form
     {
-        private DialogResult DialogResultEx;
+        private DialogResult DialogResultEx = DialogResult.No;
         private MessageBoxExButtons ButtonsEx;
 
         public MessageBoxEx()
@@ -55,7 +55,7 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void ButtonB_Click(object sender, EventArgs e)
         {
-            DialogResultEx = ButtonsEx == MessageBoxExButtons.YesNo ? DialogResult.No : DialogResult.Yes;
+            DialogResultEx = ButtonsEx == MessageBoxExButtons.YesNo ? DialogResult.No : DialogResult.OK;
             Close();
         }
     }

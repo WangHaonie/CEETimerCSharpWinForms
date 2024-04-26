@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace CEETimerCSharpWinForms.Forms
@@ -69,6 +70,7 @@ namespace CEETimerCSharpWinForms.Forms
             RefreshSettings(null, EventArgs.Empty);
             LabelCountdown.ForeColor = Fore4;
             BackColor = Back4;
+            Task.Run(() => UpdateChecker.CheckUpdate(true, this));
         }
 
         private void InitializeExtra()

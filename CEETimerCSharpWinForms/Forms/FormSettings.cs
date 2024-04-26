@@ -348,7 +348,7 @@ namespace CEETimerCSharpWinForms.Forms
             }
             else if (IsSettingsChanged)
             {
-                if (MessageX.Popup("检测到设置被更改但没有被保存，是否立即进行保存？  ", MessageLevel.Warning, Buttons: MessageBoxExButtons.YesNo) == DialogResult.Yes)
+                if (MessageX.Popup("检测到设置被更改但没有保存，是否立即进行保存？", MessageLevel.Warning, Buttons: MessageBoxExButtons.YesNo) == DialogResult.Yes)
                 {
                     e.Cancel = true;
                     ButtonSave_Click(sender, e);

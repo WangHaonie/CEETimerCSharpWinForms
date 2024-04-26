@@ -23,14 +23,10 @@ namespace CEETimerCSharpWinForms.Modules
 
                 if (Version.Parse(CurrentLatest) > Version.Parse(LaunchManager.AppVersion))
                 {
-                    FormMain MainForm = Application.OpenForms[0] as FormMain;
-                    MainForm.Invoke(new Action(() =>
+                    if (MessageX.Popup($"检测到新版本，是否下载并安装？\n\n当前版本: v{LaunchManager.AppVersion}\n最新版本: v{CurrentLatest}\n发布日期: {PublishTime}\n\nv{CurrentLatest}更新日志: \n{UpdateLog}", MessageLevel.Info, ParentForm, Buttons: MessageBoxExButtons.YesNo, Position: IsProgramStart ? FormStartPosition.CenterScreen : FormStartPosition.CenterParent) == DialogResult.Yes)
                     {
-                        if (MessageX.Popup($"检测到新版本，是否下载并安装？\n\n当前版本: v{LaunchManager.AppVersion}\n最新版本: v{CurrentLatest}\n发布日期: {PublishTime}\n\nv{CurrentLatest}更新日志: \n{UpdateLog}", MessageLevel.Info, Buttons: MessageBoxExButtons.YesNo, Position: IsProgramStart ? FormStartPosition.CenterScreen : FormStartPosition.CenterParent) == DialogResult.Yes)
-                        {
-                            SingleInstanceRunner<FormDownloader>.GetInstance().Show();
-                        }
-                    }));
+                        SingleInstanceRunner<FormDownloader>.GetInstance().Show();
+                    }
                 }
                 else if (!IsProgramStart)
                 {

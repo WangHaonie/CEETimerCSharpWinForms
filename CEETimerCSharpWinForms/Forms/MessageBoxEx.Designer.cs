@@ -30,9 +30,9 @@
         {
             this.PanelHead = new System.Windows.Forms.Panel();
             this.LabelMessage = new System.Windows.Forms.Label();
+            this.PicBoxIcon = new System.Windows.Forms.PictureBox();
             this.ButtonB = new System.Windows.Forms.Button();
             this.ButtonA = new System.Windows.Forms.Button();
-            this.PicBoxIcon = new System.Windows.Forms.PictureBox();
             this.PanelHead.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PicBoxIcon)).BeginInit();
             this.SuspendLayout();
@@ -57,6 +57,15 @@
             this.LabelMessage.TabIndex = 2;
             this.LabelMessage.Text = "Message";
             // 
+            // PicBoxIcon
+            // 
+            this.PicBoxIcon.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.PicBoxIcon.Location = new System.Drawing.Point(10, 9);
+            this.PicBoxIcon.Name = "PicBoxIcon";
+            this.PicBoxIcon.Size = new System.Drawing.Size(32, 32);
+            this.PicBoxIcon.TabIndex = 1;
+            this.PicBoxIcon.TabStop = false;
+            // 
             // ButtonB
             // 
             this.ButtonB.Location = new System.Drawing.Point(124, 57);
@@ -76,15 +85,6 @@
             this.ButtonA.Text = "A";
             this.ButtonA.UseVisualStyleBackColor = true;
             this.ButtonA.Click += new System.EventHandler(this.ButtonA_Click);
-            // 
-            // PicBoxIcon
-            // 
-            this.PicBoxIcon.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.PicBoxIcon.Location = new System.Drawing.Point(10, 9);
-            this.PicBoxIcon.Name = "PicBoxIcon";
-            this.PicBoxIcon.Size = new System.Drawing.Size(32, 32);
-            this.PicBoxIcon.TabIndex = 1;
-            this.PicBoxIcon.TabStop = false;
             // 
             // MessageBoxEx
             // 

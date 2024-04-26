@@ -50,7 +50,7 @@ namespace CEETimerCSharpWinForms.Modules
         }
 
         /// <summary>
-        /// Popup 的核心方法，用于定位到父窗体的标签页和与 MessageBoxEx 交互
+        /// Popup 的核心方法，用于实现定位到父窗体的标签页和与 MessageBoxEx 交互
         /// </summary>
         /// <param name="Message">消息</param>
         /// <param name="Level">消息等级</param>
@@ -63,11 +63,11 @@ namespace CEETimerCSharpWinForms.Modules
         private static DialogResult PopupCore(string Message, MessageLevel Level, Form ParentForm, TabControl ParentTabControl, TabPage ParentTabPage, MessageBoxExButtons Buttons, FormStartPosition Position)
         {
             var (Title, MessageBoxExIcon, Sound) = GetStuff(Level);
-            using var _MessageBox = new MessageBoxEx();
+            using var _MessageBoxEx = new MessageBoxEx();
 
             if (ParentForm != null)
             {
-                #region
+                #region 来自网络
                 /*
                 
                 在 Invoke 方法内部获取到 DialogResult 返回值 参考：
@@ -87,7 +87,7 @@ namespace CEETimerCSharpWinForms.Modules
                         ParentTabControl.SelectedTab = ParentTabPage;
                     }
 
-                    return _MessageBox.ShowCore(Message, Title, MessageBoxExIcon, Sound, Buttons, Position);
+                    return _MessageBoxEx.ShowCore(Message, Title, MessageBoxExIcon, Sound, Buttons, Position);
 
                 }));
 
@@ -95,13 +95,13 @@ namespace CEETimerCSharpWinForms.Modules
             }
             else
             {
-                return _MessageBox.ShowCore(Message, Title, MessageBoxExIcon, Sound, Buttons, Position);
+                return _MessageBoxEx.ShowCore(Message, Title, MessageBoxExIcon, Sound, Buttons, Position);
             }
         }
 
         public static (string, Icon, SystemSound) GetStuff(MessageLevel Level) => Level switch
         {
-            #region
+            #region 来自网络
             /*
 
             获取 imageres.dll 里的 Info、Warning、Error 图标的索引参考：

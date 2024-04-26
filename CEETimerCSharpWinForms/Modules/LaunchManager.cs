@@ -79,7 +79,6 @@ namespace CEETimerCSharpWinForms.Modules
                 }
                 else
                 {
-                    Task.Run(() => UpdateChecker.CheckUpdate(true, null));
                     Task.Run(CheckAdmin);
                     Application.Run(new FormMain());
                 }
