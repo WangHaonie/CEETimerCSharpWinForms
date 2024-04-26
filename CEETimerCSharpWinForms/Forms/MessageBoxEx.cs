@@ -31,7 +31,7 @@ namespace CEETimerCSharpWinForms.Forms
                     ButtonB.Text = "否(&N)";
                     break;
                 case MessageBoxExButtons.OK:
-                    ButtonA.Visible = false;
+                    ButtonA.Visible = ButtonA.Enabled = false;
                     ButtonB.Text = "确定";
                     break;
             }

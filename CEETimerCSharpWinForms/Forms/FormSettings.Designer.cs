@@ -92,13 +92,13 @@
             this.LabelLine11 = new System.Windows.Forms.Label();
             this.TabPageTools = new System.Windows.Forms.TabPage();
             this.GBoxRestart = new System.Windows.Forms.GroupBox();
+            this.CheckBoxDisplayChanges = new System.Windows.Forms.CheckBox();
             this.LabelLine10 = new System.Windows.Forms.Label();
             this.LabelLine9 = new System.Windows.Forms.Label();
             this.GBoxSyncTime = new System.Windows.Forms.GroupBox();
             this.LabelLine7 = new System.Windows.Forms.Label();
             this.LabelLine6 = new System.Windows.Forms.Label();
             this.LabelLine5 = new System.Windows.Forms.Label();
-            this.CheckBoxDisplayChanges = new System.Windows.Forms.CheckBox();
             this.TabControlMain.SuspendLayout();
             this.TabPageGeneral.SuspendLayout();
             this.GBoxStartup.SuspendLayout();
@@ -343,7 +343,7 @@
             this.LabelLine12.AutoSize = true;
             this.LabelLine12.Location = new System.Drawing.Point(6, 34);
             this.LabelLine12.Name = "LabelLine12";
-            this.LabelLine12.Size = new System.Drawing.Size(327, 15);
+            this.LabelLine12.Size = new System.Drawing.Size(353, 15);
             this.LabelLine12.TabIndex = 0;
             this.LabelLine12.Text = "(或者你也可以开启拖动功能，将倒计时窗口拖动到其他位置)";
             // 
@@ -824,6 +824,17 @@
             this.GBoxRestart.TabIndex = 45;
             this.GBoxRestart.TabStop = false;
             // 
+            // CheckBoxDisplayChanges
+            // 
+            this.CheckBoxDisplayChanges.AutoSize = true;
+            this.CheckBoxDisplayChanges.Location = new System.Drawing.Point(99, 58);
+            this.CheckBoxDisplayChanges.Name = "CheckBoxDisplayChanges";
+            this.CheckBoxDisplayChanges.Size = new System.Drawing.Size(221, 19);
+            this.CheckBoxDisplayChanges.TabIndex = 39;
+            this.CheckBoxDisplayChanges.Text = "当检测到显示设置更改时弹出提示";
+            this.CheckBoxDisplayChanges.UseVisualStyleBackColor = true;
+            this.CheckBoxDisplayChanges.CheckedChanged += new System.EventHandler(this.CheckBoxDisplayChanges_CheckedChanged);
+            // 
             // LabelLine10
             // 
             this.LabelLine10.AutoSize = true;
@@ -881,17 +892,6 @@
             this.LabelLine5.Size = new System.Drawing.Size(371, 15);
             this.LabelLine5.TabIndex = 20;
             this.LabelLine5.Text = "通过运行系统命令将当前系统时间与网络同步以确保准确无误。";
-            // 
-            // CheckBoxDisplayChanges
-            // 
-            this.CheckBoxDisplayChanges.AutoSize = true;
-            this.CheckBoxDisplayChanges.Location = new System.Drawing.Point(99, 58);
-            this.CheckBoxDisplayChanges.Name = "CheckBoxDisplayChanges";
-            this.CheckBoxDisplayChanges.Size = new System.Drawing.Size(221, 19);
-            this.CheckBoxDisplayChanges.TabIndex = 39;
-            this.CheckBoxDisplayChanges.Text = "当检测到显示设置更改时弹出提示";
-            this.CheckBoxDisplayChanges.UseVisualStyleBackColor = true;
-            this.CheckBoxDisplayChanges.CheckedChanged += new System.EventHandler(this.CheckBoxDisplayChanges_CheckedChanged);
             // 
             // FormSettings
             // 
