@@ -71,10 +71,13 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void InitializeExtra()
         {
-            LabelExamNameCounter.Text = $"0/{ConfigPolicy.MaxExamNameLength}";
+            var Max = ConfigPolicy.MaxExamNameLength;
+            LabelPptsvc.Text = "用于解决希沃PPT小工具的内置白板打开后底部工具栏会消失的问题。\n(或者你也可以开启拖动功能，将倒计时窗口拖动到其他位置)";
+            LabelSyncTime.Text = "通过运行系统命令将当前系统时间与网络同步以确保准确无误。\n注意: 此项会将系统的 NTP 服务器设置为 ntp1.aliyun.com, 并且将自动\n启动 Windows Time 服务, 请谨慎操作。";
+            LabelExamNameCounter.Text = $"0/{Max}";
             LabelExamNameCounter.ForeColor = Color.Red;
-            TextBoxExamName.MaxLength = ConfigPolicy.MaxExamNameLength;
-            GBoxExamName.Text = $"考试名称 ({ConfigPolicy.MinExamNameLength}~{ConfigPolicy.MaxExamNameLength}字)";
+            TextBoxExamName.MaxLength = Max;
+            GBoxExamName.Text = $"考试名称 ({ConfigPolicy.MinExamNameLength}~{Max}字)";
             ChangeWorkingStyle(WorkingArea.LastColor);
 
             List<ComboSource> Shows =
@@ -583,8 +586,7 @@ namespace CEETimerCSharpWinForms.Forms
                     break;
                 case WorkingArea.Funny:
                     GBoxRestart.Text = IsWorking ? "关闭倒计时" : "重启倒计时";
-                    LabelLine9.Text = IsWorking ? "当然, 你也可以关闭此倒计时。(●'◡'●)" : "用于更改了屏幕缩放之后, 可以点击此按钮来重启倒计时以确保窗口";
-                    LabelLine10.Text = IsWorking ? "" : "的文字不会变模糊。";
+                    LabelRestart.Text = IsWorking ? "当然, 你也可以关闭此倒计时。(●'◡'●)" : "用于更改了屏幕缩放之后, 可以点击此按钮来重启倒计时以确保窗口\n的文字不会变模糊。";
                     ButtonRestart.Text = IsWorking ? "点击关闭(&L)" : "点击重启(&R)";
                     break;
                 case WorkingArea.SetPPTService:

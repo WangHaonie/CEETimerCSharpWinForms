@@ -48,8 +48,7 @@
             this.TabPageDisplay = new System.Windows.Forms.TabPage();
             this.GBoxPPTService = new System.Windows.Forms.GroupBox();
             this.CheckBoxSwPptSvc = new System.Windows.Forms.CheckBox();
-            this.LabelLine12 = new System.Windows.Forms.Label();
-            this.LabelLine13 = new System.Windows.Forms.Label();
+            this.LabelPptsvc = new System.Windows.Forms.Label();
             this.GBoxContent = new System.Windows.Forms.GroupBox();
             this.ComboBoxShowOnly = new System.Windows.Forms.ComboBox();
             this.CheckBoxSetUniTopMost = new System.Windows.Forms.CheckBox();
@@ -93,12 +92,9 @@
             this.TabPageTools = new System.Windows.Forms.TabPage();
             this.GBoxRestart = new System.Windows.Forms.GroupBox();
             this.CheckBoxDisplayChanges = new System.Windows.Forms.CheckBox();
-            this.LabelLine10 = new System.Windows.Forms.Label();
-            this.LabelLine9 = new System.Windows.Forms.Label();
+            this.LabelRestart = new System.Windows.Forms.Label();
             this.GBoxSyncTime = new System.Windows.Forms.GroupBox();
-            this.LabelLine7 = new System.Windows.Forms.Label();
-            this.LabelLine6 = new System.Windows.Forms.Label();
-            this.LabelLine5 = new System.Windows.Forms.Label();
+            this.LabelSyncTime = new System.Windows.Forms.Label();
             this.TabControlMain.SuspendLayout();
             this.TabPageGeneral.SuspendLayout();
             this.GBoxStartup.SuspendLayout();
@@ -319,8 +315,7 @@
             // GBoxPPTService
             // 
             this.GBoxPPTService.Controls.Add(this.CheckBoxSwPptSvc);
-            this.GBoxPPTService.Controls.Add(this.LabelLine12);
-            this.GBoxPPTService.Controls.Add(this.LabelLine13);
+            this.GBoxPPTService.Controls.Add(this.LabelPptsvc);
             this.GBoxPPTService.Location = new System.Drawing.Point(7, 209);
             this.GBoxPPTService.Name = "GBoxPPTService";
             this.GBoxPPTService.Size = new System.Drawing.Size(405, 78);
@@ -338,22 +333,13 @@
             this.CheckBoxSwPptSvc.UseVisualStyleBackColor = true;
             this.CheckBoxSwPptSvc.CheckedChanged += new System.EventHandler(this.SettingsChanged);
             // 
-            // LabelLine12
+            // LabelPptsvc
             // 
-            this.LabelLine12.Location = new System.Drawing.Point(6, 34);
-            this.LabelLine12.Name = "LabelLine12";
-            this.LabelLine12.Size = new System.Drawing.Size(353, 15);
-            this.LabelLine12.TabIndex = 0;
-            this.LabelLine12.Text = "(或者你也可以开启拖动功能，将倒计时窗口拖动到其他位置)";
-            // 
-            // LabelLine13
-            // 
-            this.LabelLine13.AutoSize = true;
-            this.LabelLine13.Location = new System.Drawing.Point(6, 19);
-            this.LabelLine13.Name = "LabelLine13";
-            this.LabelLine13.Size = new System.Drawing.Size(404, 15);
-            this.LabelLine13.TabIndex = 0;
-            this.LabelLine13.Text = "用于解决希沃PPT小工具的内置白板打开后底部工具栏会消失的问题。";
+            this.LabelPptsvc.AutoSize = true;
+            this.LabelPptsvc.Location = new System.Drawing.Point(6, 19);
+            this.LabelPptsvc.Name = "LabelPptsvc";
+            this.LabelPptsvc.Size = new System.Drawing.Size(0, 15);
+            this.LabelPptsvc.TabIndex = 0;
             // 
             // GBoxContent
             // 
@@ -481,7 +467,7 @@
             this.LabelScreensHint.AutoSize = true;
             this.LabelScreensHint.Location = new System.Drawing.Point(234, 21);
             this.LabelScreensHint.Name = "LabelScreensHint";
-            this.LabelScreensHint.Size = new System.Drawing.Size(20, 15);
+            this.LabelScreensHint.Size = new System.Drawing.Size(19, 15);
             this.LabelScreensHint.TabIndex = 6;
             this.LabelScreensHint.Text = "的";
             // 
@@ -814,8 +800,7 @@
             // GBoxRestart
             // 
             this.GBoxRestart.Controls.Add(this.CheckBoxDisplayChanges);
-            this.GBoxRestart.Controls.Add(this.LabelLine10);
-            this.GBoxRestart.Controls.Add(this.LabelLine9);
+            this.GBoxRestart.Controls.Add(this.LabelRestart);
             this.GBoxRestart.Controls.Add(this.ButtonRestart);
             this.GBoxRestart.Location = new System.Drawing.Point(7, 110);
             this.GBoxRestart.Name = "GBoxRestart";
@@ -834,27 +819,17 @@
             this.CheckBoxDisplayChanges.UseVisualStyleBackColor = true;
             this.CheckBoxDisplayChanges.CheckedChanged += new System.EventHandler(this.CheckBoxDisplayChanges_CheckedChanged);
             // 
-            // LabelLine10
+            // LabelRestart
             // 
-            this.LabelLine10.AutoSize = true;
-            this.LabelLine10.Location = new System.Drawing.Point(6, 36);
-            this.LabelLine10.Name = "LabelLine10";
-            this.LabelLine10.Size = new System.Drawing.Size(0, 15);
-            this.LabelLine10.TabIndex = 38;
-            // 
-            // LabelLine9
-            // 
-            this.LabelLine9.AutoSize = true;
-            this.LabelLine9.Location = new System.Drawing.Point(6, 19);
-            this.LabelLine9.Name = "LabelLine9";
-            this.LabelLine9.Size = new System.Drawing.Size(0, 15);
-            this.LabelLine9.TabIndex = 37;
+            this.LabelRestart.AutoSize = true;
+            this.LabelRestart.Location = new System.Drawing.Point(6, 19);
+            this.LabelRestart.Name = "LabelRestart";
+            this.LabelRestart.Size = new System.Drawing.Size(0, 15);
+            this.LabelRestart.TabIndex = 37;
             // 
             // GBoxSyncTime
             // 
-            this.GBoxSyncTime.Controls.Add(this.LabelLine7);
-            this.GBoxSyncTime.Controls.Add(this.LabelLine6);
-            this.GBoxSyncTime.Controls.Add(this.LabelLine5);
+            this.GBoxSyncTime.Controls.Add(this.LabelSyncTime);
             this.GBoxSyncTime.Controls.Add(this.ButtonSyncTime);
             this.GBoxSyncTime.Location = new System.Drawing.Point(7, 6);
             this.GBoxSyncTime.Name = "GBoxSyncTime";
@@ -863,34 +838,13 @@
             this.GBoxSyncTime.TabStop = false;
             this.GBoxSyncTime.Text = "同步网络时钟";
             // 
-            // LabelLine7
+            // LabelSyncTime
             // 
-            this.LabelLine7.AutoSize = true;
-            this.LabelLine7.ForeColor = System.Drawing.Color.Red;
-            this.LabelLine7.Location = new System.Drawing.Point(6, 49);
-            this.LabelLine7.Name = "LabelLine7";
-            this.LabelLine7.Size = new System.Drawing.Size(227, 15);
-            this.LabelLine7.TabIndex = 23;
-            this.LabelLine7.Text = "启动 Windows Time 服务, 请谨慎操作。";
-            // 
-            // LabelLine6
-            // 
-            this.LabelLine6.AutoSize = true;
-            this.LabelLine6.ForeColor = System.Drawing.Color.Red;
-            this.LabelLine6.Location = new System.Drawing.Point(6, 34);
-            this.LabelLine6.Name = "LabelLine6";
-            this.LabelLine6.Size = new System.Drawing.Size(396, 15);
-            this.LabelLine6.TabIndex = 22;
-            this.LabelLine6.Text = "注意: 此项会将系统的 NTP 服务器设置为 ntp1.aliyun.com, 并且将自动";
-            // 
-            // LabelLine5
-            // 
-            this.LabelLine5.AutoSize = true;
-            this.LabelLine5.Location = new System.Drawing.Point(6, 19);
-            this.LabelLine5.Name = "LabelLine5";
-            this.LabelLine5.Size = new System.Drawing.Size(371, 15);
-            this.LabelLine5.TabIndex = 20;
-            this.LabelLine5.Text = "通过运行系统命令将当前系统时间与网络同步以确保准确无误。";
+            this.LabelSyncTime.AutoSize = true;
+            this.LabelSyncTime.Location = new System.Drawing.Point(6, 19);
+            this.LabelSyncTime.Name = "LabelSyncTime";
+            this.LabelSyncTime.Size = new System.Drawing.Size(0, 15);
+            this.LabelSyncTime.TabIndex = 20;
             // 
             // FormSettings
             // 
@@ -964,11 +918,8 @@
         private System.Windows.Forms.GroupBox GBoxStartup;
         private System.Windows.Forms.CheckBox CheckBoxStartup;
         private System.Windows.Forms.CheckBox CheckBoxSetTopMost;
-        private System.Windows.Forms.Label LabelLine10;
-        private System.Windows.Forms.Label LabelLine9;
-        private System.Windows.Forms.Label LabelLine7;
-        private System.Windows.Forms.Label LabelLine6;
-        private System.Windows.Forms.Label LabelLine5;
+        private System.Windows.Forms.Label LabelRestart;
+        private System.Windows.Forms.Label LabelSyncTime;
         private System.Windows.Forms.CheckBox CheckBoxEnableMO;
         private System.Windows.Forms.TabPage TabPageDisplay;
         private System.Windows.Forms.GroupBox GBoxChangeFont;
@@ -984,10 +935,9 @@
         private System.Windows.Forms.CheckBox CheckBoxSetRounding;
         private System.Windows.Forms.GroupBox GBoxSetDragable;
         private System.Windows.Forms.CheckBox CheckBoxEnableDragable;
-        private System.Windows.Forms.Label LabelLine12;
         private System.Windows.Forms.CheckBox CheckBoxSetUniTopMost;
         private System.Windows.Forms.GroupBox GBoxPPTService;
-        private System.Windows.Forms.Label LabelLine13;
+        private System.Windows.Forms.Label LabelPptsvc;
         private System.Windows.Forms.CheckBox CheckBoxSwPptSvc;
         private System.Windows.Forms.Label LabelScreens;
         private System.Windows.Forms.ComboBox ComboBoxScreens;

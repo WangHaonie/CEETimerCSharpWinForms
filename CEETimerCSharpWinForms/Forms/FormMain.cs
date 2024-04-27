@@ -295,7 +295,7 @@ namespace CEETimerCSharpWinForms.Forms
             {
                 KeepOnScreen();
                 CompatibleWithPPTService();
-                SaveLocation(Location);
+                SaveLocation();
             }
         }
         #endregion
@@ -433,7 +433,7 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void CompatibleWithPPTService()
         {
-            if (IsPPTService && TopMost)
+            if (IsPPTService)
             {
                 var ValidArea = Screen.GetWorkingArea(this);
                 if (Left == ValidArea.Left && Top == ValidArea.Top)
@@ -453,12 +453,12 @@ namespace CEETimerCSharpWinForms.Forms
             if (Bottom > ValidArea.Bottom) Top = ValidArea.Bottom - Height;
         }
 
-        private void SaveLocation(Point NewLocation)
+        private void SaveLocation()
         {
             ConfigManager.WriteConfig(new Dictionary<string, string>
             {
-                { ConfigItems.PosX, $"{NewLocation.X}" },
-                { ConfigItems.PosY, $"{NewLocation.Y}" }
+                { ConfigItems.PosX, $"{Location.X}" },
+                { ConfigItems.PosY, $"{Location.Y}" }
             });
         }
     }
