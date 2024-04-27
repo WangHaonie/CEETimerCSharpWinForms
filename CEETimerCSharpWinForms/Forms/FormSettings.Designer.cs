@@ -132,7 +132,7 @@
             // 
             this.ButtonSyncTime.AutoSize = true;
             this.ButtonSyncTime.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ButtonSyncTime.Location = new System.Drawing.Point(6, 67);
+            this.ButtonSyncTime.Location = new System.Drawing.Point(9, 67);
             this.ButtonSyncTime.Name = "ButtonSyncTime";
             this.ButtonSyncTime.Size = new System.Drawing.Size(84, 25);
             this.ButtonSyncTime.TabIndex = 19;
@@ -340,7 +340,6 @@
             // 
             // LabelLine12
             // 
-            this.LabelLine12.AutoSize = true;
             this.LabelLine12.Location = new System.Drawing.Point(6, 34);
             this.LabelLine12.Name = "LabelLine12";
             this.LabelLine12.Size = new System.Drawing.Size(353, 15);
@@ -755,7 +754,7 @@
             // ButtonRestoreFont
             // 
             this.ButtonRestoreFont.AutoSize = true;
-            this.ButtonRestoreFont.Location = new System.Drawing.Point(98, 90);
+            this.ButtonRestoreFont.Location = new System.Drawing.Point(99, 90);
             this.ButtonRestoreFont.Name = "ButtonRestoreFont";
             this.ButtonRestoreFont.Size = new System.Drawing.Size(85, 25);
             this.ButtonRestoreFont.TabIndex = 4;
