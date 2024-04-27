@@ -88,7 +88,6 @@ namespace CEETimerCSharpWinForms.Modules
                     }
 
                     return _MessageBoxEx.ShowCore(Message, Title, MessageBoxExIcon, Sound, Buttons, Position);
-
                 }));
 
                 #endregion
@@ -115,7 +114,7 @@ namespace CEETimerCSharpWinForms.Modules
             c# - Selecting sounds from Windows and playing them - Stack Overflow
             https://stackoverflow.com/a/5194223/21094697
 
-             */
+            */
 
             MessageLevel.Info => (LaunchManager.InfoMsg, GetMessageBoxIcon(76), SystemSounds.Asterisk),
             MessageLevel.Warning => (LaunchManager.WarnMsg, GetMessageBoxIcon(79), SystemSounds.Exclamation),

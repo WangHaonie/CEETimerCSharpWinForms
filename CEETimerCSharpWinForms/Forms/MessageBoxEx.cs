@@ -8,7 +8,7 @@ namespace CEETimerCSharpWinForms.Forms
 {
     public partial class MessageBoxEx : Form
     {
-        private DialogResult DialogResultEx = DialogResult.No;
+        private DialogResult DialogResultEx;
         private MessageBoxExButtons ButtonsEx;
 
         public MessageBoxEx()
