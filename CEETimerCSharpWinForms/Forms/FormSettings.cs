@@ -122,6 +122,64 @@ namespace CEETimerCSharpWinForms.Forms
             IsFormLoading = false;
         }
 
+        private void RefreshScreens()
+        {
+            Screen[] CurrentScreens = Screen.AllScreens;
+            List<ComboSource> Monitors = [];
+            int i = 0;
+
+            Monitors.Add(new ComboSource
+            {
+                Item = "<请选择>",
+                Value = 0,
+            });
+
+            foreach (var CurrentScreen in CurrentScreens)
+            {
+                i++;
+
+                Monitors.Add(new ComboSource
+                {
+                    Item = $"{i} {CurrentScreen.DeviceName} ({CurrentScreen.Bounds.Width}x{CurrentScreen.Bounds.Height})",
+                    Value = i
+                });
+            }
+
+            ComboBoxScreens.DataSource = Monitors;
+            ComboBoxScreens.DisplayMember = "Item";
+            ComboBoxScreens.ValueMember = "Value";
+        }
+
+        private void RefreshSettings()
+        {
+            CheckBoxStartup.Checked = (Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true)?.GetValue("CEETimerCSharpWinForms") is string regvalue) && regvalue.Equals($"\"{LaunchManager.CurrentExecutable}\"", StringComparison.OrdinalIgnoreCase);
+
+            CheckBoxSetTopMost.Checked = TopMostChecked;
+            TextBoxExamName.Text = ExamName;
+            DTPExamStart.Value = ConfigManager.IsValidData(ExamStartTime) ? ExamStartTime : DateTime.Now;
+            DTPExamEnd.Value = ConfigManager.IsValidData(ExamEndTime) ? ExamEndTime : DateTime.Now;
+            CheckBoxEnableMO.Checked = FeatureMOEnabled;
+            CheckBoxEnableDragable.Checked = IsDragable;
+            CheckBoxShowOnly.Checked = IsShowOnly;
+            CheckBoxSetRounding.Checked = IsRounding;
+            CheckBoxShowEnd.Checked = DTPExamEnd.Enabled = IsShowEnd;
+            CheckBoxShowPast.Checked = IsShowPast;
+            CheckBoxSwPptSvc.Checked = IsPPTService;
+            CheckBoxSetUniTopMost.Checked = TopMost;
+            CheckBoxDisplayChanges.Checked = WarnDChanges;
+            ComboBoxScreens.SelectedValue = ScreenIndex;
+            ComboBoxPosition.SelectedValue = PositionIndex;
+            ComboBoxShowOnly.SelectedValue = ShowOnlyIndex;
+            ChangeWorkingStyle(WorkingArea.ChangeFont, NewFont: new Font(CountdownFont, CountdownFontStyle));
+            ChangePptsvcCtrlStyle(null, EventArgs.Empty);
+            ComboBoxShowOnly.SelectedIndex = IsShowOnly ? ShowOnlyIndex : 0;
+
+            if (!LaunchManager.IsWindows10Above)
+            {
+                CheckBoxDisplayChanges.Enabled = CheckBoxDisplayChanges.Visible = false;
+            }
+        }
+
         private void SettingsChanged(object sender, EventArgs e)
         {
             IsSettingsChanged = true;
@@ -353,21 +411,19 @@ namespace CEETimerCSharpWinForms.Forms
             }
             else if (IsSettingsChanged)
             {
-                var _DialogResult = MessageX.Popup("检测到设置被更改但没有保存，是否立即进行保存？", MessageLevel.Warning, Buttons: MessageBoxExButtons.YesNo);
-
-                if (_DialogResult == DialogResult.Yes)
+                switch (MessageX.Popup("检测到设置被更改但没有保存，是否立即进行保存？", MessageLevel.Warning, Buttons: MessageBoxExButtons.YesNo))
                 {
-                    e.Cancel = true;
-                    ButtonSave_Click(sender, e);
-                }
-                else if (_DialogResult == DialogResult.None)
-                {
-                    e.Cancel = true;
-                }
-                else
-                {
-                    IsSettingsChanged = false;
-                    Close();
+                    case DialogResult.Yes:
+                        e.Cancel = true;
+                        ButtonSave_Click(sender, e);
+                        break;
+                    case DialogResult.None:
+                        e.Cancel = true;
+                        break;
+                    default:
+                        IsSettingsChanged = false;
+                        Close();
+                        break;
                 }
             }
         }
@@ -398,64 +454,6 @@ namespace CEETimerCSharpWinForms.Forms
             else
             {
                 ChangeWorkingStyle(WorkingArea.SetPPTService, false, 1);
-            }
-        }
-
-        private void RefreshScreens()
-        {
-            Screen[] CurrentScreens = Screen.AllScreens;
-            List<ComboSource> Monitors = [];
-            int i = 0;
-
-            Monitors.Add(new ComboSource
-            {
-                Item = "<请选择>",
-                Value = 0,
-            });
-
-            foreach (var CurrentScreen in CurrentScreens)
-            {
-                i++;
-
-                Monitors.Add(new ComboSource
-                {
-                    Item = $"{i} {CurrentScreen.DeviceName} ({CurrentScreen.Bounds.Width}x{CurrentScreen.Bounds.Height})",
-                    Value = i
-                });
-            }
-
-            ComboBoxScreens.DataSource = Monitors;
-            ComboBoxScreens.DisplayMember = "Item";
-            ComboBoxScreens.ValueMember = "Value";
-        }
-
-        private void RefreshSettings()
-        {
-            CheckBoxStartup.Checked = (Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true)?.GetValue("CEETimerCSharpWinForms") is string regvalue) && regvalue.Equals($"\"{LaunchManager.CurrentExecutable}\"", StringComparison.OrdinalIgnoreCase);
-
-            CheckBoxSetTopMost.Checked = TopMostChecked;
-            TextBoxExamName.Text = ExamName;
-            DTPExamStart.Value = ConfigManager.IsValidData(ExamStartTime) ? ExamStartTime : DateTime.Now;
-            DTPExamEnd.Value = ConfigManager.IsValidData(ExamEndTime) ? ExamEndTime : DateTime.Now;
-            CheckBoxEnableMO.Checked = FeatureMOEnabled;
-            CheckBoxEnableDragable.Checked = IsDragable;
-            CheckBoxShowOnly.Checked = IsShowOnly;
-            CheckBoxSetRounding.Checked = IsRounding;
-            CheckBoxShowEnd.Checked = DTPExamEnd.Enabled = IsShowEnd;
-            CheckBoxShowPast.Checked = IsShowPast;
-            CheckBoxSwPptSvc.Checked = IsPPTService;
-            CheckBoxSetUniTopMost.Checked = TopMost;
-            CheckBoxDisplayChanges.Checked = WarnDChanges;
-            ComboBoxScreens.SelectedValue = ScreenIndex;
-            ComboBoxPosition.SelectedValue = PositionIndex;
-            ComboBoxShowOnly.SelectedValue = ShowOnlyIndex;
-            ChangeWorkingStyle(WorkingArea.ChangeFont, NewFont: new Font(CountdownFont, CountdownFontStyle));
-            ChangePptsvcCtrlStyle(null, EventArgs.Empty);
-            ComboBoxShowOnly.SelectedIndex = IsShowOnly ? ShowOnlyIndex : 0;
-
-            if (!LaunchManager.IsWindows10Above)
-            {
-                CheckBoxDisplayChanges.Enabled = CheckBoxDisplayChanges.Visible = false;
             }
         }
 
