@@ -43,7 +43,7 @@ launch:
 
 !include "MUI2.nsh"
 !define PRODUCT_NAME "¸ß¿¼µ¹¼ÆÊ±"
-!define SETUP_FILENAME_NO_V "3.0.2"
+!define SETUP_FILENAME_NO_V "3.0.3"
 !define PRODUCT_VERSION "v${SETUP_FILENAME_NO_V}"
 !define PRODUCT_PUBLISHER "WangHaonie"
 !define PRODUCT_WEB_SITE "https://github.com/WangHaonie/CEETimerCSharpWinForms"

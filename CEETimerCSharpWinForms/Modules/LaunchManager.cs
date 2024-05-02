@@ -15,14 +15,14 @@ namespace CEETimerCSharpWinForms.Modules
         public static bool IsAdmin { get; private set; }
         public static string CurrentLatest { get; set; }
 
-        public const string AppVersion = "3.0.2";
-        public const string AppVersionText = $"版本 v{AppVersion} x64 (2024/04/20)";
+        public const string AppVersion = "3.0.3";
+        public const string AppVersionText = $"版本 v{AppVersion} x64 (2024/05/02)";
         public const string InfoMsg = "提示 - 高考倒计时";
         public const string WarnMsg = "警告 - 高考倒计时";
         public const string ErrMsg = "错误 - 高考倒计时";
         public const string AppName = "高考倒计时 by WangHaonie";
         public const string CopyrightInfo = "Copyright © 2023-2024 WangHaonie";
-        public const string RequestUA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36";
+        public const string RequestUA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36";
         public const string OriginalFileName = "CEETimerCSharpWinForms.exe";
         public const string GitHubAPI = "https://api.github.com/repos/WangHaonie/CEETimerCSharpWinForms/releases/latest";
 
