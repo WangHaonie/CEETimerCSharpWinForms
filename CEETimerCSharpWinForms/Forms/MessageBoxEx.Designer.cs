@@ -68,6 +68,7 @@
             // 
             // ButtonB
             // 
+            this.ButtonB.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.ButtonB.Location = new System.Drawing.Point(124, 57);
             this.ButtonB.Name = "ButtonB";
             this.ButtonB.Size = new System.Drawing.Size(75, 23);
@@ -98,11 +99,13 @@
             this.Controls.Add(this.PanelHead);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.KeyPreview = true;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "MessageBoxEx";
             this.ShowIcon = false;
             this.Text = "MessageBoxEx";
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MessageBoxEx_KeyDown);
             this.PanelHead.ResumeLayout(false);
             this.PanelHead.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PicBoxIcon)).EndInit();

@@ -29,16 +29,14 @@
         private void InitializeComponent()
         {
             this.LabelInfo = new System.Windows.Forms.Label();
-            this.LabelAuthor = new System.Windows.Forms.Label();
             this.ButtonClose = new System.Windows.Forms.Button();
             this.LabelLicense = new System.Windows.Forms.Label();
-            this.LableVersion = new System.Windows.Forms.Label();
             this.PanelMain = new System.Windows.Forms.Panel();
             this.LinkFeedback = new System.Windows.Forms.LinkLabel();
             this.LinkGitHub = new System.Windows.Forms.LinkLabel();
-            this.PBoxLogo = new System.Windows.Forms.PictureBox();
+            this.PicBoxLogo = new System.Windows.Forms.PictureBox();
             this.PanelMain.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.PBoxLogo)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PicBoxLogo)).BeginInit();
             this.SuspendLayout();
             // 
             // LabelInfo
@@ -49,15 +47,6 @@
             this.LabelInfo.Name = "LabelInfo";
             this.LabelInfo.Size = new System.Drawing.Size(0, 15);
             this.LabelInfo.TabIndex = 1;
-            // 
-            // LabelAuthor
-            // 
-            this.LabelAuthor.AutoSize = true;
-            this.LabelAuthor.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LabelAuthor.Location = new System.Drawing.Point(5, 48);
-            this.LabelAuthor.Name = "LabelAuthor";
-            this.LabelAuthor.Size = new System.Drawing.Size(0, 15);
-            this.LabelAuthor.TabIndex = 3;
             // 
             // ButtonClose
             // 
@@ -77,33 +66,19 @@
             this.LabelLicense.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LabelLicense.Location = new System.Drawing.Point(5, 33);
             this.LabelLicense.Name = "LabelLicense";
-            this.LabelLicense.Size = new System.Drawing.Size(180, 15);
+            this.LabelLicense.Size = new System.Drawing.Size(0, 15);
             this.LabelLicense.TabIndex = 7;
-            this.LabelLicense.Text = "Licensed under the GNU GPL, v3.";
-            // 
-            // LableVersion
-            // 
-            this.LableVersion.AutoSize = true;
-            this.LableVersion.Cursor = System.Windows.Forms.Cursors.Help;
-            this.LableVersion.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LableVersion.Location = new System.Drawing.Point(39, 18);
-            this.LableVersion.Name = "LableVersion";
-            this.LableVersion.Size = new System.Drawing.Size(0, 15);
-            this.LableVersion.TabIndex = 2;
-            this.LableVersion.Click += new System.EventHandler(this.LabelVersion_Click);
             // 
             // PanelMain
             // 
             this.PanelMain.AutoSize = true;
             this.PanelMain.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.PanelMain.Controls.Add(this.LinkFeedback);
-            this.PanelMain.Controls.Add(this.PBoxLogo);
+            this.PanelMain.Controls.Add(this.PicBoxLogo);
             this.PanelMain.Controls.Add(this.LinkGitHub);
             this.PanelMain.Controls.Add(this.LabelInfo);
             this.PanelMain.Controls.Add(this.ButtonClose);
-            this.PanelMain.Controls.Add(this.LableVersion);
             this.PanelMain.Controls.Add(this.LabelLicense);
-            this.PanelMain.Controls.Add(this.LabelAuthor);
             this.PanelMain.Location = new System.Drawing.Point(0, 0);
             this.PanelMain.Name = "PanelMain";
             this.PanelMain.Size = new System.Drawing.Size(208, 94);
@@ -115,12 +90,12 @@
             this.LinkFeedback.AutoSize = true;
             this.LinkFeedback.Location = new System.Drawing.Point(49, 71);
             this.LinkFeedback.Name = "LinkFeedback";
-            this.LinkFeedback.Size = new System.Drawing.Size(33, 15);
+            this.LinkFeedback.Size = new System.Drawing.Size(31, 15);
             this.LinkFeedback.TabIndex = 10;
             this.LinkFeedback.TabStop = true;
             this.LinkFeedback.Text = "反馈";
             this.LinkFeedback.VisitedLinkColor = System.Drawing.Color.Blue;
-            this.LinkFeedback.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkFeedback_LinkClicked);
+            this.LinkFeedback.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LabelLink_LinkClicked);
             // 
             // LinkGitHub
             // 
@@ -133,17 +108,19 @@
             this.LinkGitHub.TabStop = true;
             this.LinkGitHub.Text = "GitHub";
             this.LinkGitHub.VisitedLinkColor = System.Drawing.Color.Blue;
-            this.LinkGitHub.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkGitHub_LinkClicked);
+            this.LinkGitHub.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LabelLink_LinkClicked);
             // 
-            // PBoxLogo
+            // PicBoxLogo
             // 
-            this.PBoxLogo.Image = global::CEETimerCSharpWinForms.Properties.Resources.AppIcon100px;
-            this.PBoxLogo.Location = new System.Drawing.Point(6, 3);
-            this.PBoxLogo.Name = "PBoxLogo";
-            this.PBoxLogo.Size = new System.Drawing.Size(31, 31);
-            this.PBoxLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.PBoxLogo.TabIndex = 9;
-            this.PBoxLogo.TabStop = false;
+            this.PicBoxLogo.Cursor = System.Windows.Forms.Cursors.Help;
+            this.PicBoxLogo.Image = global::CEETimerCSharpWinForms.Properties.Resources.AppIcon100px;
+            this.PicBoxLogo.Location = new System.Drawing.Point(6, 3);
+            this.PicBoxLogo.Name = "PicBoxLogo";
+            this.PicBoxLogo.Size = new System.Drawing.Size(31, 31);
+            this.PicBoxLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.PicBoxLogo.TabIndex = 9;
+            this.PicBoxLogo.TabStop = false;
+            this.PicBoxLogo.Click += new System.EventHandler(this.LabelVersion_Click);
             // 
             // FormAbout
             // 
@@ -163,10 +140,9 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "关于此程序";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormAbout_FormClosing);
-            this.Load += new System.EventHandler(this.FormAbout_Load);
             this.PanelMain.ResumeLayout(false);
             this.PanelMain.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.PBoxLogo)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PicBoxLogo)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -174,13 +150,11 @@
 
         #endregion
         private System.Windows.Forms.Label LabelInfo;
-        private System.Windows.Forms.Label LabelAuthor;
         private System.Windows.Forms.Button ButtonClose;
         private System.Windows.Forms.Label LabelLicense;
-        private System.Windows.Forms.Label LableVersion;
         private System.Windows.Forms.Panel PanelMain;
         private System.Windows.Forms.LinkLabel LinkGitHub;
-        private System.Windows.Forms.PictureBox PBoxLogo;
+        private System.Windows.Forms.PictureBox PicBoxLogo;
         private System.Windows.Forms.LinkLabel LinkFeedback;
     }
 }

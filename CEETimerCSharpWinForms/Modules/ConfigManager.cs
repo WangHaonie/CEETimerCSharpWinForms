@@ -17,12 +17,12 @@ namespace CEETimerCSharpWinForms.Modules
         https://www.cnblogs.com/baozi789654/p/15645897.html
 
         */
-        private static bool IsConfigMounted;
-        private static Dictionary<string, string> JsonConfig;
-        private static JObject ConfigObject;
-        private static readonly string ConfigFile = $"{LaunchManager.CurrentExecutablePath}CEETimerCSharpWinForms.cfg";
+        private bool IsConfigMounted;
+        private Dictionary<string, string> JsonConfig;
+        private JObject ConfigObject;
+        private readonly string ConfigFile = $"{LaunchManager.CurrentExecutablePath}CEETimerCSharpWinForms.cfg";
 
-        private static void CheckConfig()
+        private void CheckConfig()
         {
             if (!File.Exists(ConfigFile))
             {
@@ -34,7 +34,7 @@ namespace CEETimerCSharpWinForms.Modules
             }
         }
 
-        public static string ReadConfig(string Key)
+        public string ReadConfig(string Key)
         {
             if (IsConfigMounted && JsonConfig != null && JsonConfig.ContainsKey(Key))
             {
@@ -44,7 +44,7 @@ namespace CEETimerCSharpWinForms.Modules
                 }
                 else
                 {
-                    return JsonConfig[Key].RemoveAllBadChars();
+                    return JsonConfig[Key].RemoveIllegalChars();
                 }
             }
             else
@@ -53,7 +53,7 @@ namespace CEETimerCSharpWinForms.Modules
             }
         }
 
-        public static void WriteConfig(Dictionary<string, string> DataSet)
+        public void WriteConfig(Dictionary<string, string> DataSet)
         {
             CheckConfig();
 
@@ -76,7 +76,7 @@ namespace CEETimerCSharpWinForms.Modules
         }
         #endregion
 
-        public static void MountConfig(bool IsMount)
+        public void MountConfig(bool IsMount)
         {
             CheckConfig();
 
@@ -99,7 +99,7 @@ namespace CEETimerCSharpWinForms.Modules
             }
         }
 
-        public static bool IsValidData(DateTime ExamTime)
+        public bool IsValidData(DateTime ExamTime)
         {
             if (ExamTime < new DateTime(1753, 1, 1, 0, 0, 0) || ExamTime > new DateTime(9998, 12, 31, 23, 59, 59))
             {
@@ -109,7 +109,7 @@ namespace CEETimerCSharpWinForms.Modules
         }
     }
 
-    public class ConfigItems
+    public static class ConfigItems
     {
         public const string ExamName = "9A3F";
         public const string StartTime = "C4E1";
@@ -141,7 +141,7 @@ namespace CEETimerCSharpWinForms.Modules
         public const string PosY = "B337";
     }
 
-    public class ConfigPolicy
+    public static class ConfigPolicy
     {
         public const int MinExamNameLength = 2;
         public const int MaxExamNameLength = 10;

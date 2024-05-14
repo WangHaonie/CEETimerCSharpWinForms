@@ -101,17 +101,16 @@
             this.Controls.Add(this.LabelCountdown);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.ImeMode = System.Windows.Forms.ImeMode.Off;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FormMain";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
-            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "高考倒计时";
             this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMain_FormClosing);
+            this.Load += new System.EventHandler(this.FormMain_Load);
             this.ContextMenuMain.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();

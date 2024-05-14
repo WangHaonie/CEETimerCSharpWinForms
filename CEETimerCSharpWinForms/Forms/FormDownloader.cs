@@ -11,25 +11,35 @@ namespace CEETimerCSharpWinForms.Forms
 {
     public partial class FormDownloader : Form
     {
+        public static string ManualVersion { get; set; } = LaunchManager.AppVersion;
+
         private bool IsCancelled;
         private CancellationTokenSource CancelRequest;
+        private string DownloadUrl;
 
         public FormDownloader()
         {
             InitializeComponent();
+            TopMost = FormMain.IsUniTopMost;
         }
 
         private async void FormDownloader_Load(object sender, EventArgs e)
         {
-            TopMost = FormMain.IsUniTopMost;
             await DownloadUpdate();
         }
 
-        public async Task DownloadUpdate()
+        private async Task DownloadUpdate()
         {
             IsCancelled = false;
             string LatestVersion = LaunchManager.CurrentLatest;
-            string DownloadUrl = $"https://wanghaonie.github.io/file-storages/github-repos/CEETimerCSharpWinForms/CEETimerCSharpWinForms_{LatestVersion}_x64_Setup.exe";
+            string SelectedVersion = ManualVersion;
+
+            if (string.IsNullOrWhiteSpace(LatestVersion))
+            {
+                LatestVersion = SelectedVersion.IsVersionNumber() ? SelectedVersion : LaunchManager.AppVersion;
+            }
+
+            DownloadUrl = $"https://gitea.com/WangHaonie/ceetimer-dl/raw/branch/main/CEETimerCSharpWinForms_{LatestVersion}_x64_Setup.exe";
             string DownloadPath = Path.Combine(Path.GetTempPath(), $"CEETimerCSharpWinForms_{LatestVersion}_x64_Setup.exe");
 
             using var UpdateChecker = new HttpClient();
@@ -75,6 +85,7 @@ namespace CEETimerCSharpWinForms.Forms
                 {
                     ButtonCancel.Enabled = false;
                     ButtonRetry.Enabled = false;
+                    LinkBroswer.Enabled = false;
 
                     await Task.Delay(1800);
                     ProcessHelper.RunProcess("cmd.exe", $"/c start \"\" \"{DownloadPath}\" /S");
@@ -85,18 +96,28 @@ namespace CEETimerCSharpWinForms.Forms
             catch (Exception ex)
             {
                 IsCancelled = true;
-                MessageX.Popup("无法下载更新文件!", ex);
-                LabelDownloading.Text = "下载失败，你可以点击 重试 来重新启动下载。";
-                LabelSize.Text = "已下载/总共：N/A";
-                LabelSpeed.Text = "下载速度：N/A";
-                ButtonRetry.Enabled = true;
+
+                if (ex is not TaskCanceledException)
+                {
+                    MessageX.Popup("无法下载更新文件!", ex);
+                    LabelDownloading.Text = "下载失败，你可以点击 重试 来重新启动下载。";
+                    LabelSize.Text = "已下载/总共：N/A";
+                    LabelSpeed.Text = "下载速度：N/A";
+                    ButtonRetry.Enabled = true;
+                }
+
                 return;
+            }
+            finally
+            {
+                CancelRequest?.Dispose();
             }
         }
 
         private async void ButtonRetry_Click(object sender, EventArgs e)
         {
             ButtonRetry.Enabled = false;
+            ProgressBarMain.Value = 0;
             LabelDownloading.Text = "正在重新下载更新文件，请稍侯...";
             LabelSize.Text = "已下载/总共：(获取中...)";
             LabelSpeed.Text = "下载速度：(获取中...)";
@@ -111,7 +132,7 @@ namespace CEETimerCSharpWinForms.Forms
                 ButtonCancel.Enabled = false;
                 CancelRequest?.Cancel();
                 LabelDownloading.Text = "用户已取消下载。";
-                MessageX.Popup($"你已取消下载！\n\n稍后可以在 关于 窗口点击版本号来再次检查更新。", MessageLevel.Warning);
+                MessageX.Popup($"你已取消下载！\n\n稍后可以在 关于 窗口点击图标来再次检查更新。", MessageLevel.Warning);
             }
 
             Close();
@@ -120,6 +141,14 @@ namespace CEETimerCSharpWinForms.Forms
         private void FormDownloader_FormClosing(object sender, FormClosingEventArgs e)
         {
             e.Cancel = !IsCancelled;
+        }
+
+        private async void LinkBroswer_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            LinkBroswer.Enabled = false;
+            Process.Start(DownloadUrl);
+            await Task.Delay(3000);
+            LinkBroswer.Enabled = true;
         }
     }
 }

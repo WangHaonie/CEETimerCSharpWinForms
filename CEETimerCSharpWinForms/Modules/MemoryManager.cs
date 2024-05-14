@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace CEETimerCSharpWinForms.Modules
 {
-    public class MemoryManager
+    public static class MemoryManager
     {
         public static void OptimizeMemory(object state)
         {

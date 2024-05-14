@@ -12,34 +12,32 @@ namespace CEETimerCSharpWinForms.Forms
 {
     public partial class FormSettings : Form
     {
-        public static event EventHandler ConfigChanged;
-        public static Color Fore1 { get; set; }
-        public static Color Fore2 { get; set; }
-        public static Color Fore3 { get; set; }
-        public static Color Fore4 { get; set; }
-        public static Color Back1 { get; set; }
-        public static Color Back2 { get; set; }
-        public static Color Back3 { get; set; }
-        public static Color Back4 { get; set; }
-        public static bool FeatureMOEnabled { get; set; }
-        public static bool IsShowOnly { get; set; }
-        public static bool IsDragable { get; set; }
-        public static bool IsShowEnd { get; set; }
-        public static bool IsShowPast { get; set; }
-        public static bool IsRounding { get; set; }
-        public static bool IsPPTService { get; set; }
-        public static bool TopMostChecked { get; set; }
-        public static bool WarnDChanges { get; set; }
-        public static int ScreenIndex { get; set; }
-        public static int ShowOnlyIndex { get; set; }
-        public static int PositionIndex { get; set; }
-        public static DateTime ExamStartTime { get; set; }
-        public static DateTime ExamEndTime { get; set; }
-        public static Font CountdownFont { get; set; }
-        public static FontStyle CountdownFontStyle { get; set; }
-        public static string ExamName { get; set; }
-
-        private bool IsFormLoading;
+        public bool FeatureMOEnabled { get; set; }
+        public bool IsShowOnly { get; set; }
+        public bool IsDragable { get; set; }
+        public bool IsShowEnd { get; set; }
+        public bool IsShowPast { get; set; }
+        public bool IsRounding { get; set; }
+        public bool IsPPTService { get; set; }
+        public bool TopMostChecked { get; set; }
+        public bool WarnDChanges { get; set; }
+        public Color Fore1 { get; set; }
+        public Color Fore2 { get; set; }
+        public Color Fore3 { get; set; }
+        public Color Fore4 { get; set; }
+        public Color Back1 { get; set; }
+        public Color Back2 { get; set; }
+        public Color Back3 { get; set; }
+        public Color Back4 { get; set; }
+        public DateTime ExamStartTime { get; set; }
+        public DateTime ExamEndTime { get; set; }
+        public Font CountdownFont { get; set; }
+        public FontStyle CountdownFontStyle { get; set; }
+        public int ScreenIndex { get; set; }
+        public int ShowOnlyIndex { get; set; }
+        public int PositionIndex { get; set; }
+        public string ExamName { get; set; }
+        public event EventHandler ConfigChanged;
 
         private class ComboSource
         {
@@ -59,9 +57,12 @@ namespace CEETimerCSharpWinForms.Forms
             ChangeFont
         }
 
+        private bool IsFormLoading;
         private bool IsSyncingTime;
-        private bool IsSettingsChanged;
-        private readonly FontConverter fontConverter = new();
+        private bool HasSettingsChanged;
+        private bool IsFunny;
+        private bool IsFunnyClick;
+        private readonly FontConverter _FontConverter = new();
 
         public FormSettings()
         {
@@ -72,13 +73,12 @@ namespace CEETimerCSharpWinForms.Forms
         private void InitializeExtra()
         {
             var Max = ConfigPolicy.MaxExamNameLength;
-            LabelPptsvc.Text = "用于解决希沃PPT小工具的内置白板打开后底部工具栏会消失的问题。\n(或者你也可以开启拖动功能，将倒计时窗口拖动到其他位置)";
-            LabelSyncTime.Text = "通过运行系统命令将当前系统时间与网络同步以确保准确无误。\n注意: 此项会将系统的 NTP 服务器设置为 ntp1.aliyun.com, 并且将自动\n启动 Windows Time 服务, 请谨慎操作。";
+            LabelPptsvc.Text = "用于解决内置白板打开后底部工具栏会消失的问题。(或者\n你也可以开启拖动功能，将倒计时窗口拖动到其他位置)";
+            LabelSyncTime.Text = "将当前系统时间与网络同步以确保准确无误。\n注意: 此项会将系统的 NTP 服务器设置为 ntp1.aliyun.com, 并\n且将自动启动 Windows Time 服务, 请谨慎操作。";
             LabelExamNameCounter.Text = $"0/{Max}";
             LabelExamNameCounter.ForeColor = Color.Red;
             TextBoxExamName.MaxLength = Max;
             GBoxExamName.Text = $"考试名称 ({ConfigPolicy.MinExamNameLength}~{Max}字)";
-            ChangeWorkingStyle(WorkingArea.LastColor);
 
             List<ComboSource> Shows =
             [
@@ -115,9 +115,15 @@ namespace CEETimerCSharpWinForms.Forms
             IsFormLoading = true;
             TopMost = FormMain.IsUniTopMost;
             ChangeWorkingStyle(WorkingArea.Funny, false);
+            ChangeWorkingStyle(WorkingArea.LastColor);
             RefreshScreens();
             RefreshSettings();
-            IsSettingsChanged = false;
+            AlignControlPos(TextBoxExamName, LabelExamNameCounter);
+            AlignControlPos(CheckBoxShowOnly, ComboBoxShowOnly);
+            AlignControlPos(LabelScreens, ComboBoxScreens);
+            AlignControlPos(LabelScreensHint, ComboBoxPosition);
+            AlignControlPos(ButtonRestart, CheckBoxDisplayChanges);
+            HasSettingsChanged = false;
             ButtonSave.Enabled = false;
             IsFormLoading = false;
         }
@@ -153,11 +159,10 @@ namespace CEETimerCSharpWinForms.Forms
         private void RefreshSettings()
         {
             CheckBoxStartup.Checked = (Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true)?.GetValue("CEETimerCSharpWinForms") is string regvalue) && regvalue.Equals($"\"{LaunchManager.CurrentExecutable}\"", StringComparison.OrdinalIgnoreCase);
-
             CheckBoxSetTopMost.Checked = TopMostChecked;
             TextBoxExamName.Text = ExamName;
-            DTPExamStart.Value = ConfigManager.IsValidData(ExamStartTime) ? ExamStartTime : DateTime.Now;
-            DTPExamEnd.Value = ConfigManager.IsValidData(ExamEndTime) ? ExamEndTime : DateTime.Now;
+            DTPExamStart.Value = ExamStartTime;
+            DTPExamEnd.Value = ExamEndTime;
             CheckBoxEnableMO.Checked = FeatureMOEnabled;
             CheckBoxEnableDragable.Checked = IsDragable;
             CheckBoxShowOnly.Checked = IsShowOnly;
@@ -173,31 +178,27 @@ namespace CEETimerCSharpWinForms.Forms
             ChangeWorkingStyle(WorkingArea.ChangeFont, NewFont: new Font(CountdownFont, CountdownFontStyle));
             ChangePptsvcCtrlStyle(null, EventArgs.Empty);
             ComboBoxShowOnly.SelectedIndex = IsShowOnly ? ShowOnlyIndex : 0;
-
-            if (!LaunchManager.IsWindows10Above)
-            {
-                CheckBoxDisplayChanges.Enabled = CheckBoxDisplayChanges.Visible = false;
-            }
+            CheckBoxDisplayChanges.Visible = LaunchManager.IsWindows10Above;
         }
 
-        private void SettingsChanged(object sender, EventArgs e)
+        private void FormSettings_SettingsChanged(object sender, EventArgs e)
         {
-            IsSettingsChanged = true;
+            HasSettingsChanged = true;
             ButtonSave.Enabled = true;
         }
 
         private void TextBoxExamName_TextChanged(object sender, EventArgs e)
         {
-            SettingsChanged(sender, e);
+            FormSettings_SettingsChanged(sender, e);
             var Max = ConfigPolicy.MaxExamNameLength;
-            int CharCount = TextBoxExamName.Text.RemoveAllBadChars().Length;
+            int CharCount = TextBoxExamName.Text.RemoveIllegalChars().Length;
             LabelExamNameCounter.Text = $"{CharCount}/{Max}";
             LabelExamNameCounter.ForeColor = (CharCount > Max || CharCount < ConfigPolicy.MinExamNameLength) ? Color.Red : Color.Black;
         }
 
         private void CheckBoxShowOnly_CheckedChanged(object sender, EventArgs e)
         {
-            SettingsChanged(sender, e);
+            FormSettings_SettingsChanged(sender, e);
             CheckBoxSetRounding.Enabled = ComboBoxShowOnly.Enabled = CheckBoxShowOnly.Checked;
             ComboBoxShowOnly.SelectedIndex = CheckBoxShowOnly.Checked ? ShowOnlyIndex : 0;
 
@@ -222,13 +223,13 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void CheckBoxShowEnd_CheckedChanged(object sender, EventArgs e)
         {
-            SettingsChanged(sender, e);
+            FormSettings_SettingsChanged(sender, e);
             DTPExamEnd.Enabled = CheckBoxShowEnd.Checked;
         }
 
         private void CheckBoxShowPast_CheckedChanged(object sender, EventArgs e)
         {
-            SettingsChanged(sender, e);
+            FormSettings_SettingsChanged(sender, e);
             CheckBoxShowEnd.Checked = CheckBoxShowPast.Checked;
             CheckBoxShowEnd.Enabled = !CheckBoxShowPast.Checked;
         }
@@ -249,7 +250,7 @@ namespace CEETimerCSharpWinForms.Forms
 
             if (FontDialogMain.ShowDialog() == DialogResult.OK)
             {
-                SettingsChanged(sender, e);
+                FormSettings_SettingsChanged(sender, e);
                 ChangeWorkingStyle(WorkingArea.ChangeFont, NewFont: FontDialogMain.Font);
             }
 
@@ -258,8 +259,8 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void ButtonRestoreFont_Click(object sender, EventArgs e)
         {
-            ChangeWorkingStyle(WorkingArea.ChangeFont, NewFont: new((Font)fontConverter.ConvertFromString(ConfigPolicy.DefaultFont), FontStyle.Bold));
-            SettingsChanged(sender, e);
+            ChangeWorkingStyle(WorkingArea.ChangeFont, NewFont: new((Font)_FontConverter.ConvertFromString(ConfigPolicy.DefaultFont), FontStyle.Bold));
+            FormSettings_SettingsChanged(sender, e);
         }
 
         private void ColorLabels_Click(object sender, EventArgs e)
@@ -275,7 +276,7 @@ namespace CEETimerCSharpWinForms.Forms
 
             if (ColorDialogMain.ShowDialog() == DialogResult.OK)
             {
-                SettingsChanged(sender, e);
+                FormSettings_SettingsChanged(sender, e);
                 LabelColor.BackColor = ColorDialogMain.Color;
                 ChangeWorkingStyle(WorkingArea.SelectedColor);
             }
@@ -285,34 +286,35 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void ButtonColorApply_Click(object sender, EventArgs e)
         {
-            SettingsChanged(sender, e);
+            FormSettings_SettingsChanged(sender, e);
             ChangeWorkingStyle(WorkingArea.ColorToAll);
         }
 
         private void ButtonColorDefault_Click(object sender, EventArgs e)
         {
-            SettingsChanged(sender, e);
+            FormSettings_SettingsChanged(sender, e);
             ChangeWorkingStyle(WorkingArea.DefaultColor);
         }
 
         private void ButtonRestart_MouseDown(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Right)
+            IsFunny = IsFunnyClick;
+
+            switch (e.Button)
             {
-                ButtonRestart.Click -= ButtonRestart_Click;
-                ButtonRestart.Click += ButtonRestart_Funny_Click;
-                ChangeWorkingStyle(WorkingArea.Funny);
+                case MouseButtons.Left:
+                    IsFunnyClick = false;
+                    break;
+                case MouseButtons.Right:
+                    ChangeWorkingStyle(WorkingArea.Funny);
+                    IsFunnyClick = true;
+                    break;
             }
         }
 
         private void ButtonRestart_Click(object sender, EventArgs e)
         {
-            LaunchManager.Shutdown(Restart: true);
-        }
-
-        private void ButtonRestart_Funny_Click(object sender, EventArgs e)
-        {
-            LaunchManager.Shutdown();
+            LaunchManager.Shutdown(!IsFunny);
         }
 
         private async void ButtonSyncTime_Click(object sender, EventArgs e)
@@ -326,7 +328,7 @@ namespace CEETimerCSharpWinForms.Forms
         {
             if (IsSettingsFormatValid())
             {
-                IsSettingsChanged = false;
+                HasSettingsChanged = false;
                 SaveSettings();
                 ConfigChanged?.Invoke(this, EventArgs.Empty);
                 Close();
@@ -370,14 +372,14 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void ComboBoxShowOnly_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SettingsChanged(sender, e);
+            FormSettings_SettingsChanged(sender, e);
             CheckBoxSetRounding.Visible = ComboBoxShowOnly.SelectedIndex == 0;
             CheckBoxSetRounding.Checked = ComboBoxShowOnly.SelectedIndex == 0 && IsRounding;
         }
 
         private void ComboBoxScreens_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SettingsChanged(sender, e);
+            FormSettings_SettingsChanged(sender, e);
 
             ComboBoxPosition.Enabled = !CheckBoxEnableDragable.Checked && ComboBoxScreens.SelectedIndex != 0;
             ComboBoxPosition.SelectedIndex = ComboBoxPosition.Enabled ? PositionIndex : 0;
@@ -385,7 +387,7 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void CheckBoxDisplayChanges_CheckedChanged(object sender, EventArgs e)
         {
-            SettingsChanged(sender, e);
+            FormSettings_SettingsChanged(sender, e);
 
             if (CheckBoxDisplayChanges.Checked && !IsFormLoading)
             {
@@ -409,7 +411,7 @@ namespace CEETimerCSharpWinForms.Forms
             {
                 e.Cancel = true;
             }
-            else if (IsSettingsChanged)
+            else if (HasSettingsChanged)
             {
                 switch (MessageX.Popup("检测到设置被更改但没有保存，是否立即进行保存？", MessageLevel.Warning, Buttons: MessageBoxExButtons.YesNo))
                 {
@@ -421,7 +423,7 @@ namespace CEETimerCSharpWinForms.Forms
                         e.Cancel = true;
                         break;
                     default:
-                        IsSettingsChanged = false;
+                        HasSettingsChanged = false;
                         Close();
                         break;
                 }
@@ -431,13 +433,11 @@ namespace CEETimerCSharpWinForms.Forms
         private void FormSettings_FormClosed(object sender, FormClosedEventArgs e)
         {
             ChangeWorkingStyle(WorkingArea.Funny, false);
-            ButtonRestart.Click -= ButtonRestart_Funny_Click;
-            ButtonRestart.Click += ButtonRestart_Click;
         }
 
         private void ChangePptsvcCtrlStyle(object sender, EventArgs e)
         {
-            SettingsChanged(sender, e);
+            FormSettings_SettingsChanged(sender, e);
 
             var a = CheckBoxSetTopMost.Checked;
             var b = ComboBoxPosition.SelectedIndex == 0;
@@ -457,9 +457,22 @@ namespace CEETimerCSharpWinForms.Forms
             }
         }
 
+        private void AlignControlPos(Control Reference, Control Target)
+        {
+            var NewTop = Reference.Top + Reference.Height / 2 - Target.Height / 2;
+
+            Target.Top = Target switch
+            {
+                ComboBox => NewTop - 1,
+                CheckBox => NewTop + 1,
+                Label => NewTop,
+                _ => throw new Exception()
+            };
+        }
+
         private bool IsSettingsFormatValid()
         {
-            ExamName = TextBoxExamName.Text.RemoveAllBadChars();
+            ExamName = TextBoxExamName.Text.RemoveIllegalChars();
             TimeSpan ExamTimeSpan = DTPExamEnd.Value - DTPExamStart.Value;
             string UniMsg = "";
             string TimeMsg = "";
@@ -506,29 +519,29 @@ namespace CEETimerCSharpWinForms.Forms
                 }
             }
 
-            string ColorCheckMsg = "";
+            int ColorCheckMsg = 0;
             if (!ColorHelper.IsNiceContrast(LabelPreviewColor1.ForeColor, LabelPreviewColor1.BackColor))
             {
-                ColorCheckMsg = "1";
+                ColorCheckMsg = 1;
             }
             else if (!ColorHelper.IsNiceContrast(LabelPreviewColor2.ForeColor, LabelPreviewColor2.BackColor))
             {
-                ColorCheckMsg = "2";
+                ColorCheckMsg = 2;
             }
             else if (!ColorHelper.IsNiceContrast(LabelPreviewColor3.ForeColor, LabelPreviewColor3.BackColor))
             {
-                ColorCheckMsg = "3";
+                ColorCheckMsg = 3;
             }
             else if (!ColorHelper.IsNiceContrast(LabelPreviewColor4.ForeColor, LabelPreviewColor4.BackColor))
             {
-                ColorCheckMsg = "4";
+                ColorCheckMsg = 4;
             }
 
 #if DEBUG
             Console.WriteLine("##########################");
 #endif
 
-            if (!string.IsNullOrEmpty(ColorCheckMsg))
+            if (ColorCheckMsg != 0)
             {
                 MessageX.Popup($"第{ColorCheckMsg}组的颜色相似或对比度较低，将无法看清文字。\n\n请尝试更换其它背景颜色或文字颜色！", MessageLevel.Error, this, TabControlMain, TabPageAppearance);
                 return false;
@@ -584,13 +597,13 @@ namespace CEETimerCSharpWinForms.Forms
                     break;
                 case WorkingArea.Funny:
                     GBoxRestart.Text = IsWorking ? "关闭倒计时" : "重启倒计时";
-                    LabelRestart.Text = IsWorking ? "当然, 你也可以关闭此倒计时。(●'◡'●)" : "用于更改了屏幕缩放之后, 可以点击此按钮来重启倒计时以确保窗口\n的文字不会变模糊。";
+                    LabelRestart.Text = $"用于更改了屏幕缩放之后, 可以点击此按钮来重启程序以确\n保窗口的文字不会变模糊。{(IsWorking ? "(●'◡'●)" : "")}";
                     ButtonRestart.Text = IsWorking ? "点击关闭(&L)" : "点击重启(&R)";
                     break;
                 case WorkingArea.SetPPTService:
                     CheckBoxSwPptSvc.Enabled = IsWorking;
                     CheckBoxSwPptSvc.Checked = IsWorking && IsPPTService;
-                    CheckBoxSwPptSvc.Text = IsWorking ? "启用此功能(&X)" : $"此项暂不可用，因为倒计时没有{(SubCase == 0 ? "顶置" : "在左上角")}，不会引起冲突";
+                    CheckBoxSwPptSvc.Text = IsWorking ? "启用此功能(&X)" : $"此项暂不可用，因为倒计时没有{(SubCase == 0 ? "顶置" : "在左上角")}。";
                     break;
                 case WorkingArea.ChangeFont:
                     CountdownFont = NewFont;
@@ -644,15 +657,11 @@ namespace CEETimerCSharpWinForms.Forms
                 RegistryKey reg = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
 
                 if (CheckBoxStartup.Checked)
-                {
                     reg.SetValue("CEETimerCSharpWinForms", $"\"{LaunchManager.CurrentExecutable}\"");
-                }
                 else
-                {
                     reg.DeleteValue("CEETimerCSharpWinForms", false);
-                }
 
-                ConfigManager.WriteConfig(new Dictionary<string, string>
+                new ConfigManager().WriteConfig(new Dictionary<string, string>
                 {
                     { ConfigItems.ExamName, ExamName },
                     { ConfigItems.StartTime, $"{DTPExamStart.Value:yyyyMMddHHmmss}" },
@@ -682,9 +691,7 @@ namespace CEETimerCSharpWinForms.Forms
                     { ConfigItems.DChanges, $"{CheckBoxDisplayChanges.Checked}" }
                 });
             }
-            catch
-            {
-            }
+            catch { }
         }
 
         #region

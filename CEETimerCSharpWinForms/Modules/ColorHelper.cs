@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace CEETimerCSharpWinForms.Modules
 {
-    public class ColorHelper
+    public static class ColorHelper
     {
         public static bool TryParseRGB(string Text, out Color TargetColor)
         {
@@ -57,8 +57,8 @@ namespace CEETimerCSharpWinForms.Modules
             // double ForeLuminance = Fore.R * 0.2126 + Fore.G * 0.7152 + Fore.B * 0.0722;
             // double BackLuminance = Back.R * 0.2126 + Back.G * 0.7152 + Back.B * 0.0722;
 
-            double ForeLuminance = Fore.R * 0.299 + Fore.G * 0.587 + Fore.B * 0.114;
-            double BackLuminance = Back.R * 0.299 + Back.G * 0.587 + Back.B * 0.114;
+            double ForeLuminance = Fore.ToLuminance();
+            double BackLuminance = Back.ToLuminance();
             double Contrast = (Math.Max(ForeLuminance, BackLuminance) + 0.05) / (Math.Min(ForeLuminance, BackLuminance) + 0.05);
             double ColorDifference = Math.Sqrt(2 * Math.Pow(Fore.R - Back.R, 2) + 4 * Math.Pow(Fore.G - Back.G, 2) + 3 * Math.Pow(Fore.B - Back.B, 2));
 #if DEBUG

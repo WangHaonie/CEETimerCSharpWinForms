@@ -8,39 +8,20 @@ namespace CEETimerCSharpWinForms.Forms
 {
     public partial class FormAbout : Form
     {
-        private ToolTip CheckUpdateTip;
         private bool IsCheckingUpdate = false;
 
         public FormAbout()
         {
             InitializeComponent();
-        }
-
-        private void FormAbout_Load(object sender, EventArgs e)
-        {
             TopMost = FormMain.IsUniTopMost;
-            LableVersion.Text = LaunchManager.AppVersionText;
-            LabelAuthor.Text = LaunchManager.CopyrightInfo;
-            LabelInfo.Text = LaunchManager.AppName;
-
-            CheckUpdateTip = new()
-            {
-                AutoPopDelay = 10000
-            };
-
-            CheckUpdateTip.SetToolTip(LableVersion, "是的你没有看错，点击这里可以检查是否有新版本。");
-            LableVersion.MouseLeave += LableVersion_MouseLeave;
-        }
-
-        private void LableVersion_MouseLeave(object sender, EventArgs e)
-        {
-            CheckUpdateTip.Hide(LableVersion);
+            LabelInfo.Text = $"{LaunchManager.AppName}\n{LaunchManager.AppVersionText}";
+            LabelLicense.Text = $"Licensed under the GNU GPL, v3.\n{LaunchManager.CopyrightInfo}";
         }
 
         private async void LabelVersion_Click(object sender, EventArgs e)
         {
             IsCheckingUpdate = true;
-            LableVersion.Enabled = false;
+            PicBoxLogo.Enabled = false;
 
             try
             {
@@ -49,7 +30,15 @@ namespace CEETimerCSharpWinForms.Forms
             finally
             {
                 IsCheckingUpdate = false;
-                LableVersion.Enabled = true;
+                PicBoxLogo.Enabled = true;
+            }
+        }
+
+        private void LabelLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                Process.Start($"https://github.com/WangHaonie/CEETimerCSharpWinForms{((LinkLabel)sender == LinkFeedback ? "/issues/new/choose" : "")}");
             }
         }
 
@@ -61,16 +50,6 @@ namespace CEETimerCSharpWinForms.Forms
         private void FormAbout_FormClosing(object sender, FormClosingEventArgs e)
         {
             e.Cancel = IsCheckingUpdate;
-        }
-
-        private void LinkGitHub_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left) Process.Start("https://github.com/WangHaonie/CEETimerCSharpWinForms");
-        }
-
-        private void LinkFeedback_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left) Process.Start("https://github.com/WangHaonie/CEETimerCSharpWinForms/issues/new/choose");
         }
     }
 }

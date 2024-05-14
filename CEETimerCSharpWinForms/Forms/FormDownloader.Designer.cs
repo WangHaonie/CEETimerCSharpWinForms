@@ -34,6 +34,7 @@
             this.ProgressBarMain = new System.Windows.Forms.ProgressBar();
             this.ButtonRetry = new System.Windows.Forms.Button();
             this.ButtonCancel = new System.Windows.Forms.Button();
+            this.LinkBroswer = new System.Windows.Forms.LinkLabel();
             this.SuspendLayout();
             // 
             // LabelDownloading
@@ -78,7 +79,7 @@
             // ButtonRetry
             // 
             this.ButtonRetry.Enabled = false;
-            this.ButtonRetry.Location = new System.Drawing.Point(204, 60);
+            this.ButtonRetry.Location = new System.Drawing.Point(205, 60);
             this.ButtonRetry.Margin = new System.Windows.Forms.Padding(2);
             this.ButtonRetry.Name = "ButtonRetry";
             this.ButtonRetry.Size = new System.Drawing.Size(75, 25);
@@ -89,7 +90,7 @@
             // 
             // ButtonCancel
             // 
-            this.ButtonCancel.Location = new System.Drawing.Point(283, 60);
+            this.ButtonCancel.Location = new System.Drawing.Point(284, 60);
             this.ButtonCancel.Margin = new System.Windows.Forms.Padding(2);
             this.ButtonCancel.Name = "ButtonCancel";
             this.ButtonCancel.Size = new System.Drawing.Size(75, 25);
@@ -98,12 +99,24 @@
             this.ButtonCancel.UseVisualStyleBackColor = true;
             this.ButtonCancel.Click += new System.EventHandler(this.ButtonCancel_Click);
             // 
+            // LinkBroswer
+            // 
+            this.LinkBroswer.AutoSize = true;
+            this.LinkBroswer.Location = new System.Drawing.Point(287, 9);
+            this.LinkBroswer.Name = "LinkBroswer";
+            this.LinkBroswer.Size = new System.Drawing.Size(72, 15);
+            this.LinkBroswer.TabIndex = 9;
+            this.LinkBroswer.TabStop = true;
+            this.LinkBroswer.Text = "浏览器下载";
+            this.LinkBroswer.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkBroswer_LinkClicked);
+            // 
             // FormDownloader
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(369, 91);
+            this.Controls.Add(this.LinkBroswer);
             this.Controls.Add(this.ButtonCancel);
             this.Controls.Add(this.ButtonRetry);
             this.Controls.Add(this.ProgressBarMain);
@@ -132,5 +145,6 @@
         private System.Windows.Forms.ProgressBar ProgressBarMain;
         private System.Windows.Forms.Button ButtonRetry;
         private System.Windows.Forms.Button ButtonCancel;
+        private System.Windows.Forms.LinkLabel LinkBroswer;
     }
 }
