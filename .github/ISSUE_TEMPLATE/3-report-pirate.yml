@@ -1,0 +1,17 @@
+name: ⚠️ 盗版举报
+description: 举报一切盗版、倒卖本程序的网页或链接
+title: "⚠️ [PIRATED] "
+labels: ["PIRATED"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢您的积极上报。
+
+  - type: textarea
+    id: suggest
+    attributes:
+      label: ⭕ 情况描述
+      description: 请在此粘贴相关链接。
+    validations:
+      required: true
