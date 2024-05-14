@@ -13,7 +13,7 @@ namespace CEETimerCSharpWinForms.Forms
 {
     public partial class FormMain : Form
     {
-        public static bool IsUniTopMost { get; private set; }
+        public static bool IsUniTopMost { get; private set; } = true;
 
         private Color Back1;
         private Color Back2;
