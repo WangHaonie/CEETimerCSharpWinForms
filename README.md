@@ -1,3 +1,4 @@
+<h4>⚠️注意⚠️本程序完全免费，仅通过此 GitHub 仓库进行发布。任何其他网站或个人提供的下载链接均未获得授权，可能存在安全风险及功能不完整。为了保障您的权益，请直接从此仓库获取软件及其最新版本。支持正版，拒绝盗版！<a href="https://github.com/WangHaonie/CEETimerCSharpWinForms/issues/new/choose" target="_blank">举报盗版</a></h4>
 <div align="center">
     <img src="./CEETimerCSharpWinForms/Properties/AppIcon256px.png" height="128px"/>
     <h2>高考倒计时 by WangHaonie</h2>
