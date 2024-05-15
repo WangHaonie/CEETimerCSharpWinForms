@@ -16,6 +16,8 @@ namespace CEETimerCSharpWinForms.Forms
         {
             InitializeComponent();
             TopMost = FormMain.IsUniTopMost;
+            Load += (sender, e) => FormManager.Add(this);
+            FormClosed += (sender,e) => FormManager.Remove(this);
         }
 
         public DialogResult ShowCore(string Message, string Title, Icon MessageBoxExIcon, SystemSound Sound, MessageBoxExButtons Buttons, FormStartPosition Position, bool AutoClose)

@@ -172,6 +172,7 @@
       <DependentUpon>MessageBoxEx.cs</DependentUpon>
     </Compile>
     <Compile Include="Modules\ColorHelper.cs" />
+    <Compile Include="Modules\FormManager.cs" />
     <Compile Include="Modules\ProcessHelper.cs" />
     <Compile Include="Modules\UpdateChecker.cs" />
     <Compile Include="Modules\ConfigManager.cs" />

@@ -68,6 +68,7 @@ namespace CEETimerCSharpWinForms.Forms
         public FormMain()
         {
             InitializeComponent();
+            FormClosed += (sender, e) => FormManager.Remove(this);
         }
 
         private void FormMain_Load(object sender, EventArgs e)
@@ -79,6 +80,7 @@ namespace CEETimerCSharpWinForms.Forms
             LabelCountdown.ForeColor = Fore4;
             BackColor = Back4;
             Task.Run(() => UpdateChecker.CheckUpdate(true, this));
+            FormManager.Add(this);
         }
 
         private void RefreshSettings(object sender, EventArgs e)

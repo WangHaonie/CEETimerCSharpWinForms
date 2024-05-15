@@ -126,6 +126,7 @@ namespace CEETimerCSharpWinForms.Forms
             HasSettingsChanged = false;
             ButtonSave.Enabled = false;
             IsFormLoading = false;
+            FormManager.Add(this);
         }
 
         private void RefreshScreens()
@@ -433,6 +434,7 @@ namespace CEETimerCSharpWinForms.Forms
         private void FormSettings_FormClosed(object sender, FormClosedEventArgs e)
         {
             ChangeWorkingStyle(WorkingArea.Funny, false);
+            FormManager.Remove(this);
         }
 
         private void ChangePptsvcCtrlStyle(object sender, EventArgs e)

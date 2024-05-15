@@ -16,6 +16,8 @@ namespace CEETimerCSharpWinForms.Forms
             TopMost = FormMain.IsUniTopMost;
             LabelInfo.Text = $"{LaunchManager.AppName}\n{LaunchManager.AppVersionText}";
             LabelLicense.Text = $"Licensed under the GNU GPL, v3.\n{LaunchManager.CopyrightInfo}";
+            Load += (sender, e) => FormManager.Add(this);
+            FormClosed += (sender, e) => FormManager.Remove(this);
         }
 
         private async void LabelVersion_Click(object sender, EventArgs e)

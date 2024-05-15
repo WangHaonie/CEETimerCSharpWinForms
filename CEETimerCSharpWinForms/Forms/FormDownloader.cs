@@ -21,10 +21,12 @@ namespace CEETimerCSharpWinForms.Forms
         {
             InitializeComponent();
             TopMost = FormMain.IsUniTopMost;
+            FormClosed += (sender, e) => FormManager.Remove(this);
         }
 
         private async void FormDownloader_Load(object sender, EventArgs e)
         {
+            FormManager.Add(this);
             await DownloadUpdate();
         }
 

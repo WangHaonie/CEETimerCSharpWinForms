@@ -31,7 +31,6 @@ namespace CEETimerCSharpWinForms.Modules
         public static readonly string CurrentExecutablePath = AppDomain.CurrentDomain.BaseDirectory;
         public static readonly string CurrentExecutable = Application.ExecutablePath;
 
-        private const int SW_RESTORE = 0x0009;
         private const string PipeName = "CEETimerCSharpWinForms_[34c14833-98da-49f7-a2ab-369e88e73b95]";
         private static readonly string CurrentExecutableName = Path.GetFileName(CurrentExecutable);
 
@@ -113,6 +112,7 @@ namespace CEETimerCSharpWinForms.Modules
                                 break;
                         }
                     }
+                    Environment.Exit(0);
                 }
             }
             else
@@ -149,9 +149,7 @@ namespace CEETimerCSharpWinForms.Modules
                 {
                     using var PipeServer = new NamedPipeServerStream(PipeName, PipeDirection.InOut);
                     PipeServer.WaitForConnection();
-                    var CurrentMainWindowHandle = Process.GetCurrentProcess().MainWindowHandle;
-                    WindowsAPI.ShowWindowAsync(CurrentMainWindowHandle, SW_RESTORE);
-                    WindowsAPI.SetForegroundWindow(CurrentMainWindowHandle);
+                    FormManager.ShowLastOpenedForm();
                 }
             }
             catch { }
@@ -162,7 +160,7 @@ namespace CEETimerCSharpWinForms.Modules
             try
             {
                 using var PipeClient = new NamedPipeClientStream(".", PipeName, PipeDirection.Out);
-                PipeClient.Connect();
+                PipeClient.Connect(1000);
             }
             catch { }
         }
