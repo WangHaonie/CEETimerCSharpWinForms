@@ -25,7 +25,8 @@ namespace CEETimerCSharpWinForms.Modules
         public const string CopyrightInfo = "Copyright © 2023-2024 WangHaonie";
         public const string RequestUA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36";
         public const string OriginalFileName = "CEETimerCSharpWinForms.exe";
-        public const string GitHubAPI = "https://api.github.com/repos/WangHaonie/CEETimerCSharpWinForms/releases/latest";
+        public const string UpdateApi = "https://gitee.com/WangHaonie/CEETimerCSharpWinForms/raw/main/api/github.json";
+        public const string UpdateUrl = "https://gitee.com/WangHaonie/CEETimerCSharpWinForms/raw/main/download/CEETimerCSharpWinForms_{0}_x64_Setup.exe";
 
         public static readonly bool IsWindows10Above = Environment.OSVersion.Version.Major >= 10;
         public static readonly string CurrentExecutablePath = AppDomain.CurrentDomain.BaseDirectory;
@@ -90,6 +91,7 @@ namespace CEETimerCSharpWinForms.Modules
                     {
                         Task.Run(() => CheckAdmin(out _));
                         Application.Run(new FormMain());
+                        //Application.Run(new FormDownloader());
                     }
                     else
                     {

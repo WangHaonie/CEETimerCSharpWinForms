@@ -41,7 +41,7 @@ namespace CEETimerCSharpWinForms.Forms
                 LatestVersion = SelectedVersion.IsVersionNumber() ? SelectedVersion : LaunchManager.AppVersion;
             }
 
-            DownloadUrl = $"https://gitea.com/WangHaonie/ceetimer-dl/raw/branch/main/CEETimerCSharpWinForms_{LatestVersion}_x64_Setup.exe";
+            DownloadUrl = string.Format(LaunchManager.UpdateUrl, LatestVersion);
             string DownloadPath = Path.Combine(Path.GetTempPath(), $"CEETimerCSharpWinForms_{LatestVersion}_x64_Setup.exe");
 
             using var UpdateChecker = new HttpClient();
@@ -65,11 +65,10 @@ namespace CEETimerCSharpWinForms.Forms
                     {
                         await fileStream.WriteAsync(buffer, 0, (int)bytesRead);
                         totalBytesRead += bytesRead;
-                        var progressPercentage = totalBytes == -1 ? -1 : (int)(totalBytesRead * 100 / totalBytes);
 
                         LabelSize.Text = $"已下载/总共：{totalBytesRead / 1024} KB / {totalBytes / 1024} KB";
                         LabelSpeed.Text = $"下载速度：{totalBytesRead / sw.Elapsed.TotalSeconds / 1024:0.00} KB/s";
-                        ProgressBarMain.Value = progressPercentage;
+                        ProgressBarMain.Value = totalBytes == -1 ? 100 : (int)(totalBytesRead * 100 / totalBytes);
 
                         if (CancelRequest.Token.IsCancellationRequested)
                         {

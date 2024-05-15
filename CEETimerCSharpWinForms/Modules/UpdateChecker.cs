@@ -25,7 +25,7 @@ namespace CEETimerCSharpWinForms.Modules
 
             try
             {
-                string ResponseContent = HttpClienMain.GetAsync(LaunchManager.GitHubAPI).Result.EnsureSuccessStatusCode().Content.ReadAsStringAsync().Result;
+                string ResponseContent = HttpClienMain.GetAsync(LaunchManager.UpdateApi).Result.EnsureSuccessStatusCode().Content.ReadAsStringAsync().Result;
                 string CurrentLatest = LaunchManager.CurrentLatest = JObject.Parse(ResponseContent)["name"].ToString();
                 DateTime.TryParse(JObject.Parse(ResponseContent)["published_at"].ToString(), out DateTime result);
                 string PublishTime = result.AddHours(8).ToString("yyyy-MM-dd dddd HH:mm:ss");
