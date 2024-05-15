@@ -215,7 +215,7 @@ namespace CEETimerCSharpWinForms.Forms
             TimerMORunner?.Dispose();
 
             if (IsFeatureMOEnabled)
-                TimerMORunner = new System.Threading.Timer(MemoryManager.OptimizeMemory, null, TimeSpan.Zero, TimeSpan.FromMinutes(5));
+                TimerMORunner = new System.Threading.Timer(OptimizeMemory, null, TimeSpan.Zero, TimeSpan.FromMinutes(5));
 
             _ConfigManager.MountConfig(false);
         }
@@ -430,6 +430,26 @@ namespace CEETimerCSharpWinForms.Forms
                     8 => new Point(SelectedScreen.Right - Width, SelectedScreen.Bottom - Height),
                     _ => throw new Exception()
                 };
+            }
+        }
+
+        private void OptimizeMemory(object state)
+        {
+            try
+            {
+                Process ProcessGetCurrentMemory = ProcessHelper.RunProcess("powershell.exe", $"-Command (Get-Counter \\\"\\Process({LaunchManager.OriginalFileName.Replace(".exe", "")})\\Working Set - Private\\\").CounterSamples.CookedValue", RedirectOutput: true);
+
+                ProcessGetCurrentMemory.WaitForExit();
+                int MemoryUsage = int.Parse(ProcessGetCurrentMemory.StandardOutput.ReadToEnd().Trim());
+
+                if (MemoryUsage > 9437184)
+                {
+                    throw new Exception();
+                }
+            }
+            catch
+            {
+                WindowsAPI.EmptyWorkingSet(Process.GetCurrentProcess().Handle);
             }
         }
 

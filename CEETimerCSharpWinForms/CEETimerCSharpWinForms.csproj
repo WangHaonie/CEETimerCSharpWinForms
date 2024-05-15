@@ -178,7 +178,6 @@
     <Compile Include="Modules\ConfigManager.cs" />
     <Compile Include="Modules\Extensions.cs" />
     <Compile Include="Modules\LaunchManager.cs" />
-    <Compile Include="Modules\MemoryManager.cs" />
     <Compile Include="Modules\MessageX.cs" />
     <Compile Include="Modules\WindowsAPI.cs" />
     <Compile Include="Program.cs" />
