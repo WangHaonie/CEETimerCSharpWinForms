@@ -90,7 +90,6 @@
             this.LabelFontInfo = new System.Windows.Forms.Label();
             this.TabPageTools = new System.Windows.Forms.TabPage();
             this.GBoxRestart = new System.Windows.Forms.GroupBox();
-            this.CheckBoxDisplayChanges = new System.Windows.Forms.CheckBox();
             this.LabelRestart = new System.Windows.Forms.Label();
             this.GBoxSyncTime = new System.Windows.Forms.GroupBox();
             this.LabelSyncTime = new System.Windows.Forms.Label();
@@ -317,7 +316,7 @@
             this.TabPageDisplay.Controls.Add(this.GBoxSetDragable);
             this.TabPageDisplay.Location = new System.Drawing.Point(4, 24);
             this.TabPageDisplay.Name = "TabPageDisplay";
-            this.TabPageDisplay.Size = new System.Drawing.Size(369, 289);
+            this.TabPageDisplay.Size = new System.Drawing.Size(369, 278);
             this.TabPageDisplay.TabIndex = 3;
             this.TabPageDisplay.Text = "显示";
             this.TabPageDisplay.UseVisualStyleBackColor = true;
@@ -787,7 +786,6 @@
             // 
             // GBoxRestart
             // 
-            this.GBoxRestart.Controls.Add(this.CheckBoxDisplayChanges);
             this.GBoxRestart.Controls.Add(this.LabelRestart);
             this.GBoxRestart.Controls.Add(this.ButtonRestart);
             this.GBoxRestart.Location = new System.Drawing.Point(7, 111);
@@ -795,17 +793,6 @@
             this.GBoxRestart.Size = new System.Drawing.Size(353, 85);
             this.GBoxRestart.TabIndex = 45;
             this.GBoxRestart.TabStop = false;
-            // 
-            // CheckBoxDisplayChanges
-            // 
-            this.CheckBoxDisplayChanges.AutoSize = true;
-            this.CheckBoxDisplayChanges.Location = new System.Drawing.Point(99, 58);
-            this.CheckBoxDisplayChanges.Name = "CheckBoxDisplayChanges";
-            this.CheckBoxDisplayChanges.Size = new System.Drawing.Size(221, 19);
-            this.CheckBoxDisplayChanges.TabIndex = 39;
-            this.CheckBoxDisplayChanges.Text = "当检测到显示设置更改时弹出提示";
-            this.CheckBoxDisplayChanges.UseVisualStyleBackColor = true;
-            this.CheckBoxDisplayChanges.CheckedChanged += new System.EventHandler(this.CheckBoxDisplayChanges_CheckedChanged);
             // 
             // LabelRestart
             // 
@@ -949,6 +936,5 @@
         private System.Windows.Forms.Label LabelLine18;
         private System.Windows.Forms.ComboBox ComboBoxPosition;
         private System.Windows.Forms.Label LabelScreensHint;
-        private System.Windows.Forms.CheckBox CheckBoxDisplayChanges;
     }
 }

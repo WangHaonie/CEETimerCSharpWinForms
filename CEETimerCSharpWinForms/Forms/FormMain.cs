@@ -30,7 +30,6 @@ namespace CEETimerCSharpWinForms.Forms
         private bool IsShowPast;
         private bool IsRounding;
         private bool IsPPTService;
-        private bool WarnDChanges;
         private int ScreenIndex;
         private int PositionIndex;
         private int ShowOnlyIndex;
@@ -52,7 +51,6 @@ namespace CEETimerCSharpWinForms.Forms
 
         private bool IsReadyToMove;
         private bool IsReady;
-        private bool DisplaySettingsChangedEventInvoked;
         private readonly int PptsvcThreshold = 1;
         private CountdownState SelectedState;
         private Timer TimerCountdown;
@@ -108,7 +106,6 @@ namespace CEETimerCSharpWinForms.Forms
             Fore2 = ColorHelper.TryParseRGB(_ConfigManager.ReadConfig(ConfigItems.Fore2), out Color tmpr) ? tmpr : Color.Green;
             Fore3 = ColorHelper.TryParseRGB(_ConfigManager.ReadConfig(ConfigItems.Fore3), out Color tmps) ? tmps : Color.Black;
             Fore4 = ColorHelper.TryParseRGB(_ConfigManager.ReadConfig(ConfigItems.Fore4), out Color tmpt) ? tmpt : Color.Black;
-            WarnDChanges = bool.TryParse(_ConfigManager.ReadConfig(ConfigItems.DChanges), out bool tmpv) && tmpv;
             ExamStartTime = DateTime.TryParseExact(_ConfigManager.ReadConfig(ConfigItems.StartTime), "yyyyMMddHHmmss", null, DateTimeStyles.None, out DateTime tmpw) ? tmpw : DateTime.Now;
             ExamEndTime = DateTime.TryParseExact(_ConfigManager.ReadConfig(ConfigItems.EndTime), "yyyyMMddHHmmss", null, DateTimeStyles.None, out DateTime tmpx) ? tmpx : DateTime.Now;
             int.TryParse(_ConfigManager.ReadConfig(ConfigItems.PosX), out int x);
@@ -118,7 +115,6 @@ namespace CEETimerCSharpWinForms.Forms
             IsShowPast = IsShowPast && IsShowEnd;
             IsRounding = IsRounding && IsShowOnly && ShowOnlyIndex == 0;
             IsUniTopMost = IsUniTopMost && TopMost;
-            WarnDChanges = WarnDChanges && LaunchManager.IsWindows10Above;
             if (ScreenIndex < 0 || ScreenIndex > Screen.AllScreens.Length) ScreenIndex = 0;
             if (PositionIndex < 0 || PositionIndex > 8) PositionIndex = 0;
             if (ShowOnlyIndex > 3) ShowOnlyIndex = 0;
@@ -223,23 +219,6 @@ namespace CEETimerCSharpWinForms.Forms
         private void SystemEvents_DisplaySettingsChanged(object sender, EventArgs e)
         {
             RefreshScreen();
-
-            if (!DisplaySettingsChangedEventInvoked && WarnDChanges)
-            {
-                DisplaySettingsChangedEventInvoked = true;
-
-                if (MessageX.Popup("检测到显示设置发生了更改，如果你刚刚更改的是缩放，\n推荐重启倒计时以确保文字不会变模糊、功能不会出现异常。\n\n是否立即重启倒计时？\n(也可以在 设置>工具 里手动重启倒计时)", MessageLevel.Warning, Buttons: MessageBoxExButtons.YesNo, Position: FormStartPosition.CenterScreen) == DialogResult.Yes)
-                {
-                    LaunchManager.Shutdown(Restart: true);
-                }
-
-                DisplaySettingsChangedEventInvoked = false;
-            }
-        }
-
-        private void RefreshScreen()
-        {
-            SelectedScreen = Screen.AllScreens[ScreenIndex - 1 == -1 ? 0 : ScreenIndex - 1].WorkingArea;
         }
 
         #region 来自网络
@@ -313,8 +292,7 @@ namespace CEETimerCSharpWinForms.Forms
                     Fore1 = Fore1,
                     Fore2 = Fore2,
                     Fore3 = Fore3,
-                    Fore4 = Fore4,
-                    WarnDChanges = WarnDChanges
+                    Fore4 = Fore4
                 };
             }
 
@@ -464,6 +442,11 @@ namespace CEETimerCSharpWinForms.Forms
                     Left = ValidArea.Left + PptsvcThreshold;
                 }
             }
+        }
+
+        private void RefreshScreen()
+        {
+            SelectedScreen = Screen.AllScreens[ScreenIndex - 1 == -1 ? 0 : ScreenIndex - 1].WorkingArea;
         }
 
         private void KeepOnScreen()

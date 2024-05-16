@@ -28,7 +28,6 @@ namespace CEETimerCSharpWinForms.Modules
         public const string UpdateApi = "https://gitee.com/WangHaonie/CEETimerCSharpWinForms/raw/main/api/github.json";
         public const string UpdateUrl = "https://gitee.com/WangHaonie/CEETimerCSharpWinForms/raw/main/download/CEETimerCSharpWinForms_{0}_x64_Setup.exe";
 
-        public static readonly bool IsWindows10Above = Environment.OSVersion.Version.Major >= 10;
         public static readonly string CurrentExecutablePath = AppDomain.CurrentDomain.BaseDirectory;
         public static readonly string CurrentExecutable = Application.ExecutablePath;
 

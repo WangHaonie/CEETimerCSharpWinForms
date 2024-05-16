@@ -20,7 +20,6 @@ namespace CEETimerCSharpWinForms.Forms
         public bool IsRounding { get; set; }
         public bool IsPPTService { get; set; }
         public bool TopMostChecked { get; set; }
-        public bool WarnDChanges { get; set; }
         public Color Fore1 { get; set; }
         public Color Fore2 { get; set; }
         public Color Fore3 { get; set; }
@@ -57,7 +56,6 @@ namespace CEETimerCSharpWinForms.Forms
             ChangeFont
         }
 
-        private bool IsFormLoading;
         private bool IsSyncingTime;
         private bool HasSettingsChanged;
         private bool IsFunny;
@@ -112,7 +110,6 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void FormSettings_Load(object sender, EventArgs e)
         {
-            IsFormLoading = true;
             TopMost = FormMain.IsUniTopMost;
             ChangeWorkingStyle(WorkingArea.Funny, false);
             ChangeWorkingStyle(WorkingArea.LastColor);
@@ -122,10 +119,8 @@ namespace CEETimerCSharpWinForms.Forms
             AlignControlPos(CheckBoxShowOnly, ComboBoxShowOnly);
             AlignControlPos(LabelScreens, ComboBoxScreens);
             AlignControlPos(LabelScreensHint, ComboBoxPosition);
-            AlignControlPos(ButtonRestart, CheckBoxDisplayChanges);
             HasSettingsChanged = false;
             ButtonSave.Enabled = false;
-            IsFormLoading = false;
             FormManager.Add(this);
         }
 
@@ -172,14 +167,12 @@ namespace CEETimerCSharpWinForms.Forms
             CheckBoxShowPast.Checked = IsShowPast;
             CheckBoxSwPptSvc.Checked = IsPPTService;
             CheckBoxSetUniTopMost.Checked = TopMost;
-            CheckBoxDisplayChanges.Checked = WarnDChanges;
             ComboBoxScreens.SelectedValue = ScreenIndex;
             ComboBoxPosition.SelectedValue = PositionIndex;
             ComboBoxShowOnly.SelectedValue = ShowOnlyIndex;
             ChangeWorkingStyle(WorkingArea.ChangeFont, NewFont: new Font(CountdownFont, CountdownFontStyle));
             ChangePptsvcCtrlStyle(null, EventArgs.Empty);
             ComboBoxShowOnly.SelectedIndex = IsShowOnly ? ShowOnlyIndex : 0;
-            CheckBoxDisplayChanges.Visible = LaunchManager.IsWindows10Above;
         }
 
         private void FormSettings_SettingsChanged(object sender, EventArgs e)
@@ -384,21 +377,6 @@ namespace CEETimerCSharpWinForms.Forms
 
             ComboBoxPosition.Enabled = !CheckBoxEnableDragable.Checked && ComboBoxScreens.SelectedIndex != 0;
             ComboBoxPosition.SelectedIndex = ComboBoxPosition.Enabled ? PositionIndex : 0;
-        }
-
-        private void CheckBoxDisplayChanges_CheckedChanged(object sender, EventArgs e)
-        {
-            FormSettings_SettingsChanged(sender, e);
-
-            if (CheckBoxDisplayChanges.Checked && !IsFormLoading)
-            {
-                var _DialogResult = MessageX.Popup("由于技术原因，开启后将检测所有显示设置 (缩放、分辨率、刷新率等) 的更改，\n而不是只检测缩放的更改，故还是需要自行判断。\n\n是否仍要开启提示？", MessageLevel.Warning, Buttons: MessageBoxExButtons.YesNo);
-
-                if (_DialogResult == DialogResult.No || _DialogResult == DialogResult.None)
-                {
-                    CheckBoxDisplayChanges.Checked = false;
-                }
-            }
         }
 
         private void ButtonClose_Click(object sender, EventArgs e)
@@ -689,8 +667,7 @@ namespace CEETimerCSharpWinForms.Forms
                     { ConfigItems.Fore3, $"{LabelColor32.BackColor.R},{LabelColor32.BackColor.G},{LabelColor32.BackColor.B}" },
                     { ConfigItems.Back3, $"{LabelColor31.BackColor.R},{LabelColor31.BackColor.G},{LabelColor31.BackColor.B}" },
                     { ConfigItems.Fore4, $"{LabelColor42.BackColor.R},{LabelColor42.BackColor.G},{LabelColor42.BackColor.B}" },
-                    { ConfigItems.Back4, $"{LabelColor41.BackColor.R},{LabelColor41.BackColor.G},{LabelColor41.BackColor.B}" },
-                    { ConfigItems.DChanges, $"{CheckBoxDisplayChanges.Checked}" }
+                    { ConfigItems.Back4, $"{LabelColor41.BackColor.R},{LabelColor41.BackColor.G},{LabelColor41.BackColor.B}" }
                 });
             }
             catch { }
