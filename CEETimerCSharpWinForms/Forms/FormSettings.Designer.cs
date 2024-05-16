@@ -256,7 +256,7 @@
             this.CheckBoxSetTopMost.Name = "CheckBoxSetTopMost";
             this.CheckBoxSetTopMost.Size = new System.Drawing.Size(131, 19);
             this.CheckBoxSetTopMost.TabIndex = 0;
-            this.CheckBoxSetTopMost.Text = "顶置显示倒计时(&T)";
+            this.CheckBoxSetTopMost.Text = "顶置倒计时窗口(&T)";
             this.CheckBoxSetTopMost.UseVisualStyleBackColor = true;
             this.CheckBoxSetTopMost.CheckedChanged += new System.EventHandler(this.CheckBoxSetTopMost_CheckedChanged);
             // 
