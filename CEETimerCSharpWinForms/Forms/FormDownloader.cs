@@ -57,9 +57,9 @@ namespace CEETimerCSharpWinForms.Forms
                     using var fileStream = new FileStream(DownloadPath, FileMode.Create, FileAccess.Write, FileShare.None);
                     var buffer = new byte[8192];
                     var totalBytesRead = 0L;
-                    var totalBytes = response.Content.Headers.ContentLength ?? -1L;
                     var bytesRead = 0L;
                     var sw = Stopwatch.StartNew();
+                    var totalBytes = response.Content.Headers.ContentLength ?? -1L;
 
                     while ((bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length)) > 0)
                     {
