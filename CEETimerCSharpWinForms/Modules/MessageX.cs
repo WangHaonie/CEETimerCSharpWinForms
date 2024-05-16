@@ -68,18 +68,17 @@ namespace CEETimerCSharpWinForms.Modules
             var (Title, MessageBoxExIcon, Sound) = GetStuff(Level);
             using var _MessageBoxEx = new MessageBoxEx();
 
-            if (ParentForm != null)
+            if (ParentForm != null && ParentForm.InvokeRequired)
             {
                 #region 来自网络
                 /*
-                
+
                 在 Invoke 方法内部获取到 DialogResult 返回值 参考：
 
                 c# - Return Ivoke message DialogResult - Stack Overflow
                 https://stackoverflow.com/a/29256646/21094697
 
                 */
-
                 return (DialogResult)ParentForm.Invoke(new Func<DialogResult>(() =>
                 {
                     ParentForm.WindowState = FormWindowState.Normal;
@@ -92,7 +91,6 @@ namespace CEETimerCSharpWinForms.Modules
 
                     return _MessageBoxEx.ShowCore(Message, Title, MessageBoxExIcon, Sound, Buttons, Position, AutoClose);
                 }));
-
                 #endregion
             }
             else
