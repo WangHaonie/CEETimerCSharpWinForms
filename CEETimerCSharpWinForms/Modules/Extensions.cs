@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
 
 namespace CEETimerCSharpWinForms.Modules
 {
@@ -14,6 +15,14 @@ namespace CEETimerCSharpWinForms.Modules
 
         public static double ToLuminance(this Color _Color)
             => _Color.R * 0.299 + _Color.G * 0.587 + _Color.B * 0.114;
+
+        public static int WithDpi(this int Pixel, Form _Form)
+        {
+            var _Graphics = _Form.CreateGraphics();
+            var _Pixel = (int)(Pixel * (_Graphics.DpiX / 96));
+            _Graphics.Dispose();
+            return _Pixel;
+        }
 
         #region 来自网络
         /*

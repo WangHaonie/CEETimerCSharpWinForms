@@ -369,7 +369,7 @@
             this.ComboBoxShowOnly.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ComboBoxShowOnly.Enabled = false;
             this.ComboBoxShowOnly.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.ComboBoxShowOnly.Location = new System.Drawing.Point(73, 20);
+            this.ComboBoxShowOnly.Location = new System.Drawing.Point(72, 19);
             this.ComboBoxShowOnly.MaxDropDownItems = 1;
             this.ComboBoxShowOnly.Name = "ComboBoxShowOnly";
             this.ComboBoxShowOnly.Size = new System.Drawing.Size(38, 23);

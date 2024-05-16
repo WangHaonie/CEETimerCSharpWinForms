@@ -64,7 +64,7 @@ namespace CEETimerCSharpWinForms.Forms
         private readonly FontConverter _FontConverter = new();
 
         private bool IsWin10BelowRounded;
-        private readonly int BorderRadius = 15;
+        private readonly int BorderRadius = 13;
 
         public FormMain()
         {
@@ -230,7 +230,8 @@ namespace CEETimerCSharpWinForms.Forms
         {
             if (IsWin10BelowRounded)
             {
-                Region = Region.FromHrgn(WindowsAPI.CreateRoundRectRgn(0, 0, Width, Height, BorderRadius, BorderRadius));
+                var _BorderRadius = BorderRadius.WithDpi(this);
+                Region = Region.FromHrgn(WindowsAPI.CreateRoundRectRgn(0, 0, Width, Height, _BorderRadius, _BorderRadius));
             }
         }
 

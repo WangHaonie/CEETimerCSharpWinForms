@@ -439,15 +439,7 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void AlignControlPos(Control Reference, Control Target)
         {
-            var NewTop = Reference.Top + Reference.Height / 2 - Target.Height / 2;
-
-            Target.Top = Target switch
-            {
-                ComboBox => NewTop - 1,
-                CheckBox => NewTop + 1,
-                Label => NewTop,
-                _ => throw new Exception()
-            };
+            Target.Top = Reference.Top + Reference.Height / 2 - Target.Height / 2;
         }
 
         private bool IsSettingsFormatValid()

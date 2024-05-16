@@ -42,8 +42,8 @@ namespace CEETimerCSharpWinForms.Forms
 
             StartPosition = Position;
 
-            ButtonB.Location = new Point(Width - ButtonB.Width - 15, PanelHead.Height + 10);
-            ButtonA.Location = new Point(ButtonB.Location.X - ButtonA.Width - 8, ButtonB.Location.Y);
+            ButtonB.Location = new Point(Width - ButtonB.Width - 15.WithDpi(this), PanelHead.Height + 10.WithDpi(this));
+            ButtonA.Location = new Point(ButtonB.Location.X - ButtonA.Width - 8.WithDpi(this), ButtonB.Location.Y);
 
             if (AutoClose) AutoCloseAsync();
 
