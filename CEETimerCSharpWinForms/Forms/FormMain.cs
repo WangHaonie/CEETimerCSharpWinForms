@@ -63,14 +63,19 @@ namespace CEETimerCSharpWinForms.Forms
         private readonly ConfigManager _ConfigManager = new();
         private readonly FontConverter _FontConverter = new();
 
+        private bool IsWin10BelowRounded;
+        private readonly int BorderRadius = 15;
+
         public FormMain()
         {
             InitializeComponent();
             FormClosed += (sender, e) => FormManager.Remove(this);
+            SizeChanged += FormMain_SizeChanged;
         }
 
         private void FormMain_Load(object sender, EventArgs e)
         {
+            SetFormRounded();
             RefreshSettings(sender, e);
             TimerCountdown = new Timer() { Interval = 1000 };
             TimerCountdown.Tick += StartCountdown;
@@ -219,6 +224,14 @@ namespace CEETimerCSharpWinForms.Forms
         private void SystemEvents_DisplaySettingsChanged(object sender, EventArgs e)
         {
             RefreshScreen();
+        }
+
+        private void FormMain_SizeChanged(object sender, EventArgs e)
+        {
+            if (IsWin10BelowRounded)
+            {
+                Region = Region.FromHrgn(WindowsAPI.CreateRoundRectRgn(0, 0, Width, Height, BorderRadius, BorderRadius));
+            }
         }
 
         #region 来自网络
@@ -388,6 +401,20 @@ namespace CEETimerCSharpWinForms.Forms
             {
                 ApplyLocation();
                 KeepOnScreen();
+            }
+        }
+
+        private void SetFormRounded()
+        {
+            if (Environment.OSVersion.Version > new Version(10, 0, 21999))
+            {
+                var attribute = WindowsAPI.DWMWINDOWATTRIBUTE.DWMWA_WINDOW_CORNER_PREFERENCE;
+                var preference = WindowsAPI.DWM_WINDOW_CORNER_PREFERENCE.DWMWCP_ROUND;
+                WindowsAPI.DwmSetWindowAttribute(Handle, attribute, ref preference, sizeof(uint));
+            }
+            else
+            {
+                IsWin10BelowRounded = true;
             }
         }
 
