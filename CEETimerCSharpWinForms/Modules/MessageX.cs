@@ -68,34 +68,41 @@ namespace CEETimerCSharpWinForms.Modules
             var (Title, MessageBoxExIcon, Sound) = GetStuff(Level);
             using var _MessageBoxEx = new MessageBoxEx();
 
-            if (ParentForm != null && ParentForm.InvokeRequired)
+            if (ParentForm != null)
             {
-                #region 来自网络
-                /*
-
-                在 Invoke 方法内部获取到 DialogResult 返回值 参考：
-
-                c# - Return Ivoke message DialogResult - Stack Overflow
-                https://stackoverflow.com/a/29256646/21094697
-
-                */
-                return (DialogResult)ParentForm.Invoke(new Func<DialogResult>(() =>
+                if (ParentForm.InvokeRequired)
                 {
-                    ParentForm.WindowState = FormWindowState.Normal;
-                    ParentForm.Activate();
+                    #region 来自网络
+                    /*
 
-                    if (ParentTabControl != null)
+                    在 Invoke 方法内部获取到 DialogResult 返回值 参考：
+
+                    c# - Return Ivoke message DialogResult - Stack Overflow
+                    https://stackoverflow.com/a/29256646/21094697
+
+                    */
+                    return (DialogResult)ParentForm.Invoke(new Func<DialogResult>(() =>
                     {
-                        ParentTabControl.SelectedTab = ParentTabPage;
-                    }
+                        ParentForm.WindowState = FormWindowState.Normal;
+                        ParentForm.Activate();
 
-                    return _MessageBoxEx.ShowCore(Message, Title, MessageBoxExIcon, Sound, Buttons, Position, AutoClose);
-                }));
-                #endregion
+                        if (ParentTabControl != null)
+                        {
+                            ParentTabControl.SelectedTab = ParentTabPage;
+                        }
+
+                        return _MessageBoxEx.ShowCore(ParentForm, Message, Title, MessageBoxExIcon, Sound, Buttons, Position, AutoClose);
+                    }));
+                    #endregion
+                }
+                else
+                {
+                    return _MessageBoxEx.ShowCore(ParentForm, Message, Title, MessageBoxExIcon, Sound, Buttons, Position, AutoClose);
+                }
             }
             else
             {
-                return _MessageBoxEx.ShowCore(Message, Title, MessageBoxExIcon, Sound, Buttons, Position, AutoClose);
+                return _MessageBoxEx.ShowCore(null, Message, Title, MessageBoxExIcon, Sound, Buttons, Position, AutoClose);
             }
         }
 
