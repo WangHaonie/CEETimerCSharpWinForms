@@ -135,11 +135,17 @@ namespace CEETimerCSharpWinForms.Modules
 
         public static void CheckAdmin(out string UserName, bool QueryUserName = false)
         {
-            var AdminChecker = ProcessHelper.RunProcess("cmd.exe", $"/c {(QueryUserName ? "whoami & " : "")}net session", RedirectOutput: QueryUserName);
+            var AdminChecker = ProcessHelper.RunProcess("cmd.exe", "/c net session");
             AdminChecker.WaitForExit();
-            var Output = AdminChecker.StandardOutput.ReadToEnd();
             IsAdmin = AdminChecker.ExitCode == 0;
-            UserName = Output.Split(new[] { "\r\n" }, StringSplitOptions.None)[0];
+            UserName = "";
+
+            if (QueryUserName)
+            {
+                var UserNameGet = ProcessHelper.RunProcess("cmd.exe", "/c whoami", RedirectOutput: true);
+                UserNameGet.WaitForExit();
+                UserName = UserNameGet.StandardOutput.ReadToEnd().Trim();
+            }
         }
 
         private static void StartPipeServer()
