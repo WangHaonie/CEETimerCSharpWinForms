@@ -322,9 +322,10 @@ namespace CEETimerCSharpWinForms.Forms
                     Fore3 = Fore3,
                     Fore4 = Fore4
                 };
+
+                _FormSettings.ConfigChanged += RefreshSettings;
             }
 
-            _FormSettings.ConfigChanged += RefreshSettings;
             _FormSettings.WindowState = FormWindowState.Normal;
             _FormSettings.Show();
             _FormSettings.Activate();
