@@ -86,6 +86,29 @@ namespace CEETimerCSharpWinForms.Forms
             FormManager.Add(this);
         }
 
+        private void SetFormRounded()
+        {
+            if (Environment.OSVersion.Version > new Version(10, 0, 21999))
+            {
+                var attribute = WindowsAPI.DWMWINDOWATTRIBUTE.DWMWA_WINDOW_CORNER_PREFERENCE;
+                var preference = WindowsAPI.DWM_WINDOW_CORNER_PREFERENCE.DWMWCP_ROUND;
+                WindowsAPI.DwmSetWindowAttribute(Handle, attribute, ref preference, sizeof(uint));
+            }
+            else
+            {
+                IsWin10BelowRounded = true;
+            }
+        }
+
+        private void FormMain_SizeChanged(object sender, EventArgs e)
+        {
+            if (IsWin10BelowRounded)
+            {
+                var _BorderRadius = BorderRadius.WithDpi(this);
+                Region = Region.FromHrgn(WindowsAPI.CreateRoundRectRgn(0, 0, Width, Height, _BorderRadius, _BorderRadius));
+            }
+        }
+
         private void RefreshSettings(object sender, EventArgs e)
         {
             _ConfigManager.MountConfig(true);
@@ -224,15 +247,6 @@ namespace CEETimerCSharpWinForms.Forms
         private void SystemEvents_DisplaySettingsChanged(object sender, EventArgs e)
         {
             RefreshScreen();
-        }
-
-        private void FormMain_SizeChanged(object sender, EventArgs e)
-        {
-            if (IsWin10BelowRounded)
-            {
-                var _BorderRadius = BorderRadius.WithDpi(this);
-                Region = Region.FromHrgn(WindowsAPI.CreateRoundRectRgn(0, 0, Width, Height, _BorderRadius, _BorderRadius));
-            }
         }
 
         #region 来自网络
@@ -402,20 +416,6 @@ namespace CEETimerCSharpWinForms.Forms
             {
                 ApplyLocation();
                 KeepOnScreen();
-            }
-        }
-
-        private void SetFormRounded()
-        {
-            if (Environment.OSVersion.Version > new Version(10, 0, 21999))
-            {
-                var attribute = WindowsAPI.DWMWINDOWATTRIBUTE.DWMWA_WINDOW_CORNER_PREFERENCE;
-                var preference = WindowsAPI.DWM_WINDOW_CORNER_PREFERENCE.DWMWCP_ROUND;
-                WindowsAPI.DwmSetWindowAttribute(Handle, attribute, ref preference, sizeof(uint));
-            }
-            else
-            {
-                IsWin10BelowRounded = true;
             }
         }
 

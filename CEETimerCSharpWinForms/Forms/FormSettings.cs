@@ -116,7 +116,7 @@ namespace CEETimerCSharpWinForms.Forms
             RefreshScreens();
             RefreshSettings();
             AlignControlPos(TextBoxExamName, LabelExamNameCounter);
-            AlignControlPos(CheckBoxShowOnly, ComboBoxShowOnly);
+            AlignControlPos(CheckBoxShowOnly, ComboBoxShowOnly, -1);
             AlignControlPos(LabelScreens, ComboBoxScreens);
             AlignControlPos(LabelScreensHint, ComboBoxPosition);
             HasSettingsChanged = false;
@@ -173,6 +173,11 @@ namespace CEETimerCSharpWinForms.Forms
             ChangeWorkingStyle(WorkingArea.ChangeFont, NewFont: new Font(CountdownFont, CountdownFontStyle));
             ChangePptsvcCtrlStyle(null, EventArgs.Empty);
             ComboBoxShowOnly.SelectedIndex = IsShowOnly ? ShowOnlyIndex : 0;
+        }
+
+        private void AlignControlPos(Control Reference, Control Target, int Adjust = 0)
+        {
+            Target.Top = Reference.Top + Reference.Height / 2 - Target.Height / 2 + Adjust.WithDpi(this);
         }
 
         private void FormSettings_SettingsChanged(object sender, EventArgs e)
@@ -435,11 +440,6 @@ namespace CEETimerCSharpWinForms.Forms
             {
                 ChangeWorkingStyle(WorkingArea.SetPPTService, false, 1);
             }
-        }
-
-        private void AlignControlPos(Control Reference, Control Target)
-        {
-            Target.Top = Reference.Top + Reference.Height / 2 - Target.Height / 2;
         }
 
         private bool IsSettingsFormatValid()
