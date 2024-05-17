@@ -20,12 +20,12 @@ namespace CEETimerCSharpWinForms.Modules
 
         public void CheckUpdate(bool IsProgramStart, Form ParentForm)
         {
-            using var HttpClienMain = new HttpClient();
-            HttpClienMain.DefaultRequestHeaders.UserAgent.ParseAdd(LaunchManager.RequestUA);
+            using var _HttpClient = new HttpClient();
+            _HttpClient.DefaultRequestHeaders.UserAgent.ParseAdd(LaunchManager.RequestUA);
 
             try
             {
-                string ResponseContent = HttpClienMain.GetAsync(LaunchManager.UpdateApi).Result.EnsureSuccessStatusCode().Content.ReadAsStringAsync().Result;
+                string ResponseContent = _HttpClient.GetAsync(LaunchManager.UpdateApi).Result.EnsureSuccessStatusCode().Content.ReadAsStringAsync().Result;
                 string CurrentLatest = LaunchManager.CurrentLatest = JObject.Parse(ResponseContent)["name"].ToString();
                 DateTime.TryParse(JObject.Parse(ResponseContent)["published_at"].ToString(), out DateTime result);
                 string PublishTime = result.AddHours(8).ToString("yyyy-MM-dd dddd HH:mm:ss");

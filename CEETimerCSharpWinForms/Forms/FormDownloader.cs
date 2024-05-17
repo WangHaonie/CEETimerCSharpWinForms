@@ -42,15 +42,15 @@ namespace CEETimerCSharpWinForms.Forms
             }
 
             DownloadUrl = string.Format(LaunchManager.UpdateUrl, LatestVersion);
-            string DownloadPath = Path.Combine(Path.GetTempPath(), $"CEETimerCSharpWinForms_{LatestVersion}_x64_Setup.exe");
+            string DownloadPath = Path.Combine(Path.GetTempPath(), Path.GetFileName(new Uri(DownloadUrl).AbsolutePath));
 
-            using var UpdateChecker = new HttpClient();
+            using var _HttpClient = new HttpClient();
             CancelRequest = new CancellationTokenSource();
-            UpdateChecker.DefaultRequestHeaders.UserAgent.ParseAdd(LaunchManager.RequestUA);
+            _HttpClient.DefaultRequestHeaders.UserAgent.ParseAdd(LaunchManager.RequestUA);
 
             try
             {
-                using (var response = await UpdateChecker.GetAsync(DownloadUrl, HttpCompletionOption.ResponseHeadersRead, CancelRequest.Token))
+                using (var response = await _HttpClient.GetAsync(DownloadUrl, HttpCompletionOption.ResponseHeadersRead, CancelRequest.Token))
                 {
                     response.EnsureSuccessStatusCode();
                     using var stream = await response.Content.ReadAsStreamAsync();
@@ -139,17 +139,17 @@ namespace CEETimerCSharpWinForms.Forms
             Close();
         }
 
-        private void FormDownloader_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            e.Cancel = !IsCancelled;
-        }
-
         private async void LinkBroswer_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             LinkBroswer.Enabled = false;
             Process.Start(DownloadUrl);
             await Task.Delay(3000);
             LinkBroswer.Enabled = true;
+        }
+
+        private void FormDownloader_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            e.Cancel = !IsCancelled;
         }
     }
 }
