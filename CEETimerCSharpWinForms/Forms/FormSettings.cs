@@ -379,7 +379,7 @@ namespace CEETimerCSharpWinForms.Forms
             ComboBoxPosition.SelectedIndex = ComboBoxPosition.Enabled ? PositionIndex : 0;
         }
 
-        private void ButtonClose_Click(object sender, EventArgs e)
+        private void ButtonCancel_Click(object sender, EventArgs e)
         {
             Close();
         }
@@ -565,6 +565,8 @@ namespace CEETimerCSharpWinForms.Forms
                     IsSyncingTime = IsWorking;
                     ButtonSyncTime.Enabled = !IsWorking;
                     ButtonRestart.Enabled = !IsWorking;
+                    ButtonSave.Enabled = !IsWorking && HasSettingsChanged;
+                    ButtonCancel.Enabled = !IsWorking;
                     ButtonSyncTime.Text = IsWorking ? "正在同步中，请稍候..." : "立即同步(&S)";
                     break;
                 case WorkingArea.Funny:

@@ -120,7 +120,7 @@
             this.ButtonCancel.TabIndex = 17;
             this.ButtonCancel.Text = "取消(&C)";
             this.ButtonCancel.UseVisualStyleBackColor = true;
-            this.ButtonCancel.Click += new System.EventHandler(this.ButtonClose_Click);
+            this.ButtonCancel.Click += new System.EventHandler(this.ButtonCancel_Click);
             // 
             // ButtonSyncTime
             // 
