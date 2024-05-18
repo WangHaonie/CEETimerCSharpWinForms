@@ -42,7 +42,7 @@ namespace CEETimerCSharpWinForms.Modules
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            using var MutexMain = new Mutex(true, "CEETimerCSharpWinForms_[61c0097d-3682-421c-84e6-70ca37dc31dd]", out bool IsNewProcess);
+            using var MutexMain = new Mutex(true, "CEETimerCSharpWinForms_MUTEX_61c0097d-3682-421c-84e6-70ca37dc31dd_[A3F8B92E6D14]", out bool IsNewProcess);
 
             if (IsNewProcess)
             {

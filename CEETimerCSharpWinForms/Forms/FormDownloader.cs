@@ -59,7 +59,7 @@ namespace CEETimerCSharpWinForms.Forms
                     var totalBytesRead = 0L;
                     var bytesRead = 0L;
                     var sw = Stopwatch.StartNew();
-                    var totalBytes = response.Content.Headers.ContentLength ?? -1L;
+                    var totalBytes = response.Content.Headers.ContentLength ?? 368640L;
 
                     while ((bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length)) > 0)
                     {
@@ -68,7 +68,7 @@ namespace CEETimerCSharpWinForms.Forms
 
                         LabelSize.Text = $"已下载/总共：{totalBytesRead / 1024} KB / {totalBytes / 1024} KB";
                         LabelSpeed.Text = $"下载速度：{totalBytesRead / sw.Elapsed.TotalSeconds / 1024:0.00} KB/s";
-                        ProgressBarMain.Value = totalBytes == -1 ? 100 : (int)(totalBytesRead * 100 / totalBytes);
+                        ProgressBarMain.Value = (int)(totalBytesRead * 100 / totalBytes);
 
                         if (CancelRequest.Token.IsCancellationRequested)
                         {
@@ -87,6 +87,7 @@ namespace CEETimerCSharpWinForms.Forms
                     ButtonCancel.Enabled = false;
                     ButtonRetry.Enabled = false;
                     LinkBroswer.Enabled = false;
+                    ProgressBarMain.Value = 100;
 
                     await Task.Delay(1800);
                     ProcessHelper.RunProcess("cmd.exe", $"/c start \"\" \"{DownloadPath}\" /S");
@@ -133,6 +134,7 @@ namespace CEETimerCSharpWinForms.Forms
                 ButtonCancel.Enabled = false;
                 CancelRequest?.Cancel();
                 LabelDownloading.Text = "用户已取消下载。";
+                IsCancelled = true;
                 MessageX.Popup($"你已取消下载！\n\n稍后可以在 关于 窗口点击图标来再次检查更新。", MessageLevel.Warning, this);
             }
 
