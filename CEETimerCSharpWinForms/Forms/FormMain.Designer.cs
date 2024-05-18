@@ -86,7 +86,7 @@
             // 
             this.ContextMenuOpenDir.Name = "ContextMenuOpenDir";
             this.ContextMenuOpenDir.Size = new System.Drawing.Size(182, 22);
-            this.ContextMenuOpenDir.Text = "打开程序文件夹(&O)";
+            this.ContextMenuOpenDir.Text = "打开所在文件夹(&O)";
             this.ContextMenuOpenDir.Click += new System.EventHandler(this.ContextMenuOpenDir_Click);
             // 
             // FormMain
