@@ -16,6 +16,7 @@ namespace CEETimerCSharpWinForms.Forms
         private bool IsCancelled;
         private CancellationTokenSource CancelRequest;
         private string DownloadUrl;
+        private string DownloadPath;
 
         public FormDownloader()
         {
@@ -27,12 +28,7 @@ namespace CEETimerCSharpWinForms.Forms
         private async void FormDownloader_Load(object sender, EventArgs e)
         {
             FormManager.Add(this);
-            await DownloadUpdate();
-        }
 
-        private async Task DownloadUpdate()
-        {
-            IsCancelled = false;
             string LatestVersion = LaunchManager.CurrentLatest;
             string SelectedVersion = ManualVersion;
 
@@ -41,8 +37,15 @@ namespace CEETimerCSharpWinForms.Forms
                 LatestVersion = SelectedVersion.IsVersionNumber() ? SelectedVersion : LaunchManager.AppVersion;
             }
 
-            DownloadUrl = string.Format(LaunchManager.UpdateUrl, LatestVersion);
-            string DownloadPath = Path.Combine(Path.GetTempPath(), Path.GetFileName(new Uri(DownloadUrl).AbsolutePath));
+            DownloadUrl = string.Format("https://gitee.com/WangHaonie/CEETimerCSharpWinForms/raw/main/download/CEETimerCSharpWinForms_{0}_x64_Setup.exe", LatestVersion);
+            DownloadPath = Path.Combine(Path.GetTempPath(), Path.GetFileName(new Uri(DownloadUrl).AbsolutePath));
+
+            await DownloadUpdate();
+        }
+
+        private async Task DownloadUpdate()
+        {
+            IsCancelled = false;
 
             using var _HttpClient = new HttpClient();
             CancelRequest = new CancellationTokenSource();
