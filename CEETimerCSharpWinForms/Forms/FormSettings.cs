@@ -51,21 +51,41 @@ namespace CEETimerCSharpWinForms.Forms
             SetPPTService,
             LastColor,
             SelectedColor,
-            ColorToAll,
             DefaultColor,
             ChangeFont
         }
 
+        private bool IsLabelColorsDragging;
         private bool IsSyncingTime;
         private bool HasSettingsChanged;
         private bool IsFunny;
         private bool IsFunnyClick;
+        private List<Label> LabelColors;
         private readonly FontConverter _FontConverter = new();
+        //private List<Label> LabelForeColors = [];
+        //private List<Label> LabelBackColors = [];
 
         public FormSettings()
         {
             InitializeComponent();
+        }
+
+        private void FormSettings_Load(object sender, EventArgs e)
+        {
+            TopMost = FormMain.IsUniTopMost;
             InitializeExtra();
+            ChangeWorkingStyle(WorkingArea.Funny, false);
+            ChangeWorkingStyle(WorkingArea.LastColor);
+            RefreshSettings();
+            AlignControlPos(TextBoxExamName, LabelExamNameCounter);
+            AlignControlPos(CheckBoxShowOnly, ComboBoxShowOnly, -1);
+            AlignControlPos(LabelScreens, ComboBoxScreens);
+            AlignControlPos(LabelScreensHint, ComboBoxPosition);
+            HasSettingsChanged = false;
+            ButtonSave.Enabled = false;
+            FormManager.Add(this);
+            //LabelBackColors.AddRange(LabelColors.GetRange(0, 4));
+            //LabelForeColors.AddRange(LabelColors.GetRange(4, 4));
         }
 
         private void InitializeExtra()
@@ -73,6 +93,7 @@ namespace CEETimerCSharpWinForms.Forms
             var Max = ConfigPolicy.MaxExamNameLength;
             LabelPptsvc.Text = "用于解决内置白板打开后底部工具栏会消失的问题。(或者\n你也可以开启拖动功能，将倒计时窗口拖动到其他位置)";
             LabelSyncTime.Text = "将当前系统时间与网络同步以确保准确无误。\n注意: 此项会将系统的 NTP 服务器设置为 ntp1.aliyun.com, 并\n且将自动启动 Windows Time 服务, 请谨慎操作。";
+            LabelLine14.Text = "请点击色块来选择文字、背景颜色。将一个色块拖放到其它\n色块上可快速应用相同的颜色。";
             LabelExamNameCounter.Text = $"0/{Max}";
             LabelExamNameCounter.ForeColor = Color.Red;
             TextBoxExamName.MaxLength = Max;
@@ -106,26 +127,7 @@ namespace CEETimerCSharpWinForms.Forms
             ComboBoxPosition.DataSource = Positions;
             ComboBoxPosition.DisplayMember = "Item";
             ComboBoxPosition.ValueMember = "Value";
-        }
 
-        private void FormSettings_Load(object sender, EventArgs e)
-        {
-            TopMost = FormMain.IsUniTopMost;
-            ChangeWorkingStyle(WorkingArea.Funny, false);
-            ChangeWorkingStyle(WorkingArea.LastColor);
-            RefreshScreens();
-            RefreshSettings();
-            AlignControlPos(TextBoxExamName, LabelExamNameCounter);
-            AlignControlPos(CheckBoxShowOnly, ComboBoxShowOnly, -1);
-            AlignControlPos(LabelScreens, ComboBoxScreens);
-            AlignControlPos(LabelScreensHint, ComboBoxPosition);
-            HasSettingsChanged = false;
-            ButtonSave.Enabled = false;
-            FormManager.Add(this);
-        }
-
-        private void RefreshScreens()
-        {
             Screen[] CurrentScreens = Screen.AllScreens;
             List<ComboSource> Monitors = [];
             int i = 0;
@@ -150,6 +152,15 @@ namespace CEETimerCSharpWinForms.Forms
             ComboBoxScreens.DataSource = Monitors;
             ComboBoxScreens.DisplayMember = "Item";
             ComboBoxScreens.ValueMember = "Value";
+
+            LabelColors = [LabelColor11, LabelColor21, LabelColor31, LabelColor41, LabelColor12, LabelColor22, LabelColor32, LabelColor42];
+            foreach (var l in LabelColors)
+            {
+                l.Click += LabelColors_Click;
+                l.MouseDown += LabelColors_MouseDown;
+                l.MouseMove += LabelColors_MouseMove;
+                l.MouseUp += LabelColors_MouseUp;
+            }
         }
 
         private void RefreshSettings()
@@ -262,31 +273,63 @@ namespace CEETimerCSharpWinForms.Forms
             FormSettings_SettingsChanged(sender, e);
         }
 
-        private void ColorLabels_Click(object sender, EventArgs e)
+        private void LabelColors_Click(object sender, EventArgs e)
         {
-            var LabelColor = (Label)sender;
+            var LabelSender = (Label)sender;
 
             ColorDialog ColorDialogMain = new()
             {
                 AllowFullOpen = true,
-                Color = LabelColor.BackColor,
+                Color = LabelSender.BackColor,
                 FullOpen = true
             };
 
             if (ColorDialogMain.ShowDialog() == DialogResult.OK)
             {
                 FormSettings_SettingsChanged(sender, e);
-                LabelColor.BackColor = ColorDialogMain.Color;
+                LabelSender.BackColor = ColorDialogMain.Color;
                 ChangeWorkingStyle(WorkingArea.SelectedColor);
             }
 
             ColorDialogMain.Dispose();
         }
 
-        private void ButtonColorApply_Click(object sender, EventArgs e)
+        private void LabelColors_MouseDown(object sender, MouseEventArgs e)
         {
-            FormSettings_SettingsChanged(sender, e);
-            ChangeWorkingStyle(WorkingArea.ColorToAll);
+            if (e.Button == MouseButtons.Left)
+            {
+                IsLabelColorsDragging = true;
+            }
+        }
+
+        private void LabelColors_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (IsLabelColorsDragging)
+            {
+                Cursor = Cursors.Cross;
+            }
+        }
+
+        private void LabelColors_MouseUp(object sender, MouseEventArgs e)
+        {
+            try
+            {
+                IsLabelColorsDragging = false;
+                Cursor = Cursors.Default;
+
+                var LabelSender = (Label)sender;
+                var ParentContainer = LabelSender.Parent;
+                var CursorPosition = ParentContainer.PointToClient(Cursor.Position);
+                var TargetControl = ParentContainer.GetChildAtPoint(CursorPosition);
+
+                if (TargetControl != null && TargetControl is Label TagetLabel && LabelColors.Contains(TagetLabel) && LabelSender != TagetLabel)
+                {
+                    TagetLabel.BackColor = LabelSender.BackColor;
+                    FormSettings_SettingsChanged(sender, e);
+                    ChangeWorkingStyle(WorkingArea.SelectedColor);
+                }
+            }
+            catch { }
         }
 
         private void ButtonColorDefault_Click(object sender, EventArgs e)
@@ -582,7 +625,6 @@ namespace CEETimerCSharpWinForms.Forms
                 case WorkingArea.ChangeFont:
                     CountdownFont = NewFont;
                     CountdownFontStyle = NewFont.Style;
-                    LabelPreviewFont.Font = NewFont;
                     LabelFontInfo.Text = $"当前字体: {NewFont.Name}, {NewFont.Size}pt, {NewFont.Style}";
                     break;
                 case WorkingArea.LastColor:
@@ -604,12 +646,6 @@ namespace CEETimerCSharpWinForms.Forms
                     LabelPreviewColor2.ForeColor = LabelColor22.BackColor;
                     LabelPreviewColor3.ForeColor = LabelColor32.BackColor;
                     LabelPreviewColor4.ForeColor = LabelColor42.BackColor;
-                    break;
-                case WorkingArea.ColorToAll:
-                    LabelColor41.BackColor = LabelColor31.BackColor = LabelColor21.BackColor =
-                    LabelPreviewColor4.BackColor = LabelPreviewColor3.BackColor = LabelPreviewColor2.BackColor = LabelColor11.BackColor;
-                    LabelColor42.BackColor = LabelColor32.BackColor = LabelColor22.BackColor =
-                    LabelPreviewColor4.ForeColor = LabelPreviewColor3.ForeColor = LabelPreviewColor2.ForeColor = LabelColor12.BackColor;
                     break;
                 case WorkingArea.DefaultColor:
                     LabelPreviewColor1.BackColor = LabelColor11.BackColor =

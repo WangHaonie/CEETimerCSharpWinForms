@@ -48,12 +48,12 @@ namespace CEETimerCSharpWinForms.Modules
             {
                 new Thread(StartPipeServer).Start();
 
-                var DllHashes = new Dictionary<string, string>()
+                var Dlls = new Dictionary<string, string>()
                 {
                     { "Newtonsoft.Json.dll", "E1E27AF7B07EEEDF5CE71A9255F0422816A6FC5849A483C6714E1B472044FA9D" }
                 };
 
-                foreach (var Dll in DllHashes)
+                foreach (var Dll in Dlls)
                 {
                     string DllPath = $"{CurrentExecutablePath}{Dll.Key}";
                     string DllName = Dll.Key;
@@ -90,7 +90,6 @@ namespace CEETimerCSharpWinForms.Modules
                     {
                         Task.Run(() => CheckAdmin(out _));
                         Application.Run(new FormMain());
-                        //Application.Run(new FormDownloader());
                     }
                     else
                     {
