@@ -97,6 +97,14 @@ namespace CEETimerCSharpWinForms.Modules
                 }
                 else
                 {
+                    ParentForm.WindowState = FormWindowState.Normal;
+                    ParentForm.Activate();
+
+                    if (ParentTabControl != null)
+                    {
+                        ParentTabControl.SelectedTab = ParentTabPage;
+                    }
+
                     return _MessageBoxEx.ShowCore(ParentForm, Message, Title, MessageBoxExIcon, Sound, Buttons, Position, AutoClose);
                 }
             }
