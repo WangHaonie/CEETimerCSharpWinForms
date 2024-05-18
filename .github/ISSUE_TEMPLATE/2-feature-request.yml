@@ -30,7 +30,7 @@ body:
   - type: textarea
     id: details
     attributes:
-      label: 🌈 可能的实现方法 (选填)
+      label: 🌈 [选填] 可能的实现方法
       description: 请详细说明实现此功能的大致方法，内容可以是文字描述或者是相关代码
     validations:
       required: false

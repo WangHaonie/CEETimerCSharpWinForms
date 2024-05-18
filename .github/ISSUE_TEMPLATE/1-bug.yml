@@ -34,25 +34,15 @@ body:
   - type: textarea
     id: details
     attributes:
-      label: 🌈 错误详情 (选填)
-      description: 如果在发生该错误的时候弹出了 .NET 的错误提示框，请展开详细信息并将错误详情粘贴到此处
-      placeholder: "也就是大概长这个样子的内容: 
-See the end of this message for details on invoking 
-just-in-time (JIT) debugging instead of this dialog box.
-
-************** Exception Text **************
-System.....Exception: ...
-   at ...
-   at ...
-   at ...
-   at ..."
+      label: 🌈 [选填] 错误详情
+      description: 如果弹出了错误消息框，请将其截图并粘贴到此处
     validations:
       required: false
 
   - type: textarea
     id: solution
     attributes:
-      label: 🌈 可能的解决方法 (选填)
+      label: 🌈 [选填] 可能的解决方法
       description: 请详细说明可能会解决此问题的方法，内容可以是文字描述或者是相关代码
     validations:
       required: false
