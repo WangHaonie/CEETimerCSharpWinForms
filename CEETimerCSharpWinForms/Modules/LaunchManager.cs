@@ -96,18 +96,6 @@ namespace CEETimerCSharpWinForms.Modules
             }
         }
 
-        private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
-        {
-            MessageX.Popup("程序出现意外错误，建议保存以下信息并发送给软件开发者！感谢您的配合。(Application.ThreadException)", e.Exception);
-            Environment.Exit(1);
-        }
-
-        private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
-        {
-            MessageX.Popup("程序出现意外错误，建议保存以下信息并发送给软件开发者！感谢您的配合。(AppDomain.CurrentDomain.UnhandledException)", (Exception)e.ExceptionObject);
-            Environment.Exit(1);
-        }
-
         public static void Shutdown(bool Restart = false)
         {
             ProcessHelper.RunProcess("cmd.exe", $"/c taskkill /f /fi \"PID eq {Process.GetCurrentProcess().Id}\" /im {CurrentExecutableName} {(Restart ? $"& start \"\" \"{CurrentExecutable}\"" : "")}");
@@ -150,6 +138,28 @@ namespace CEETimerCSharpWinForms.Modules
                 PipeClient.Connect(1000);
             }
             catch { }
+        }
+
+        private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
+        {
+            HandleException(e.Exception);
+        }
+
+        private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            HandleException((Exception)e.ExceptionObject);
+        }
+
+        private static void HandleException(Exception ex)
+        {
+            if (MessageX.Popup("程序出现意外错误，无法继续运行，非常抱歉给您带来不便，建议您保存以下信息并发送给软件开发者。感谢您的配合。\n您可以点击 \"是\" 来重启应用程序，\"否\" 关闭应用程序", ex, Buttons: MessageBoxExButtons.YesNo) == DialogResult.Yes)
+            {
+                Shutdown(Restart: true);
+            }
+            else
+            {
+                Shutdown();
+            }
         }
     }
 }

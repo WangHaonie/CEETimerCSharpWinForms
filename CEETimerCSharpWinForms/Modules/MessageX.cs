@@ -31,9 +31,7 @@ namespace CEETimerCSharpWinForms.Modules
         /// <param name="AutoClose">[可选] 是否允许消息框在3s后自动关闭</param>
         /// <returns>DialogResult</returns>
         public static DialogResult Popup(string Message, MessageLevel Level, Form ParentForm = null, TabControl ParentTabControl = null, TabPage ParentTabPage = null, MessageBoxExButtons Buttons = MessageBoxExButtons.OK, FormStartPosition Position = FormStartPosition.CenterParent, bool AutoClose = false)
-        {
-            return PopupCore(Message, Level, ParentForm, ParentTabControl, ParentTabPage, Buttons, Position, AutoClose);
-        }
+            => PopupCore(Message, Level, ParentForm, ParentTabControl, ParentTabPage, Buttons, Position, AutoClose);
 
         /// <summary>
         /// 在指定的窗体或定位到其标签页上或直接显示一个专门用来显示错误的消息框
@@ -46,10 +44,8 @@ namespace CEETimerCSharpWinForms.Modules
         /// <param name="Buttons">[可选] 要显示的按钮</param>
         /// <param name="Position">[可选] 消息框出现的位置</param>
         /// <param name="AutoClose">[可选] 是否允许消息框在3s后自动关闭</param>
-        public static void Popup(string Message, Exception ex, Form ParentForm = null, TabControl ParentTabControl = null, TabPage ParentTabPage = null, MessageBoxExButtons Buttons = MessageBoxExButtons.OK, FormStartPosition Position = FormStartPosition.CenterParent, bool AutoClose = false)
-        {
-            PopupCore($"{Message}\n\n错误信息: \n{ex.Message}\n\n错误详情: \n{ex}", MessageLevel.Error, ParentForm, ParentTabControl, ParentTabPage, Buttons, Position, AutoClose);
-        }
+        public static DialogResult Popup(string Message, Exception ex, Form ParentForm = null, TabControl ParentTabControl = null, TabPage ParentTabPage = null, MessageBoxExButtons Buttons = MessageBoxExButtons.OK, FormStartPosition Position = FormStartPosition.CenterParent, bool AutoClose = false)
+            => PopupCore($"{Message}\n\n错误信息: \n{ex.Message}\n\n错误详情: \n{ex}", MessageLevel.Error, ParentForm, ParentTabControl, ParentTabPage, Buttons, Position, AutoClose);
 
         /// <summary>
         /// Popup 的核心方法，用于实现定位到父窗体的标签页和与 MessageBoxEx 交互
