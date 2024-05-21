@@ -112,7 +112,7 @@
             // ButtonCancel
             // 
             this.ButtonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.ButtonCancel.Location = new System.Drawing.Point(308, 313);
+            this.ButtonCancel.Location = new System.Drawing.Point(306, 313);
             this.ButtonCancel.Name = "ButtonCancel";
             this.ButtonCancel.Size = new System.Drawing.Size(75, 25);
             this.ButtonCancel.TabIndex = 17;
@@ -176,7 +176,7 @@
             // 
             // ButtonSave
             // 
-            this.ButtonSave.Location = new System.Drawing.Point(227, 313);
+            this.ButtonSave.Location = new System.Drawing.Point(225, 313);
             this.ButtonSave.Name = "ButtonSave";
             this.ButtonSave.Size = new System.Drawing.Size(75, 25);
             this.ButtonSave.TabIndex = 16;
@@ -190,7 +190,7 @@
             this.TabControlMain.Controls.Add(this.TabPageDisplay);
             this.TabControlMain.Controls.Add(this.TabPageAppearance);
             this.TabControlMain.Controls.Add(this.TabPageTools);
-            this.TabControlMain.Location = new System.Drawing.Point(7, 4);
+            this.TabControlMain.Location = new System.Drawing.Point(5, 4);
             this.TabControlMain.Name = "TabControlMain";
             this.TabControlMain.SelectedIndex = 0;
             this.TabControlMain.Size = new System.Drawing.Size(377, 306);
@@ -795,7 +795,7 @@
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.CancelButton = this.ButtonCancel;
-            this.ClientSize = new System.Drawing.Size(391, 344);
+            this.ClientSize = new System.Drawing.Size(389, 344);
             this.Controls.Add(this.TabControlMain);
             this.Controls.Add(this.ButtonSave);
             this.Controls.Add(this.ButtonCancel);

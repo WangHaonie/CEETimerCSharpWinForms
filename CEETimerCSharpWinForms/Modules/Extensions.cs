@@ -7,6 +7,8 @@ namespace CEETimerCSharpWinForms.Modules
 {
     public static class Extensions
     {
+        public static int DpiRatio { get; private set; } = 0;
+
         public static string FormatLog(this string UpdateLog, string LatestVersion)
             => Regex.Replace(UpdateLog.RemoveIllegalChars(), @"[#\>]", "").Replace($"v{LatestVersion}更新日志新功能修复移除", "").Replace("+", "\n● ");
 
@@ -18,9 +20,20 @@ namespace CEETimerCSharpWinForms.Modules
 
         public static int WithDpi(this int Pixel, Form _Form)
         {
-            var _Graphics = _Form.CreateGraphics();
-            var _Pixel = (int)(Pixel * (_Graphics.DpiX / 96));
-            _Graphics.Dispose();
+            Graphics _Graphics = null;
+            int _Pixel = Pixel;
+
+            if (DpiRatio == 0)
+            {
+                _Graphics = _Form.CreateGraphics();
+                DpiRatio = (int)(_Graphics.DpiX / 96);
+            }
+            else
+            {
+                _Pixel = Pixel * DpiRatio;
+            }
+
+            _Graphics?.Dispose();
             return _Pixel;
         }
 

@@ -83,6 +83,7 @@ namespace CEETimerCSharpWinForms.Forms
             LabelCountdown.ForeColor = Fore4;
             BackColor = Back4;
             Task.Run(() => UpdateChecker.CheckUpdate(true, this));
+            _ = 1.WithDpi(this); // 仅触发获取当前 DPI 比值，无其他用途
             FormManager.Add(this);
         }
 

@@ -152,7 +152,7 @@ namespace CEETimerCSharpWinForms.Modules
 
         private static void HandleException(Exception ex)
         {
-            if (MessageX.Popup("程序出现意外错误，无法继续运行，非常抱歉给您带来不便，建议您保存以下信息并发送给软件开发者。感谢您的配合。\n您可以点击 \"是\" 来重启应用程序，\"否\" 关闭应用程序", ex, Buttons: MessageBoxExButtons.YesNo) == DialogResult.Yes)
+            if (MessageX.Popup("程序出现意外错误，无法继续运行，非常抱歉给您带来不便，建议您截图保存以下信息并发送给软件开发者。感谢您的配合。\n您可以点击 \"是\" 来重启应用程序，\"否\" 关闭应用程序", ex, Buttons: MessageBoxExButtons.YesNo) == DialogResult.Yes)
             {
                 Shutdown(Restart: true);
             }

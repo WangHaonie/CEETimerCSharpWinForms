@@ -77,10 +77,15 @@ namespace CEETimerCSharpWinForms.Forms
             ChangeWorkingStyle(WorkingArea.Funny, false);
             ChangeWorkingStyle(WorkingArea.LastColor);
             RefreshSettings();
-            AlignControlPos(TextBoxExamName, LabelExamNameCounter);
-            AlignControlPos(CheckBoxShowOnly, ComboBoxShowOnly, -1);
-            AlignControlPos(LabelScreens, ComboBoxScreens);
-            AlignControlPos(LabelScreensHint, ComboBoxPosition);
+
+            if (Extensions.DpiRatio != 1)
+            {
+                AlignControlPos(CheckBoxShowOnly, ComboBoxShowOnly, -1);
+                AlignControlPos(LabelScreens, ComboBoxScreens);
+                AlignControlPos(LabelScreensHint, ComboBoxPosition);
+                AlignControlPos(TextBoxExamName, LabelExamNameCounter);
+            }
+
             HasSettingsChanged = false;
             ButtonSave.Enabled = false;
             FormManager.Add(this);
