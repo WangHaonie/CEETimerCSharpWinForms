@@ -75,6 +75,7 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void FormMain_Load(object sender, EventArgs e)
         {
+            SystemEvents.DisplaySettingsChanged += SystemEvents_DisplaySettingsChanged;
             SetFormRounded();
             RefreshSettings(sender, e);
             TimerCountdown = new Timer() { Interval = 1000 };
@@ -207,9 +208,6 @@ namespace CEETimerCSharpWinForms.Forms
             }
 
             LabelCountdown.Font = new Font(SelectedFont, SelectedFontStyle);
-
-            SystemEvents.DisplaySettingsChanged -= SystemEvents_DisplaySettingsChanged;
-            SystemEvents.DisplaySettingsChanged += SystemEvents_DisplaySettingsChanged;
 
             LabelCountdown.MouseDown -= LabelCountdown_MouseDown;
             LabelCountdown.MouseMove -= LabelCountdown_MouseMove;
