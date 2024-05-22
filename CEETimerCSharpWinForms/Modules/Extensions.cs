@@ -10,41 +10,38 @@ namespace CEETimerCSharpWinForms.Modules
     {
         public static int DpiRatio { get; private set; } = 0;
 
-        public static string FormatLog(this string UpdateLog, string LatestVersion)
-            => Regex.Replace(UpdateLog.RemoveIllegalChars(), @"[#\>]", "").Replace($"v{LatestVersion}更新日志新功能修复移除", "").Replace("+", "\n● ");
+        public static string FormatLog(this string updateLog, string latestVersion)
+            => Regex.Replace(updateLog.RemoveIllegalChars(), @"[#\>]", "").Replace($"v{latestVersion}更新日志新功能修复移除", "").Replace("+", "\n● ");
 
-        public static bool IsVersionNumber(this string VersionNumber)
-            => Regex.IsMatch(VersionNumber, @"^\d+(\.\d+){1,3}$");
+        public static bool IsVersionNumber(this string v)
+            => Regex.IsMatch(v, @"^\d+(\.\d+){1,3}$");
 
-        public static double ToLuminance(this Color _Color)
-            => _Color.R * 0.299 + _Color.G * 0.587 + _Color.B * 0.114;
+        public static double ToLuminance(this Color color)
+            => color.R * 0.299 + color.G * 0.587 + color.B * 0.114;
 
         public static string ToMessage(this Exception ex)
             => $"\n\n错误信息: \n{ex.Message}\n\n错误详情: \n{ex}";
 
-        public static void ReActivate(this Form _Form)
+        public static void ReActivate(this Form form)
         {
-            _Form.WindowState = FormWindowState.Normal;
-            _Form.Activate();
+            form.WindowState = FormWindowState.Normal;
+            form.Activate();
         }
 
-        public static int WithDpi(this int Pixel, Form _Form)
+        public static int WithDpi(this int px, Form form)
         {
-            Graphics _Graphics = null;
-            int _Pixel = Pixel;
+            Graphics g = null;
+            int pxScaled;
 
             if (DpiRatio == 0)
             {
-                _Graphics = _Form.CreateGraphics();
-                DpiRatio = (int)(_Graphics.DpiX / 96);
-            }
-            else
-            {
-                _Pixel = Pixel * DpiRatio;
+                g = form.CreateGraphics();
+                DpiRatio = (int)(g.DpiX / 96);
             }
 
-            _Graphics?.Dispose();
-            return _Pixel;
+            pxScaled = px * DpiRatio;
+            g?.Dispose();
+            return pxScaled;
         }
 
         #region 来自网络
@@ -56,8 +53,8 @@ namespace CEETimerCSharpWinForms.Modules
         https://stackoverflow.com/a/40888424/21094697
 
         */
-        public static string RemoveIllegalChars(this string Text)
-            => new(Text.Trim().Replace(" ", "").Where(c => char.IsLetterOrDigit(c) || (c >= ' ' && c <= byte.MaxValue)).ToArray());
+        public static string RemoveIllegalChars(this string s)
+            => new(s.Trim().Replace(" ", "").Where(c => char.IsLetterOrDigit(c) || (c >= ' ' && c <= byte.MaxValue)).ToArray());
         #endregion
     }
 }

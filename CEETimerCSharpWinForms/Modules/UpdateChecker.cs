@@ -16,7 +16,7 @@ namespace CEETimerCSharpWinForms.Modules
 
     public class Updater
     {
-        private FormDownloader _FormDownloader;
+        private FormDownloader formDownloader;
 
         public void CheckUpdate(bool IsProgramStart, Form OwnerForm)
         {
@@ -37,14 +37,14 @@ namespace CEETimerCSharpWinForms.Modules
                     {
                         if (MessageX.Popup($"检测到新版本，是否下载并安装？\n\n当前版本: v{LaunchManager.AppVersion}\n最新版本: v{CurrentLatest}\n发布日期: {PublishTime}\n\nv{CurrentLatest}更新日志: {UpdateLog}", MessageLevel.Info, OwnerForm, Buttons: MessageBoxExButtons.YesNo, Position: IsProgramStart ? FormStartPosition.CenterScreen : FormStartPosition.CenterParent) == DialogResult.Yes)
                         {
-                            if (_FormDownloader == null || _FormDownloader.IsDisposed)
+                            if (formDownloader == null || formDownloader.IsDisposed)
                             {
-                                _FormDownloader = new FormDownloader();
+                                formDownloader = new FormDownloader();
                             }
 
-                            _FormDownloader.WindowState = FormWindowState.Normal;
-                            _FormDownloader.Show();
-                            _FormDownloader.Activate();
+                            formDownloader.WindowState = FormWindowState.Normal;
+                            formDownloader.Show();
+                            formDownloader.Activate();
                         }
                     }));
                 }

@@ -30,10 +30,10 @@ namespace CEETimerCSharpWinForms.Modules
         private static readonly string PipeName = "CEETimerCSharpWinForms_[34c14833-98da-49f7-a2ab-369e88e73b95]";
         private static readonly string CurrentExecutableName = Path.GetFileName(CurrentExecutable);
 
-        public static void StartProgram(string[] Args)
+        public static void StartProgram(string[] args)
         {
-            var _Args = Array.ConvertAll(Args, x => x.ToLower());
-            var AllArgs = string.Join(" ", Args);
+            var Args = Array.ConvertAll(args, x => x.ToLower());
+            var AllArgs = string.Join(" ", args);
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
@@ -55,14 +55,14 @@ namespace CEETimerCSharpWinForms.Modules
                 }
                 else
                 {
-                    if (_Args.Length == 0)
+                    if (Args.Length == 0)
                     {
                         Task.Run(() => CheckAdmin(out _));
                         Application.Run(new FormMain());
                     }
                     else
                     {
-                        switch (_Args[0])
+                        switch (Args[0])
                         {
                             case "/?":
                             case "/h":
@@ -73,7 +73,7 @@ namespace CEETimerCSharpWinForms.Modules
                                 MessageX.Popup($"当前用户 {UserName} {(IsAdmin ? "" : "不")}具有管理员权限。", MessageLevel.Info);
                                 break;
                             case "/fr":
-                                if (_Args.Length > 1) FormDownloader.ManualVersion = _Args[1];
+                                if (Args.Length > 1) FormDownloader.ManualVersion = Args[1];
                                 Application.Run(new FormDownloader());
                                 break;
                             default:
@@ -86,7 +86,7 @@ namespace CEETimerCSharpWinForms.Modules
             }
             else
             {
-                if (_Args.Length != 0)
+                if (Args.Length != 0)
                 {
                     MessageX.Popup("请先关闭已打开的实例再使用命令行功能。", MessageLevel.Error, AutoClose: true);
                 }
@@ -152,7 +152,7 @@ namespace CEETimerCSharpWinForms.Modules
 
         private static void HandleException(Exception ex)
         {
-            if (MessageX.Popup($"程序出现意外错误，无法继续运行，非常抱歉给您带来不便，建议您截图保存以下信息并发送给软件开发者。感谢您的配合。\n您可以点击 \"是\" 来重启应用程序，\"否\" 关闭应用程序{ex.ToMessage()}", MessageLevel.Error, Buttons: MessageBoxExButtons.YesNo) == DialogResult.Yes)
+            if (MessageX.Popup($"程序出现意外错误，无法继续运行，非常抱歉给您带来不便，建议您截图保存以下信息并发送给软件开发者。\n或者您可以点击 \"是\" 来重启应用程序，\"否\" 关闭应用程序{ex.ToMessage()}", MessageLevel.Error, Buttons: MessageBoxExButtons.YesNo) == DialogResult.Yes)
             {
                 Shutdown(Restart: true);
             }

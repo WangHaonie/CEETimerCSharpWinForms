@@ -14,7 +14,7 @@ namespace CEETimerCSharpWinForms.Forms
         public static string ManualVersion { get; set; } = LaunchManager.AppVersion;
 
         private bool IsCancelled;
-        private CancellationTokenSource CancelRequest;
+        private CancellationTokenSource cts;
         private string DownloadUrl;
         private string DownloadPath;
 
@@ -47,13 +47,13 @@ namespace CEETimerCSharpWinForms.Forms
         {
             IsCancelled = false;
 
-            using var _HttpClient = new HttpClient();
-            CancelRequest = new CancellationTokenSource();
-            _HttpClient.DefaultRequestHeaders.UserAgent.ParseAdd(LaunchManager.RequestUA);
+            using var httpClient = new HttpClient();
+            cts = new CancellationTokenSource();
+            httpClient.DefaultRequestHeaders.UserAgent.ParseAdd(LaunchManager.RequestUA);
 
             try
             {
-                using (var response = await _HttpClient.GetAsync(DownloadUrl, HttpCompletionOption.ResponseHeadersRead, CancelRequest.Token))
+                using (var response = await httpClient.GetAsync(DownloadUrl, HttpCompletionOption.ResponseHeadersRead, cts.Token))
                 {
                     response.EnsureSuccessStatusCode();
                     using var stream = await response.Content.ReadAsStreamAsync();
@@ -73,7 +73,7 @@ namespace CEETimerCSharpWinForms.Forms
                         LabelSpeed.Text = $"下载速度：{totalBytesRead / sw.Elapsed.TotalSeconds / 1024:0.00} KB/s";
                         ProgressBarMain.Value = (int)(totalBytesRead * 100 / totalBytes);
 
-                        if (CancelRequest.Token.IsCancellationRequested)
+                        if (cts.Token.IsCancellationRequested)
                         {
                             IsCancelled = true;
                             fileStream.Close();
@@ -115,7 +115,7 @@ namespace CEETimerCSharpWinForms.Forms
             }
             finally
             {
-                CancelRequest?.Dispose();
+                cts?.Dispose();
             }
         }
 
@@ -132,10 +132,10 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void ButtonCancel_Click(object sender, EventArgs e)
         {
-            if (!IsCancelled && CancelRequest != null && !CancelRequest.Token.IsCancellationRequested)
+            if (!IsCancelled && cts != null && !cts.Token.IsCancellationRequested)
             {
                 ButtonCancel.Enabled = false;
-                CancelRequest?.Cancel();
+                cts?.Cancel();
                 LabelDownloading.Text = "用户已取消下载。";
                 IsCancelled = true;
                 MessageX.Popup($"你已取消下载！\n\n稍后可以在 关于 窗口点击图标来再次检查更新。", MessageLevel.Warning, this);

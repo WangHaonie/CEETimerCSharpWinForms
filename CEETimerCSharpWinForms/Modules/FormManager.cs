@@ -9,19 +9,19 @@ namespace CEETimerCSharpWinForms.Modules
     {
         public static List<Form> Forms = [];
 
-        public static void Add(Form _Form)
+        public static void Add(Form form)
         {
             lock (Forms)
             {
-                Forms.Add(_Form);
+                Forms.Add(form);
             }
         }
 
-        public static void Remove(Form _Form)
+        public static void Remove(Form form)
         {
             lock (Forms)
             {
-                Forms.Remove(_Form);
+                Forms.Remove(form);
             }
         }
 
@@ -29,16 +29,16 @@ namespace CEETimerCSharpWinForms.Modules
         {
             lock (Forms)
             {
-                var _LastForm = Forms.LastOrDefault();
-                _LastForm?.Invoke(new Action(() =>
+                var lastForm = Forms.LastOrDefault();
+                lastForm?.Invoke(new Action(() =>
                 {
-                    var IsTopMost = _LastForm.TopMost;
-                    var WindowHandle = _LastForm.Handle;
-                    _LastForm.TopMost = true;
-                    _LastForm.WindowState = FormWindowState.Normal;
+                    var IsTopMost = lastForm.TopMost;
+                    var WindowHandle = lastForm.Handle;
+                    lastForm.TopMost = true;
+                    lastForm.WindowState = FormWindowState.Normal;
                     WindowsAPI.ShowWindowAsync(WindowHandle, 9);
                     WindowsAPI.SetForegroundWindow(WindowHandle);
-                    _LastForm.TopMost = IsTopMost;
+                    lastForm.TopMost = IsTopMost;
                 }));
             }
         }

@@ -6,13 +6,13 @@ namespace CEETimerCSharpWinForms.Modules
 {
     public static class ColorHelper
     {
-        public static bool TryParseRGB(string Text, out Color TargetColor)
+        public static bool TryParseRGB(string s, out Color color)
         {
-            TargetColor = Color.Empty;
+            color = Color.Empty;
 
-            if (Regex.IsMatch(Text, @"^\d{1,3},\d{1,3},\d{1,3}$"))
+            if (Regex.IsMatch(s, @"^\d{1,3},\d{1,3},\d{1,3}$"))
             {
-                string[] RGB = Text.Split(',');
+                string[] RGB = s.Split(',');
                 int R = int.Parse(RGB[0]);
                 int G = int.Parse(RGB[1]);
                 int B = int.Parse(RGB[2]);
@@ -23,7 +23,7 @@ namespace CEETimerCSharpWinForms.Modules
                 }
                 else
                 {
-                    TargetColor = Color.FromArgb(R, G, B);
+                    color = Color.FromArgb(R, G, B);
                 }
             }
             else

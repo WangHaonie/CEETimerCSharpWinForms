@@ -61,7 +61,7 @@ namespace CEETimerCSharpWinForms.Forms
         private bool IsFunny;
         private bool IsFunnyClick;
         private List<Label> LabelColors;
-        private readonly FontConverter _FontConverter = new();
+        private readonly FontConverter fontConverter = new();
         //private List<Label> LabelForeColors = [];
         //private List<Label> LabelBackColors = [];
 
@@ -274,7 +274,7 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void ButtonRestoreFont_Click(object sender, EventArgs e)
         {
-            ChangeWorkingStyle(WorkingArea.ChangeFont, NewFont: new((Font)_FontConverter.ConvertFromString(ConfigPolicy.DefaultFont), FontStyle.Bold));
+            ChangeWorkingStyle(WorkingArea.ChangeFont, NewFont: new((Font)fontConverter.ConvertFromString(ConfigPolicy.DefaultFont), FontStyle.Bold));
             FormSettings_SettingsChanged(sender, e);
         }
 
