@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
@@ -17,6 +18,15 @@ namespace CEETimerCSharpWinForms.Modules
 
         public static double ToLuminance(this Color _Color)
             => _Color.R * 0.299 + _Color.G * 0.587 + _Color.B * 0.114;
+
+        public static string ToMessage(this Exception ex)
+            => $"\n\n错误信息: \n{ex.Message}\n\n错误详情: \n{ex}";
+
+        public static void ReActivate(this Form _Form)
+        {
+            _Form.WindowState = FormWindowState.Normal;
+            _Form.Activate();
+        }
 
         public static int WithDpi(this int Pixel, Form _Form)
         {

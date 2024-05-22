@@ -23,50 +23,21 @@ namespace CEETimerCSharpWinForms.Modules
         /// </summary>
         /// <param name="Message">消息</param>
         /// <param name="Level">消息等级</param>
-        /// <param name="ParentForm">[可选] 父窗体</param>
+        /// <param name="OwnerForm">[可选] 父窗体</param>
         /// <param name="ParentTabControl">[可选] 父窗体的 TabControl</param>
         /// <param name="ParentTabPage">[可选] 父窗体的 TabControl 的标签页</param>
         /// <param name="Buttons">[可选] 要显示的按钮</param>
         /// <param name="Position">[可选] 消息框出现的位置</param>
         /// <param name="AutoClose">[可选] 是否允许消息框在3s后自动关闭</param>
         /// <returns>DialogResult</returns>
-        public static DialogResult Popup(string Message, MessageLevel Level, Form ParentForm = null, TabControl ParentTabControl = null, TabPage ParentTabPage = null, MessageBoxExButtons Buttons = MessageBoxExButtons.OK, FormStartPosition Position = FormStartPosition.CenterParent, bool AutoClose = false)
-            => PopupCore(Message, Level, ParentForm, ParentTabControl, ParentTabPage, Buttons, Position, AutoClose);
-
-        /// <summary>
-        /// 在指定的窗体或定位到其标签页上或直接显示一个专门用来显示错误的消息框
-        /// </summary>
-        /// <param name="Message">消息</param>
-        /// <param name="ex">异常</param>
-        /// <param name="ParentForm">[可选] 父窗体</param>
-        /// <param name="ParentTabControl">[可选] 父窗体的 TabControl</param>
-        /// <param name="ParentTabPage">[可选] 父窗体的 TabControl 的标签页</param>
-        /// <param name="Buttons">[可选] 要显示的按钮</param>
-        /// <param name="Position">[可选] 消息框出现的位置</param>
-        /// <param name="AutoClose">[可选] 是否允许消息框在3s后自动关闭</param>
-        public static DialogResult Popup(string Message, Exception ex, Form ParentForm = null, TabControl ParentTabControl = null, TabPage ParentTabPage = null, MessageBoxExButtons Buttons = MessageBoxExButtons.OK, FormStartPosition Position = FormStartPosition.CenterParent, bool AutoClose = false)
-            => PopupCore($"{Message}\n\n错误信息: \n{ex.Message}\n\n错误详情: \n{ex}", MessageLevel.Error, ParentForm, ParentTabControl, ParentTabPage, Buttons, Position, AutoClose);
-
-        /// <summary>
-        /// Popup 的核心方法，用于实现定位到父窗体的标签页和与 MessageBoxEx 交互
-        /// </summary>
-        /// <param name="Message">消息</param>
-        /// <param name="Level">消息等级</param>
-        /// <param name="ParentForm">父窗体</param>
-        /// <param name="ParentTabControl">父窗体的 TabControl</param>
-        /// <param name="ParentTabPage">父窗体的 TabControl 的标签页</param>
-        /// <param name="Buttons">要显示的按钮</param>
-        /// <param name="Position">消息框出现的位置</param>
-        /// <param name="AutoClose">是否允许消息框在3s后自动关闭</param>
-        /// <returns>DialogResult</returns>
-        private static DialogResult PopupCore(string Message, MessageLevel Level, Form ParentForm, TabControl ParentTabControl, TabPage ParentTabPage, MessageBoxExButtons Buttons, FormStartPosition Position, bool AutoClose)
+        public static DialogResult Popup(string Message, MessageLevel Level, Form OwnerForm = null, TabControl ParentTabControl = null, TabPage ParentTabPage = null, MessageBoxExButtons Buttons = MessageBoxExButtons.OK, FormStartPosition Position = FormStartPosition.CenterParent, bool AutoClose = false)
         {
             var (Title, MessageBoxExIcon, Sound) = GetStuff(Level);
             using var _MessageBoxEx = new MessageBoxEx();
 
-            if (ParentForm != null)
+            if (OwnerForm != null)
             {
-                if (ParentForm.InvokeRequired)
+                if (OwnerForm.InvokeRequired)
                 {
                     #region 来自网络
                     /*
@@ -77,36 +48,29 @@ namespace CEETimerCSharpWinForms.Modules
                     https://stackoverflow.com/a/29256646/21094697
 
                     */
-                    return (DialogResult)ParentForm.Invoke(new Func<DialogResult>(() =>
-                    {
-                        ParentForm.WindowState = FormWindowState.Normal;
-                        ParentForm.Activate();
-
-                        if (ParentTabControl != null)
-                        {
-                            ParentTabControl.SelectedTab = ParentTabPage;
-                        }
-
-                        return _MessageBoxEx.ShowCore(ParentForm, Message, Title, MessageBoxExIcon, Sound, Buttons, Position, AutoClose);
-                    }));
+                    return (DialogResult)OwnerForm.Invoke(new Func<DialogResult>(ShowInternal));
                     #endregion
                 }
                 else
                 {
-                    ParentForm.WindowState = FormWindowState.Normal;
-                    ParentForm.Activate();
-
-                    if (ParentTabControl != null)
-                    {
-                        ParentTabControl.SelectedTab = ParentTabPage;
-                    }
-
-                    return _MessageBoxEx.ShowCore(ParentForm, Message, Title, MessageBoxExIcon, Sound, Buttons, Position, AutoClose);
+                    return ShowInternal();
                 }
             }
             else
             {
-                return _MessageBoxEx.ShowCore(null, Message, Title, MessageBoxExIcon, Sound, Buttons, Position, AutoClose);
+                return ShowInternal();
+            }
+
+            DialogResult ShowInternal()
+            {
+                OwnerForm?.ReActivate();
+
+                if (ParentTabControl != null)
+                {
+                    ParentTabControl.SelectedTab = ParentTabPage;
+                }
+
+                return _MessageBoxEx.ShowCore(OwnerForm, Message, Title, MessageBoxExIcon, Sound, Buttons, Position, AutoClose);
             }
         }
 
@@ -136,7 +100,7 @@ namespace CEETimerCSharpWinForms.Modules
             #endregion
         };
 
-        private static Icon GetMessageBoxIcon(int IconIndex)
+        public static Icon GetMessageBoxIcon(int IconIndex)
         {
             WindowsAPI.ExtractIconEx("imageres.dll", IconIndex, out IntPtr LargeIcon, out _, 1);
             return Icon.FromHandle(LargeIcon);

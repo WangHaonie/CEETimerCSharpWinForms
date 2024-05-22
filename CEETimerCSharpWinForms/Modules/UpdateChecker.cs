@@ -8,9 +8,9 @@ namespace CEETimerCSharpWinForms.Modules
 {
     public static class UpdateChecker
     {
-        public static void CheckUpdate(bool IsProgramStart, Form ParentForm)
+        public static void CheckUpdate(bool IsProgramStart, Form OwnerForm)
         {
-            new Updater().CheckUpdate(IsProgramStart, ParentForm);
+            new Updater().CheckUpdate(IsProgramStart, OwnerForm);
         }
     }
 
@@ -18,7 +18,7 @@ namespace CEETimerCSharpWinForms.Modules
     {
         private FormDownloader _FormDownloader;
 
-        public void CheckUpdate(bool IsProgramStart, Form ParentForm)
+        public void CheckUpdate(bool IsProgramStart, Form OwnerForm)
         {
             using var _HttpClient = new HttpClient();
             _HttpClient.DefaultRequestHeaders.UserAgent.ParseAdd(LaunchManager.RequestUA);
@@ -33,9 +33,9 @@ namespace CEETimerCSharpWinForms.Modules
 
                 if (Version.Parse(CurrentLatest) > Version.Parse(LaunchManager.AppVersion))
                 {
-                    ParentForm.Invoke(new Action(() =>
+                    OwnerForm.Invoke(new Action(() =>
                     {
-                        if (MessageX.Popup($"检测到新版本，是否下载并安装？\n\n当前版本: v{LaunchManager.AppVersion}\n最新版本: v{CurrentLatest}\n发布日期: {PublishTime}\n\nv{CurrentLatest}更新日志: {UpdateLog}", MessageLevel.Info, ParentForm, Buttons: MessageBoxExButtons.YesNo, Position: IsProgramStart ? FormStartPosition.CenterScreen : FormStartPosition.CenterParent) == DialogResult.Yes)
+                        if (MessageX.Popup($"检测到新版本，是否下载并安装？\n\n当前版本: v{LaunchManager.AppVersion}\n最新版本: v{CurrentLatest}\n发布日期: {PublishTime}\n\nv{CurrentLatest}更新日志: {UpdateLog}", MessageLevel.Info, OwnerForm, Buttons: MessageBoxExButtons.YesNo, Position: IsProgramStart ? FormStartPosition.CenterScreen : FormStartPosition.CenterParent) == DialogResult.Yes)
                         {
                             if (_FormDownloader == null || _FormDownloader.IsDisposed)
                             {
@@ -50,14 +50,14 @@ namespace CEETimerCSharpWinForms.Modules
                 }
                 else if (!IsProgramStart)
                 {
-                    MessageX.Popup($"当前 v{LaunchManager.AppVersion} 已是最新版本。\n\n获取到的版本：v{CurrentLatest}\n发布日期: {PublishTime}\n\n当前版本更新日志: {UpdateLog}", MessageLevel.Info, ParentForm);
+                    MessageX.Popup($"当前 v{LaunchManager.AppVersion} 已是最新版本。\n\n获取到的版本：v{CurrentLatest}\n发布日期: {PublishTime}\n\n当前版本更新日志: {UpdateLog}", MessageLevel.Info, OwnerForm);
                 }
             }
             catch (Exception ex)
             {
                 if (!IsProgramStart)
                 {
-                    MessageX.Popup($"检查更新时发生错误! ", ex, ParentForm);
+                    MessageX.Popup($"检查更新时发生错误! {ex.ToMessage()}", MessageLevel.Error, OwnerForm);
                 }
             }
         }

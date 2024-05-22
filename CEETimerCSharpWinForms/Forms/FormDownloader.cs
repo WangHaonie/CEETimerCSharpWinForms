@@ -104,7 +104,7 @@ namespace CEETimerCSharpWinForms.Forms
 
                 if (ex is not TaskCanceledException)
                 {
-                    MessageX.Popup("无法下载更新文件!", ex);
+                    MessageX.Popup($"无法下载更新文件!{ex.ToMessage()}", MessageLevel.Error);
                     LabelDownloading.Text = "下载失败，你可以点击 重试 来重新启动下载。";
                     LabelSize.Text = "已下载/总共：N/A";
                     LabelSpeed.Text = "下载速度：N/A";

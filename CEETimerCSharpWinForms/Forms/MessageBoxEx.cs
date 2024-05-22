@@ -20,7 +20,7 @@ namespace CEETimerCSharpWinForms.Forms
             FormClosed += (sender, e) => FormManager.Remove(this);
         }
 
-        public DialogResult ShowCore(Form ParentForm, string Message, string Title, Icon MessageBoxExIcon, SystemSound Sound, MessageBoxExButtons Buttons, FormStartPosition Position, bool AutoClose)
+        public DialogResult ShowCore(Form OwnerForm, string Message, string Title, Icon MessageBoxExIcon, SystemSound Sound, MessageBoxExButtons Buttons, FormStartPosition Position, bool AutoClose)
         {
             LabelMessage.Text = Message;
             Text = Title;
@@ -47,7 +47,7 @@ namespace CEETimerCSharpWinForms.Forms
 
             if (AutoClose) AutoCloseAsync();
 
-            ShowDialog(ParentForm);
+            ShowDialog(OwnerForm);
 
             return _DialogResult;
         }

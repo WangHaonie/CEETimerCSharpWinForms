@@ -595,13 +595,13 @@ namespace CEETimerCSharpWinForms.Forms
                  */
                 if (ex.NativeErrorCode == 1223)
                 {
-                    MessageX.Popup("授权失败，请在 UAC 对话框弹出时点击 \"是\"。", ex, this, TabControlMain, TabPageTools);
+                    MessageX.Popup($"授权失败，请在 UAC 对话框弹出时点击 \"是\"。{ex.ToMessage()}", MessageLevel.Error, this, TabControlMain, TabPageTools);
                 }
                 #endregion
             }
             catch (Exception ex)
             {
-                MessageX.Popup($"命令执行时发生了错误。", ex, this, TabControlMain, TabPageTools);
+                MessageX.Popup($"命令执行时发生了错误。{ex.ToMessage()}", MessageLevel.Error, this, TabControlMain, TabPageTools);
             }
         }
 
