@@ -25,11 +25,12 @@ namespace CEETimerCSharpWinForms.Modules
 
             try
             {
-                string ResponseContent = _HttpClient.GetAsync("https://api.github.com/repos/WangHaonie/CEETimerCSharpWinForms/releases/latest").Result.EnsureSuccessStatusCode().Content.ReadAsStringAsync().Result;
+                string ResponseContent = _HttpClient.GetAsync("https://gitee.com/wanghaonie/CEETimerCSharpWinForms/raw/main/api/github.json").Result.EnsureSuccessStatusCode().Content.ReadAsStringAsync().Result;
                 string CurrentLatest = LaunchManager.CurrentLatest = JObject.Parse(ResponseContent)["name"].ToString();
                 DateTime.TryParse(JObject.Parse(ResponseContent)["published_at"].ToString(), out DateTime result);
                 string PublishTime = result.AddHours(8).ToString("yyyy-MM-dd dddd HH:mm:ss");
                 string UpdateLog = JObject.Parse(ResponseContent)["body"].ToString().FormatLog(CurrentLatest);
+                LaunchManager.UpdateSize = int.Parse(JObject.Parse(ResponseContent)["size"].ToString());
 
                 if (Version.Parse(CurrentLatest) > Version.Parse(LaunchManager.AppVersion))
                 {
