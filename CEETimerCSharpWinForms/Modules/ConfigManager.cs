@@ -145,7 +145,7 @@ namespace CEETimerCSharpWinForms.Modules
         public const int MinExamNameLength = 2;
         public const int MaxExamNameLength = 10;
         public const int MinFontSize = 10;
-        public const int MaxFontSize = 24;
+        public const int MaxFontSize = 28;
         public const string DefaultFont = "Microsoft YaHei, 17.25pt";
     }
 }

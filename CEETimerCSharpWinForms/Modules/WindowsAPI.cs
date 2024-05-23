@@ -50,7 +50,7 @@ namespace CEETimerCSharpWinForms.Modules
 
         */
         [DllImport("gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
-        public static extern IntPtr CreateRoundRectRgn(int x1, int y1, int x2, int y2, int w, int h);
+        public static extern IntPtr CreateRoundRectRgn(int nLeftRect, int nTopRect, int nRightRect, int nBottomRect, int nWidthEllipse, int nHeightEllipse);
 
         public enum DWM_WINDOW_CORNER_PREFERENCE
         {

@@ -58,6 +58,7 @@ namespace CEETimerCSharpWinForms.Forms
         private bool IsLabelColorsDragging;
         private bool IsSyncingTime;
         private bool HasSettingsChanged;
+        private bool InvokeChangeRequired;
         private bool IsFunny;
         private bool IsFunnyClick;
         private List<Label> LabelColors;
@@ -106,29 +107,27 @@ namespace CEETimerCSharpWinForms.Forms
 
             List<ComboSource> Shows =
             [
-                new ComboSource { Item = "天", Value = 0 },
-                new ComboSource { Item = "时", Value = 1 },
-                new ComboSource { Item = "分", Value = 2 },
-                new ComboSource { Item = "秒", Value = 3 }
+                new() { Item = "天", Value = 0 },
+                new() { Item = "时", Value = 1 },
+                new() { Item = "分", Value = 2 },
+                new() { Item = "秒", Value = 3 }
             ];
-
             ComboBoxShowOnly.DataSource = Shows;
             ComboBoxShowOnly.DisplayMember = "Item";
             ComboBoxShowOnly.ValueMember = "Value";
 
             List<ComboSource> Positions =
             [
-                new ComboSource { Item = "左上角", Value = 0 },
-                new ComboSource { Item = "左部中央", Value = 1 },
-                new ComboSource { Item = "左下角", Value = 2 },
-                new ComboSource { Item = "上部中央", Value = 3 },
-                new ComboSource { Item = "中央", Value = 4 },
-                new ComboSource { Item = "下部中央", Value = 5 },
-                new ComboSource { Item = "右上角", Value = 6 },
-                new ComboSource { Item = "右部中央", Value = 7 },
-                new ComboSource { Item = "右下角", Value = 8 }
+                new() { Item = "左上角", Value = 0 },
+                new() { Item = "左部中央", Value = 1 },
+                new() { Item = "左下角", Value = 2 },
+                new() { Item = "上部中央", Value = 3 },
+                new() { Item = "中央", Value = 4 },
+                new() { Item = "下部中央", Value = 5 },
+                new() { Item = "右上角", Value = 6 },
+                new() { Item = "右部中央", Value = 7 },
+                new() { Item = "右下角", Value = 8 }
             ];
-
             ComboBoxPosition.DataSource = Positions;
             ComboBoxPosition.DisplayMember = "Item";
             ComboBoxPosition.ValueMember = "Value";
@@ -136,24 +135,12 @@ namespace CEETimerCSharpWinForms.Forms
             Screen[] CurrentScreens = Screen.AllScreens;
             List<ComboSource> Monitors = [];
             int i = 0;
-
-            Monitors.Add(new ComboSource
-            {
-                Item = "<请选择>",
-                Value = 0,
-            });
-
+            Monitors.Add(new() { Item = "<请选择>", Value = 0 });
             foreach (var CurrentScreen in CurrentScreens)
             {
                 i++;
-
-                Monitors.Add(new ComboSource
-                {
-                    Item = $"{i} {CurrentScreen.DeviceName} ({CurrentScreen.Bounds.Width}x{CurrentScreen.Bounds.Height})",
-                    Value = i
-                });
+                Monitors.Add(new() { Item = $"{i} {CurrentScreen.DeviceName} ({CurrentScreen.Bounds.Width}x{CurrentScreen.Bounds.Height})", Value = i });
             }
-
             ComboBoxScreens.DataSource = Monitors;
             ComboBoxScreens.DisplayMember = "Item";
             ComboBoxScreens.ValueMember = "Value";
@@ -375,9 +362,8 @@ namespace CEETimerCSharpWinForms.Forms
         {
             if (IsSettingsFormatValid())
             {
+                InvokeChangeRequired = true;
                 HasSettingsChanged = false;
-                SaveSettings();
-                ConfigChanged?.Invoke(this, EventArgs.Empty);
                 Close();
             }
         }
@@ -464,6 +450,12 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void FormSettings_FormClosed(object sender, FormClosedEventArgs e)
         {
+            if (InvokeChangeRequired)
+            {
+                SaveSettings();
+                ConfigChanged?.Invoke(this, EventArgs.Empty);
+            }
+
             ChangeWorkingStyle(WorkingArea.Funny, false);
             FormManager.Remove(this);
         }
