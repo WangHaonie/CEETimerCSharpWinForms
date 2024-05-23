@@ -574,23 +574,20 @@ namespace CEETimerCSharpWinForms.Forms
                 var ExitCode = SyncTimeProcess.ExitCode;
                 MessageX.Popup($"命令执行完成！\n\n返回值为 {ExitCode} (0x{ExitCode:X})\n(0 代表成功，其他值为失败)", MessageLevel.Info, this, TabControlMain, TabPageTools);
             }
-            catch (Win32Exception ex)
-            {
-                #region 来自网络
-                /*
+            #region 来自网络
+            /*
                  
                 检测用户是否点击了 UAC 提示框的 "否" 参考:
 
                 c# - Run process as administrator from a non-admin application - Stack Overflow
                 https://stackoverflow.com/a/20872219/21094697
                  
-                 */
-                if (ex.NativeErrorCode == 1223)
-                {
-                    MessageX.Popup($"授权失败，请在 UAC 对话框弹出时点击 \"是\"。{ex.ToMessage()}", MessageLevel.Error, this, TabControlMain, TabPageTools);
-                }
-                #endregion
+            */
+            catch (Win32Exception ex) when (ex.NativeErrorCode == 1223)
+            {
+                MessageX.Popup($"授权失败，请在 UAC 对话框弹出时点击 \"是\"。{ex.ToMessage()}", MessageLevel.Error, this, TabControlMain, TabPageTools);
             }
+            #endregion
             catch (Exception ex)
             {
                 MessageX.Popup($"命令执行时发生了错误。{ex.ToMessage()}", MessageLevel.Error, this, TabControlMain, TabPageTools);
