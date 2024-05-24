@@ -20,7 +20,7 @@ namespace CEETimerCSharpWinForms.Modules
         private bool IsConfigMounted;
         private Dictionary<string, string> JsonConfig;
         private JObject ConfigObject;
-        private readonly string ConfigFile = $"{LaunchManager.CurrentExecutablePath}CEETimerCSharpWinForms.cfg";
+        private readonly string ConfigFile = $"{LaunchManager.CurrentExecutablePath}{LaunchManager.AppNameEn}.cfg";
 
         private void CheckConfig()
         {

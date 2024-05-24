@@ -439,26 +439,6 @@ namespace CEETimerCSharpWinForms.Forms
             }
         }
 
-        private void OptimizeMemory(object state)
-        {
-            try
-            {
-                Process ProcessGetCurrentMemory = ProcessHelper.RunProcess("powershell.exe", $"-Command (Get-Counter \\\"\\Process({LaunchManager.OriginalFileName.Replace(".exe", "")})\\Working Set - Private\\\").CounterSamples.CookedValue", RedirectOutput: true);
-
-                ProcessGetCurrentMemory.WaitForExit();
-                int MemoryUsage = int.Parse(ProcessGetCurrentMemory.StandardOutput.ReadToEnd().Trim());
-
-                if (MemoryUsage > 9437184)
-                {
-                    throw new Exception();
-                }
-            }
-            catch
-            {
-                WindowsAPI.EmptyWorkingSet(Process.GetCurrentProcess().Handle);
-            }
-        }
-
         private void CompatibleWithPPTService()
         {
             if (IsPPTService)
@@ -494,6 +474,26 @@ namespace CEETimerCSharpWinForms.Forms
                 { ConfigItems.PosX, $"{Location.X}" },
                 { ConfigItems.PosY, $"{Location.Y}" }
             });
+        }
+
+        private void OptimizeMemory(object state)
+        {
+            try
+            {
+                Process ProcessGetCurrentMemory = ProcessHelper.RunProcess("powershell.exe", $"-Command (Get-Counter \\\"\\Process({LaunchManager.AppNameEn})\\Working Set - Private\\\").CounterSamples.CookedValue", RedirectOutput: true);
+
+                ProcessGetCurrentMemory.WaitForExit();
+                int MemoryUsage = int.Parse(ProcessGetCurrentMemory.StandardOutput.ReadToEnd().Trim());
+
+                if (MemoryUsage > 9437184)
+                {
+                    throw new Exception();
+                }
+            }
+            catch
+            {
+                WindowsAPI.EmptyWorkingSet(Process.GetCurrentProcess().Handle);
+            }
         }
     }
 }

@@ -157,7 +157,7 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void RefreshSettings()
         {
-            CheckBoxStartup.Checked = (Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true)?.GetValue("CEETimerCSharpWinForms") is string regvalue) && regvalue.Equals($"\"{LaunchManager.CurrentExecutable}\"", StringComparison.OrdinalIgnoreCase);
+            CheckBoxStartup.Checked = (Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true)?.GetValue(LaunchManager.AppNameEn) is string regvalue) && regvalue.Equals($"\"{LaunchManager.CurrentExecutable}\"", StringComparison.OrdinalIgnoreCase);
             CheckBoxSetTopMost.Checked = TopMostChecked;
             TextBoxExamName.Text = ExamName;
             DTPExamStart.Value = ExamStartTime;
@@ -661,9 +661,9 @@ namespace CEETimerCSharpWinForms.Forms
                 RegistryKey reg = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
 
                 if (CheckBoxStartup.Checked)
-                    reg.SetValue("CEETimerCSharpWinForms", $"\"{LaunchManager.CurrentExecutable}\"");
+                    reg.SetValue(LaunchManager.AppNameEn, $"\"{LaunchManager.CurrentExecutable}\"");
                 else
-                    reg.DeleteValue("CEETimerCSharpWinForms", false);
+                    reg.DeleteValue(LaunchManager.AppNameEn, false);
 
                 new ConfigManager().WriteConfig(new Dictionary<string, string>
                 {

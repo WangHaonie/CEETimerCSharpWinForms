@@ -16,10 +16,11 @@ namespace CEETimerCSharpWinForms.Modules
         public static long UpdateSize { get; set; } = 0;
 
         public const string AppName = "高考倒计时 by WangHaonie";
+        public const string AppNameEn = "CEETimerCSharpWinForms";
         public const string AppVersion = "3.0.4";
         public const string AppBuildDate = "2024/05/18";
         public const string CopyrightInfo = "Copyright © 2023-2024 WangHaonie";
-        public const string OriginalFileName = "CEETimerCSharpWinForms.exe";
+        public const string OriginalFileName = $"{AppNameEn}.exe";
         public const string InfoMsg = "提示 - 高考倒计时";
         public const string WarnMsg = "警告 - 高考倒计时";
         public const string ErrMsg = "错误 - 高考倒计时";
@@ -28,7 +29,7 @@ namespace CEETimerCSharpWinForms.Modules
         public static readonly string CurrentExecutablePath = AppDomain.CurrentDomain.BaseDirectory;
         public static readonly string CurrentExecutable = Application.ExecutablePath;
 
-        private static readonly string PipeName = "CEETimerCSharpWinForms_[34c14833-98da-49f7-a2ab-369e88e73b95]";
+        private static readonly string PipeName = $"{AppNameEn}_[34c14833-98da-49f7-a2ab-369e88e73b95]";
         private static readonly string CurrentExecutableName = Path.GetFileName(CurrentExecutable);
 
         public static void StartProgram(string[] args)
@@ -42,7 +43,7 @@ namespace CEETimerCSharpWinForms.Modules
             Application.ThreadException += Application_ThreadException;
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            using var MutexMain = new Mutex(true, "CEETimerCSharpWinForms_MUTEX_61c0097d-3682-421c-84e6-70ca37dc31dd_[A3F8B92E6D14]", out bool IsNewProcess);
+            using var MutexMain = new Mutex(true, $"{AppNameEn}_MUTEX_61c0097d-3682-421c-84e6-70ca37dc31dd_[A3F8B92E6D14]", out bool IsNewProcess);
 
             if (IsNewProcess)
             {
