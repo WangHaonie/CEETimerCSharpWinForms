@@ -173,6 +173,7 @@
     </Compile>
     <Compile Include="Modules\ColorHelper.cs" />
     <Compile Include="Modules\FormManager.cs" />
+    <Compile Include="Modules\PairItems.cs" />
     <Compile Include="Modules\ProcessHelper.cs" />
     <Compile Include="Modules\UpdateChecker.cs" />
     <Compile Include="Modules\ConfigManager.cs" />

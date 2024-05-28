@@ -38,12 +38,6 @@ namespace CEETimerCSharpWinForms.Forms
         public string ExamName { get; set; }
         public event EventHandler ConfigChanged;
 
-        private class ComboSource
-        {
-            public string Item { get; set; }
-            public int Value { get; set; }
-        }
-
         private enum WorkingArea
         {
             Funny,
@@ -105,45 +99,26 @@ namespace CEETimerCSharpWinForms.Forms
             TextBoxExamName.MaxLength = Max;
             GBoxExamName.Text = $"考试名称 ({ConfigPolicy.MinExamNameLength}~{Max}字)";
 
-            List<ComboSource> Shows =
-            [
-                new() { Item = "天", Value = 0 },
-                new() { Item = "时", Value = 1 },
-                new() { Item = "分", Value = 2 },
-                new() { Item = "秒", Value = 3 }
-            ];
+            List<PairItems<string, int>> Shows = [new("天", 0), new("时", 1), new("分", 2), new("秒", 3)];
             ComboBoxShowOnly.DataSource = Shows;
-            ComboBoxShowOnly.DisplayMember = "Item";
-            ComboBoxShowOnly.ValueMember = "Value";
+            ComboBoxShowOnly.DisplayMember = "Item1";
+            ComboBoxShowOnly.ValueMember = "Item2";
 
-            List<ComboSource> Positions =
-            [
-                new() { Item = "左上角", Value = 0 },
-                new() { Item = "左部中央", Value = 1 },
-                new() { Item = "左下角", Value = 2 },
-                new() { Item = "上部中央", Value = 3 },
-                new() { Item = "中央", Value = 4 },
-                new() { Item = "下部中央", Value = 5 },
-                new() { Item = "右上角", Value = 6 },
-                new() { Item = "右部中央", Value = 7 },
-                new() { Item = "右下角", Value = 8 }
-            ];
+            List<PairItems<string, int>> Positions = [new("左上角", 0), new("左部中央", 1), new("左下角", 2), new("上部中央", 3), new("中央", 4), new("下部中央", 5), new("右上角", 6), new("右部中央", 7), new("右下角", 8)];
             ComboBoxPosition.DataSource = Positions;
-            ComboBoxPosition.DisplayMember = "Item";
-            ComboBoxPosition.ValueMember = "Value";
+            ComboBoxPosition.DisplayMember = "Item1";
+            ComboBoxPosition.ValueMember = "Item2";
 
+            List<PairItems<string, int>> Monitors = [new("<请选择>", 0)];
             Screen[] CurrentScreens = Screen.AllScreens;
-            List<ComboSource> Monitors = [];
-            int i = 0;
-            Monitors.Add(new() { Item = "<请选择>", Value = 0 });
-            foreach (var CurrentScreen in CurrentScreens)
+            for (int i = 0; i < CurrentScreens.Length; i++)
             {
-                i++;
-                Monitors.Add(new() { Item = $"{i} {CurrentScreen.DeviceName} ({CurrentScreen.Bounds.Width}x{CurrentScreen.Bounds.Height})", Value = i });
+                var CurrentScreen = CurrentScreens[i];
+                Monitors.Add(new($"{i + 1} {CurrentScreen.DeviceName} ({CurrentScreen.Bounds.Width}x{CurrentScreen.Bounds.Height})", i + 1));
             }
             ComboBoxScreens.DataSource = Monitors;
-            ComboBoxScreens.DisplayMember = "Item";
-            ComboBoxScreens.ValueMember = "Value";
+            ComboBoxScreens.DisplayMember = "Item1";
+            ComboBoxScreens.ValueMember = "Item2";
 
             LabelColors = [LabelColor11, LabelColor21, LabelColor31, LabelColor41, LabelColor12, LabelColor22, LabelColor32, LabelColor42];
             foreach (var l in LabelColors)

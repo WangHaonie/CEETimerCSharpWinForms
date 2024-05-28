@@ -60,6 +60,7 @@ namespace CEETimerCSharpWinForms.Forms
         private Rectangle SelectedScreen;
         private FormSettings formSettings;
         private FormAbout formAbout;
+        //private List<PairItems<Color, Color>> CountdownColors;
         private readonly ConfigManager configManager = new();
         private readonly FontConverter fontConverter = new();
 
@@ -76,6 +77,7 @@ namespace CEETimerCSharpWinForms.Forms
         private void FormMain_Load(object sender, EventArgs e)
         {
             SystemEvents.DisplaySettingsChanged += SystemEvents_DisplaySettingsChanged;
+            // CountdownColors = [new(Color.White, Color.Red), new(Color.White, Color.Green), new(Color.White, Color.Black), new(Color.White, Color.Black)];
             SetFormRounded();
             RefreshSettings(sender, e);
             TimerCountdown = new Timer() { Interval = 1000 };
