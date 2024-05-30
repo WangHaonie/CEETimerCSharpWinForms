@@ -120,7 +120,7 @@
             this.PicBoxLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.PicBoxLogo.TabIndex = 9;
             this.PicBoxLogo.TabStop = false;
-            this.PicBoxLogo.Click += new System.EventHandler(this.LabelVersion_Click);
+            this.PicBoxLogo.MouseClick += new System.Windows.Forms.MouseEventHandler(this.PicBoxLogo_MouseClick);
             // 
             // FormAbout
             // 

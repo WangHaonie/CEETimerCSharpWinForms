@@ -15,14 +15,8 @@ namespace CEETimerCSharpWinForms.Forms
     {
         public static bool IsUniTopMost { get; private set; } = true;
 
-        private Color Back1;
-        private Color Back2;
-        private Color Back3;
-        private Color Back4;
-        private Color Fore1;
-        private Color Fore2;
-        private Color Fore3;
-        private Color Fore4;
+        private List<PairItems<Color, Color>> CountdownColors = [];
+        private List<PairItems<Color, Color>> DefaultColors;
         private bool IsFeatureMOEnabled;
         private bool IsShowOnly;
         private bool IsDragable;
@@ -60,7 +54,6 @@ namespace CEETimerCSharpWinForms.Forms
         private Rectangle SelectedScreen;
         private FormSettings formSettings;
         private FormAbout formAbout;
-        //private List<PairItems<Color, Color>> CountdownColors;
         private readonly ConfigManager configManager = new();
         private readonly FontConverter fontConverter = new();
 
@@ -76,15 +69,15 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void FormMain_Load(object sender, EventArgs e)
         {
+            DefaultColors = [new(Color.Red, Color.White), new(Color.Green, Color.White), new(Color.Black, Color.White), new(Color.Black, Color.White)];
             SystemEvents.DisplaySettingsChanged += SystemEvents_DisplaySettingsChanged;
-            // CountdownColors = [new(Color.White, Color.Red), new(Color.White, Color.Green), new(Color.White, Color.Black), new(Color.White, Color.Black)];
             SetFormRounded();
             RefreshSettings(sender, e);
             TimerCountdown = new Timer() { Interval = 1000 };
             TimerCountdown.Tick += StartCountdown;
             TimerCountdown.Start();
-            LabelCountdown.ForeColor = Fore4;
-            BackColor = Back4;
+            LabelCountdown.ForeColor = CountdownColors[3].Item1;
+            BackColor = CountdownColors[3].Item2;
             Task.Run(() => UpdateChecker.CheckUpdate(true, this));
             _ = 1.WithDpi(this); // 仅触发获取当前 DPI 比值，无其他用途
             FormManager.Add(this);
@@ -130,14 +123,25 @@ namespace CEETimerCSharpWinForms.Forms
             ScreenIndex = int.TryParse(configManager.ReadConfig(ConfigItems.Screen), out int tmpk) ? tmpk : 0;
             PositionIndex = int.TryParse(configManager.ReadConfig(ConfigItems.Position), out int tmpu) ? tmpu : 0;
             ShowOnlyIndex = int.TryParse(configManager.ReadConfig(ConfigItems.ShowValue), out int tmpl) ? tmpl : 0;
-            Back1 = ColorHelper.TryParseRGB(configManager.ReadConfig(ConfigItems.Back1), out Color tmpm) ? tmpm : Color.White;
-            Back2 = ColorHelper.TryParseRGB(configManager.ReadConfig(ConfigItems.Back2), out Color tmpn) ? tmpn : Color.White;
-            Back3 = ColorHelper.TryParseRGB(configManager.ReadConfig(ConfigItems.Back3), out Color tmpo) ? tmpo : Color.White;
-            Back4 = ColorHelper.TryParseRGB(configManager.ReadConfig(ConfigItems.Back4), out Color tmpp) ? tmpp : Color.White;
-            Fore1 = ColorHelper.TryParseRGB(configManager.ReadConfig(ConfigItems.Fore1), out Color tmpq) ? tmpq : Color.Red;
-            Fore2 = ColorHelper.TryParseRGB(configManager.ReadConfig(ConfigItems.Fore2), out Color tmpr) ? tmpr : Color.Green;
-            Fore3 = ColorHelper.TryParseRGB(configManager.ReadConfig(ConfigItems.Fore3), out Color tmps) ? tmps : Color.Black;
-            Fore4 = ColorHelper.TryParseRGB(configManager.ReadConfig(ConfigItems.Fore4), out Color tmpt) ? tmpt : Color.Black;
+
+            for (int i = 0; i < 4; i++)
+            {
+                var Fore = ColorHelper.TryParseRGB($"Fore{i + 1}", out Color tmpfore) ? tmpfore : DefaultColors[i].Item1;
+                var Back = ColorHelper.TryParseRGB($"Back{i + 1}", out Color tmpback) ? tmpback : DefaultColors[i].Item2;
+
+                if (!ColorHelper.IsNiceContrast(Fore, Back))
+                {
+                    Fore = DefaultColors[i].Item1;
+                    Back = DefaultColors[i].Item2;
+                }
+
+                CountdownColors.Add(new(Fore, Back));
+            }
+
+#if DEBUG
+            Console.WriteLine("##########################");
+#endif
+
             ExamStartTime = DateTime.TryParseExact(configManager.ReadConfig(ConfigItems.StartTime), "yyyyMMddHHmmss", null, DateTimeStyles.None, out DateTime tmpw) ? tmpw : DateTime.Now;
             ExamEndTime = DateTime.TryParseExact(configManager.ReadConfig(ConfigItems.EndTime), "yyyyMMddHHmmss", null, DateTimeStyles.None, out DateTime tmpx) ? tmpx : DateTime.Now;
             int.TryParse(configManager.ReadConfig(ConfigItems.PosX), out int x);
@@ -167,31 +171,6 @@ namespace CEETimerCSharpWinForms.Forms
                     _ => throw new Exception()
                 };
             }
-
-            if (!ColorHelper.IsNiceContrast(Fore1, Back1))
-            {
-                Fore1 = Color.Red;
-                Back1 = Color.White;
-            }
-            if (!ColorHelper.IsNiceContrast(Fore2, Back2))
-            {
-                Fore2 = Color.Green;
-                Back2 = Color.White;
-            }
-            if (!ColorHelper.IsNiceContrast(Fore3, Back3))
-            {
-                Fore3 = Color.Black;
-                Back3 = Color.White;
-            }
-            if (!ColorHelper.IsNiceContrast(Fore4, Back4))
-            {
-                Fore4 = Color.Black;
-                Back4 = Color.White;
-            }
-
-#if DEBUG
-            Console.WriteLine("##########################");
-#endif
 
             try
             {
@@ -258,7 +237,7 @@ namespace CEETimerCSharpWinForms.Forms
         C#创建无边框可拖动窗口 - 掘金
         https://juejin.cn/post/6989144829607280648
 
-         */
+        */
         private void LabelCountdown_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
@@ -314,14 +293,8 @@ namespace CEETimerCSharpWinForms.Forms
                     IsPPTService = IsPPTService,
                     ScreenIndex = ScreenIndex,
                     PositionIndex = PositionIndex,
-                    Back1 = Back1,
-                    Back2 = Back2,
-                    Back3 = Back3,
-                    Back4 = Back4,
-                    Fore1 = Fore1,
-                    Fore2 = Fore2,
-                    Fore3 = Fore3,
-                    Fore4 = Fore4
+                    DefaultColors = DefaultColors,
+                    CountdownColors = CountdownColors
                 };
 
                 formSettings.ConfigChanged += RefreshSettings;
@@ -359,8 +332,8 @@ namespace CEETimerCSharpWinForms.Forms
             if (IsReady && DateTime.Now < ExamStartTime)
             {
                 TimeSpan TimeLeft = ExamStartTime - DateTime.Now;
-                BackColor = Back1;
-                LabelCountdown.ForeColor = Fore1;
+                LabelCountdown.ForeColor = CountdownColors[0].Item1;
+                BackColor = CountdownColors[0].Item2;
 
                 LabelCountdown.Text = SelectedState switch
                 {
@@ -376,8 +349,8 @@ namespace CEETimerCSharpWinForms.Forms
             else if (IsReady && IsShowEnd && DateTime.Now >= ExamStartTime && DateTime.Now < ExamEndTime)
             {
                 TimeSpan TimeLeftPast = ExamEndTime - DateTime.Now;
-                BackColor = Back2;
-                LabelCountdown.ForeColor = Fore2;
+                LabelCountdown.ForeColor = CountdownColors[1].Item1;
+                BackColor = CountdownColors[1].Item2;
 
                 LabelCountdown.Text = SelectedState switch
                 {
@@ -393,8 +366,8 @@ namespace CEETimerCSharpWinForms.Forms
             else if (IsReady && IsShowEnd && DateTime.Now >= ExamEndTime && IsShowPast)
             {
                 TimeSpan TimePast = DateTime.Now - ExamEndTime;
-                BackColor = Back3;
-                LabelCountdown.ForeColor = Fore3;
+                LabelCountdown.ForeColor = CountdownColors[2].Item1;
+                BackColor = CountdownColors[2].Item2;
 
                 LabelCountdown.Text = SelectedState switch
                 {
@@ -409,8 +382,8 @@ namespace CEETimerCSharpWinForms.Forms
             }
             else
             {
-                BackColor = Back4;
-                LabelCountdown.ForeColor = Fore4;
+                LabelCountdown.ForeColor = CountdownColors[3].Item1;
+                BackColor = CountdownColors[3].Item2;
                 LabelCountdown.Text = "欢迎使用高考倒计时, 请右键点击此处到设置里添加考试信息";
             }
 

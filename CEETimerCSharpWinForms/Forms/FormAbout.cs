@@ -20,19 +20,22 @@ namespace CEETimerCSharpWinForms.Forms
             FormClosed += (sender, e) => FormManager.Remove(this);
         }
 
-        private async void LabelVersion_Click(object sender, EventArgs e)
+        private async void PicBoxLogo_MouseClick(object sender, MouseEventArgs e)
         {
-            IsCheckingUpdate = true;
-            PicBoxLogo.Enabled = false;
+            if (e.Button == MouseButtons.Left)
+            {
+                IsCheckingUpdate = true;
+                PicBoxLogo.Enabled = false;
 
-            try
-            {
-                await Task.Run(() => UpdateChecker.CheckUpdate(false, this));
-            }
-            finally
-            {
-                IsCheckingUpdate = false;
-                PicBoxLogo.Enabled = true;
+                try
+                {
+                    await Task.Run(() => UpdateChecker.CheckUpdate(false, this));
+                }
+                finally
+                {
+                    IsCheckingUpdate = false;
+                    PicBoxLogo.Enabled = true;
+                }
             }
         }
 

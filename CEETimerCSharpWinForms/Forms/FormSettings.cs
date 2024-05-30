@@ -20,14 +20,8 @@ namespace CEETimerCSharpWinForms.Forms
         public bool IsRounding { get; set; }
         public bool IsPPTService { get; set; }
         public bool TopMostChecked { get; set; }
-        public Color Fore1 { get; set; }
-        public Color Fore2 { get; set; }
-        public Color Fore3 { get; set; }
-        public Color Fore4 { get; set; }
-        public Color Back1 { get; set; }
-        public Color Back2 { get; set; }
-        public Color Back3 { get; set; }
-        public Color Back4 { get; set; }
+        public List<PairItems<Color, Color>> CountdownColors { get; set; }
+        public List<PairItems<Color, Color>> DefaultColors { get; set; }
         public DateTime ExamStartTime { get; set; }
         public DateTime ExamEndTime { get; set; }
         public Font CountdownFont { get; set; }
@@ -597,14 +591,14 @@ namespace CEETimerCSharpWinForms.Forms
                     LabelFontInfo.Text = $"当前字体: {NewFont.Name}, {NewFont.Size}pt, {NewFont.Style}";
                     break;
                 case WorkingArea.LastColor:
-                    LabelPreviewColor1.BackColor = LabelColor11.BackColor = Back1;
-                    LabelPreviewColor2.BackColor = LabelColor21.BackColor = Back2;
-                    LabelPreviewColor3.BackColor = LabelColor31.BackColor = Back3;
-                    LabelPreviewColor4.BackColor = LabelColor41.BackColor = Back4;
-                    LabelPreviewColor1.ForeColor = LabelColor12.BackColor = Fore1;
-                    LabelPreviewColor2.ForeColor = LabelColor22.BackColor = Fore2;
-                    LabelPreviewColor3.ForeColor = LabelColor32.BackColor = Fore3;
-                    LabelPreviewColor4.ForeColor = LabelColor42.BackColor = Fore4;
+                    LabelPreviewColor1.ForeColor = LabelColor12.BackColor = CountdownColors[0].Item1;
+                    LabelPreviewColor2.ForeColor = LabelColor22.BackColor = CountdownColors[1].Item1;
+                    LabelPreviewColor3.ForeColor = LabelColor32.BackColor = CountdownColors[2].Item1;
+                    LabelPreviewColor4.ForeColor = LabelColor42.BackColor = CountdownColors[3].Item1;
+                    LabelPreviewColor1.BackColor = LabelColor11.BackColor = CountdownColors[0].Item2;
+                    LabelPreviewColor2.BackColor = LabelColor21.BackColor = CountdownColors[1].Item2;
+                    LabelPreviewColor3.BackColor = LabelColor31.BackColor = CountdownColors[2].Item2;
+                    LabelPreviewColor4.BackColor = LabelColor41.BackColor = CountdownColors[3].Item2;
                     break;
                 case WorkingArea.SelectedColor:
                     LabelPreviewColor1.BackColor = LabelColor11.BackColor;
@@ -617,14 +611,14 @@ namespace CEETimerCSharpWinForms.Forms
                     LabelPreviewColor4.ForeColor = LabelColor42.BackColor;
                     break;
                 case WorkingArea.DefaultColor:
-                    LabelPreviewColor1.BackColor = LabelColor11.BackColor =
-                    LabelPreviewColor2.BackColor = LabelColor21.BackColor =
-                    LabelPreviewColor3.BackColor = LabelColor31.BackColor =
-                    LabelPreviewColor4.BackColor = LabelColor41.BackColor = Color.White;
-                    LabelPreviewColor1.ForeColor = LabelColor12.BackColor = Color.Red;
-                    LabelPreviewColor2.ForeColor = LabelColor22.BackColor = Color.Green;
-                    LabelPreviewColor3.ForeColor = LabelColor32.BackColor =
-                    LabelPreviewColor4.ForeColor = LabelColor42.BackColor = Color.Black;
+                    LabelPreviewColor1.ForeColor = LabelColor12.BackColor = DefaultColors[0].Item1;
+                    LabelPreviewColor2.ForeColor = LabelColor22.BackColor = DefaultColors[1].Item1;
+                    LabelPreviewColor3.ForeColor = LabelColor32.BackColor = DefaultColors[2].Item1;
+                    LabelPreviewColor4.ForeColor = LabelColor42.BackColor = DefaultColors[3].Item1;
+                    LabelPreviewColor1.BackColor = LabelColor11.BackColor = DefaultColors[0].Item2;
+                    LabelPreviewColor2.BackColor = LabelColor21.BackColor = DefaultColors[1].Item2;
+                    LabelPreviewColor3.BackColor = LabelColor31.BackColor = DefaultColors[2].Item2;
+                    LabelPreviewColor4.BackColor = LabelColor41.BackColor = DefaultColors[3].Item2;
                     break;
             }
         }
