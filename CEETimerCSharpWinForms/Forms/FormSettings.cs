@@ -20,8 +20,6 @@ namespace CEETimerCSharpWinForms.Forms
         public bool IsRounding { get; set; }
         public bool IsPPTService { get; set; }
         public bool TopMostChecked { get; set; }
-        public List<PairItems<Color, Color>> CountdownColors { get; set; }
-        public List<PairItems<Color, Color>> DefaultColors { get; set; }
         public DateTime ExamStartTime { get; set; }
         public DateTime ExamEndTime { get; set; }
         public Font CountdownFont { get; set; }
@@ -29,6 +27,8 @@ namespace CEETimerCSharpWinForms.Forms
         public int ScreenIndex { get; set; }
         public int ShowOnlyIndex { get; set; }
         public int PositionIndex { get; set; }
+        public List<PairItems<Color, Color>> CountdownColors { get; set; }
+        public List<PairItems<Color, Color>> DefaultColors { get; set; }
         public string ExamName { get; set; }
         public event EventHandler ConfigChanged;
 
@@ -51,8 +51,6 @@ namespace CEETimerCSharpWinForms.Forms
         private bool IsFunnyClick;
         private List<Label> LabelColors;
         private readonly FontConverter fontConverter = new();
-        //private List<Label> LabelForeColors = [];
-        //private List<Label> LabelBackColors = [];
 
         public FormSettings()
         {
@@ -78,8 +76,6 @@ namespace CEETimerCSharpWinForms.Forms
             HasSettingsChanged = false;
             ButtonSave.Enabled = false;
             FormManager.Add(this);
-            //LabelBackColors.AddRange(LabelColors.GetRange(0, 4));
-            //LabelForeColors.AddRange(LabelColors.GetRange(4, 4));
         }
 
         private void InitializeExtra()
@@ -142,7 +138,7 @@ namespace CEETimerCSharpWinForms.Forms
             ComboBoxScreens.SelectedValue = ScreenIndex;
             ComboBoxPosition.SelectedValue = PositionIndex;
             ComboBoxShowOnly.SelectedValue = ShowOnlyIndex;
-            ChangeWorkingStyle(WorkingArea.ChangeFont, NewFont: new Font(CountdownFont, CountdownFontStyle));
+            ChangeWorkingStyle(WorkingArea.ChangeFont, NewFont: new(CountdownFont, CountdownFontStyle));
             ChangePptsvcCtrlStyle(null, EventArgs.Empty);
             ComboBoxShowOnly.SelectedIndex = IsShowOnly ? ShowOnlyIndex : 0;
         }
@@ -634,7 +630,7 @@ namespace CEETimerCSharpWinForms.Forms
                 else
                     reg.DeleteValue(LaunchManager.AppNameEn, false);
 
-                new ConfigManager().WriteConfig(new Dictionary<string, string>
+                new ConfigManager().WriteConfig(new()
                 {
                     { ConfigItems.ExamName, ExamName },
                     { ConfigItems.StartTime, $"{DTPExamStart.Value:yyyyMMddHHmmss}" },

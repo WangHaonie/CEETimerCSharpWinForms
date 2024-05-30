@@ -48,7 +48,7 @@ namespace CEETimerCSharpWinForms.Forms
             IsCancelled = false;
 
             using var httpClient = new HttpClient();
-            cts = new CancellationTokenSource();
+            cts = new();
             httpClient.DefaultRequestHeaders.UserAgent.ParseAdd(LaunchManager.RequestUA);
 
             try

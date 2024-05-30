@@ -15,8 +15,6 @@ namespace CEETimerCSharpWinForms.Forms
     {
         public static bool IsUniTopMost { get; private set; } = true;
 
-        private List<PairItems<Color, Color>> CountdownColors = [];
-        private List<PairItems<Color, Color>> DefaultColors;
         private bool IsFeatureMOEnabled;
         private bool IsShowOnly;
         private bool IsDragable;
@@ -31,6 +29,7 @@ namespace CEETimerCSharpWinForms.Forms
         private DateTime ExamStartTime;
         private Font SelectedFont;
         private FontStyle SelectedFontStyle;
+        private List<PairItems<Color, Color>> DefaultColors;
         private string ExamName;
 
         private enum CountdownState
@@ -56,6 +55,7 @@ namespace CEETimerCSharpWinForms.Forms
         private FormAbout formAbout;
         private readonly ConfigManager configManager = new();
         private readonly FontConverter fontConverter = new();
+        private readonly List<PairItems<Color, Color>> CountdownColors = [];
 
         private bool IsWin10BelowRounded;
         private readonly int BorderRadius = 13;
@@ -73,7 +73,7 @@ namespace CEETimerCSharpWinForms.Forms
             SystemEvents.DisplaySettingsChanged += SystemEvents_DisplaySettingsChanged;
             SetFormRounded();
             RefreshSettings(sender, e);
-            TimerCountdown = new Timer() { Interval = 1000 };
+            TimerCountdown = new() { Interval = 1000 };
             TimerCountdown.Tick += StartCountdown;
             TimerCountdown.Start();
             LabelCountdown.ForeColor = CountdownColors[3].Item1;
@@ -188,7 +188,7 @@ namespace CEETimerCSharpWinForms.Forms
                 SelectedFontStyle = FontStyle.Bold;
             }
 
-            LabelCountdown.Font = new Font(SelectedFont, SelectedFontStyle);
+            LabelCountdown.Font = new(SelectedFont, SelectedFontStyle);
 
             LabelCountdown.MouseDown -= LabelCountdown_MouseDown;
             LabelCountdown.MouseMove -= LabelCountdown_MouseMove;
@@ -199,7 +199,7 @@ namespace CEETimerCSharpWinForms.Forms
                 LabelCountdown.MouseDown += LabelCountdown_MouseDown;
                 LabelCountdown.MouseMove += LabelCountdown_MouseMove;
                 LabelCountdown.MouseUp += LabelCountdown_MouseUp;
-                Location = new Point(x, y);
+                Location = new(x, y);
             }
             else
             {
@@ -219,7 +219,7 @@ namespace CEETimerCSharpWinForms.Forms
             TimerMORunner?.Dispose();
 
             if (IsFeatureMOEnabled)
-                TimerMORunner = new System.Threading.Timer(OptimizeMemory, null, TimeSpan.Zero, TimeSpan.FromMinutes(5));
+                TimerMORunner = new(OptimizeMemory, null, TimeSpan.Zero, TimeSpan.FromMinutes(5));
 
             configManager.MountConfig(false);
         }
@@ -253,7 +253,7 @@ namespace CEETimerCSharpWinForms.Forms
         {
             if (IsReadyToMove)
             {
-                Location = new Point(MousePosition.X - LastMouseLocation.X, MousePosition.Y - LastMouseLocation.Y);
+                Location = new(MousePosition.X - LastMouseLocation.X, MousePosition.Y - LastMouseLocation.Y);
             }
         }
 
@@ -275,7 +275,7 @@ namespace CEETimerCSharpWinForms.Forms
         {
             if (formSettings == null || formSettings.IsDisposed)
             {
-                formSettings = new FormSettings()
+                formSettings = new()
                 {
                     FeatureMOEnabled = IsFeatureMOEnabled,
                     TopMostChecked = TopMost,
@@ -309,7 +309,7 @@ namespace CEETimerCSharpWinForms.Forms
         {
             if (formAbout == null || formAbout.IsDisposed)
             {
-                formAbout = new FormAbout();
+                formAbout = new();
             }
 
             formAbout.WindowState = FormWindowState.Normal;
@@ -400,15 +400,15 @@ namespace CEETimerCSharpWinForms.Forms
             {
                 Location = PositionIndex switch
                 {
-                    0 => IsPPTService ? new Point(SelectedScreen.Location.X + PptsvcThreshold, SelectedScreen.Location.Y) : SelectedScreen.Location,
-                    1 => new Point(SelectedScreen.Left, SelectedScreen.Top + SelectedScreen.Height / 2 - Height / 2),
-                    2 => new Point(SelectedScreen.Left, SelectedScreen.Bottom - Height),
-                    3 => new Point(SelectedScreen.Left + SelectedScreen.Width / 2 - Width / 2, SelectedScreen.Top),
-                    4 => new Point(SelectedScreen.Left + SelectedScreen.Width / 2 - Width / 2, SelectedScreen.Top + SelectedScreen.Height / 2 - Height / 2),
-                    5 => new Point(SelectedScreen.Left + SelectedScreen.Width / 2 - Width / 2, SelectedScreen.Bottom - Height),
-                    6 => new Point(SelectedScreen.Right - Width, SelectedScreen.Top),
-                    7 => new Point(SelectedScreen.Right - Width, SelectedScreen.Top + SelectedScreen.Height / 2 - Height / 2),
-                    8 => new Point(SelectedScreen.Right - Width, SelectedScreen.Bottom - Height),
+                    0 => IsPPTService ? new(SelectedScreen.Location.X + PptsvcThreshold, SelectedScreen.Location.Y) : SelectedScreen.Location,
+                    1 => new(SelectedScreen.Left, SelectedScreen.Top + SelectedScreen.Height / 2 - Height / 2),
+                    2 => new(SelectedScreen.Left, SelectedScreen.Bottom - Height),
+                    3 => new(SelectedScreen.Left + SelectedScreen.Width / 2 - Width / 2, SelectedScreen.Top),
+                    4 => new(SelectedScreen.Left + SelectedScreen.Width / 2 - Width / 2, SelectedScreen.Top + SelectedScreen.Height / 2 - Height / 2),
+                    5 => new(SelectedScreen.Left + SelectedScreen.Width / 2 - Width / 2, SelectedScreen.Bottom - Height),
+                    6 => new(SelectedScreen.Right - Width, SelectedScreen.Top),
+                    7 => new(SelectedScreen.Right - Width, SelectedScreen.Top + SelectedScreen.Height / 2 - Height / 2),
+                    8 => new(SelectedScreen.Right - Width, SelectedScreen.Bottom - Height),
                     _ => throw new Exception()
                 };
             }
@@ -444,7 +444,7 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void SaveLocation()
         {
-            configManager.WriteConfig(new Dictionary<string, string>
+            configManager.WriteConfig(new()
             {
                 { ConfigItems.PosX, $"{Location.X}" },
                 { ConfigItems.PosY, $"{Location.Y}" }
