@@ -3,6 +3,8 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 
 namespace CEETimerCSharpWinForms.Modules
 {
@@ -20,7 +22,23 @@ namespace CEETimerCSharpWinForms.Modules
         private bool IsConfigMounted;
         private Dictionary<string, string> JsonConfig;
         private JObject ConfigObject;
+        private readonly List<string> AllowedKeys;
         private readonly string ConfigFile = $"{LaunchManager.CurrentExecutablePath}{LaunchManager.AppNameEn}.config";
+
+        public ConfigManager()
+        {
+            #region 来自网络
+            /*
+            
+            获取 ConfigItems 类里的所有 const string 的值 参考：
+
+            c# - How can I  get all constants of a type by reflection? - Stack Overflow
+            https://stackoverflow.com/a/41618045/21094697
+
+            */
+            AllowedKeys = typeof(ConfigItems).GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy).Where(fi => fi.IsLiteral && !fi.IsInitOnly).Select(x => x.GetRawConstantValue()).OfType<string>().ToList();
+            #endregion
+        }
 
         private void CheckConfig()
         {
@@ -38,9 +56,9 @@ namespace CEETimerCSharpWinForms.Modules
         {
             if (IsConfigMounted && JsonConfig != null && JsonConfig.ContainsKey(Key))
             {
-                if (Key == ConfigItems.Font)
+                if (Key == ConfigItems.KFont)
                 {
-                    return JsonConfig[ConfigItems.Font];
+                    return JsonConfig[ConfigItems.KFont];
                 }
                 else
                 {
@@ -72,7 +90,7 @@ namespace CEETimerCSharpWinForms.Modules
                 ConfigObject[Data.Key] = JToken.FromObject(Data.Value);
             }
 
-            File.WriteAllText(ConfigFile, $"{ConfigObject}");
+            File.WriteAllText(ConfigFile, CleanKeys(ConfigObject));
         }
         #endregion
 
@@ -107,37 +125,57 @@ namespace CEETimerCSharpWinForms.Modules
             }
             return true;
         }
+
+        private string CleanKeys(JObject o)
+        {
+            List<string> KeysToClean = [];
+
+            foreach (var Property in o.Properties())
+            {
+                if (!AllowedKeys.Contains(Property.Name))
+                {
+                    KeysToClean.Add(Property.Name);
+                }
+            }
+
+            foreach (var Key in KeysToClean)
+            {
+                o.Remove(Key);
+            }
+
+            return o.ToString();
+        }
     }
 
     public static class ConfigItems
     {
-        public const string ExamName = "ExamName";
-        public const string StartTime = "StartTime";
-        public const string EndTime = "EndTime";
-        public const string MemOpti = "MemOpti";
-        public const string TopMost = "TopMost";
-        public const string ShowOnly = "ShowOnly";
-        public const string ShowValue = "Show";
-        public const string Rounding = "Rounding";
-        public const string ShowEnd = "ShowEnd";
-        public const string ShowPast = "ShowPast";
-        public const string UniTopMost = "UniTopMost";
-        public const string Screen = "Screen";
-        public const string Position = "Position";
-        public const string Dragable = "Dragable";
-        public const string SeewoPptSvc = "SeewoPptSvc";
-        public const string Font = "Font";
-        public const string FontStyle = "FontStyle";
-        public const string Fore1 = "Fore1";
-        public const string Back1 = "Back1";
-        public const string Fore2 = "Fore2";
-        public const string Back2 = "Back2";
-        public const string Fore3 = "Fore3";
-        public const string Back3 = "Back3";
-        public const string Fore4 = "Fore4";
-        public const string Back4 = "Back4";
-        public const string PosX = "PosX";
-        public const string PosY = "PosY";
+        public const string KExamName = "ExamName";
+        public const string KStartTime = "StartTime";
+        public const string KEndTime = "EndTime";
+        public const string KMemOpti = "MemOpti";
+        public const string KTopMost = "TopMost";
+        public const string KShowOnly = "ShowOnly";
+        public const string KShowValue = "Show";
+        public const string KRounding = "Rounding";
+        public const string KShowEnd = "ShowEnd";
+        public const string KShowPast = "ShowPast";
+        public const string KUniTopMost = "UniTopMost";
+        public const string KScreen = "Screen";
+        public const string KPosition = "Position";
+        public const string KDragable = "Dragable";
+        public const string KSeewoPptSvc = "SeewoPptSvc";
+        public const string KFont = "Font";
+        public const string KFontStyle = "FontStyle";
+        public const string KFore1 = "Fore1";
+        public const string KBack1 = "Back1";
+        public const string KFore2 = "Fore2";
+        public const string KBack2 = "Back2";
+        public const string KFore3 = "Fore3";
+        public const string KBack3 = "Back3";
+        public const string KFore4 = "Fore4";
+        public const string KBack4 = "Back4";
+        public const string KPosX = "PosX";
+        public const string KPosY = "PosY";
     }
 
     public static class ConfigPolicy

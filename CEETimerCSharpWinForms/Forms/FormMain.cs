@@ -109,19 +109,19 @@ namespace CEETimerCSharpWinForms.Forms
         {
             configManager.MountConfig(true);
 
-            ExamName = configManager.ReadConfig(ConfigItems.ExamName);
-            TopMost = !bool.TryParse(configManager.ReadConfig(ConfigItems.TopMost), out bool tmpa) || tmpa;
-            IsFeatureMOEnabled = bool.TryParse(configManager.ReadConfig(ConfigItems.MemOpti), out bool tmpc) && tmpc;
-            IsShowOnly = bool.TryParse(configManager.ReadConfig(ConfigItems.ShowOnly), out bool tmpd) && tmpd;
-            IsRounding = bool.TryParse(configManager.ReadConfig(ConfigItems.Rounding), out bool tmpe) && tmpe;
-            IsShowPast = bool.TryParse(configManager.ReadConfig(ConfigItems.ShowPast), out bool tmpg) && tmpg;
-            IsShowEnd = bool.TryParse(configManager.ReadConfig(ConfigItems.ShowEnd), out bool tmpf) && tmpf;
-            IsDragable = bool.TryParse(configManager.ReadConfig(ConfigItems.Dragable), out bool tmph) && tmph;
-            IsUniTopMost = bool.TryParse(configManager.ReadConfig(ConfigItems.UniTopMost), out bool tmpi) && tmpi;
-            IsPPTService = bool.TryParse(configManager.ReadConfig(ConfigItems.SeewoPptSvc), out bool tmpj) && tmpj;
-            ScreenIndex = int.TryParse(configManager.ReadConfig(ConfigItems.Screen), out int tmpk) ? tmpk : 0;
-            PositionIndex = int.TryParse(configManager.ReadConfig(ConfigItems.Position), out int tmpu) ? tmpu : 0;
-            ShowOnlyIndex = int.TryParse(configManager.ReadConfig(ConfigItems.ShowValue), out int tmpl) ? tmpl : 0;
+            ExamName = configManager.ReadConfig(ConfigItems.KExamName);
+            TopMost = !bool.TryParse(configManager.ReadConfig(ConfigItems.KTopMost), out bool tmpa) || tmpa;
+            IsFeatureMOEnabled = bool.TryParse(configManager.ReadConfig(ConfigItems.KMemOpti), out bool tmpc) && tmpc;
+            IsShowOnly = bool.TryParse(configManager.ReadConfig(ConfigItems.KShowOnly), out bool tmpd) && tmpd;
+            IsRounding = bool.TryParse(configManager.ReadConfig(ConfigItems.KRounding), out bool tmpe) && tmpe;
+            IsShowPast = bool.TryParse(configManager.ReadConfig(ConfigItems.KShowPast), out bool tmpg) && tmpg;
+            IsShowEnd = bool.TryParse(configManager.ReadConfig(ConfigItems.KShowEnd), out bool tmpf) && tmpf;
+            IsDragable = bool.TryParse(configManager.ReadConfig(ConfigItems.KDragable), out bool tmph) && tmph;
+            IsUniTopMost = bool.TryParse(configManager.ReadConfig(ConfigItems.KUniTopMost), out bool tmpi) && tmpi;
+            IsPPTService = bool.TryParse(configManager.ReadConfig(ConfigItems.KSeewoPptSvc), out bool tmpj) && tmpj;
+            ScreenIndex = int.TryParse(configManager.ReadConfig(ConfigItems.KScreen), out int tmpk) ? tmpk : 0;
+            PositionIndex = int.TryParse(configManager.ReadConfig(ConfigItems.KPosition), out int tmpu) ? tmpu : 0;
+            ShowOnlyIndex = int.TryParse(configManager.ReadConfig(ConfigItems.KShowValue), out int tmpl) ? tmpl : 0;
             CountdownColors = [];
 
             for (int i = 0; i < 4; i++)
@@ -142,10 +142,10 @@ namespace CEETimerCSharpWinForms.Forms
             Console.WriteLine("##########################");
 #endif
 
-            ExamStartTime = DateTime.TryParseExact(configManager.ReadConfig(ConfigItems.StartTime), "yyyyMMddHHmmss", null, DateTimeStyles.None, out DateTime tmpw) ? tmpw : DateTime.Now;
-            ExamEndTime = DateTime.TryParseExact(configManager.ReadConfig(ConfigItems.EndTime), "yyyyMMddHHmmss", null, DateTimeStyles.None, out DateTime tmpx) ? tmpx : DateTime.Now;
-            int.TryParse(configManager.ReadConfig(ConfigItems.PosX), out int x);
-            int.TryParse(configManager.ReadConfig(ConfigItems.PosY), out int y);
+            ExamStartTime = DateTime.TryParseExact(configManager.ReadConfig(ConfigItems.KStartTime), "yyyyMMddHHmmss", null, DateTimeStyles.None, out DateTime tmpw) ? tmpw : DateTime.Now;
+            ExamEndTime = DateTime.TryParseExact(configManager.ReadConfig(ConfigItems.KEndTime), "yyyyMMddHHmmss", null, DateTimeStyles.None, out DateTime tmpx) ? tmpx : DateTime.Now;
+            int.TryParse(configManager.ReadConfig(ConfigItems.KPosX), out int x);
+            int.TryParse(configManager.ReadConfig(ConfigItems.KPosY), out int y);
 
             ShowInTaskbar = !TopMost;
             IsShowPast = IsShowPast && IsShowEnd;
@@ -174,8 +174,8 @@ namespace CEETimerCSharpWinForms.Forms
 
             try
             {
-                SelectedFont = (Font)fontConverter.ConvertFromString(configManager.ReadConfig(ConfigItems.Font));
-                SelectedFontStyle = (FontStyle)Enum.Parse(typeof(FontStyle), configManager.ReadConfig(ConfigItems.FontStyle));
+                SelectedFont = (Font)fontConverter.ConvertFromString(configManager.ReadConfig(ConfigItems.KFont));
+                SelectedFontStyle = (FontStyle)Enum.Parse(typeof(FontStyle), configManager.ReadConfig(ConfigItems.KFontStyle));
 
                 if (SelectedFont.Size > ConfigPolicy.MaxFontSize || SelectedFont.Size < ConfigPolicy.MinFontSize)
                 {
@@ -259,15 +259,16 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void LabelCountdown_MouseUp(object sender, MouseEventArgs e)
         {
-            IsReadyToMove = false;
             Cursor = Cursors.Default;
 
-            if (LastLocation != Location)
+            if (LastLocation != Location && IsReadyToMove)
             {
                 KeepOnScreen();
                 CompatibleWithPPTService();
                 SaveLocation();
             }
+
+            IsReadyToMove = false;
         }
         #endregion
 
@@ -446,8 +447,8 @@ namespace CEETimerCSharpWinForms.Forms
         {
             configManager.WriteConfig(new()
             {
-                { ConfigItems.PosX, $"{Location.X}" },
-                { ConfigItems.PosY, $"{Location.Y}" }
+                { ConfigItems.KPosX, $"{Location.X}" },
+                { ConfigItems.KPosY, $"{Location.Y}" }
             });
         }
 
