@@ -29,6 +29,7 @@ namespace CEETimerCSharpWinForms.Forms
         private DateTime ExamStartTime;
         private Font SelectedFont;
         private FontStyle SelectedFontStyle;
+        private readonly List<PairItems<Color, Color>> CountdownColors = [];
         private List<PairItems<Color, Color>> DefaultColors;
         private string ExamName;
 
@@ -44,7 +45,9 @@ namespace CEETimerCSharpWinForms.Forms
 
         private bool IsReadyToMove;
         private bool IsReady;
+        private bool IsWin10BelowRounded;
         private readonly int PptsvcThreshold = 1;
+        private readonly int BorderRadius = 13;
         private CountdownState SelectedState;
         private Timer TimerCountdown;
         private System.Threading.Timer TimerMORunner;
@@ -55,10 +58,6 @@ namespace CEETimerCSharpWinForms.Forms
         private FormAbout formAbout;
         private readonly ConfigManager configManager = new();
         private readonly FontConverter fontConverter = new();
-        private readonly List<PairItems<Color, Color>> CountdownColors = [];
-
-        private bool IsWin10BelowRounded;
-        private readonly int BorderRadius = 13;
 
         public FormMain()
         {
@@ -79,7 +78,7 @@ namespace CEETimerCSharpWinForms.Forms
             LabelCountdown.ForeColor = CountdownColors[3].Item1;
             BackColor = CountdownColors[3].Item2;
             Task.Run(() => UpdateChecker.CheckUpdate(true, this));
-            _ = 1.WithDpi(this); // 仅触发获取当前 DPI 比值，无其他用途
+            _ = 1.WithDpi(this);
             FormManager.Add(this);
         }
 

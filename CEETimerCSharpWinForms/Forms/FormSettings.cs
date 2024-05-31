@@ -50,6 +50,7 @@ namespace CEETimerCSharpWinForms.Forms
         private bool IsFunny;
         private bool IsFunnyClick;
         private List<Label> LabelColors;
+        private List<PairItems<Color, Color>> SelectedColors;
         private readonly FontConverter fontConverter = new();
 
         public FormSettings()
@@ -497,21 +498,15 @@ namespace CEETimerCSharpWinForms.Forms
             }
 
             int ColorCheckMsg = 0;
-            if (!ColorHelper.IsNiceContrast(LabelPreviewColor1.ForeColor, LabelPreviewColor1.BackColor))
+            SelectedColors = [new(LabelColor12.BackColor, LabelColor11.BackColor), new(LabelColor22.BackColor, LabelColor21.BackColor), new(LabelColor32.BackColor, LabelColor31.BackColor), new(LabelColor42.BackColor, LabelColor41.BackColor)];
+
+            for (int i = 0; i < 4; i++)
             {
-                ColorCheckMsg = 1;
-            }
-            else if (!ColorHelper.IsNiceContrast(LabelPreviewColor2.ForeColor, LabelPreviewColor2.BackColor))
-            {
-                ColorCheckMsg = 2;
-            }
-            else if (!ColorHelper.IsNiceContrast(LabelPreviewColor3.ForeColor, LabelPreviewColor3.BackColor))
-            {
-                ColorCheckMsg = 3;
-            }
-            else if (!ColorHelper.IsNiceContrast(LabelPreviewColor4.ForeColor, LabelPreviewColor4.BackColor))
-            {
-                ColorCheckMsg = 4;
+                if (!ColorHelper.IsNiceContrast(SelectedColors[i].Item1, SelectedColors[i].Item2))
+                {
+                    ColorCheckMsg = i + 1;
+                    break;
+                }
             }
 
 #if DEBUG
