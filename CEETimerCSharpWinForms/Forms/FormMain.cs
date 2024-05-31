@@ -29,7 +29,7 @@ namespace CEETimerCSharpWinForms.Forms
         private DateTime ExamStartTime;
         private Font SelectedFont;
         private FontStyle SelectedFontStyle;
-        private readonly List<PairItems<Color, Color>> CountdownColors = [];
+        private List<PairItems<Color, Color>> CountdownColors;
         private List<PairItems<Color, Color>> DefaultColors;
         private string ExamName;
 
@@ -122,11 +122,12 @@ namespace CEETimerCSharpWinForms.Forms
             ScreenIndex = int.TryParse(configManager.ReadConfig(ConfigItems.Screen), out int tmpk) ? tmpk : 0;
             PositionIndex = int.TryParse(configManager.ReadConfig(ConfigItems.Position), out int tmpu) ? tmpu : 0;
             ShowOnlyIndex = int.TryParse(configManager.ReadConfig(ConfigItems.ShowValue), out int tmpl) ? tmpl : 0;
+            CountdownColors = [];
 
             for (int i = 0; i < 4; i++)
             {
-                var Fore = ColorHelper.TryParseRGB($"Fore{i + 1}", out Color tmpfore) ? tmpfore : DefaultColors[i].Item1;
-                var Back = ColorHelper.TryParseRGB($"Back{i + 1}", out Color tmpback) ? tmpback : DefaultColors[i].Item2;
+                var Fore = ColorHelper.TryParseRGB(configManager.ReadConfig($"Fore{i + 1}"), out Color tmpfore) ? tmpfore : DefaultColors[i].Item1;
+                var Back = ColorHelper.TryParseRGB(configManager.ReadConfig($"Back{i + 1}"), out Color tmpback) ? tmpback : DefaultColors[i].Item2;
 
                 if (!ColorHelper.IsNiceContrast(Fore, Back))
                 {
