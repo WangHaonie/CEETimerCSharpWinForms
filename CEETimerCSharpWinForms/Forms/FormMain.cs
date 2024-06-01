@@ -147,7 +147,6 @@ namespace CEETimerCSharpWinForms.Forms
             int.TryParse(configManager.ReadConfig(ConfigItems.KPosX), out int x);
             int.TryParse(configManager.ReadConfig(ConfigItems.KPosY), out int y);
 
-            ShowInTaskbar = !TopMost;
             IsShowPast = IsShowPast && IsShowEnd;
             IsRounding = IsRounding && IsShowOnly && ShowOnlyIndex == 0;
             IsUniTopMost = IsUniTopMost && TopMost;
