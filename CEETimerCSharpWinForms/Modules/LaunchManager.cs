@@ -12,8 +12,6 @@ namespace CEETimerCSharpWinForms.Modules
     public static class LaunchManager
     {
         public static bool IsAdmin { get; private set; }
-        public static string CurrentLatest { get; set; }
-        public static long UpdateSize { get; set; } = 0;
 
         public const string AppName = "高考倒计时 by WangHaonie";
         public const string AppNameEn = "CEETimerCSharpWinForms";

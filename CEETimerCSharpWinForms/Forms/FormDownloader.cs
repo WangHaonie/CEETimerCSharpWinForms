@@ -29,7 +29,7 @@ namespace CEETimerCSharpWinForms.Forms
         {
             FormManager.Add(this);
 
-            string LatestVersion = LaunchManager.CurrentLatest;
+            string LatestVersion = UpdateChecker.CurrentLatest;
             string SelectedVersion = ManualVersion;
 
             if (string.IsNullOrWhiteSpace(LatestVersion))
@@ -62,7 +62,7 @@ namespace CEETimerCSharpWinForms.Forms
                     var totalBytesRead = 0L;
                     var bytesRead = 0L;
                     var sw = Stopwatch.StartNew();
-                    var size = LaunchManager.UpdateSize;
+                    var size = UpdateChecker.UpdateSize;
                     var totalBytes = response.Content.Headers.ContentLength ?? (size == 0 ? 358400L : size);
 
                     while ((bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length)) > 0)

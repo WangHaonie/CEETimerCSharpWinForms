@@ -8,6 +8,9 @@ namespace CEETimerCSharpWinForms.Modules
 {
     public static class UpdateChecker
     {
+        public static string CurrentLatest { get; set; }
+        public static long UpdateSize { get; set; } = 0;
+
         public static void CheckUpdate(bool IsProgramStart, Form OwnerForm)
         {
             new Updater().CheckUpdate(IsProgramStart, OwnerForm);
@@ -26,11 +29,11 @@ namespace CEETimerCSharpWinForms.Modules
             try
             {
                 string ResponseContent = _HttpClient.GetAsync("https://gitee.com/wanghaonie/CEETimerCSharpWinForms/raw/main/api/github.json").Result.EnsureSuccessStatusCode().Content.ReadAsStringAsync().Result;
-                string CurrentLatest = LaunchManager.CurrentLatest = JObject.Parse(ResponseContent)["name"].ToString();
+                string CurrentLatest = UpdateChecker.CurrentLatest = JObject.Parse(ResponseContent)["name"].ToString();
                 DateTime.TryParse(JObject.Parse(ResponseContent)["published_at"].ToString(), out DateTime result);
                 string PublishTime = result.AddHours(8).ToString("yyyy-MM-dd dddd HH:mm:ss");
                 string UpdateLog = JObject.Parse(ResponseContent)["body"].ToString().FormatLog(CurrentLatest);
-                LaunchManager.UpdateSize = int.Parse(JObject.Parse(ResponseContent)["size"].ToString());
+                UpdateChecker.UpdateSize = int.Parse(JObject.Parse(ResponseContent)["size"].ToString());
 
                 if (Version.Parse(CurrentLatest) > Version.Parse(LaunchManager.AppVersion))
                 {
