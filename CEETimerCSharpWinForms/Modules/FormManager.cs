@@ -30,16 +30,7 @@ namespace CEETimerCSharpWinForms.Modules
             lock (Forms)
             {
                 var lastForm = Forms.LastOrDefault();
-                lastForm?.Invoke(new Action(() =>
-                {
-                    var IsTopMost = lastForm.TopMost;
-                    var WindowHandle = lastForm.Handle;
-                    lastForm.TopMost = true;
-                    lastForm.WindowState = FormWindowState.Normal;
-                    WindowsAPI.ShowWindowAsync(WindowHandle, 9);
-                    WindowsAPI.SetForegroundWindow(WindowHandle);
-                    lastForm.TopMost = IsTopMost;
-                }));
+                lastForm?.Invoke(new Action(lastForm.ReActivate));
             }
         }
     }

@@ -31,12 +31,6 @@ namespace CEETimerCSharpWinForms.Modules
         public static extern int ExtractIconEx(string sFile, int iIndex, out IntPtr piLargeVersion, out IntPtr piSmallVersion, int amountIcons);
         #endregion
 
-        [DllImport("user32.dll")]
-        public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
-
-        [DllImport("user32.dll")]
-        public static extern bool SetForegroundWindow(IntPtr hWnd);
-
         #region 来自网络
         /*
         
