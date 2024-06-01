@@ -15,9 +15,9 @@ namespace CEETimerCSharpWinForms.Forms
     {
         public static bool IsUniTopMost { get; private set; } = true;
 
-        private bool IsFeatureMOEnabled;
-        private bool IsShowOnly;
-        private bool IsDragable;
+        private bool IsMemoryOptimizationEnabled;
+        private bool IsShowXOnly;
+        private bool IsDraggable;
         private bool IsShowEnd;
         private bool IsShowPast;
         private bool IsRounding;
@@ -44,7 +44,7 @@ namespace CEETimerCSharpWinForms.Forms
         }
 
         private bool IsReadyToMove;
-        private bool IsReady;
+        private bool IsCountdownReady;
         private bool IsWin10BelowRounded;
         private readonly int PptsvcThreshold = 1;
         private readonly int BorderRadius = 13;
@@ -62,6 +62,7 @@ namespace CEETimerCSharpWinForms.Forms
         public FormMain()
         {
             InitializeComponent();
+            SetFormRounded();
             FormClosed += (sender, e) => FormManager.Remove(this);
             SizeChanged += FormMain_SizeChanged;
         }
@@ -70,7 +71,6 @@ namespace CEETimerCSharpWinForms.Forms
         {
             DefaultColors = [new(Color.Red, Color.White), new(Color.Green, Color.White), new(Color.Black, Color.White), new(Color.Black, Color.White)];
             SystemEvents.DisplaySettingsChanged += SystemEvents_DisplaySettingsChanged;
-            SetFormRounded();
             RefreshSettings(sender, e);
             TimerCountdown = new() { Interval = 1000 };
             TimerCountdown.Tick += StartCountdown;
@@ -110,18 +110,22 @@ namespace CEETimerCSharpWinForms.Forms
             configManager.MountConfig(true);
 
             ExamName = configManager.ReadConfig(ConfigItems.KExamName);
+            ExamStartTime = DateTime.TryParseExact(configManager.ReadConfig(ConfigItems.KStartTime), "yyyyMMddHHmmss", null, DateTimeStyles.None, out DateTime tmpw) ? tmpw : DateTime.Now;
+            ExamEndTime = DateTime.TryParseExact(configManager.ReadConfig(ConfigItems.KEndTime), "yyyyMMddHHmmss", null, DateTimeStyles.None, out DateTime tmpx) ? tmpx : DateTime.Now;
+            IsMemoryOptimizationEnabled = bool.TryParse(configManager.ReadConfig(ConfigItems.KMemOpti), out bool tmpc) && tmpc;
             TopMost = !bool.TryParse(configManager.ReadConfig(ConfigItems.KTopMost), out bool tmpa) || tmpa;
-            IsFeatureMOEnabled = bool.TryParse(configManager.ReadConfig(ConfigItems.KMemOpti), out bool tmpc) && tmpc;
-            IsShowOnly = bool.TryParse(configManager.ReadConfig(ConfigItems.KShowOnly), out bool tmpd) && tmpd;
+            IsShowXOnly = bool.TryParse(configManager.ReadConfig(ConfigItems.KShowOnly), out bool tmpd) && tmpd;
             IsRounding = bool.TryParse(configManager.ReadConfig(ConfigItems.KRounding), out bool tmpe) && tmpe;
             IsShowPast = bool.TryParse(configManager.ReadConfig(ConfigItems.KShowPast), out bool tmpg) && tmpg;
             IsShowEnd = bool.TryParse(configManager.ReadConfig(ConfigItems.KShowEnd), out bool tmpf) && tmpf;
-            IsDragable = bool.TryParse(configManager.ReadConfig(ConfigItems.KDragable), out bool tmph) && tmph;
+            IsDraggable = bool.TryParse(configManager.ReadConfig(ConfigItems.KDragable), out bool tmph) && tmph;
             IsUniTopMost = bool.TryParse(configManager.ReadConfig(ConfigItems.KUniTopMost), out bool tmpi) && tmpi;
             IsPPTService = bool.TryParse(configManager.ReadConfig(ConfigItems.KSeewoPptSvc), out bool tmpj) && tmpj;
             ScreenIndex = int.TryParse(configManager.ReadConfig(ConfigItems.KScreen), out int tmpk) ? tmpk : 0;
             PositionIndex = int.TryParse(configManager.ReadConfig(ConfigItems.KPosition), out int tmpu) ? tmpu : 0;
             ShowOnlyIndex = int.TryParse(configManager.ReadConfig(ConfigItems.KShowValue), out int tmpl) ? tmpl : 0;
+            int.TryParse(configManager.ReadConfig(ConfigItems.KPosX), out int x);
+            int.TryParse(configManager.ReadConfig(ConfigItems.KPosY), out int y);
             CountdownColors = [];
 
             for (int i = 0; i < 4; i++)
@@ -142,24 +146,19 @@ namespace CEETimerCSharpWinForms.Forms
             Console.WriteLine("##########################");
 #endif
 
-            ExamStartTime = DateTime.TryParseExact(configManager.ReadConfig(ConfigItems.KStartTime), "yyyyMMddHHmmss", null, DateTimeStyles.None, out DateTime tmpw) ? tmpw : DateTime.Now;
-            ExamEndTime = DateTime.TryParseExact(configManager.ReadConfig(ConfigItems.KEndTime), "yyyyMMddHHmmss", null, DateTimeStyles.None, out DateTime tmpx) ? tmpx : DateTime.Now;
-            int.TryParse(configManager.ReadConfig(ConfigItems.KPosX), out int x);
-            int.TryParse(configManager.ReadConfig(ConfigItems.KPosY), out int y);
-
             IsShowPast = IsShowPast && IsShowEnd;
-            IsRounding = IsRounding && IsShowOnly && ShowOnlyIndex == 0;
+            IsRounding = IsRounding && IsShowXOnly && ShowOnlyIndex == 0;
             IsUniTopMost = IsUniTopMost && TopMost;
             if (ScreenIndex < 0 || ScreenIndex > Screen.AllScreens.Length) ScreenIndex = 0;
             if (PositionIndex < 0 || PositionIndex > 8) PositionIndex = 0;
             if (ShowOnlyIndex > 3) ShowOnlyIndex = 0;
             if (ExamName.Length > ConfigPolicy.MaxExamNameLength || ExamName.Length < ConfigPolicy.MinExamNameLength) ExamName = "";
-            IsReady = !string.IsNullOrWhiteSpace(ExamName) && configManager.IsValidData(tmpw) && configManager.IsValidData(tmpx) && (tmpx > tmpw || !IsShowEnd);
-            IsPPTService = IsPPTService && ((TopMost && ShowOnlyIndex == 0) || IsDragable);
+            IsCountdownReady = !string.IsNullOrWhiteSpace(ExamName) && configManager.IsValidData(tmpw) && configManager.IsValidData(tmpx) && (tmpx > tmpw || !IsShowEnd);
+            IsPPTService = IsPPTService && ((TopMost && ShowOnlyIndex == 0) || IsDraggable);
 
             SelectedState = CountdownState.Normal;
 
-            if (IsShowOnly)
+            if (IsShowXOnly)
             {
                 SelectedState = ShowOnlyIndex switch
                 {
@@ -193,7 +192,7 @@ namespace CEETimerCSharpWinForms.Forms
             LabelCountdown.MouseMove -= LabelCountdown_MouseMove;
             LabelCountdown.MouseUp -= LabelCountdown_MouseUp;
 
-            if (IsDragable)
+            if (IsDraggable)
             {
                 LabelCountdown.MouseDown += LabelCountdown_MouseDown;
                 LabelCountdown.MouseMove += LabelCountdown_MouseMove;
@@ -217,7 +216,7 @@ namespace CEETimerCSharpWinForms.Forms
 
             TimerMORunner?.Dispose();
 
-            if (IsFeatureMOEnabled)
+            if (IsMemoryOptimizationEnabled)
                 TimerMORunner = new(OptimizeMemory, null, TimeSpan.Zero, TimeSpan.FromMinutes(5));
 
             configManager.MountConfig(false);
@@ -277,19 +276,19 @@ namespace CEETimerCSharpWinForms.Forms
             {
                 formSettings = new()
                 {
-                    FeatureMOEnabled = IsFeatureMOEnabled,
-                    TopMostChecked = TopMost,
+                    IsMemoryOptimizationEnabled = IsMemoryOptimizationEnabled,
+                    IsTopMost = TopMost,
                     ExamStartTime = ExamStartTime,
                     ExamEndTime = ExamEndTime,
                     CountdownFont = LabelCountdown.Font,
                     CountdownFontStyle = LabelCountdown.Font.Style,
                     ExamName = ExamName,
-                    IsShowOnly = IsShowOnly,
+                    IsShowXOnly = IsShowXOnly,
                     ShowOnlyIndex = ShowOnlyIndex,
                     IsShowEnd = IsShowEnd,
                     IsShowPast = IsShowPast,
                     IsRounding = IsRounding,
-                    IsDragable = IsDragable,
+                    IsDraggable = IsDraggable,
                     IsPPTService = IsPPTService,
                     ScreenIndex = ScreenIndex,
                     PositionIndex = PositionIndex,
@@ -325,7 +324,7 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void StartCountdown(object sender, EventArgs e)
         {
-            if (IsReady && DateTime.Now < ExamStartTime)
+            if (IsCountdownReady && DateTime.Now < ExamStartTime)
             {
                 TimeSpan TimeLeft = ExamStartTime - DateTime.Now;
                 LabelCountdown.ForeColor = CountdownColors[0].Item1;
@@ -342,7 +341,7 @@ namespace CEETimerCSharpWinForms.Forms
                     _ => throw new Exception()
                 };
             }
-            else if (IsReady && IsShowEnd && DateTime.Now >= ExamStartTime && DateTime.Now < ExamEndTime)
+            else if (IsCountdownReady && IsShowEnd && DateTime.Now >= ExamStartTime && DateTime.Now < ExamEndTime)
             {
                 TimeSpan TimeLeftPast = ExamEndTime - DateTime.Now;
                 LabelCountdown.ForeColor = CountdownColors[1].Item1;
@@ -359,7 +358,7 @@ namespace CEETimerCSharpWinForms.Forms
                     _ => throw new Exception()
                 };
             }
-            else if (IsReady && IsShowEnd && DateTime.Now >= ExamEndTime && IsShowPast)
+            else if (IsCountdownReady && IsShowEnd && DateTime.Now >= ExamEndTime && IsShowPast)
             {
                 TimeSpan TimePast = DateTime.Now - ExamEndTime;
                 LabelCountdown.ForeColor = CountdownColors[2].Item1;
@@ -392,7 +391,7 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void ApplyLocation()
         {
-            if (!IsDragable)
+            if (!IsDraggable)
             {
                 Location = PositionIndex switch
                 {

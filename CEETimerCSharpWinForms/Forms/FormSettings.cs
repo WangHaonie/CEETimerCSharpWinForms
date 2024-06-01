@@ -12,14 +12,14 @@ namespace CEETimerCSharpWinForms.Forms
 {
     public partial class FormSettings : Form
     {
-        public bool FeatureMOEnabled { get; set; }
-        public bool IsShowOnly { get; set; }
-        public bool IsDragable { get; set; }
+        public bool IsMemoryOptimizationEnabled { get; set; }
+        public bool IsShowXOnly { get; set; }
+        public bool IsDraggable { get; set; }
         public bool IsShowEnd { get; set; }
         public bool IsShowPast { get; set; }
         public bool IsRounding { get; set; }
         public bool IsPPTService { get; set; }
-        public bool TopMostChecked { get; set; }
+        public bool IsTopMost { get; set; }
         public DateTime ExamStartTime { get; set; }
         public DateTime ExamEndTime { get; set; }
         public Font CountdownFont { get; set; }
@@ -43,13 +43,13 @@ namespace CEETimerCSharpWinForms.Forms
             ChangeFont
         }
 
-        private bool IsLabelColorsDragging;
+        private bool IsColorLabelsDragging;
         private bool IsSyncingTime;
         private bool HasSettingsChanged;
         private bool InvokeChangeRequired;
         private bool IsFunny;
         private bool IsFunnyClick;
-        private List<Label> LabelColors;
+        private List<Label> ColorLabels;
         private List<PairItems<Color, Color>> SelectedColors;
         private readonly FontConverter fontConverter = new();
 
@@ -111,26 +111,26 @@ namespace CEETimerCSharpWinForms.Forms
             ComboBoxScreens.DisplayMember = "Item1";
             ComboBoxScreens.ValueMember = "Item2";
 
-            LabelColors = [LabelColor11, LabelColor21, LabelColor31, LabelColor41, LabelColor12, LabelColor22, LabelColor32, LabelColor42];
-            foreach (var l in LabelColors)
+            ColorLabels = [LabelColor11, LabelColor21, LabelColor31, LabelColor41, LabelColor12, LabelColor22, LabelColor32, LabelColor42];
+            foreach (var l in ColorLabels)
             {
-                l.Click += LabelColors_Click;
-                l.MouseDown += LabelColors_MouseDown;
-                l.MouseMove += LabelColors_MouseMove;
-                l.MouseUp += LabelColors_MouseUp;
+                l.Click += ColorLabels_Click;
+                l.MouseDown += ColorLabels_MouseDown;
+                l.MouseMove += ColorLabels_MouseMove;
+                l.MouseUp += ColorLabels_MouseUp;
             }
         }
 
         private void RefreshSettings()
         {
             CheckBoxStartup.Checked = (Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true)?.GetValue(LaunchManager.AppNameEn) is string regvalue) && regvalue.Equals($"\"{LaunchManager.CurrentExecutable}\"", StringComparison.OrdinalIgnoreCase);
-            CheckBoxSetTopMost.Checked = TopMostChecked;
+            CheckBoxSetTopMost.Checked = IsTopMost;
             TextBoxExamName.Text = ExamName;
             DTPExamStart.Value = ExamStartTime;
             DTPExamEnd.Value = ExamEndTime;
-            CheckBoxEnableMO.Checked = FeatureMOEnabled;
-            CheckBoxEnableDragable.Checked = IsDragable;
-            CheckBoxShowOnly.Checked = IsShowOnly;
+            CheckBoxEnableMO.Checked = IsMemoryOptimizationEnabled;
+            CheckBoxEnableDragable.Checked = IsDraggable;
+            CheckBoxShowOnly.Checked = IsShowXOnly;
             CheckBoxSetRounding.Checked = IsRounding;
             CheckBoxShowEnd.Checked = DTPExamEnd.Enabled = IsShowEnd;
             CheckBoxShowPast.Checked = IsShowPast;
@@ -141,7 +141,7 @@ namespace CEETimerCSharpWinForms.Forms
             ComboBoxShowOnly.SelectedValue = ShowOnlyIndex;
             ChangeWorkingStyle(WorkingArea.ChangeFont, NewFont: new(CountdownFont, CountdownFontStyle));
             ChangePptsvcCtrlStyle(null, EventArgs.Empty);
-            ComboBoxShowOnly.SelectedIndex = IsShowOnly ? ShowOnlyIndex : 0;
+            ComboBoxShowOnly.SelectedIndex = IsShowXOnly ? ShowOnlyIndex : 0;
         }
 
         private void AlignControlPos(Control Reference, Control Target, int Adjust = 0)
@@ -231,7 +231,7 @@ namespace CEETimerCSharpWinForms.Forms
             FormSettings_SettingsChanged(sender, e);
         }
 
-        private void LabelColors_Click(object sender, EventArgs e)
+        private void ColorLabels_Click(object sender, EventArgs e)
         {
             var LabelSender = (Label)sender;
 
@@ -252,27 +252,27 @@ namespace CEETimerCSharpWinForms.Forms
             ColorDialogMain.Dispose();
         }
 
-        private void LabelColors_MouseDown(object sender, MouseEventArgs e)
+        private void ColorLabels_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
-                IsLabelColorsDragging = true;
+                IsColorLabelsDragging = true;
             }
         }
 
-        private void LabelColors_MouseMove(object sender, MouseEventArgs e)
+        private void ColorLabels_MouseMove(object sender, MouseEventArgs e)
         {
-            if (IsLabelColorsDragging)
+            if (IsColorLabelsDragging)
             {
                 Cursor = Cursors.Cross;
             }
         }
 
-        private void LabelColors_MouseUp(object sender, MouseEventArgs e)
+        private void ColorLabels_MouseUp(object sender, MouseEventArgs e)
         {
             try
             {
-                IsLabelColorsDragging = false;
+                IsColorLabelsDragging = false;
                 Cursor = Cursors.Default;
 
                 var LabelSender = (Label)sender;
@@ -280,7 +280,7 @@ namespace CEETimerCSharpWinForms.Forms
                 var CursorPosition = ParentContainer.PointToClient(Cursor.Position);
                 var TargetControl = ParentContainer.GetChildAtPoint(CursorPosition);
 
-                if (TargetControl != null && TargetControl is Label TagetLabel && LabelColors.Contains(TagetLabel) && LabelSender != TagetLabel)
+                if (TargetControl != null && TargetControl is Label TagetLabel && ColorLabels.Contains(TagetLabel) && LabelSender != TagetLabel)
                 {
                     TagetLabel.BackColor = LabelSender.BackColor;
                     FormSettings_SettingsChanged(sender, e);
