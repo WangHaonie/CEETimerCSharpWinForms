@@ -53,12 +53,9 @@ namespace CEETimerCSharpWinForms.Modules
 
         public static void ReActivate(this Form form)
         {
-            var IsTopMost = form.TopMost;
-            form.TopMost = true;
             form.WindowState = FormWindowState.Normal;
-            form.BringToFront();
+            form.Show();
             form.Activate();
-            form.TopMost = IsTopMost;
         }
     }
 }

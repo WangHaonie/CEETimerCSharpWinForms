@@ -301,9 +301,7 @@ namespace CEETimerCSharpWinForms.Forms
                 formSettings.ConfigChanged += RefreshSettings;
             }
 
-            formSettings.WindowState = FormWindowState.Normal;
-            formSettings.Show();
-            formSettings.Activate();
+            formSettings.ReActivate();
         }
 
         private void ContextMenuAbout_Click(object sender, EventArgs e)
@@ -313,9 +311,7 @@ namespace CEETimerCSharpWinForms.Forms
                 formAbout = new();
             }
 
-            formAbout.WindowState = FormWindowState.Normal;
-            formAbout.Show();
-            formAbout.Activate();
+            formAbout.ReActivate();
         }
 
         private void ContextMenuOpenDir_Click(object sender, EventArgs e)

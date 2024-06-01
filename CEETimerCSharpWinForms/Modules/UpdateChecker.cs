@@ -46,9 +46,7 @@ namespace CEETimerCSharpWinForms.Modules
                                 formDownloader = new FormDownloader();
                             }
 
-                            formDownloader.WindowState = FormWindowState.Normal;
-                            formDownloader.Show();
-                            formDownloader.Activate();
+                            formDownloader.ReActivate();
                         }
                     }));
                 }
