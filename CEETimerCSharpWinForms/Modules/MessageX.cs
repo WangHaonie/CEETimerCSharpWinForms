@@ -18,6 +18,17 @@ namespace CEETimerCSharpWinForms.Modules
 
     public static class MessageX
     {
+        private static readonly Icon InfoIcon;
+        private static readonly Icon WarningIcon;
+        private static readonly Icon ErrorIcon;
+
+        static MessageX()
+        {
+            InfoIcon = GetIcon(76);
+            WarningIcon = GetIcon(79);
+            ErrorIcon = GetIcon(93);
+        }
+
         /// <summary>
         /// 在指定的窗体或定位到其标签页上或直接显示一个具有 DialogResult 返回值的消息框
         /// </summary>
@@ -92,18 +103,18 @@ namespace CEETimerCSharpWinForms.Modules
 
             */
 
-            MessageLevel.Info => (LaunchManager.InfoMsg, GetMessageBoxIcon(76), SystemSounds.Asterisk),
-            MessageLevel.Warning => (LaunchManager.WarnMsg, GetMessageBoxIcon(79), SystemSounds.Exclamation),
-            MessageLevel.Error => (LaunchManager.ErrMsg, GetMessageBoxIcon(93), SystemSounds.Hand),
+            MessageLevel.Info => (LaunchManager.InfoMsg, InfoIcon, SystemSounds.Asterisk),
+            MessageLevel.Warning => (LaunchManager.WarnMsg, WarningIcon, SystemSounds.Exclamation),
+            MessageLevel.Error => (LaunchManager.ErrMsg, ErrorIcon, SystemSounds.Hand),
             _ => throw new Exception()
 
             #endregion
         };
 
-        public static Icon GetMessageBoxIcon(int IconIndex)
+        private static Icon GetIcon(int Index)
         {
-            WindowsAPI.ExtractIconEx("imageres.dll", IconIndex, out IntPtr LargeIcon, out _, 1);
-            return Icon.FromHandle(LargeIcon);
+            WindowsAPI.ExtractIconEx("imageres.dll", Index, out IntPtr hIcon, out _, 1);
+            return Icon.FromHandle(hIcon);
         }
     }
 }
