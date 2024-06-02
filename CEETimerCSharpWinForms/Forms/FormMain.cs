@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -50,7 +49,7 @@ namespace CEETimerCSharpWinForms.Forms
         private readonly int BorderRadius = 13;
         private CountdownState SelectedState;
         private Timer TimerCountdown;
-        private System.Threading.Timer TimerMORunner;
+        private System.Threading.Timer MemoryOptimizer;
         private Point LastLocation;
         private Point LastMouseLocation;
         private Rectangle SelectedScreen;
@@ -199,10 +198,10 @@ namespace CEETimerCSharpWinForms.Forms
                 form.TopMost = IsUniTopMost;
             }
 
-            TimerMORunner?.Dispose();
+            MemoryOptimizer?.Dispose();
 
             if (IsMemoryOptimizationEnabled)
-                TimerMORunner = new(OptimizeMemory, null, TimeSpan.Zero, TimeSpan.FromMinutes(5));
+                MemoryOptimizer = new(OptimizeMemory, null, TimeSpan.Zero, TimeSpan.FromMinutes(5));
 
             configManager.MountConfig(false);
         }
