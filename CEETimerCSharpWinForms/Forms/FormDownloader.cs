@@ -23,6 +23,8 @@ namespace CEETimerCSharpWinForms.Forms
             InitializeComponent();
             TopMost = FormMain.IsUniTopMost;
             FormClosed += (sender, e) => FormManager.Remove(this);
+            ButtonCancel.Location = new(ProgressBarMain.Location.X + ProgressBarMain.Width - ButtonCancel.Width, ButtonCancel.Location.Y);
+            ButtonRetry.Location = new(ButtonCancel.Location.X - ButtonRetry.Width - 6.WithDpi(this), ButtonRetry.Location.Y);
         }
 
         private async void FormDownloader_Load(object sender, EventArgs e)

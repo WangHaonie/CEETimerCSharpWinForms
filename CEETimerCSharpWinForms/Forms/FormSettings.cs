@@ -119,6 +119,9 @@ namespace CEETimerCSharpWinForms.Forms
                 l.MouseMove += ColorLabels_MouseMove;
                 l.MouseUp += ColorLabels_MouseUp;
             }
+
+            ButtonCancel.Location = new(TabControlMain.Location.X + TabControlMain.Width - ButtonCancel.Width, ButtonCancel.Location.Y);
+            ButtonSave.Location = new(ButtonCancel.Location.X - ButtonSave.Width - 6.WithDpi(this), ButtonSave.Location.Y);
         }
 
         private void RefreshSettings()
