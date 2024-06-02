@@ -7,29 +7,30 @@ namespace CEETimerCSharpWinForms.Modules
 {
     public static class FormManager
     {
-        public static List<Form> Forms = [];
+        public static List<Form> OpenForms => OpenFormsInternal;
+        private static readonly List<Form> OpenFormsInternal = [];
 
         public static void Add(Form form)
         {
-            lock (Forms)
+            lock (OpenFormsInternal)
             {
-                Forms.Add(form);
+                OpenFormsInternal.Add(form);
             }
         }
 
         public static void Remove(Form form)
         {
-            lock (Forms)
+            lock (OpenFormsInternal)
             {
-                Forms.Remove(form);
+                OpenFormsInternal.Remove(form);
             }
         }
 
         public static void ShowLastOpenedForm()
         {
-            lock (Forms)
+            lock (OpenFormsInternal)
             {
-                var lastForm = Forms.LastOrDefault();
+                var lastForm = OpenFormsInternal.LastOrDefault();
                 lastForm?.Invoke(new Action(lastForm.ReActivate));
             }
         }
