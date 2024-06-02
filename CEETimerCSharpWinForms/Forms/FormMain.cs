@@ -62,7 +62,6 @@ namespace CEETimerCSharpWinForms.Forms
         public FormMain()
         {
             InitializeComponent();
-            SetFormRounded();
             FormClosed += (sender, e) => FormManager.Remove(this);
             SizeChanged += FormMain_SizeChanged;
         }
@@ -80,20 +79,6 @@ namespace CEETimerCSharpWinForms.Forms
             Task.Run(() => UpdateChecker.CheckUpdate(true, this));
             _ = 1.WithDpi(this);
             FormManager.Add(this);
-        }
-
-        private void SetFormRounded()
-        {
-            if (Environment.OSVersion.Version > new Version(10, 0, 21999))
-            {
-                var attribute = WindowsAPI.DWMWINDOWATTRIBUTE.DWMWA_WINDOW_CORNER_PREFERENCE;
-                var preference = WindowsAPI.DWM_WINDOW_CORNER_PREFERENCE.DWMWCP_ROUND;
-                WindowsAPI.DwmSetWindowAttribute(Handle, attribute, ref preference, sizeof(uint));
-            }
-            else
-            {
-                IsWin10BelowRounded = true;
-            }
         }
 
         private void FormMain_SizeChanged(object sender, EventArgs e)
@@ -146,6 +131,7 @@ namespace CEETimerCSharpWinForms.Forms
             Console.WriteLine("##########################");
 #endif
 
+            ShowInTaskbar = !TopMost;
             IsShowPast = IsShowPast && IsShowEnd;
             IsRounding = IsRounding && IsShowXOnly && ShowOnlyIndex == 0;
             IsUniTopMost = IsUniTopMost && TopMost;
@@ -464,6 +450,26 @@ namespace CEETimerCSharpWinForms.Forms
             {
                 WindowsAPI.EmptyWorkingSet(Process.GetCurrentProcess().Handle);
             }
+        }
+
+        private void SetRoundedCorners()
+        {
+            if (Environment.OSVersion.Version > new Version(10, 0, 21999))
+            {
+                var attribute = WindowsAPI.DWMWINDOWATTRIBUTE.DWMWA_WINDOW_CORNER_PREFERENCE;
+                var preference = WindowsAPI.DWM_WINDOW_CORNER_PREFERENCE.DWMWCP_ROUND;
+                WindowsAPI.DwmSetWindowAttribute(Handle, attribute, ref preference, sizeof(uint));
+            }
+            else
+            {
+                IsWin10BelowRounded = true;
+            }
+        }
+
+        protected override void OnHandleCreated(EventArgs e)
+        {
+            SetRoundedCorners();
+            base.OnHandleCreated(e);
         }
     }
 }
