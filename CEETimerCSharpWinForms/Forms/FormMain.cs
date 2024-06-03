@@ -254,7 +254,7 @@ namespace CEETimerCSharpWinForms.Forms
         }
         #endregion
 
-        private void ContextMenuSettings_Click(object sender, EventArgs e)
+        private void ContextSettings_Click(object sender, EventArgs e)
         {
             if (formSettings == null || formSettings.IsDisposed)
             {
@@ -286,7 +286,7 @@ namespace CEETimerCSharpWinForms.Forms
             formSettings.ReActivate();
         }
 
-        private void ContextMenuAbout_Click(object sender, EventArgs e)
+        private void ContextAbout_Click(object sender, EventArgs e)
         {
             if (formAbout == null || formAbout.IsDisposed)
             {
@@ -296,7 +296,7 @@ namespace CEETimerCSharpWinForms.Forms
             formAbout.ReActivate();
         }
 
-        private void ContextMenuOpenDir_Click(object sender, EventArgs e)
+        private void ContextOpenDir_Click(object sender, EventArgs e)
         {
             Process.Start(LaunchManager.CurrentExecutablePath);
         }

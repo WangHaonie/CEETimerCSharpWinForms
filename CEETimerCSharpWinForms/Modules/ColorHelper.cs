@@ -60,110 +60,110 @@ namespace CEETimerCSharpWinForms.Modules
             double ForeLuminance = Fore.ToLuminance();
             double BackLuminance = Back.ToLuminance();
             double Contrast = (Math.Max(ForeLuminance, BackLuminance) + 0.05) / (Math.Min(ForeLuminance, BackLuminance) + 0.05);
-            double ColorDifference = Math.Sqrt(2 * Math.Pow(Fore.R - Back.R, 2) + 4 * Math.Pow(Fore.G - Back.G, 2) + 3 * Math.Pow(Fore.B - Back.B, 2));
+            double Difference = Math.Sqrt(2 * Math.Pow(Fore.R - Back.R, 2) + 4 * Math.Pow(Fore.G - Back.G, 2) + 3 * Math.Pow(Fore.B - Back.B, 2));
 #if DEBUG
-            Console.WriteLine($"{Contrast} <-> {ColorDifference}");
+            Console.WriteLine($"{Contrast} <-> {Difference}");
 #endif
 
-            if (Contrast >= 1000 && ColorDifference < 320)
+            if (Contrast >= 1000 && Difference < 320)
             {
 #if DEBUG
                 Console.WriteLine("1 X");
 #endif
                 return false;
             }
-            else if (Contrast >= 1000 && ColorDifference > 360 && ColorDifference < 400)
+            else if (Contrast >= 1000 && Difference > 360 && Difference < 400)
             {
 #if DEBUG
                 Console.WriteLine("2");
 #endif
                 return true;
             }
-            else if (Contrast >= 1.6 && Contrast < 2 && ColorDifference >= 500 && ColorDifference < 535)
+            else if (Contrast >= 1.6 && Contrast < 2 && Difference >= 500 && Difference < 535)
             {
 #if DEBUG
                 Console.WriteLine("17");
 #endif
                 return true;
             }
-            else if (Contrast < 2 && ColorDifference >= 400 && ColorDifference < 500)
+            else if (Contrast < 2 && Difference >= 400 && Difference < 500)
             {
 #if DEBUG
                 Console.WriteLine("3 X");
 #endif
                 return false;
             }
-            else if (Contrast > 2.8 && Contrast < 3 && ColorDifference > 400 && ColorDifference < 420)
+            else if (Contrast > 2.8 && Contrast < 3 && Difference > 400 && Difference < 420)
             {
 #if DEBUG
                 Console.WriteLine("10 X");
 #endif
                 return false;
             }
-            else if (Contrast >= 2.9 && Contrast < 3 && ColorDifference >= 500 && ColorDifference < 520)
+            else if (Contrast >= 2.9 && Contrast < 3 && Difference >= 500 && Difference < 520)
             {
 #if DEBUG
                 Console.WriteLine("14");
 #endif
                 return true;
             }
-            else if (Contrast >= 2 && Contrast < 2.5 && ColorDifference >= 440 && ColorDifference < 450)
+            else if (Contrast >= 2 && Contrast < 2.5 && Difference >= 440 && Difference < 450)
             {
 #if DEBUG
                 Console.WriteLine("16");
 #endif
                 return true;
             }
-            else if (Contrast >= 2 && Contrast < 3 && ColorDifference >= 400 && ColorDifference < 520)
+            else if (Contrast >= 2 && Contrast < 3 && Difference >= 400 && Difference < 520)
             {
 #if DEBUG
                 Console.WriteLine("5 X");
 #endif
                 return false;
             }
-            else if (Contrast > 2 && Contrast < 2.3 && ColorDifference > 338 && ColorDifference < 340)
+            else if (Contrast > 2 && Contrast < 2.3 && Difference > 338 && Difference < 340)
             {
 #if DEBUG
                 Console.WriteLine("11 X");
 #endif
                 return false;
             }
-            else if (Contrast > 1.6 && Contrast < 2.3 && ColorDifference > 250 && ColorDifference < 420)
+            else if (Contrast > 1.6 && Contrast < 2.3 && Difference > 250 && Difference < 420)
             {
 #if DEBUG
                 Console.WriteLine("12 X");
 #endif
                 return false;
             }
-            else if (Contrast > 2 && Contrast < 2.5 && ColorDifference > 280 && ColorDifference < 300)
+            else if (Contrast > 2 && Contrast < 2.5 && Difference > 280 && Difference < 300)
             {
 #if DEBUG
                 Console.WriteLine("15 X");
 #endif
                 return false;
             }
-            else if (Contrast > 1.5 && Contrast < 2.5 && ColorDifference > 250 && ColorDifference < 340)
+            else if (Contrast > 1.5 && Contrast < 2.5 && Difference > 250 && Difference < 340)
             {
 #if DEBUG
                 Console.WriteLine("6");
 #endif
                 return true;
             }
-            else if (Contrast >= 3 && Contrast < 5.6 && ColorDifference >= 400 && ColorDifference < 472)
+            else if (Contrast >= 3 && Contrast < 5.6 && Difference >= 400 && Difference < 472)
             {
 #if DEBUG
                 Console.WriteLine("14 X");
 #endif
                 return false;
             }
-            else if (Contrast >= 2 && Contrast < 15 && ColorDifference >= 400 && ColorDifference < 500)
+            else if (Contrast >= 2 && Contrast < 15 && Difference >= 400 && Difference < 500)
             {
 #if DEBUG
                 Console.WriteLine("4");
 #endif
                 return true;
             }
-            else if (Contrast > 2.5 && Contrast < 2.7 && ColorDifference > 550 && ColorDifference < 580)
+            else if (Contrast > 2.5 && Contrast < 2.7 && Difference > 550 && Difference < 580)
             {
 #if DEBUG
                 Console.WriteLine("12 X");
@@ -177,7 +177,7 @@ namespace CEETimerCSharpWinForms.Modules
 #endif
                 return true;
             }
-            else if (ColorDifference < 400)
+            else if (Difference < 400)
             {
 #if DEBUG
                 Console.WriteLine("8 X");
@@ -189,7 +189,7 @@ namespace CEETimerCSharpWinForms.Modules
 #if DEBUG
                 Console.WriteLine("9 I");
 #endif
-                return Contrast >= 2 && ColorDifference >= 500 && ColorDifference < 1500;
+                return Contrast >= 2 && Difference >= 500 && Difference < 1500;
             }
             #endregion
         }

@@ -95,7 +95,7 @@
             this.LinkFeedback.TabStop = true;
             this.LinkFeedback.Text = "反馈";
             this.LinkFeedback.VisitedLinkColor = System.Drawing.Color.Blue;
-            this.LinkFeedback.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LabelLink_LinkClicked);
+            this.LinkFeedback.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkLabels_LinkClicked);
             // 
             // LinkGitHub
             // 
@@ -108,7 +108,7 @@
             this.LinkGitHub.TabStop = true;
             this.LinkGitHub.Text = "GitHub";
             this.LinkGitHub.VisitedLinkColor = System.Drawing.Color.Blue;
-            this.LinkGitHub.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LabelLink_LinkClicked);
+            this.LinkGitHub.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkLabels_LinkClicked);
             // 
             // PicBoxLogo
             // 

@@ -39,7 +39,7 @@ namespace CEETimerCSharpWinForms.Forms
             }
         }
 
-        private void LabelLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void LinkLabels_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {

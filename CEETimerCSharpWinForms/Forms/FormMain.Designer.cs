@@ -30,19 +30,19 @@
         {
             this.components = new System.ComponentModel.Container();
             this.LabelCountdown = new System.Windows.Forms.Label();
-            this.ContextMenuStripMain = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.ContextMenuSettings = new System.Windows.Forms.ToolStripMenuItem();
-            this.ContextMenuAbout = new System.Windows.Forms.ToolStripMenuItem();
+            this.ContextMenuMain = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.ContextSettings = new System.Windows.Forms.ToolStripMenuItem();
+            this.ContextAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripSeparatorMain = new System.Windows.Forms.ToolStripSeparator();
-            this.ContextMenuOpenDir = new System.Windows.Forms.ToolStripMenuItem();
-            this.ContextMenuStripMain.SuspendLayout();
+            this.ContextOpenDir = new System.Windows.Forms.ToolStripMenuItem();
+            this.ContextMenuMain.SuspendLayout();
             this.SuspendLayout();
             // 
             // LabelCountdown
             // 
             this.LabelCountdown.AutoSize = true;
             this.LabelCountdown.BackColor = System.Drawing.Color.Transparent;
-            this.LabelCountdown.ContextMenuStrip = this.ContextMenuStripMain;
+            this.LabelCountdown.ContextMenuStrip = this.ContextMenuMain;
             this.LabelCountdown.Dock = System.Windows.Forms.DockStyle.Fill;
             this.LabelCountdown.ForeColor = System.Drawing.Color.Black;
             this.LabelCountdown.Location = new System.Drawing.Point(0, 0);
@@ -51,43 +51,43 @@
             this.LabelCountdown.TabIndex = 0;
             this.LabelCountdown.Text = "欢迎使用高考倒计时, 正在加载中...";
             // 
-            // ContextMenuStripMain
+            // ContextMenuMain
             // 
-            this.ContextMenuStripMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ContextMenuSettings,
-            this.ContextMenuAbout,
+            this.ContextMenuMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ContextSettings,
+            this.ContextAbout,
             this.ToolStripSeparatorMain,
-            this.ContextMenuOpenDir});
-            this.ContextMenuStripMain.Name = "Context";
-            this.ContextMenuStripMain.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.ContextMenuStripMain.Size = new System.Drawing.Size(183, 76);
+            this.ContextOpenDir});
+            this.ContextMenuMain.Name = "Context";
+            this.ContextMenuMain.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
+            this.ContextMenuMain.Size = new System.Drawing.Size(183, 76);
             // 
-            // ContextMenuSettings
+            // ContextSettings
             // 
-            this.ContextMenuSettings.Name = "ContextMenuSettings";
-            this.ContextMenuSettings.Size = new System.Drawing.Size(182, 22);
-            this.ContextMenuSettings.Text = "设置(&S)";
-            this.ContextMenuSettings.Click += new System.EventHandler(this.ContextMenuSettings_Click);
+            this.ContextSettings.Name = "ContextSettings";
+            this.ContextSettings.Size = new System.Drawing.Size(182, 22);
+            this.ContextSettings.Text = "设置(&S)";
+            this.ContextSettings.Click += new System.EventHandler(this.ContextSettings_Click);
             // 
-            // ContextMenuAbout
+            // ContextAbout
             // 
-            this.ContextMenuAbout.Name = "ContextMenuAbout";
-            this.ContextMenuAbout.ShowShortcutKeys = false;
-            this.ContextMenuAbout.Size = new System.Drawing.Size(182, 22);
-            this.ContextMenuAbout.Text = "关于(&A)";
-            this.ContextMenuAbout.Click += new System.EventHandler(this.ContextMenuAbout_Click);
+            this.ContextAbout.Name = "ContextAbout";
+            this.ContextAbout.ShowShortcutKeys = false;
+            this.ContextAbout.Size = new System.Drawing.Size(182, 22);
+            this.ContextAbout.Text = "关于(&A)";
+            this.ContextAbout.Click += new System.EventHandler(this.ContextAbout_Click);
             // 
             // ToolStripSeparatorMain
             // 
             this.ToolStripSeparatorMain.Name = "ToolStripSeparatorMain";
             this.ToolStripSeparatorMain.Size = new System.Drawing.Size(179, 6);
             // 
-            // ContextMenuOpenDir
+            // ContextOpenDir
             // 
-            this.ContextMenuOpenDir.Name = "ContextMenuOpenDir";
-            this.ContextMenuOpenDir.Size = new System.Drawing.Size(182, 22);
-            this.ContextMenuOpenDir.Text = "打开所在文件夹(&O)";
-            this.ContextMenuOpenDir.Click += new System.EventHandler(this.ContextMenuOpenDir_Click);
+            this.ContextOpenDir.Name = "ContextOpenDir";
+            this.ContextOpenDir.Size = new System.Drawing.Size(182, 22);
+            this.ContextOpenDir.Text = "打开所在文件夹(&O)";
+            this.ContextOpenDir.Click += new System.EventHandler(this.ContextOpenDir_Click);
             // 
             // FormMain
             // 
@@ -96,7 +96,7 @@
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(204, 23);
-            this.ContextMenuStrip = this.ContextMenuStripMain;
+            this.ContextMenuStrip = this.ContextMenuMain;
             this.ControlBox = false;
             this.Controls.Add(this.LabelCountdown);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -111,7 +111,7 @@
             this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMain_FormClosing);
             this.Load += new System.EventHandler(this.FormMain_Load);
-            this.ContextMenuStripMain.ResumeLayout(false);
+            this.ContextMenuMain.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -120,11 +120,11 @@
         #endregion
 
         private System.Windows.Forms.Label LabelCountdown;
-        private System.Windows.Forms.ContextMenuStrip ContextMenuStripMain;
-        private System.Windows.Forms.ToolStripMenuItem ContextMenuAbout;
-        private System.Windows.Forms.ToolStripMenuItem ContextMenuSettings;
+        private System.Windows.Forms.ContextMenuStrip ContextMenuMain;
+        private System.Windows.Forms.ToolStripMenuItem ContextAbout;
+        private System.Windows.Forms.ToolStripMenuItem ContextSettings;
         private System.Windows.Forms.ToolStripSeparator ToolStripSeparatorMain;
-        private System.Windows.Forms.ToolStripMenuItem ContextMenuOpenDir;
+        private System.Windows.Forms.ToolStripMenuItem ContextOpenDir;
     }
 }
 

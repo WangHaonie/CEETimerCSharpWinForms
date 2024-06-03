@@ -68,9 +68,9 @@ namespace CEETimerCSharpWinForms.Forms
 
             if (Extensions.DpiRatio != 1)
             {
-                AlignControlPos(CheckBoxShowOnly, ComboBoxShowOnly, -1);
+                AlignControlPos(CheckBoxShowXOnly, ComboBoxShowXOnly, -1);
                 AlignControlPos(LabelScreens, ComboBoxScreens);
-                AlignControlPos(LabelScreensHint, ComboBoxPosition);
+                AlignControlPos(LabelChar1, ComboBoxPosition);
                 AlignControlPos(TextBoxExamName, LabelExamNameCounter);
             }
 
@@ -84,16 +84,16 @@ namespace CEETimerCSharpWinForms.Forms
             var Max = ConfigPolicy.MaxExamNameLength;
             LabelPptsvc.Text = "用于解决内置白板打开后底部工具栏会消失的问题。(或者\n你也可以开启拖动功能，将倒计时窗口拖动到其他位置)";
             LabelSyncTime.Text = "将当前系统时间与网络同步以确保准确无误。\n注意: 此项会将系统的 NTP 服务器设置为 ntp1.aliyun.com, 并\n且将自动启动 Windows Time 服务, 请谨慎操作。";
-            LabelLine14.Text = "请点击色块来选择文字、背景颜色。将一个色块拖放到其它\n色块上可快速应用相同的颜色。";
+            LabelLine01.Text = "请点击色块来选择文字、背景颜色。将一个色块拖放到其它\n色块上可快速应用相同的颜色。";
             LabelExamNameCounter.Text = $"0/{Max}";
             LabelExamNameCounter.ForeColor = Color.Red;
             TextBoxExamName.MaxLength = Max;
             GBoxExamName.Text = $"考试名称 ({ConfigPolicy.MinExamNameLength}~{Max}字)";
 
             List<PairItems<string, int>> Shows = [new("天", 0), new("时", 1), new("分", 2), new("秒", 3)];
-            ComboBoxShowOnly.DataSource = Shows;
-            ComboBoxShowOnly.DisplayMember = "Item1";
-            ComboBoxShowOnly.ValueMember = "Item2";
+            ComboBoxShowXOnly.DataSource = Shows;
+            ComboBoxShowXOnly.DisplayMember = "Item1";
+            ComboBoxShowXOnly.ValueMember = "Item2";
 
             List<PairItems<string, int>> Positions = [new("左上角", 0), new("左部中央", 1), new("左下角", 2), new("上部中央", 3), new("中央", 4), new("下部中央", 5), new("右上角", 6), new("右部中央", 7), new("右下角", 8)];
             ComboBoxPosition.DataSource = Positions;
@@ -127,24 +127,24 @@ namespace CEETimerCSharpWinForms.Forms
         private void RefreshSettings()
         {
             CheckBoxStartup.Checked = (Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true)?.GetValue(LaunchManager.AppNameEn) is string regvalue) && regvalue.Equals($"\"{LaunchManager.CurrentExecutable}\"", StringComparison.OrdinalIgnoreCase);
-            CheckBoxSetTopMost.Checked = IsTopMost;
+            CheckBoxTopMost.Checked = IsTopMost;
             TextBoxExamName.Text = ExamName;
             DTPExamStart.Value = ExamStartTime;
             DTPExamEnd.Value = ExamEndTime;
-            CheckBoxEnableMO.Checked = IsMemoryOptimizationEnabled;
-            CheckBoxEnableDraggable.Checked = IsDraggable;
-            CheckBoxShowOnly.Checked = IsShowXOnly;
-            CheckBoxSetRounding.Checked = IsRounding;
+            CheckBoxMemOpti.Checked = IsMemoryOptimizationEnabled;
+            CheckBoxDraggable.Checked = IsDraggable;
+            CheckBoxShowXOnly.Checked = IsShowXOnly;
+            CheckBoxRounding.Checked = IsRounding;
             CheckBoxShowEnd.Checked = DTPExamEnd.Enabled = IsShowEnd;
             CheckBoxShowPast.Checked = IsShowPast;
-            CheckBoxSwPptSvc.Checked = IsPPTService;
-            CheckBoxSetUniTopMost.Checked = TopMost;
+            CheckBoxPptSvc.Checked = IsPPTService;
+            CheckBoxUniTopMost.Checked = TopMost;
             ComboBoxScreens.SelectedValue = ScreenIndex;
             ComboBoxPosition.SelectedValue = PositionIndex;
-            ComboBoxShowOnly.SelectedValue = ShowOnlyIndex;
+            ComboBoxShowXOnly.SelectedValue = ShowOnlyIndex;
             ChangeWorkingStyle(WorkingArea.ChangeFont, NewFont: new(CountdownFont, CountdownFontStyle));
             ChangePptsvcCtrlStyle(null, EventArgs.Empty);
-            ComboBoxShowOnly.SelectedIndex = IsShowXOnly ? ShowOnlyIndex : 0;
+            ComboBoxShowXOnly.SelectedIndex = IsShowXOnly ? ShowOnlyIndex : 0;
         }
 
         private void AlignControlPos(Control Reference, Control Target, int Adjust = 0)
@@ -167,28 +167,28 @@ namespace CEETimerCSharpWinForms.Forms
             LabelExamNameCounter.ForeColor = (CharCount > Max || CharCount < ConfigPolicy.MinExamNameLength) ? Color.Red : Color.Black;
         }
 
-        private void CheckBoxShowOnly_CheckedChanged(object sender, EventArgs e)
+        private void CheckBoxShowXOnly_CheckedChanged(object sender, EventArgs e)
         {
             FormSettings_SettingsChanged(sender, e);
-            CheckBoxSetRounding.Enabled = ComboBoxShowOnly.Enabled = CheckBoxShowOnly.Checked;
-            ComboBoxShowOnly.SelectedIndex = CheckBoxShowOnly.Checked ? ShowOnlyIndex : 0;
+            CheckBoxRounding.Enabled = ComboBoxShowXOnly.Enabled = CheckBoxShowXOnly.Checked;
+            ComboBoxShowXOnly.SelectedIndex = CheckBoxShowXOnly.Checked ? ShowOnlyIndex : 0;
 
-            if (CheckBoxSetRounding.Checked && !CheckBoxShowOnly.Checked)
+            if (CheckBoxRounding.Checked && !CheckBoxShowXOnly.Checked)
             {
-                CheckBoxSetRounding.Checked = false;
-                CheckBoxSetRounding.Enabled = false;
+                CheckBoxRounding.Checked = false;
+                CheckBoxRounding.Enabled = false;
             }
         }
 
-        private void CheckBoxSetTopMost_CheckedChanged(object sender, EventArgs e)
+        private void CheckBoxTopMost_CheckedChanged(object sender, EventArgs e)
         {
             ChangePptsvcCtrlStyle(sender, e);
-            CheckBoxSetUniTopMost.Enabled = CheckBoxSetTopMost.Checked;
+            CheckBoxUniTopMost.Enabled = CheckBoxTopMost.Checked;
 
-            if (CheckBoxSetUniTopMost.Checked && !CheckBoxSetTopMost.Checked)
+            if (CheckBoxUniTopMost.Checked && !CheckBoxTopMost.Checked)
             {
-                CheckBoxSetUniTopMost.Checked = false;
-                CheckBoxSetUniTopMost.Enabled = false;
+                CheckBoxUniTopMost.Checked = false;
+                CheckBoxUniTopMost.Enabled = false;
             }
         }
 
@@ -205,7 +205,7 @@ namespace CEETimerCSharpWinForms.Forms
             CheckBoxShowEnd.Enabled = !CheckBoxShowPast.Checked;
         }
 
-        private void ButtonChooseFont_Click(object sender, EventArgs e)
+        private void ButtonFont_Click(object sender, EventArgs e)
         {
             FontDialog FontDialogMain = new()
             {
@@ -228,7 +228,7 @@ namespace CEETimerCSharpWinForms.Forms
             FontDialogMain.Dispose();
         }
 
-        private void ButtonRestoreFont_Click(object sender, EventArgs e)
+        private void ButtonDefaultFont_Click(object sender, EventArgs e)
         {
             ChangeWorkingStyle(WorkingArea.ChangeFont, NewFont: new((Font)fontConverter.ConvertFromString(ConfigPolicy.DefaultFont), FontStyle.Bold));
             FormSettings_SettingsChanged(sender, e);
@@ -293,7 +293,7 @@ namespace CEETimerCSharpWinForms.Forms
             catch { }
         }
 
-        private void ButtonColorDefault_Click(object sender, EventArgs e)
+        private void ButtonDefaultColor_Click(object sender, EventArgs e)
         {
             FormSettings_SettingsChanged(sender, e);
             ChangeWorkingStyle(WorkingArea.DefaultColor);
@@ -337,12 +337,12 @@ namespace CEETimerCSharpWinForms.Forms
             }
         }
 
-        private void CheckBoxEnableDraggable_CheckedChanged(object sender, EventArgs e)
+        private void CheckBoxDraggable_CheckedChanged(object sender, EventArgs e)
         {
             ChangePptsvcCtrlStyle(sender, e);
-            ComboBoxScreens.SelectedValue = CheckBoxEnableDraggable.Checked ? 0 : ScreenIndex;
-            ComboBoxPosition.SelectedValue = CheckBoxEnableDraggable.Checked ? 0 : PositionIndex;
-            LabelScreens.Enabled = LabelScreensHint.Enabled = ComboBoxScreens.Enabled = !CheckBoxEnableDraggable.Checked;
+            ComboBoxScreens.SelectedValue = CheckBoxDraggable.Checked ? 0 : ScreenIndex;
+            ComboBoxPosition.SelectedValue = CheckBoxDraggable.Checked ? 0 : PositionIndex;
+            LabelScreens.Enabled = LabelChar1.Enabled = ComboBoxScreens.Enabled = !CheckBoxDraggable.Checked;
         }
 
         private void ComboBoxes_DropDown(object sender, EventArgs e)
@@ -372,18 +372,18 @@ namespace CEETimerCSharpWinForms.Forms
             #endregion
         }
 
-        private void ComboBoxShowOnly_SelectedIndexChanged(object sender, EventArgs e)
+        private void ComboBoxShowXOnly_SelectedIndexChanged(object sender, EventArgs e)
         {
             FormSettings_SettingsChanged(sender, e);
-            CheckBoxSetRounding.Visible = ComboBoxShowOnly.SelectedIndex == 0;
-            CheckBoxSetRounding.Checked = ComboBoxShowOnly.SelectedIndex == 0 && IsRounding;
+            CheckBoxRounding.Visible = ComboBoxShowXOnly.SelectedIndex == 0;
+            CheckBoxRounding.Checked = ComboBoxShowXOnly.SelectedIndex == 0 && IsRounding;
         }
 
         private void ComboBoxScreens_SelectedIndexChanged(object sender, EventArgs e)
         {
             FormSettings_SettingsChanged(sender, e);
 
-            ComboBoxPosition.Enabled = !CheckBoxEnableDraggable.Checked && ComboBoxScreens.SelectedIndex != 0;
+            ComboBoxPosition.Enabled = !CheckBoxDraggable.Checked && ComboBoxScreens.SelectedIndex != 0;
             ComboBoxPosition.SelectedIndex = ComboBoxPosition.Enabled ? PositionIndex : 0;
         }
 
@@ -433,9 +433,9 @@ namespace CEETimerCSharpWinForms.Forms
         {
             FormSettings_SettingsChanged(sender, e);
 
-            var a = CheckBoxSetTopMost.Checked;
+            var a = CheckBoxTopMost.Checked;
             var b = ComboBoxPosition.SelectedIndex == 0;
-            var c = CheckBoxEnableDraggable.Checked;
+            var c = CheckBoxDraggable.Checked;
 
             if (!a)
             {
@@ -575,14 +575,14 @@ namespace CEETimerCSharpWinForms.Forms
                     ButtonRestart.Text = IsWorking ? "点击关闭(&L)" : "点击重启(&R)";
                     break;
                 case WorkingArea.SetPPTService:
-                    CheckBoxSwPptSvc.Enabled = IsWorking;
-                    CheckBoxSwPptSvc.Checked = IsWorking && IsPPTService;
-                    CheckBoxSwPptSvc.Text = IsWorking ? "启用此功能(&X)" : $"此项暂不可用，因为倒计时没有{(SubCase == 0 ? "顶置" : "在左上角")}。";
+                    CheckBoxPptSvc.Enabled = IsWorking;
+                    CheckBoxPptSvc.Checked = IsWorking && IsPPTService;
+                    CheckBoxPptSvc.Text = IsWorking ? "启用此功能(&X)" : $"此项暂不可用，因为倒计时没有{(SubCase == 0 ? "顶置" : "在左上角")}。";
                     break;
                 case WorkingArea.ChangeFont:
                     CountdownFont = NewFont;
                     CountdownFontStyle = NewFont.Style;
-                    LabelFontInfo.Text = $"当前字体: {NewFont.Name}, {NewFont.Size}pt, {NewFont.Style}";
+                    LabelFont.Text = $"当前字体: {NewFont.Name}, {NewFont.Size}pt, {NewFont.Style}";
                     break;
                 case WorkingArea.LastColor:
                     LabelPreviewColor1.ForeColor = LabelColor12.BackColor = CountdownColors[0].Item1;
@@ -633,18 +633,18 @@ namespace CEETimerCSharpWinForms.Forms
                     { ConfigItems.KExamName, ExamName },
                     { ConfigItems.KStartTime, $"{DTPExamStart.Value:yyyyMMddHHmmss}" },
                     { ConfigItems.KEndTime, $"{DTPExamEnd.Value:yyyyMMddHHmmss}" },
-                    { ConfigItems.KMemOpti, $"{CheckBoxEnableMO.Checked}" },
-                    { ConfigItems.KTopMost, $"{CheckBoxSetTopMost.Checked}" },
-                    { ConfigItems.KShowOnly, $"{CheckBoxShowOnly.Checked}" },
-                    { ConfigItems.KShowValue, $"{ComboBoxShowOnly.SelectedValue}" },
-                    { ConfigItems.KRounding, $"{CheckBoxSetRounding.Checked}" },
+                    { ConfigItems.KMemOpti, $"{CheckBoxMemOpti.Checked}" },
+                    { ConfigItems.KTopMost, $"{CheckBoxTopMost.Checked}" },
+                    { ConfigItems.KShowOnly, $"{CheckBoxShowXOnly.Checked}" },
+                    { ConfigItems.KShowValue, $"{ComboBoxShowXOnly.SelectedValue}" },
+                    { ConfigItems.KRounding, $"{CheckBoxRounding.Checked}" },
                     { ConfigItems.KShowEnd, $"{CheckBoxShowEnd.Checked}" },
                     { ConfigItems.KShowPast, $"{CheckBoxShowPast.Checked}" },
-                    { ConfigItems.KUniTopMost, $"{CheckBoxSetUniTopMost.Checked}" },
+                    { ConfigItems.KUniTopMost, $"{CheckBoxUniTopMost.Checked}" },
                     { ConfigItems.KScreen, $"{ComboBoxScreens.SelectedValue}" },
                     { ConfigItems.KPosition, $"{ComboBoxPosition.SelectedValue}" },
-                    { ConfigItems.KDraggable, $"{CheckBoxEnableDraggable.Checked}" },
-                    { ConfigItems.KSeewoPptSvc, $"{CheckBoxSwPptSvc.Checked}" },
+                    { ConfigItems.KDraggable, $"{CheckBoxDraggable.Checked}" },
+                    { ConfigItems.KSeewoPptSvc, $"{CheckBoxPptSvc.Checked}" },
                     { ConfigItems.KFont, $"{CountdownFont.Name}, {CountdownFont.Size}pt" },
                     { ConfigItems.KFontStyle, $"{CountdownFontStyle}" },
                     { ConfigItems.KFore1, $"{LabelColor12.BackColor.R},{LabelColor12.BackColor.G},{LabelColor12.BackColor.B}" },
