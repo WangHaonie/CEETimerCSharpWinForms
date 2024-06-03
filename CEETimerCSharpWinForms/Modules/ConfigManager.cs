@@ -162,7 +162,7 @@ namespace CEETimerCSharpWinForms.Modules
         public const string KUniTopMost = "UniTopMost";
         public const string KScreen = "Screen";
         public const string KPosition = "Position";
-        public const string KDragable = "Dragable";
+        public const string KDraggable = "Draggable";
         public const string KSeewoPptSvc = "SeewoPptSvc";
         public const string KFont = "Font";
         public const string KFontStyle = "FontStyle";

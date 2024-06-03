@@ -132,7 +132,7 @@ namespace CEETimerCSharpWinForms.Forms
             DTPExamStart.Value = ExamStartTime;
             DTPExamEnd.Value = ExamEndTime;
             CheckBoxEnableMO.Checked = IsMemoryOptimizationEnabled;
-            CheckBoxEnableDragable.Checked = IsDraggable;
+            CheckBoxEnableDraggable.Checked = IsDraggable;
             CheckBoxShowOnly.Checked = IsShowXOnly;
             CheckBoxSetRounding.Checked = IsRounding;
             CheckBoxShowEnd.Checked = DTPExamEnd.Enabled = IsShowEnd;
@@ -337,12 +337,12 @@ namespace CEETimerCSharpWinForms.Forms
             }
         }
 
-        private void CheckBoxEnableDragable_CheckedChanged(object sender, EventArgs e)
+        private void CheckBoxEnableDraggable_CheckedChanged(object sender, EventArgs e)
         {
             ChangePptsvcCtrlStyle(sender, e);
-            ComboBoxScreens.SelectedValue = CheckBoxEnableDragable.Checked ? 0 : ScreenIndex;
-            ComboBoxPosition.SelectedValue = CheckBoxEnableDragable.Checked ? 0 : PositionIndex;
-            LabelScreens.Enabled = LabelScreensHint.Enabled = ComboBoxScreens.Enabled = !CheckBoxEnableDragable.Checked;
+            ComboBoxScreens.SelectedValue = CheckBoxEnableDraggable.Checked ? 0 : ScreenIndex;
+            ComboBoxPosition.SelectedValue = CheckBoxEnableDraggable.Checked ? 0 : PositionIndex;
+            LabelScreens.Enabled = LabelScreensHint.Enabled = ComboBoxScreens.Enabled = !CheckBoxEnableDraggable.Checked;
         }
 
         private void ComboBoxes_DropDown(object sender, EventArgs e)
@@ -383,7 +383,7 @@ namespace CEETimerCSharpWinForms.Forms
         {
             FormSettings_SettingsChanged(sender, e);
 
-            ComboBoxPosition.Enabled = !CheckBoxEnableDragable.Checked && ComboBoxScreens.SelectedIndex != 0;
+            ComboBoxPosition.Enabled = !CheckBoxEnableDraggable.Checked && ComboBoxScreens.SelectedIndex != 0;
             ComboBoxPosition.SelectedIndex = ComboBoxPosition.Enabled ? PositionIndex : 0;
         }
 
@@ -435,7 +435,7 @@ namespace CEETimerCSharpWinForms.Forms
 
             var a = CheckBoxSetTopMost.Checked;
             var b = ComboBoxPosition.SelectedIndex == 0;
-            var c = CheckBoxEnableDragable.Checked;
+            var c = CheckBoxEnableDraggable.Checked;
 
             if (!a)
             {
@@ -643,7 +643,7 @@ namespace CEETimerCSharpWinForms.Forms
                     { ConfigItems.KUniTopMost, $"{CheckBoxSetUniTopMost.Checked}" },
                     { ConfigItems.KScreen, $"{ComboBoxScreens.SelectedValue}" },
                     { ConfigItems.KPosition, $"{ComboBoxPosition.SelectedValue}" },
-                    { ConfigItems.KDragable, $"{CheckBoxEnableDragable.Checked}" },
+                    { ConfigItems.KDraggable, $"{CheckBoxEnableDraggable.Checked}" },
                     { ConfigItems.KSeewoPptSvc, $"{CheckBoxSwPptSvc.Checked}" },
                     { ConfigItems.KFont, $"{CountdownFont.Name}, {CountdownFont.Size}pt" },
                     { ConfigItems.KFontStyle, $"{CountdownFontStyle}" },

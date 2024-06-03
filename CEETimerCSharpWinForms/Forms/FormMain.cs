@@ -102,7 +102,7 @@ namespace CEETimerCSharpWinForms.Forms
             IsRounding = bool.TryParse(configManager.ReadConfig(ConfigItems.KRounding), out bool tmpe) && tmpe;
             IsShowPast = bool.TryParse(configManager.ReadConfig(ConfigItems.KShowPast), out bool tmpg) && tmpg;
             IsShowEnd = bool.TryParse(configManager.ReadConfig(ConfigItems.KShowEnd), out bool tmpf) && tmpf;
-            IsDraggable = bool.TryParse(configManager.ReadConfig(ConfigItems.KDragable), out bool tmph) && tmph;
+            IsDraggable = bool.TryParse(configManager.ReadConfig(ConfigItems.KDraggable), out bool tmph) && tmph;
             IsUniTopMost = bool.TryParse(configManager.ReadConfig(ConfigItems.KUniTopMost), out bool tmpi) && tmpi;
             IsPPTService = bool.TryParse(configManager.ReadConfig(ConfigItems.KSeewoPptSvc), out bool tmpj) && tmpj;
             ScreenIndex = int.TryParse(configManager.ReadConfig(ConfigItems.KScreen), out int tmpk) ? tmpk : 0;

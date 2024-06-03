@@ -56,9 +56,9 @@
             this.CheckBoxShowEnd = new System.Windows.Forms.CheckBox();
             this.CheckBoxSetRounding = new System.Windows.Forms.CheckBox();
             this.CheckBoxShowOnly = new System.Windows.Forms.CheckBox();
-            this.GBoxSetDragable = new System.Windows.Forms.GroupBox();
+            this.GBoxSetDraggable = new System.Windows.Forms.GroupBox();
             this.ComboBoxPosition = new System.Windows.Forms.ComboBox();
-            this.CheckBoxEnableDragable = new System.Windows.Forms.CheckBox();
+            this.CheckBoxEnableDraggable = new System.Windows.Forms.CheckBox();
             this.LabelScreensHint = new System.Windows.Forms.Label();
             this.LabelScreens = new System.Windows.Forms.Label();
             this.ComboBoxScreens = new System.Windows.Forms.ComboBox();
@@ -100,7 +100,7 @@
             this.TabPageDisplay.SuspendLayout();
             this.GBoxPPTService.SuspendLayout();
             this.GBoxContent.SuspendLayout();
-            this.GBoxSetDragable.SuspendLayout();
+            this.GBoxSetDraggable.SuspendLayout();
             this.TabPageAppearance.SuspendLayout();
             this.GBoxColors.SuspendLayout();
             this.GBoxChangeFont.SuspendLayout();
@@ -311,7 +311,7 @@
             // 
             this.TabPageDisplay.Controls.Add(this.GBoxPPTService);
             this.TabPageDisplay.Controls.Add(this.GBoxContent);
-            this.TabPageDisplay.Controls.Add(this.GBoxSetDragable);
+            this.TabPageDisplay.Controls.Add(this.GBoxSetDraggable);
             this.TabPageDisplay.Location = new System.Drawing.Point(4, 24);
             this.TabPageDisplay.Name = "TabPageDisplay";
             this.TabPageDisplay.Size = new System.Drawing.Size(369, 278);
@@ -420,19 +420,19 @@
             this.CheckBoxShowOnly.UseVisualStyleBackColor = true;
             this.CheckBoxShowOnly.CheckedChanged += new System.EventHandler(this.CheckBoxShowOnly_CheckedChanged);
             // 
-            // GBoxSetDragable
+            // GBoxSetDraggable
             // 
-            this.GBoxSetDragable.Controls.Add(this.ComboBoxPosition);
-            this.GBoxSetDragable.Controls.Add(this.CheckBoxEnableDragable);
-            this.GBoxSetDragable.Controls.Add(this.LabelScreensHint);
-            this.GBoxSetDragable.Controls.Add(this.LabelScreens);
-            this.GBoxSetDragable.Controls.Add(this.ComboBoxScreens);
-            this.GBoxSetDragable.Location = new System.Drawing.Point(7, 110);
-            this.GBoxSetDragable.Name = "GBoxSetDragable";
-            this.GBoxSetDragable.Size = new System.Drawing.Size(353, 71);
-            this.GBoxSetDragable.TabIndex = 4;
-            this.GBoxSetDragable.TabStop = false;
-            this.GBoxSetDragable.Text = "多显示器与拖动";
+            this.GBoxSetDraggable.Controls.Add(this.ComboBoxPosition);
+            this.GBoxSetDraggable.Controls.Add(this.CheckBoxEnableDraggable);
+            this.GBoxSetDraggable.Controls.Add(this.LabelScreensHint);
+            this.GBoxSetDraggable.Controls.Add(this.LabelScreens);
+            this.GBoxSetDraggable.Controls.Add(this.ComboBoxScreens);
+            this.GBoxSetDraggable.Location = new System.Drawing.Point(7, 110);
+            this.GBoxSetDraggable.Name = "GBoxSetDraggable";
+            this.GBoxSetDraggable.Size = new System.Drawing.Size(353, 71);
+            this.GBoxSetDraggable.TabIndex = 4;
+            this.GBoxSetDraggable.TabStop = false;
+            this.GBoxSetDraggable.Text = "多显示器与拖动";
             // 
             // ComboBoxPosition
             // 
@@ -446,16 +446,16 @@
             this.ComboBoxPosition.DropDown += new System.EventHandler(this.ComboBoxes_DropDown);
             this.ComboBoxPosition.SelectedIndexChanged += new System.EventHandler(this.ChangePptsvcCtrlStyle);
             // 
-            // CheckBoxEnableDragable
+            // CheckBoxEnableDraggable
             // 
-            this.CheckBoxEnableDragable.AutoSize = true;
-            this.CheckBoxEnableDragable.Location = new System.Drawing.Point(9, 45);
-            this.CheckBoxEnableDragable.Name = "CheckBoxEnableDragable";
-            this.CheckBoxEnableDragable.Size = new System.Drawing.Size(159, 19);
-            this.CheckBoxEnableDragable.TabIndex = 3;
-            this.CheckBoxEnableDragable.Text = "允许拖动倒计时窗口(&D)";
-            this.CheckBoxEnableDragable.UseVisualStyleBackColor = true;
-            this.CheckBoxEnableDragable.CheckedChanged += new System.EventHandler(this.CheckBoxEnableDragable_CheckedChanged);
+            this.CheckBoxEnableDraggable.AutoSize = true;
+            this.CheckBoxEnableDraggable.Location = new System.Drawing.Point(9, 45);
+            this.CheckBoxEnableDraggable.Name = "CheckBoxEnableDraggable";
+            this.CheckBoxEnableDraggable.Size = new System.Drawing.Size(159, 19);
+            this.CheckBoxEnableDraggable.TabIndex = 3;
+            this.CheckBoxEnableDraggable.Text = "允许拖动倒计时窗口(&D)";
+            this.CheckBoxEnableDraggable.UseVisualStyleBackColor = true;
+            this.CheckBoxEnableDraggable.CheckedChanged += new System.EventHandler(this.CheckBoxEnableDraggable_CheckedChanged);
             // 
             // LabelScreensHint
             // 
@@ -824,8 +824,8 @@
             this.GBoxPPTService.PerformLayout();
             this.GBoxContent.ResumeLayout(false);
             this.GBoxContent.PerformLayout();
-            this.GBoxSetDragable.ResumeLayout(false);
-            this.GBoxSetDragable.PerformLayout();
+            this.GBoxSetDraggable.ResumeLayout(false);
+            this.GBoxSetDraggable.PerformLayout();
             this.TabPageAppearance.ResumeLayout(false);
             this.GBoxColors.ResumeLayout(false);
             this.GBoxColors.PerformLayout();
@@ -873,8 +873,8 @@
         private System.Windows.Forms.CheckBox CheckBoxShowPast;
         private System.Windows.Forms.CheckBox CheckBoxShowEnd;
         private System.Windows.Forms.CheckBox CheckBoxSetRounding;
-        private System.Windows.Forms.GroupBox GBoxSetDragable;
-        private System.Windows.Forms.CheckBox CheckBoxEnableDragable;
+        private System.Windows.Forms.GroupBox GBoxSetDraggable;
+        private System.Windows.Forms.CheckBox CheckBoxEnableDraggable;
         private System.Windows.Forms.CheckBox CheckBoxSetUniTopMost;
         private System.Windows.Forms.GroupBox GBoxPPTService;
         private System.Windows.Forms.Label LabelPptsvc;
