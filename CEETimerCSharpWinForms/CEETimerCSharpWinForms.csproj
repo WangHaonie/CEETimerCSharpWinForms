@@ -2,8 +2,8 @@
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
-   <LangVersion>12.0</LangVersion>
-   <!--
+    <LangVersion>12.0</LangVersion>
+    <!--
     https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/feature-version-errors#select-the-matching-language-version
     -->
   </PropertyGroup>
@@ -174,7 +174,6 @@
       <DependentUpon>MessageBoxEx.cs</DependentUpon>
     </Compile>
     <Compile Include="Modules\ColorHelper.cs" />
-    <Compile Include="Modules\FormManager.cs" />
     <Compile Include="Modules\PairItems.cs" />
     <Compile Include="Modules\ProcessHelper.cs" />
     <Compile Include="Modules\UpdateChecker.cs" />

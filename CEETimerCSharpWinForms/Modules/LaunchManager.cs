@@ -1,8 +1,10 @@
 ﻿using CEETimerCSharpWinForms.Forms;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -96,6 +98,8 @@ namespace CEETimerCSharpWinForms.Modules
             }
         }
 
+        public static IEnumerable<Form> GetOpenForms() => Application.OpenForms.Cast<Form>();
+
         public static void Shutdown(bool Restart = false)
         {
             ProcessHelper.RunProcess("cmd.exe", $"/c taskkill /f /fi \"PID eq {Process.GetCurrentProcess().Id}\" /im {CurrentExecutableName} {(Restart ? $"& start \"\" \"{CurrentExecutable}\"" : "")}");
@@ -124,7 +128,7 @@ namespace CEETimerCSharpWinForms.Modules
                 {
                     using var PipeServer = new NamedPipeServerStream(PipeName, PipeDirection.InOut);
                     PipeServer.WaitForConnection();
-                    FormManager.ShowLastOpenedForm();
+                    ShowLastForm();
                 }
             }
             catch { }
@@ -160,6 +164,12 @@ namespace CEETimerCSharpWinForms.Modules
             {
                 Shutdown();
             }
+        }
+
+        public static void ShowLastForm()
+        {
+            var LastForm = GetOpenForms().LastOrDefault();
+            LastForm?.Invoke(new Action(LastForm.ReActivate));
         }
     }
 }

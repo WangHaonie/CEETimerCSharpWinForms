@@ -61,7 +61,6 @@ namespace CEETimerCSharpWinForms.Forms
         public FormMain()
         {
             InitializeComponent();
-            FormClosed += (sender, e) => FormManager.Remove(this);
             SizeChanged += FormMain_SizeChanged;
         }
 
@@ -77,7 +76,6 @@ namespace CEETimerCSharpWinForms.Forms
             BackColor = CountdownColors[3].Item2;
             Task.Run(() => UpdateChecker.CheckUpdate(true, this));
             _ = 1.WithDpi(this);
-            FormManager.Add(this);
         }
 
         private void FormMain_SizeChanged(object sender, EventArgs e)
@@ -192,7 +190,7 @@ namespace CEETimerCSharpWinForms.Forms
             ApplyLocation();
             CompatibleWithPPTService();
 
-            foreach (var form in FormManager.OpenForms)
+            foreach (var form in LaunchManager.GetOpenForms())
             {
                 if (form == this) continue;
                 form.TopMost = IsUniTopMost;

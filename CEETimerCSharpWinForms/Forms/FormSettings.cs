@@ -76,7 +76,6 @@ namespace CEETimerCSharpWinForms.Forms
 
             HasSettingsChanged = false;
             ButtonSave.Enabled = false;
-            FormManager.Add(this);
         }
 
         private void InitializeExtra()
@@ -424,7 +423,6 @@ namespace CEETimerCSharpWinForms.Forms
             }
 
             ChangeWorkingStyle(WorkingArea.Funny, false);
-            FormManager.Remove(this);
         }
 
         private void ChangePptsvcCtrlStyle(object sender, EventArgs e)
