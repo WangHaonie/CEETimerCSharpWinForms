@@ -163,12 +163,12 @@ namespace CEETimerCSharpWinForms.Modules
         public const string KEndTime = "EndTime";
         public const string KMemOpti = "MemOpti";
         public const string KTopMost = "TopMost";
+        public const string KUniTopMost = "UniTopMost";
         public const string KShowXOnly = "ShowXOnly";
-        public const string KShowValue = "Show";
+        public const string KShowValue = "X";
         public const string KRounding = "Rounding";
         public const string KShowEnd = "ShowEnd";
         public const string KShowPast = "ShowPast";
-        public const string KUniTopMost = "UniTopMost";
         public const string KScreen = "Screen";
         public const string KPosition = "Position";
         public const string KDraggable = "Draggable";
