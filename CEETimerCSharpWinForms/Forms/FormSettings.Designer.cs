@@ -65,20 +65,20 @@
             this.TabPageAppearance = new System.Windows.Forms.TabPage();
             this.GBoxColors = new System.Windows.Forms.GroupBox();
             this.LabelPreviewColor4 = new System.Windows.Forms.Label();
-            this.LabelColor42 = new System.Windows.Forms.Label();
             this.LabelColor41 = new System.Windows.Forms.Label();
+            this.LabelColor42 = new System.Windows.Forms.Label();
             this.LabelLine05 = new System.Windows.Forms.Label();
             this.LabelPreviewColor1 = new System.Windows.Forms.Label();
             this.LabelPreviewColor2 = new System.Windows.Forms.Label();
             this.LabelPreviewColor3 = new System.Windows.Forms.Label();
             this.LabelLine01 = new System.Windows.Forms.Label();
             this.ButtonDefaultColor = new System.Windows.Forms.Button();
-            this.LabelColor32 = new System.Windows.Forms.Label();
             this.LabelColor31 = new System.Windows.Forms.Label();
-            this.LabelColor22 = new System.Windows.Forms.Label();
+            this.LabelColor32 = new System.Windows.Forms.Label();
             this.LabelColor21 = new System.Windows.Forms.Label();
-            this.LabelColor12 = new System.Windows.Forms.Label();
+            this.LabelColor22 = new System.Windows.Forms.Label();
             this.LabelColor11 = new System.Windows.Forms.Label();
+            this.LabelColor12 = new System.Windows.Forms.Label();
             this.LabelLine04 = new System.Windows.Forms.Label();
             this.LabelLine03 = new System.Windows.Forms.Label();
             this.LabelLine02 = new System.Windows.Forms.Label();
@@ -502,20 +502,20 @@
             // GBoxColors
             // 
             this.GBoxColors.Controls.Add(this.LabelPreviewColor4);
-            this.GBoxColors.Controls.Add(this.LabelColor42);
             this.GBoxColors.Controls.Add(this.LabelColor41);
+            this.GBoxColors.Controls.Add(this.LabelColor42);
             this.GBoxColors.Controls.Add(this.LabelLine05);
             this.GBoxColors.Controls.Add(this.LabelPreviewColor1);
             this.GBoxColors.Controls.Add(this.LabelPreviewColor2);
             this.GBoxColors.Controls.Add(this.LabelPreviewColor3);
             this.GBoxColors.Controls.Add(this.LabelLine01);
             this.GBoxColors.Controls.Add(this.ButtonDefaultColor);
-            this.GBoxColors.Controls.Add(this.LabelColor32);
             this.GBoxColors.Controls.Add(this.LabelColor31);
-            this.GBoxColors.Controls.Add(this.LabelColor22);
+            this.GBoxColors.Controls.Add(this.LabelColor32);
             this.GBoxColors.Controls.Add(this.LabelColor21);
-            this.GBoxColors.Controls.Add(this.LabelColor12);
+            this.GBoxColors.Controls.Add(this.LabelColor22);
             this.GBoxColors.Controls.Add(this.LabelColor11);
+            this.GBoxColors.Controls.Add(this.LabelColor12);
             this.GBoxColors.Controls.Add(this.LabelLine04);
             this.GBoxColors.Controls.Add(this.LabelLine03);
             this.GBoxColors.Controls.Add(this.LabelLine02);
@@ -535,25 +535,25 @@
             this.LabelPreviewColor4.TabIndex = 19;
             this.LabelPreviewColor4.Text = "欢迎使用高考倒计时...";
             // 
-            // LabelColor42
-            // 
-            this.LabelColor42.AutoSize = true;
-            this.LabelColor42.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.LabelColor42.Location = new System.Drawing.Point(110, 118);
-            this.LabelColor42.Name = "LabelColor42";
-            this.LabelColor42.Size = new System.Drawing.Size(39, 17);
-            this.LabelColor42.TabIndex = 18;
-            this.LabelColor42.Text = "          ";
-            // 
             // LabelColor41
             // 
             this.LabelColor41.AutoSize = true;
             this.LabelColor41.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.LabelColor41.Location = new System.Drawing.Point(155, 118);
+            this.LabelColor41.Location = new System.Drawing.Point(110, 118);
             this.LabelColor41.Name = "LabelColor41";
             this.LabelColor41.Size = new System.Drawing.Size(39, 17);
-            this.LabelColor41.TabIndex = 17;
+            this.LabelColor41.TabIndex = 18;
             this.LabelColor41.Text = "          ";
+            // 
+            // LabelColor42
+            // 
+            this.LabelColor42.AutoSize = true;
+            this.LabelColor42.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.LabelColor42.Location = new System.Drawing.Point(155, 118);
+            this.LabelColor42.Name = "LabelColor42";
+            this.LabelColor42.Size = new System.Drawing.Size(39, 17);
+            this.LabelColor42.TabIndex = 17;
+            this.LabelColor42.Text = "          ";
             // 
             // LabelLine05
             // 
@@ -610,65 +610,65 @@
             this.ButtonDefaultColor.UseVisualStyleBackColor = true;
             this.ButtonDefaultColor.Click += new System.EventHandler(this.ButtonDefaultColor_Click);
             // 
-            // LabelColor32
-            // 
-            this.LabelColor32.AutoSize = true;
-            this.LabelColor32.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.LabelColor32.Location = new System.Drawing.Point(110, 96);
-            this.LabelColor32.Name = "LabelColor32";
-            this.LabelColor32.Size = new System.Drawing.Size(39, 17);
-            this.LabelColor32.TabIndex = 9;
-            this.LabelColor32.Text = "          ";
-            // 
             // LabelColor31
             // 
             this.LabelColor31.AutoSize = true;
             this.LabelColor31.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.LabelColor31.Location = new System.Drawing.Point(155, 96);
+            this.LabelColor31.Location = new System.Drawing.Point(110, 96);
             this.LabelColor31.Name = "LabelColor31";
             this.LabelColor31.Size = new System.Drawing.Size(39, 17);
-            this.LabelColor31.TabIndex = 8;
+            this.LabelColor31.TabIndex = 9;
             this.LabelColor31.Text = "          ";
             // 
-            // LabelColor22
+            // LabelColor32
             // 
-            this.LabelColor22.AutoSize = true;
-            this.LabelColor22.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.LabelColor22.Location = new System.Drawing.Point(110, 74);
-            this.LabelColor22.Name = "LabelColor22";
-            this.LabelColor22.Size = new System.Drawing.Size(39, 17);
-            this.LabelColor22.TabIndex = 7;
-            this.LabelColor22.Text = "          ";
+            this.LabelColor32.AutoSize = true;
+            this.LabelColor32.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.LabelColor32.Location = new System.Drawing.Point(155, 96);
+            this.LabelColor32.Name = "LabelColor32";
+            this.LabelColor32.Size = new System.Drawing.Size(39, 17);
+            this.LabelColor32.TabIndex = 8;
+            this.LabelColor32.Text = "          ";
             // 
             // LabelColor21
             // 
             this.LabelColor21.AutoSize = true;
             this.LabelColor21.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.LabelColor21.Location = new System.Drawing.Point(155, 74);
+            this.LabelColor21.Location = new System.Drawing.Point(110, 74);
             this.LabelColor21.Name = "LabelColor21";
             this.LabelColor21.Size = new System.Drawing.Size(39, 17);
-            this.LabelColor21.TabIndex = 6;
+            this.LabelColor21.TabIndex = 7;
             this.LabelColor21.Text = "          ";
             // 
-            // LabelColor12
+            // LabelColor22
             // 
-            this.LabelColor12.AutoSize = true;
-            this.LabelColor12.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.LabelColor12.Location = new System.Drawing.Point(110, 52);
-            this.LabelColor12.Name = "LabelColor12";
-            this.LabelColor12.Size = new System.Drawing.Size(39, 17);
-            this.LabelColor12.TabIndex = 5;
-            this.LabelColor12.Text = "          ";
+            this.LabelColor22.AutoSize = true;
+            this.LabelColor22.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.LabelColor22.Location = new System.Drawing.Point(155, 74);
+            this.LabelColor22.Name = "LabelColor22";
+            this.LabelColor22.Size = new System.Drawing.Size(39, 17);
+            this.LabelColor22.TabIndex = 6;
+            this.LabelColor22.Text = "          ";
             // 
             // LabelColor11
             // 
             this.LabelColor11.AutoSize = true;
             this.LabelColor11.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.LabelColor11.Location = new System.Drawing.Point(155, 52);
+            this.LabelColor11.Location = new System.Drawing.Point(110, 52);
             this.LabelColor11.Name = "LabelColor11";
             this.LabelColor11.Size = new System.Drawing.Size(39, 17);
-            this.LabelColor11.TabIndex = 0;
+            this.LabelColor11.TabIndex = 5;
             this.LabelColor11.Text = "          ";
+            // 
+            // LabelColor12
+            // 
+            this.LabelColor12.AutoSize = true;
+            this.LabelColor12.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.LabelColor12.Location = new System.Drawing.Point(155, 52);
+            this.LabelColor12.Name = "LabelColor12";
+            this.LabelColor12.Size = new System.Drawing.Size(39, 17);
+            this.LabelColor12.TabIndex = 0;
+            this.LabelColor12.Text = "          ";
             // 
             // LabelLine04
             // 
@@ -884,12 +884,12 @@
         private System.Windows.Forms.ComboBox ComboBoxShowXOnly;
         private System.Windows.Forms.TabPage TabPageAppearance;
         private System.Windows.Forms.GroupBox GBoxColors;
-        private System.Windows.Forms.Label LabelColor32;
         private System.Windows.Forms.Label LabelColor31;
-        private System.Windows.Forms.Label LabelColor22;
+        private System.Windows.Forms.Label LabelColor32;
         private System.Windows.Forms.Label LabelColor21;
-        private System.Windows.Forms.Label LabelColor12;
+        private System.Windows.Forms.Label LabelColor22;
         private System.Windows.Forms.Label LabelColor11;
+        private System.Windows.Forms.Label LabelColor12;
         private System.Windows.Forms.Label LabelLine04;
         private System.Windows.Forms.Label LabelLine03;
         private System.Windows.Forms.Label LabelLine02;
@@ -899,8 +899,8 @@
         private System.Windows.Forms.Label LabelPreviewColor2;
         private System.Windows.Forms.Label LabelPreviewColor3;
         private System.Windows.Forms.Label LabelPreviewColor4;
-        private System.Windows.Forms.Label LabelColor42;
         private System.Windows.Forms.Label LabelColor41;
+        private System.Windows.Forms.Label LabelColor42;
         private System.Windows.Forms.Label LabelLine05;
         private System.Windows.Forms.ComboBox ComboBoxPosition;
         private System.Windows.Forms.Label LabelChar1;

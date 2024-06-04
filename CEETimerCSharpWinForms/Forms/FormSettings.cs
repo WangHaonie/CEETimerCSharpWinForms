@@ -25,7 +25,7 @@ namespace CEETimerCSharpWinForms.Forms
         public Font CountdownFont { get; set; }
         public FontStyle CountdownFontStyle { get; set; }
         public int ScreenIndex { get; set; }
-        public int ShowOnlyIndex { get; set; }
+        public int ShowXOnlyIndex { get; set; }
         public int PositionIndex { get; set; }
         public List<PairItems<Color, Color>> CountdownColors { get; set; }
         public List<PairItems<Color, Color>> DefaultColors { get; set; }
@@ -81,14 +81,13 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void InitializeExtra()
         {
-            var Max = ConfigPolicy.MaxExamNameLength;
             LabelPptsvc.Text = "用于解决内置白板打开后底部工具栏会消失的问题。(或者\n你也可以开启拖动功能，将倒计时窗口拖动到其他位置)";
             LabelSyncTime.Text = "将当前系统时间与网络同步以确保准确无误。\n注意: 此项会将系统的 NTP 服务器设置为 ntp1.aliyun.com, 并\n且将自动启动 Windows Time 服务, 请谨慎操作。";
             LabelLine01.Text = "请点击色块来选择文字、背景颜色。将一个色块拖放到其它\n色块上可快速应用相同的颜色。";
-            LabelExamNameCounter.Text = $"0/{Max}";
+            LabelExamNameCounter.Text = $"0/{ConfigPolicy.MaxExamNameLength}";
             LabelExamNameCounter.ForeColor = Color.Red;
-            TextBoxExamName.MaxLength = Max;
-            GBoxExamName.Text = $"考试名称 ({ConfigPolicy.MinExamNameLength}~{Max}字)";
+            TextBoxExamName.MaxLength = ConfigPolicy.MaxExamNameLength;
+            GBoxExamName.Text = $"考试名称 ({ConfigPolicy.MinExamNameLength}~{ConfigPolicy.MaxExamNameLength}字)";
 
             List<PairItems<string, int>> Shows = [new("天", 0), new("时", 1), new("分", 2), new("秒", 3)];
             ComboBoxShowXOnly.DataSource = Shows;
@@ -111,7 +110,7 @@ namespace CEETimerCSharpWinForms.Forms
             ComboBoxScreens.DisplayMember = "Item1";
             ComboBoxScreens.ValueMember = "Item2";
 
-            ColorLabels = [LabelColor11, LabelColor21, LabelColor31, LabelColor41, LabelColor12, LabelColor22, LabelColor32, LabelColor42];
+            ColorLabels = [LabelColor12, LabelColor22, LabelColor32, LabelColor42, LabelColor11, LabelColor21, LabelColor31, LabelColor41];
             foreach (var l in ColorLabels)
             {
                 l.Click += ColorLabels_Click;
@@ -141,10 +140,10 @@ namespace CEETimerCSharpWinForms.Forms
             CheckBoxUniTopMost.Checked = TopMost;
             ComboBoxScreens.SelectedValue = ScreenIndex;
             ComboBoxPosition.SelectedValue = PositionIndex;
-            ComboBoxShowXOnly.SelectedValue = ShowOnlyIndex;
+            ComboBoxShowXOnly.SelectedValue = ShowXOnlyIndex;
             ChangeWorkingStyle(WorkingArea.ChangeFont, NewFont: new(CountdownFont, CountdownFontStyle));
             ChangePptsvcCtrlStyle(null, EventArgs.Empty);
-            ComboBoxShowXOnly.SelectedIndex = IsShowXOnly ? ShowOnlyIndex : 0;
+            ComboBoxShowXOnly.SelectedIndex = IsShowXOnly ? ShowXOnlyIndex : 0;
         }
 
         private void AlignControlPos(Control Reference, Control Target, int Adjust = 0)
@@ -161,17 +160,16 @@ namespace CEETimerCSharpWinForms.Forms
         private void TextBoxExamName_TextChanged(object sender, EventArgs e)
         {
             FormSettings_SettingsChanged(sender, e);
-            var Max = ConfigPolicy.MaxExamNameLength;
             int CharCount = TextBoxExamName.Text.RemoveIllegalChars().Length;
-            LabelExamNameCounter.Text = $"{CharCount}/{Max}";
-            LabelExamNameCounter.ForeColor = (CharCount > Max || CharCount < ConfigPolicy.MinExamNameLength) ? Color.Red : Color.Black;
+            LabelExamNameCounter.Text = $"{CharCount}/{ConfigPolicy.MaxExamNameLength}";
+            LabelExamNameCounter.ForeColor = (CharCount > ConfigPolicy.MaxExamNameLength || CharCount < ConfigPolicy.MinExamNameLength) ? Color.Red : Color.Black;
         }
 
         private void CheckBoxShowXOnly_CheckedChanged(object sender, EventArgs e)
         {
             FormSettings_SettingsChanged(sender, e);
             CheckBoxRounding.Enabled = ComboBoxShowXOnly.Enabled = CheckBoxShowXOnly.Checked;
-            ComboBoxShowXOnly.SelectedIndex = CheckBoxShowXOnly.Checked ? ShowOnlyIndex : 0;
+            ComboBoxShowXOnly.SelectedIndex = CheckBoxShowXOnly.Checked ? ShowXOnlyIndex : 0;
 
             if (CheckBoxRounding.Checked && !CheckBoxShowXOnly.Checked)
             {
@@ -501,7 +499,7 @@ namespace CEETimerCSharpWinForms.Forms
             }
 
             int ColorCheckMsg = 0;
-            SelectedColors = [new(LabelColor12.BackColor, LabelColor11.BackColor), new(LabelColor22.BackColor, LabelColor21.BackColor), new(LabelColor32.BackColor, LabelColor31.BackColor), new(LabelColor42.BackColor, LabelColor41.BackColor)];
+            SelectedColors = [new(LabelColor11.BackColor, LabelColor12.BackColor), new(LabelColor21.BackColor, LabelColor22.BackColor), new(LabelColor31.BackColor, LabelColor32.BackColor), new(LabelColor41.BackColor, LabelColor42.BackColor)];
 
             for (int i = 0; i < 4; i++)
             {
@@ -585,34 +583,34 @@ namespace CEETimerCSharpWinForms.Forms
                     LabelFont.Text = $"当前字体: {NewFont.Name}, {NewFont.Size}pt, {NewFont.Style}";
                     break;
                 case WorkingArea.LastColor:
-                    LabelPreviewColor1.ForeColor = LabelColor12.BackColor = CountdownColors[0].Item1;
-                    LabelPreviewColor2.ForeColor = LabelColor22.BackColor = CountdownColors[1].Item1;
-                    LabelPreviewColor3.ForeColor = LabelColor32.BackColor = CountdownColors[2].Item1;
-                    LabelPreviewColor4.ForeColor = LabelColor42.BackColor = CountdownColors[3].Item1;
-                    LabelPreviewColor1.BackColor = LabelColor11.BackColor = CountdownColors[0].Item2;
-                    LabelPreviewColor2.BackColor = LabelColor21.BackColor = CountdownColors[1].Item2;
-                    LabelPreviewColor3.BackColor = LabelColor31.BackColor = CountdownColors[2].Item2;
-                    LabelPreviewColor4.BackColor = LabelColor41.BackColor = CountdownColors[3].Item2;
+                    LabelPreviewColor1.ForeColor = LabelColor11.BackColor = CountdownColors[0].Item1;
+                    LabelPreviewColor2.ForeColor = LabelColor21.BackColor = CountdownColors[1].Item1;
+                    LabelPreviewColor3.ForeColor = LabelColor31.BackColor = CountdownColors[2].Item1;
+                    LabelPreviewColor4.ForeColor = LabelColor41.BackColor = CountdownColors[3].Item1;
+                    LabelPreviewColor1.BackColor = LabelColor12.BackColor = CountdownColors[0].Item2;
+                    LabelPreviewColor2.BackColor = LabelColor22.BackColor = CountdownColors[1].Item2;
+                    LabelPreviewColor3.BackColor = LabelColor32.BackColor = CountdownColors[2].Item2;
+                    LabelPreviewColor4.BackColor = LabelColor42.BackColor = CountdownColors[3].Item2;
                     break;
                 case WorkingArea.SelectedColor:
-                    LabelPreviewColor1.BackColor = LabelColor11.BackColor;
-                    LabelPreviewColor2.BackColor = LabelColor21.BackColor;
-                    LabelPreviewColor3.BackColor = LabelColor31.BackColor;
-                    LabelPreviewColor4.BackColor = LabelColor41.BackColor;
-                    LabelPreviewColor1.ForeColor = LabelColor12.BackColor;
-                    LabelPreviewColor2.ForeColor = LabelColor22.BackColor;
-                    LabelPreviewColor3.ForeColor = LabelColor32.BackColor;
-                    LabelPreviewColor4.ForeColor = LabelColor42.BackColor;
+                    LabelPreviewColor1.BackColor = LabelColor12.BackColor;
+                    LabelPreviewColor2.BackColor = LabelColor22.BackColor;
+                    LabelPreviewColor3.BackColor = LabelColor32.BackColor;
+                    LabelPreviewColor4.BackColor = LabelColor42.BackColor;
+                    LabelPreviewColor1.ForeColor = LabelColor11.BackColor;
+                    LabelPreviewColor2.ForeColor = LabelColor21.BackColor;
+                    LabelPreviewColor3.ForeColor = LabelColor31.BackColor;
+                    LabelPreviewColor4.ForeColor = LabelColor41.BackColor;
                     break;
                 case WorkingArea.DefaultColor:
-                    LabelPreviewColor1.ForeColor = LabelColor12.BackColor = DefaultColors[0].Item1;
-                    LabelPreviewColor2.ForeColor = LabelColor22.BackColor = DefaultColors[1].Item1;
-                    LabelPreviewColor3.ForeColor = LabelColor32.BackColor = DefaultColors[2].Item1;
-                    LabelPreviewColor4.ForeColor = LabelColor42.BackColor = DefaultColors[3].Item1;
-                    LabelPreviewColor1.BackColor = LabelColor11.BackColor = DefaultColors[0].Item2;
-                    LabelPreviewColor2.BackColor = LabelColor21.BackColor = DefaultColors[1].Item2;
-                    LabelPreviewColor3.BackColor = LabelColor31.BackColor = DefaultColors[2].Item2;
-                    LabelPreviewColor4.BackColor = LabelColor41.BackColor = DefaultColors[3].Item2;
+                    LabelPreviewColor1.ForeColor = LabelColor11.BackColor = DefaultColors[0].Item1;
+                    LabelPreviewColor2.ForeColor = LabelColor21.BackColor = DefaultColors[1].Item1;
+                    LabelPreviewColor3.ForeColor = LabelColor31.BackColor = DefaultColors[2].Item1;
+                    LabelPreviewColor4.ForeColor = LabelColor41.BackColor = DefaultColors[3].Item1;
+                    LabelPreviewColor1.BackColor = LabelColor12.BackColor = DefaultColors[0].Item2;
+                    LabelPreviewColor2.BackColor = LabelColor22.BackColor = DefaultColors[1].Item2;
+                    LabelPreviewColor3.BackColor = LabelColor32.BackColor = DefaultColors[2].Item2;
+                    LabelPreviewColor4.BackColor = LabelColor42.BackColor = DefaultColors[3].Item2;
                     break;
             }
         }
@@ -635,7 +633,7 @@ namespace CEETimerCSharpWinForms.Forms
                     { ConfigItems.KEndTime, $"{DTPExamEnd.Value:yyyyMMddHHmmss}" },
                     { ConfigItems.KMemOpti, $"{CheckBoxMemOpti.Checked}" },
                     { ConfigItems.KTopMost, $"{CheckBoxTopMost.Checked}" },
-                    { ConfigItems.KShowOnly, $"{CheckBoxShowXOnly.Checked}" },
+                    { ConfigItems.KShowXOnly, $"{CheckBoxShowXOnly.Checked}" },
                     { ConfigItems.KShowValue, $"{ComboBoxShowXOnly.SelectedValue}" },
                     { ConfigItems.KRounding, $"{CheckBoxRounding.Checked}" },
                     { ConfigItems.KShowEnd, $"{CheckBoxShowEnd.Checked}" },
@@ -647,14 +645,14 @@ namespace CEETimerCSharpWinForms.Forms
                     { ConfigItems.KSeewoPptSvc, $"{CheckBoxPptSvc.Checked}" },
                     { ConfigItems.KFont, $"{CountdownFont.Name}, {CountdownFont.Size}pt" },
                     { ConfigItems.KFontStyle, $"{CountdownFontStyle}" },
-                    { ConfigItems.KFore1, $"{LabelColor12.BackColor.R},{LabelColor12.BackColor.G},{LabelColor12.BackColor.B}" },
-                    { ConfigItems.KBack1, $"{LabelColor11.BackColor.R},{LabelColor11.BackColor.G},{LabelColor11.BackColor.B}" },
-                    { ConfigItems.KFore2, $"{LabelColor22.BackColor.R},{LabelColor22.BackColor.G},{LabelColor22.BackColor.B}" },
-                    { ConfigItems.KBack2, $"{LabelColor21.BackColor.R},{LabelColor21.BackColor.G},{LabelColor21.BackColor.B}" },
-                    { ConfigItems.KFore3, $"{LabelColor32.BackColor.R},{LabelColor32.BackColor.G},{LabelColor32.BackColor.B}" },
-                    { ConfigItems.KBack3, $"{LabelColor31.BackColor.R},{LabelColor31.BackColor.G},{LabelColor31.BackColor.B}" },
-                    { ConfigItems.KFore4, $"{LabelColor42.BackColor.R},{LabelColor42.BackColor.G},{LabelColor42.BackColor.B}" },
-                    { ConfigItems.KBack4, $"{LabelColor41.BackColor.R},{LabelColor41.BackColor.G},{LabelColor41.BackColor.B}" }
+                    { ConfigItems.KFore1, $"{LabelColor11.BackColor.R},{LabelColor11.BackColor.G},{LabelColor11.BackColor.B}" },
+                    { ConfigItems.KBack1, $"{LabelColor12.BackColor.R},{LabelColor12.BackColor.G},{LabelColor12.BackColor.B}" },
+                    { ConfigItems.KFore2, $"{LabelColor21.BackColor.R},{LabelColor21.BackColor.G},{LabelColor21.BackColor.B}" },
+                    { ConfigItems.KBack2, $"{LabelColor22.BackColor.R},{LabelColor22.BackColor.G},{LabelColor22.BackColor.B}" },
+                    { ConfigItems.KFore3, $"{LabelColor31.BackColor.R},{LabelColor31.BackColor.G},{LabelColor31.BackColor.B}" },
+                    { ConfigItems.KBack3, $"{LabelColor32.BackColor.R},{LabelColor32.BackColor.G},{LabelColor32.BackColor.B}" },
+                    { ConfigItems.KFore4, $"{LabelColor41.BackColor.R},{LabelColor41.BackColor.G},{LabelColor41.BackColor.B}" },
+                    { ConfigItems.KBack4, $"{LabelColor42.BackColor.R},{LabelColor42.BackColor.G},{LabelColor42.BackColor.B}" }
                 });
             }
             catch { }

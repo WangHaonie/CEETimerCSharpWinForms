@@ -23,7 +23,7 @@ namespace CEETimerCSharpWinForms.Forms
         private bool IsPPTService;
         private int ScreenIndex;
         private int PositionIndex;
-        private int ShowOnlyIndex;
+        private int ShowXOnlyIndex;
         private DateTime ExamEndTime;
         private DateTime ExamStartTime;
         private Font SelectedFont;
@@ -98,7 +98,7 @@ namespace CEETimerCSharpWinForms.Forms
             ExamEndTime = DateTime.TryParseExact(configManager.ReadConfig(ConfigItems.KEndTime), "yyyyMMddHHmmss", null, DateTimeStyles.None, out DateTime tmpx) ? tmpx : DateTime.Now;
             IsMemoryOptimizationEnabled = bool.TryParse(configManager.ReadConfig(ConfigItems.KMemOpti), out bool tmpc) && tmpc;
             TopMost = !bool.TryParse(configManager.ReadConfig(ConfigItems.KTopMost), out bool tmpa) || tmpa;
-            IsShowXOnly = bool.TryParse(configManager.ReadConfig(ConfigItems.KShowOnly), out bool tmpd) && tmpd;
+            IsShowXOnly = bool.TryParse(configManager.ReadConfig(ConfigItems.KShowXOnly), out bool tmpd) && tmpd;
             IsRounding = bool.TryParse(configManager.ReadConfig(ConfigItems.KRounding), out bool tmpe) && tmpe;
             IsShowPast = bool.TryParse(configManager.ReadConfig(ConfigItems.KShowPast), out bool tmpg) && tmpg;
             IsShowEnd = bool.TryParse(configManager.ReadConfig(ConfigItems.KShowEnd), out bool tmpf) && tmpf;
@@ -107,7 +107,7 @@ namespace CEETimerCSharpWinForms.Forms
             IsPPTService = bool.TryParse(configManager.ReadConfig(ConfigItems.KSeewoPptSvc), out bool tmpj) && tmpj;
             ScreenIndex = int.TryParse(configManager.ReadConfig(ConfigItems.KScreen), out int tmpk) ? tmpk : 0;
             PositionIndex = int.TryParse(configManager.ReadConfig(ConfigItems.KPosition), out int tmpu) ? tmpu : 0;
-            ShowOnlyIndex = int.TryParse(configManager.ReadConfig(ConfigItems.KShowValue), out int tmpl) ? tmpl : 0;
+            ShowXOnlyIndex = int.TryParse(configManager.ReadConfig(ConfigItems.KShowValue), out int tmpl) ? tmpl : 0;
             int.TryParse(configManager.ReadConfig(ConfigItems.KPosX), out int x);
             int.TryParse(configManager.ReadConfig(ConfigItems.KPosY), out int y);
             CountdownColors = [];
@@ -132,20 +132,20 @@ namespace CEETimerCSharpWinForms.Forms
 
             ShowInTaskbar = !TopMost;
             IsShowPast = IsShowPast && IsShowEnd;
-            IsRounding = IsRounding && IsShowXOnly && ShowOnlyIndex == 0;
+            IsRounding = IsRounding && IsShowXOnly && ShowXOnlyIndex == 0;
             IsUniTopMost = IsUniTopMost && TopMost;
             if (ScreenIndex < 0 || ScreenIndex > Screen.AllScreens.Length) ScreenIndex = 0;
             if (PositionIndex < 0 || PositionIndex > 8) PositionIndex = 0;
-            if (ShowOnlyIndex > 3) ShowOnlyIndex = 0;
+            if (ShowXOnlyIndex > 3) ShowXOnlyIndex = 0;
             if (ExamName.Length > ConfigPolicy.MaxExamNameLength || ExamName.Length < ConfigPolicy.MinExamNameLength) ExamName = "";
             IsCountdownReady = !string.IsNullOrWhiteSpace(ExamName) && configManager.IsValidData(tmpw) && configManager.IsValidData(tmpx) && (tmpx > tmpw || !IsShowEnd);
-            IsPPTService = IsPPTService && ((TopMost && ShowOnlyIndex == 0) || IsDraggable);
+            IsPPTService = IsPPTService && ((TopMost && ShowXOnlyIndex == 0) || IsDraggable);
 
             SelectedState = CountdownState.Normal;
 
             if (IsShowXOnly)
             {
-                SelectedState = ShowOnlyIndex switch
+                SelectedState = ShowXOnlyIndex switch
                 {
                     0 => IsRounding ? CountdownState.DaysOnlyWithRounding : CountdownState.DaysOnly,
                     1 => CountdownState.HoursOnly,
@@ -268,7 +268,7 @@ namespace CEETimerCSharpWinForms.Forms
                     CountdownFontStyle = LabelCountdown.Font.Style,
                     ExamName = ExamName,
                     IsShowXOnly = IsShowXOnly,
-                    ShowOnlyIndex = ShowOnlyIndex,
+                    ShowXOnlyIndex = ShowXOnlyIndex,
                     IsShowEnd = IsShowEnd,
                     IsShowPast = IsShowPast,
                     IsRounding = IsRounding,

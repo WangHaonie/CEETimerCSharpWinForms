@@ -154,7 +154,7 @@ namespace CEETimerCSharpWinForms.Modules
         public const string KEndTime = "EndTime";
         public const string KMemOpti = "MemOpti";
         public const string KTopMost = "TopMost";
-        public const string KShowOnly = "ShowOnly";
+        public const string KShowXOnly = "ShowXOnly";
         public const string KShowValue = "Show";
         public const string KRounding = "Rounding";
         public const string KShowEnd = "ShowEnd";
