@@ -71,7 +71,12 @@ CEETimerCSharpWinForms，适用于 Windows 系统的高考倒计时，支持自�
 Windows 11 Pro x64 (22635.3575)，Visual Studio 2022 (17.9.7)，C# (12.0)，WinForms，.NET Framework 4.7.2
 ## 开源许可证
 CEETimerCSharpWinForms is licensed under the GNU General Public License v3.0 (GPL-3.0)
+## 致用户
++ 此高考倒计时程序是本人在高三时应班级要求编写的，如有雷同，纯属巧合；
++ 软件目前所有功能均按照个人和老师及同学的要求开发，可能存在一些不足和瑕疵，还请各位用户多多谅解；
++ 本项目是我第一次 C# 实践，我会尽可能在不影响用户体验下把我所学的全部知识都应用在这个项目中，所以可能会有一些屎山或冗余代码，欢迎各位对源代码进行批评和指点；
++ 当然也欢迎各位用户在 GitHub [Issues](https://github.com/WangHaonie/CEETimerCSharpWinForms/issues/new/choose)/[Discussions](https://github.com/WangHaonie/CEETimerCSharpWinForms/discussions) 里分享您的观点和想法，虽然能力和时间有限，但我也会尽量去完成每一个用户提出的问题，感谢您的理解和支持！
 ## 其他链接
-CSDN：https://blog.csdn.net/WHNdeCSDN/article/details/139425056
+[CSDN 博客](https://blog.csdn.net/WHNdeCSDN/article/details/139425056)
 ## 打赏作者
 [传送门](https://wanghaonie.github.io/files/Reward.jpg)
