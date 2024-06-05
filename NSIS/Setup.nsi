@@ -44,10 +44,11 @@ launch:
 !include "MUI2.nsh"
 !define PRODUCT_NAME "高考倒计时"
 !define SETUP_FILENAME_NO_V "3.0.4"
-!define PRODUCT_VERSION "v${SETUP_FILENAME_NO_V}"
+!define PRODUCT_VERSION "${SETUP_FILENAME_NO_V}"
+!define PRODUCT_TITLE "${PRODUCT_NAME} by ${PRODUCT_PUBLISHER}"
 !define PRODUCT_PUBLISHER "WangHaonie"
 !define PRODUCT_WEB_SITE "https://github.com/WangHaonie/CEETimerCSharpWinForms"
-!define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
+!define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\CEETimerCSharpWinForms"
 !define PRODUCT_UNINST_ROOT_KEY "HKCU"
 !define MUI_ABORTWARNING
 !define MUI_ICON "${NSISDIR}\Contrib\Graphics\Icons\nsis3-install.ico"
@@ -76,17 +77,15 @@ Section -POST
   SetOverwrite on
   SetOutPath "$INSTDIR"
   nsExec::Exec '"taskkill" /F /IM "CEETimerCSharpWinForms.exe"'
+  DeleteRegKey ${PRODUCT_UNINST_ROOT_KEY} "Software\Microsoft\Windows\CurrentVersion\Uninstall\高考倒计时"
   Delete "$INSTDIR\CEETimerCSharpWinForms.exe"
   Delete "$INSTDIR\${PRODUCT_NAME}.url"
   Delete "$INSTDIR\uninst.exe"
   Delete "$INSTDIR\Newtonsoft.Json.dll"
   Delete "$INSTDIR\CEETimerCSharpWinForms.exe"
-  Delete "$INSTDIR\CEETimerCSharpWinForms.dll"
+  Delete "$INSTDIR\CEETimerCSharpWinForms.cfg"
   WriteUninstaller "$INSTDIR\uninst.exe"
-  CreateDirectory "$SMPROGRAMS\高考倒计时"
-  CreateShortCut "$SMPROGRAMS\高考倒计时\高考倒计时.lnk" "$INSTDIR\CEETimerCSharpWinForms.exe"
-  CreateShortCut "$DESKTOP\高考倒计时.lnk" "$INSTDIR\CEETimerCSharpWinForms.exe"
-  WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayName" "$(^Name)"
+  WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayName" "${PRODUCT_TITLE}"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "UninstallString" "$INSTDIR\uninst.exe"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayIcon" "$INSTDIR\CEETimerCSharpWinForms.exe"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayVersion" "${PRODUCT_VERSION}"
@@ -95,6 +94,9 @@ Section -POST
   WriteIniStr "$INSTDIR\GitHub.url" "InternetShortcut" "URL" "${PRODUCT_WEB_SITE}"
   File "..\CEETimerCSharpWinForms\bin\x64\Release\Newtonsoft.Json.dll"
   File "..\CEETimerCSharpWinForms\bin\x64\Release\CEETimerCSharpWinForms.exe"
+  CreateDirectory "$SMPROGRAMS\高考倒计时"
+  CreateShortCut "$SMPROGRAMS\高考倒计时\高考倒计时.lnk" "$INSTDIR\CEETimerCSharpWinForms.exe"
+  CreateShortCut "$DESKTOP\高考倒计时.lnk" "$INSTDIR\CEETimerCSharpWinForms.exe"
   CreateShortCut "$SMPROGRAMS\高考倒计时\GitHub.lnk" "$INSTDIR\${PRODUCT_NAME}.url"
   CreateShortCut "$SMPROGRAMS\高考倒计时\卸载 高考倒计时.lnk" "$INSTDIR\uninst.exe"
 SectionEnd
@@ -107,7 +109,7 @@ Section Uninstall
   Delete "$INSTDIR\uninst.exe"
   Delete "$INSTDIR\Newtonsoft.Json.dll"
   Delete "$INSTDIR\CEETimerCSharpWinForms.exe"
-  Delete "$INSTDIR\CEETimerCSharpWinForms.cfg"
+  Delete "$INSTDIR\CEETimerCSharpWinForms.config"
   Delete "$SMPROGRAMS\高考倒计时\卸载 高考倒计时.lnk"
   Delete "$SMPROGRAMS\高考倒计时\GitHub.lnk"
   Delete "$DESKTOP\高考倒计时.lnk"
@@ -127,11 +129,11 @@ FunctionEnd
  
 Function un.onInit
   !insertmacro SingleInstanceMutex
-  MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "确认卸载 $(^Name)？" IDYES +2
+  MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "确认卸载 ${PRODUCT_TITLE}？" IDYES +2
   Abort
 FunctionEnd
 
 Function un.onUninstSuccess
   HideWindow
-  MessageBox MB_ICONINFORMATION|MB_OK "$(^Name) 已成功从你的计算机中移除。感谢你的使用！"
+  MessageBox MB_ICONINFORMATION|MB_OK "${PRODUCT_TITLE} 已成功从您的计算机中移除。感谢您的使用！"
 FunctionEnd
