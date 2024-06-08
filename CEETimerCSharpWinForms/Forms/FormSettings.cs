@@ -204,6 +204,7 @@ namespace CEETimerCSharpWinForms.Forms
             {
                 MessageX.Popup("由于已开启显示考试结束倒计时，请设置考试结束日期和时间。", MessageLevel.Info, this, AutoClose: true);
                 TabControlMain.SelectedTab = TabPageGeneral;
+                DTPExamEnd.Focus();
             }
         }
 
