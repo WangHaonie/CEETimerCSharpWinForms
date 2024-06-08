@@ -40,7 +40,8 @@ namespace CEETimerCSharpWinForms.Forms
             LastColor,
             SelectedColor,
             DefaultColor,
-            ChangeFont
+            ChangeFont,
+            ShowLeftPast
         }
 
         private bool IsColorLabelsDragging;
@@ -49,6 +50,7 @@ namespace CEETimerCSharpWinForms.Forms
         private bool InvokeChangeRequired;
         private bool IsFunny;
         private bool IsFunnyClick;
+        private bool IsFormLoading;
         private List<Label> ColorLabels;
         private List<PairItems<Color, Color>> SelectedColors;
         private readonly FontConverter fontConverter = new();
@@ -56,6 +58,7 @@ namespace CEETimerCSharpWinForms.Forms
         public FormSettings()
         {
             InitializeComponent();
+            IsFormLoading = true;
         }
 
         private void FormSettings_Load(object sender, EventArgs e)
@@ -65,6 +68,7 @@ namespace CEETimerCSharpWinForms.Forms
             ChangeWorkingStyle(WorkingArea.Funny, false);
             ChangeWorkingStyle(WorkingArea.LastColor);
             RefreshSettings();
+            ChangeWorkingStyle(WorkingArea.ShowLeftPast, IsShowEnd);
 
             if (Extensions.DpiRatio != 1)
             {
@@ -76,6 +80,7 @@ namespace CEETimerCSharpWinForms.Forms
 
             HasSettingsChanged = false;
             ButtonSave.Enabled = false;
+            IsFormLoading = false;
         }
 
         private void InitializeExtra()
@@ -192,7 +197,14 @@ namespace CEETimerCSharpWinForms.Forms
         private void CheckBoxShowEnd_CheckedChanged(object sender, EventArgs e)
         {
             FormSettings_SettingsChanged(sender, e);
+            ChangeWorkingStyle(WorkingArea.ShowLeftPast, CheckBoxShowEnd.Checked);
             DTPExamEnd.Enabled = CheckBoxShowEnd.Checked;
+
+            if (!IsFormLoading && CheckBoxShowEnd.Checked)
+            {
+                MessageX.Popup("由于已开启显示考试结束倒计时，请设置考试结束日期和时间。", MessageLevel.Info, this, AutoClose: true);
+                TabControlMain.SelectedTab = TabPageGeneral;
+            }
         }
 
         private void CheckBoxShowPast_CheckedChanged(object sender, EventArgs e)
@@ -609,6 +621,12 @@ namespace CEETimerCSharpWinForms.Forms
                     LabelPreviewColor2.BackColor = LabelColor22.BackColor = DefaultColors[1].Item2;
                     LabelPreviewColor3.BackColor = LabelColor32.BackColor = DefaultColors[2].Item2;
                     LabelPreviewColor4.BackColor = LabelColor42.BackColor = DefaultColors[3].Item2;
+                    break;
+                case WorkingArea.ShowLeftPast:
+                    GBoxExamEnd.Visible = IsWorking;
+                    GBoxOthers.Location = IsWorking ?
+                                          new(GBoxExamEnd.Location.X, GBoxExamEnd.Location.Y + GBoxExamEnd.Height + 6.WithDpi(this)) :
+                                          new(GBoxOthers.Location.X, GBoxExamStart.Location.Y + GBoxExamStart.Height + 6.WithDpi(this));
                     break;
             }
         }
