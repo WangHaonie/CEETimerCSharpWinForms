@@ -361,7 +361,7 @@ namespace CEETimerCSharpWinForms.Forms
             {
                 LabelCountdown.ForeColor = CountdownColors[3].Item1;
                 BackColor = CountdownColors[3].Item2;
-                LabelCountdown.Text = "欢迎使用高考倒计时, 请右键点击此处到设置里添加考试信息";
+                LabelCountdown.Text = "欢迎使用高考倒计时";
             }
 
             if (!IsReadyToMove)
