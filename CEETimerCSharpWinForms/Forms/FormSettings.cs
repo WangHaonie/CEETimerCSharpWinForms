@@ -267,7 +267,7 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void ColorLabels_MouseDown(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left && ((Label)sender).Cursor != Cursors.No)
+            if (e.Button == MouseButtons.Left)
             {
                 IsColorLabelsDragging = true;
             }
@@ -290,9 +290,10 @@ namespace CEETimerCSharpWinForms.Forms
 
                 var LabelSender = (Label)sender;
                 var ParentContainer = LabelSender.Parent;
-                var TargetControl = ParentContainer.GetChildAtPoint(ParentContainer.PointToClient(Cursor.Position));
+                var CursorPosition = ParentContainer.PointToClient(Cursor.Position);
+                var TargetControl = ParentContainer.GetChildAtPoint(CursorPosition);
 
-                if (TargetControl != null && TargetControl is Label TagetLabel && ColorLabels.Contains(TagetLabel) && LabelSender != TagetLabel && TagetLabel.Cursor != Cursors.No)
+                if (TargetControl != null && TargetControl is Label TagetLabel && ColorLabels.Contains(TagetLabel) && LabelSender != TagetLabel)
                 {
                     TagetLabel.BackColor = LabelSender.BackColor;
                     FormSettings_SettingsChanged(sender, e);
@@ -627,9 +628,6 @@ namespace CEETimerCSharpWinForms.Forms
                     GBoxOthers.Location = IsWorking ?
                                           new(GBoxExamEnd.Location.X, GBoxExamEnd.Location.Y + GBoxExamEnd.Height + 6.WithDpi(this)) :
                                           new(GBoxOthers.Location.X, GBoxExamStart.Location.Y + GBoxExamStart.Height + 6.WithDpi(this));
-                    LabelLine03.Cursor = LabelLine04.Cursor = LabelColor21.Cursor =
-                    LabelColor22.Cursor = LabelColor31.Cursor = LabelColor32.Cursor =
-                    LabelPreviewColor2.Cursor = LabelPreviewColor3.Cursor = IsWorking ? Cursors.Default : Cursors.No;
                     break;
             }
         }
