@@ -49,7 +49,7 @@
             this.LabelCountdown.Name = "LabelCountdown";
             this.LabelCountdown.Size = new System.Drawing.Size(107, 15);
             this.LabelCountdown.TabIndex = 0;
-            this.LabelCountdown.Text = "程序正在加载中...";
+            this.LabelCountdown.Text = "正在加载中...";
             // 
             // ContextMenuMain
             // 
