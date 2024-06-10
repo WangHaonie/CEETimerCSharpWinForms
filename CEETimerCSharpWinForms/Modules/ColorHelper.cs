@@ -17,7 +17,7 @@ namespace CEETimerCSharpWinForms.Modules
                 int G = int.Parse(RGB[1]);
                 int B = int.Parse(RGB[2]);
 
-                if (!(R >= 0 && R <= 255 && G >= 0 && G <= 255 && B >= 0 && B <= 255))
+                if (!(R.IsRGB() && G.IsRGB() && B.IsRGB()))
                 {
                     return false;
                 }
