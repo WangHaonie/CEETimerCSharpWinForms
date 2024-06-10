@@ -22,10 +22,10 @@ namespace CEETimerCSharpWinForms.Modules
         private bool IsConfigMounted;
         private Dictionary<string, string> JsonConfig;
         private JObject ConfigObject;
-        private readonly List<string> AllowedKeys;
+        private static readonly List<string> AllowedKeys;
         private readonly string ConfigFile = $"{LaunchManager.CurrentExecutablePath}{LaunchManager.AppNameEn}.config";
 
-        public ConfigManager()
+        static ConfigManager()
         {
             #region 来自网络
             /*
