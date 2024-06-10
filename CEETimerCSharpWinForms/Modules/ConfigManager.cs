@@ -129,7 +129,7 @@ namespace CEETimerCSharpWinForms.Modules
         private string CleanKeys(JObject o)
         {
             List<string> KeysToClean = [];
-            JObject JSorted = [];
+            JObject JOrdered = [];
 
             foreach (var Property in o.Properties())
             {
@@ -148,11 +148,11 @@ namespace CEETimerCSharpWinForms.Modules
             {
                 if (o.ContainsKey(Key))
                 {
-                    JSorted[Key] = o[Key];
+                    JOrdered[Key] = o[Key];
                 }
             }
 
-            return JSorted.ToString();
+            return JOrdered.ToString();
         }
     }
 
