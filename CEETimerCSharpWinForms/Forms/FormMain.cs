@@ -308,54 +308,15 @@ namespace CEETimerCSharpWinForms.Forms
         {
             if (IsCountdownReady && DateTime.Now < ExamStartTime)
             {
-                TimeSpan TimeLeft = ExamStartTime - DateTime.Now;
-                LabelCountdown.ForeColor = CountdownColors[0].Item1;
-                BackColor = CountdownColors[0].Item2;
-
-                LabelCountdown.Text = SelectedState switch
-                {
-                    CountdownState.Normal => $"距离{ExamName}还有{TimeLeft.Days}天{TimeLeft.Hours:00}时{TimeLeft.Minutes:00}分{TimeLeft.Seconds:00}秒",
-                    CountdownState.DaysOnly => $"距离{ExamName}还有{TimeLeft.Days}天",
-                    CountdownState.DaysOnlyWithRounding => $"距离{ExamName}还有{TimeLeft.Days + 1}天",
-                    CountdownState.HoursOnly => $"距离{ExamName}还有{TimeLeft.TotalHours:0}小时",
-                    CountdownState.MinutesOnly => $"距离{ExamName}还有{TimeLeft.TotalMinutes:0}分钟",
-                    CountdownState.SecondsOnly => $"距离{ExamName}还有{TimeLeft.TotalSeconds:0}秒",
-                    _ => throw new Exception()
-                };
+                SetCountdownText(ExamStartTime - DateTime.Now, $"距离{ExamName}还有", CountdownColors[0]);
             }
-            else if (IsCountdownReady && IsShowEnd && DateTime.Now >= ExamStartTime && DateTime.Now < ExamEndTime)
+            else if (IsCountdownReady && DateTime.Now < ExamEndTime && IsShowEnd)
             {
-                TimeSpan TimeLeftPast = ExamEndTime - DateTime.Now;
-                LabelCountdown.ForeColor = CountdownColors[1].Item1;
-                BackColor = CountdownColors[1].Item2;
-
-                LabelCountdown.Text = SelectedState switch
-                {
-                    CountdownState.Normal => $"距离{ExamName}结束还有{TimeLeftPast.Days}天{TimeLeftPast.Hours:00}时{TimeLeftPast.Minutes:00}分{TimeLeftPast.Seconds:00}秒",
-                    CountdownState.DaysOnly => $"距离{ExamName}结束还有{TimeLeftPast.Days}天",
-                    CountdownState.DaysOnlyWithRounding => $"距离{ExamName}结束还有{TimeLeftPast.Days + 1}天",
-                    CountdownState.HoursOnly => $"距离{ExamName}结束还有{TimeLeftPast.TotalHours:0}小时",
-                    CountdownState.MinutesOnly => $"距离{ExamName}结束还有{TimeLeftPast.TotalMinutes:0}分钟",
-                    CountdownState.SecondsOnly => $"距离{ExamName}结束还有{TimeLeftPast.TotalSeconds:0}秒",
-                    _ => throw new Exception()
-                };
+                SetCountdownText(ExamEndTime - DateTime.Now, $"距离{ExamName}结束还有", CountdownColors[1]);
             }
-            else if (IsCountdownReady && IsShowEnd && DateTime.Now >= ExamEndTime && IsShowPast)
+            else if (IsCountdownReady && DateTime.Now >= ExamEndTime && IsShowEnd && IsShowPast)
             {
-                TimeSpan TimePast = DateTime.Now - ExamEndTime;
-                LabelCountdown.ForeColor = CountdownColors[2].Item1;
-                BackColor = CountdownColors[2].Item2;
-
-                LabelCountdown.Text = SelectedState switch
-                {
-                    CountdownState.Normal => $"距离{ExamName}已过去了{TimePast.Days}天{TimePast.Hours:00}时{TimePast.Minutes:00}分{TimePast.Seconds:00}秒",
-                    CountdownState.DaysOnly => $"距离{ExamName}已过去了{TimePast.Days}天",
-                    CountdownState.DaysOnlyWithRounding => $"距离{ExamName}已过去了{TimePast.Days + 1}天",
-                    CountdownState.HoursOnly => $"距离{ExamName}已过去了{TimePast.TotalHours:0}小时",
-                    CountdownState.MinutesOnly => $"距离{ExamName}已过去了{TimePast.TotalMinutes:0}分钟",
-                    CountdownState.SecondsOnly => $"距离{ExamName}已过去了{TimePast.TotalSeconds:0}秒",
-                    _ => throw new Exception()
-                };
+                SetCountdownText(DateTime.Now - ExamEndTime, $"距离{ExamName}已过去了", CountdownColors[2]);
             }
             else
             {
@@ -389,6 +350,23 @@ namespace CEETimerCSharpWinForms.Forms
                     _ => throw new Exception()
                 };
             }
+        }
+
+        private void SetCountdownText(TimeSpan Span, string Hint, PairItems<Color, Color> ColorGroup)
+        {
+            LabelCountdown.ForeColor = ColorGroup.Item1;
+            BackColor = ColorGroup.Item2;
+
+            LabelCountdown.Text = SelectedState switch
+            {
+                CountdownState.Normal => $"{Hint}{Span.Days}天{Span.Hours:00}时{Span.Minutes:00}分{Span.Seconds:00}秒",
+                CountdownState.DaysOnly => $"{Hint}{Span.Days}天",
+                CountdownState.DaysOnlyWithRounding => $"{Hint}{Span.Days + 1}天",
+                CountdownState.HoursOnly => $"{Hint}{Span.TotalHours:0}小时",
+                CountdownState.MinutesOnly => $"{Hint}{Span.TotalMinutes:0}分钟",
+                CountdownState.SecondsOnly => $"{Hint}{Span.TotalSeconds:0}秒",
+                _ => throw new Exception()
+            };
         }
 
         private void CompatibleWithPPTService()
