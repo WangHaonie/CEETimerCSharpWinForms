@@ -9,8 +9,6 @@ namespace CEETimerCSharpWinForms.Dialogs
 {
     public partial class ColorRuleDialog : Form
     {
-        public static List<PairItems<string, int>> ComboSource => [new(ColorRulesHelper.StartHint, 0), new(ColorRulesHelper.LeftHint, 1), new(ColorRulesHelper.PastHint, 2)];
-
         public int RuleType { get; set; }
         public string RuleTypeText { get; private set; }
         public string ExamTick { get; set; } = "";
@@ -21,6 +19,7 @@ namespace CEETimerCSharpWinForms.Dialogs
         {
             InitializeComponent();
 
+            List<PairItems<string, int>> ComboSource = [new(ColorRulesHelper.StartHint, 0), new(ColorRulesHelper.LeftHint, 1), new(ColorRulesHelper.PastHint, 2)];
             ComboBoxRuleType.DataSource = ComboSource;
             ComboBoxRuleType.DisplayMember = "Item1";
             ComboBoxRuleType.ValueMember = "Item2";

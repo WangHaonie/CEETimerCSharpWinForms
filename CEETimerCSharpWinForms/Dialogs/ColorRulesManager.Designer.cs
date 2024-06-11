@@ -103,6 +103,7 @@
             this.ListViewMain.UseCompatibleStateImageBehavior = false;
             this.ListViewMain.View = System.Windows.Forms.View.Details;
             this.ListViewMain.ColumnWidthChanging += new System.Windows.Forms.ColumnWidthChangingEventHandler(this.ListViewMain_ColumnWidthChanging);
+            this.ListViewMain.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ListViewMain_KeyDown);
             this.ListViewMain.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.ListViewMain_MouseDoubleClick);
             // 
             // ColumnRuleType
@@ -152,9 +153,9 @@
             this.LabelInfo.AutoSize = true;
             this.LabelInfo.Location = new System.Drawing.Point(6, 7);
             this.LabelInfo.Name = "LabelInfo";
-            this.LabelInfo.Size = new System.Drawing.Size(306, 15);
+            this.LabelInfo.Size = new System.Drawing.Size(332, 15);
             this.LabelInfo.TabIndex = 6;
-            this.LabelInfo.Text = "自定义各时刻要显示的颜色，请右键表格进行操作。";
+            this.LabelInfo.Text = "允许自定义各时刻要显示的颜色，请右键表格进行操作。";
             // 
             // ColorRulesManager
             // 
@@ -172,6 +173,7 @@
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.KeyPreview = true;
             this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;

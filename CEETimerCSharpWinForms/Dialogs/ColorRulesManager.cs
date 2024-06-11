@@ -16,6 +16,7 @@ namespace CEETimerCSharpWinForms.Dialogs
         private bool IsEditMode;
         private bool RulesChanged;
         private bool IsFormLoading;
+        private ListView.ListViewItemCollection GetAllItems() => ListViewMain.Items;
 
         public ColorRulesManager()
         {
@@ -26,17 +27,19 @@ namespace CEETimerCSharpWinForms.Dialogs
             RulesChanged = false;
         }
 
-        private void ButtonOK_Click(object sender, EventArgs e)
+        private void ColorRulesManager_Load(object sender, EventArgs e)
         {
-            ColorRules = [];
-
-            foreach (ListViewItem Item in GetAllItems())
+            if (ColorRules != null || ColorRules.Count == 0)
             {
-                ColorRules.Add(new(new(ColorRulesHelper.GetRuleTypeIndex(Item.SubItems[0].Text), ColorRulesHelper.GetExamTick(Item.SubItems[1].Text)), new(ColorHelper.GetColor(Item.SubItems[2].Text), ColorHelper.GetColor(Item.SubItems[3].Text))));
-            }
+                ListViewMain.Items.Clear();
 
-            RulesChanged = false;
-            Close();
+                foreach (var Rule in ColorRules)
+                {
+                    var Part1 = Rule.Item1;
+                    var Part2 = Rule.Item2;
+                    AddListViewItem(Part1.Item1, ColorRulesHelper.GetExamTickText(Part1.Item2 - new TimeSpan(0, 0, 0, 1)), Part2.Item1, Part2.Item2);
+                }
+            }
         }
 
         private void ContextAdd_Click(object sender, EventArgs e)
@@ -46,6 +49,19 @@ namespace CEETimerCSharpWinForms.Dialogs
             if (_ColorRuleDialog.ShowDialog() == DialogResult.OK)
             {
                 AddListViewItem(_ColorRuleDialog.RuleType, _ColorRuleDialog.ExamTick, _ColorRuleDialog.Fore, _ColorRuleDialog.Back);
+            }
+        }
+
+        private void ContextEdit_Click(object sender, EventArgs e)
+        {
+            EditColorRule(ListViewMain.SelectedItems[0]);
+        }
+
+        private void ListViewMain_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete && ListViewMain.SelectedItems.Count != 0)
+            {
+                ContextDelete_Click(sender, e);
             }
         }
 
@@ -69,6 +85,53 @@ namespace CEETimerCSharpWinForms.Dialogs
         private void ListViewMain_ColumnWidthChanging(object sender, ColumnWidthChangingEventArgs e)
         {
             e.Cancel = true;
+        }
+
+        private void ListViewMain_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left && ListViewMain.HitTest(e.X, e.Y).Item != null && ListViewMain.SelectedItems.Count == 1)
+            {
+                EditColorRule(ListViewMain.GetItemAt(e.X, e.Y));
+            }
+        }
+
+        private void ButtonOK_Click(object sender, EventArgs e)
+        {
+            ColorRules = [];
+
+            foreach (ListViewItem Item in GetAllItems())
+            {
+                ColorRules.Add(new(new(ColorRulesHelper.GetRuleTypeIndex(Item.SubItems[0].Text), ColorRulesHelper.GetExamTick(Item.SubItems[1].Text)), new(ColorHelper.GetColor(Item.SubItems[2].Text), ColorHelper.GetColor(Item.SubItems[3].Text))));
+            }
+
+            RulesChanged = false;
+            Close();
+        }
+
+        private void ButtonCancel_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void ColorRulesManager_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (RulesChanged)
+            {
+                switch (MessageX.Popup("检测到颜色规则已更改，是否保存？", MessageLevel.Warning, this, Buttons: MessageBoxExButtons.YesNo))
+                {
+                    case DialogResult.Yes:
+                        e.Cancel = true;
+                        ButtonOK_Click(sender, e);
+                        break;
+                    case DialogResult.None:
+                        e.Cancel = true;
+                        break;
+                    default:
+                        RulesChanged = false;
+                        Close();
+                        break;
+                }
+            }
         }
 
         private void AddListViewItem(int RuleTypeIndex, string ExamTick, Color Fore, Color Back, ListViewItem Item = null)
@@ -128,7 +191,25 @@ namespace CEETimerCSharpWinForms.Dialogs
             return null;
         }
 
-        private ListView.ListViewItemCollection GetAllItems() => ListViewMain.Items;
+        private void EditColorRule(ListViewItem Item)
+        {
+            IsEditMode = true;
+
+            ColorRuleDialog _ColorRuleDialog = new()
+            {
+                RuleType = ColorRulesHelper.GetRuleTypeIndex(Item.SubItems[0].Text),
+                ExamTick = Item.SubItems[1].Text,
+                Fore = ColorHelper.TryParseRGB(Item.SubItems[2].Text, out Color color1) ? color1 : Color.White,
+                Back = ColorHelper.TryParseRGB(Item.SubItems[3].Text, out Color color2) ? color2 : Color.White
+            };
+
+            if (_ColorRuleDialog.ShowDialog() == DialogResult.OK)
+            {
+                AddListViewItem(_ColorRuleDialog.RuleType, _ColorRuleDialog.ExamTick, _ColorRuleDialog.Fore, _ColorRuleDialog.Back, Item);
+            }
+
+            IsEditMode = false;
+        }
 
         private void AdjustColumnWidth()
         {
@@ -148,80 +229,6 @@ namespace CEETimerCSharpWinForms.Dialogs
             ListViewMain.Items.Clear();
             ListViewMain.Items.AddRange([.. Items]);
             ListViewMain.EndUpdate();
-        }
-
-        private void ListViewMain_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left && ListViewMain.HitTest(e.X, e.Y).Item != null && ListViewMain.SelectedItems.Count == 1)
-            {
-                EditColorRule(ListViewMain.GetItemAt(e.X, e.Y));
-            }
-        }
-
-        private void ContextEdit_Click(object sender, EventArgs e)
-        {
-            EditColorRule(ListViewMain.SelectedItems[0]);
-        }
-
-        private void EditColorRule(ListViewItem Item)
-        {
-            IsEditMode = true;
-
-            ColorRuleDialog _ColorRuleDialog = new()
-            {
-                RuleType = ColorRulesHelper.GetRuleTypeIndex(Item.SubItems[0].Text),
-                ExamTick = Item.SubItems[1].Text,
-                Fore = ColorHelper.TryParseRGB(Item.SubItems[2].Text, out Color color1) ? color1 : Color.Empty,
-                Back = ColorHelper.TryParseRGB(Item.SubItems[3].Text, out Color color2) ? color2 : Color.Empty
-            };
-
-            if (_ColorRuleDialog.ShowDialog() == DialogResult.OK)
-            {
-                AddListViewItem(_ColorRuleDialog.RuleType, _ColorRuleDialog.ExamTick, _ColorRuleDialog.Fore, _ColorRuleDialog.Back, Item);
-            }
-
-            IsEditMode = false;
-        }
-
-        private void ButtonCancel_Click(object sender, EventArgs e)
-        {
-            Close();
-        }
-
-        private void ColorRulesManager_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            if (RulesChanged)
-            {
-                switch (MessageX.Popup("检测到颜色规则已更改，是否保存？", MessageLevel.Warning, this, Buttons: MessageBoxExButtons.YesNo))
-                {
-                    case DialogResult.Yes:
-                        e.Cancel = true;
-                        ButtonOK_Click(sender, e);
-                        break;
-                    case DialogResult.None:
-                        e.Cancel = true;
-                        break;
-                    default:
-                        RulesChanged = false;
-                        Close();
-                        break;
-                }
-            }
-        }
-
-        private void ColorRulesManager_Load(object sender, EventArgs e)
-        {
-            if (ColorRules != null)
-            {
-                ListViewMain.Items.Clear();
-
-                foreach (var Rule in ColorRules)
-                {
-                    var Part1 = Rule.Item1;
-                    var Part2 = Rule.Item2;
-                    AddListViewItem(Part1.Item1, ColorRulesHelper.GetExamTickText(Part1.Item2 - new TimeSpan(0, 0, 0, 1)), Part2.Item1, Part2.Item2);
-                }
-            }
         }
     }
 }
