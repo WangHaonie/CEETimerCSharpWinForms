@@ -1,11 +1,12 @@
-﻿using CEETimerCSharpWinForms.Modules;
+﻿using CEETimerCSharpWinForms.Forms;
+using CEETimerCSharpWinForms.Modules;
 using System;
 using System.Drawing;
 using System.Media;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace CEETimerCSharpWinForms.Forms
+namespace CEETimerCSharpWinForms.Dialogs
 {
     public partial class MessageBoxEx : Form
     {

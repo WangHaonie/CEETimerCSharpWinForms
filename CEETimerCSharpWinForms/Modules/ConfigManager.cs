@@ -20,7 +20,7 @@ namespace CEETimerCSharpWinForms.Modules
 
         */
         private bool IsConfigMounted;
-        private Dictionary<string, string> JsonConfig;
+        private Dictionary<string, object> JsonConfig;
         private JObject ConfigObject;
         private static readonly List<string> AllowedKeys;
         private readonly string ConfigFile = $"{LaunchManager.CurrentExecutablePath}{LaunchManager.AppNameEn}.config";
@@ -58,11 +58,11 @@ namespace CEETimerCSharpWinForms.Modules
             {
                 if (Key == ConfigItems.KFont)
                 {
-                    return JsonConfig[ConfigItems.KFont];
+                    return (string)JsonConfig[ConfigItems.KFont];
                 }
                 else
                 {
-                    return JsonConfig[Key].RemoveIllegalChars();
+                    return ((string)JsonConfig[Key]).RemoveIllegalChars();
                 }
             }
             else
@@ -71,7 +71,20 @@ namespace CEETimerCSharpWinForms.Modules
             }
         }
 
-        public void WriteConfig(Dictionary<string, string> DataSet)
+        public List<ColorRulesHelper.Config> ReadArray(string Key)
+        {
+            if (IsConfigMounted && JsonConfig != null && JsonConfig.ContainsKey(Key))
+            {
+                if (JsonConfig[Key] is JArray arr)
+                {
+                    return arr.ToObject<List<ColorRulesHelper.Config>>();
+                }
+            }
+
+            return [];
+        }
+
+        public void WriteConfig(Dictionary<string, object> DataSet)
         {
             CheckConfig();
 
@@ -102,7 +115,7 @@ namespace CEETimerCSharpWinForms.Modules
             {
                 if (IsMount)
                 {
-                    JsonConfig = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(ConfigFile));
+                    JsonConfig = JsonConvert.DeserializeObject<Dictionary<string, object>>(File.ReadAllText(ConfigFile));
                     IsConfigMounted = true;
                 }
                 else
@@ -129,7 +142,7 @@ namespace CEETimerCSharpWinForms.Modules
         private string CleanKeys(JObject o)
         {
             List<string> KeysToClean = [];
-            JObject JOrdered = [];
+            JObject JSorted = [];
 
             foreach (var Property in o.Properties())
             {
@@ -148,11 +161,11 @@ namespace CEETimerCSharpWinForms.Modules
             {
                 if (o.ContainsKey(Key))
                 {
-                    JOrdered[Key] = o[Key];
+                    JSorted[Key] = o[Key];
                 }
             }
 
-            return JOrdered.ToString();
+            return JSorted.ToString();
         }
     }
 
@@ -183,6 +196,7 @@ namespace CEETimerCSharpWinForms.Modules
         public const string KBack3 = "Back3";
         public const string KFore4 = "Fore4";
         public const string KBack4 = "Back4";
+        public const string KColorRules = "ColorRules";
         public const string KPosX = "PosX";
         public const string KPosY = "PosY";
     }

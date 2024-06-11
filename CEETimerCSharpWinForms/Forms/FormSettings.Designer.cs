@@ -32,8 +32,8 @@
             this.ButtonSyncTime = new System.Windows.Forms.Button();
             this.TextBoxExamName = new System.Windows.Forms.TextBox();
             this.ButtonRestart = new System.Windows.Forms.Button();
-            this.DTPExamStart = new System.Windows.Forms.DateTimePicker();
-            this.DTPExamEnd = new System.Windows.Forms.DateTimePicker();
+            this.DtpExamStart = new System.Windows.Forms.DateTimePicker();
+            this.DtpExamEnd = new System.Windows.Forms.DateTimePicker();
             this.ButtonSave = new System.Windows.Forms.Button();
             this.TabControlMain = new System.Windows.Forms.TabControl();
             this.TabPageGeneral = new System.Windows.Forms.TabPage();
@@ -64,6 +64,7 @@
             this.ComboBoxScreens = new System.Windows.Forms.ComboBox();
             this.TabPageAppearance = new System.Windows.Forms.TabPage();
             this.GBoxColors = new System.Windows.Forms.GroupBox();
+            this.ButtonAdvanced = new System.Windows.Forms.Button();
             this.LabelPreviewColor4 = new System.Windows.Forms.Label();
             this.LabelColor41 = new System.Windows.Forms.Label();
             this.LabelColor42 = new System.Windows.Forms.Label();
@@ -152,27 +153,27 @@
             this.ButtonRestart.Click += new System.EventHandler(this.ButtonRestart_Click);
             this.ButtonRestart.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ButtonRestart_MouseDown);
             // 
-            // DTPExamStart
+            // DtpExamStart
             // 
-            this.DTPExamStart.Checked = false;
-            this.DTPExamStart.CustomFormat = "yyyy-MM-dd dddd HH:mm:ss";
-            this.DTPExamStart.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.DTPExamStart.Location = new System.Drawing.Point(9, 22);
-            this.DTPExamStart.Name = "DTPExamStart";
-            this.DTPExamStart.Size = new System.Drawing.Size(305, 23);
-            this.DTPExamStart.TabIndex = 38;
-            this.DTPExamStart.ValueChanged += new System.EventHandler(this.FormSettings_SettingsChanged);
+            this.DtpExamStart.Checked = false;
+            this.DtpExamStart.CustomFormat = "yyyy-MM-dd dddd HH:mm:ss";
+            this.DtpExamStart.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.DtpExamStart.Location = new System.Drawing.Point(9, 22);
+            this.DtpExamStart.Name = "DtpExamStart";
+            this.DtpExamStart.Size = new System.Drawing.Size(305, 23);
+            this.DtpExamStart.TabIndex = 38;
+            this.DtpExamStart.ValueChanged += new System.EventHandler(this.FormSettings_SettingsChanged);
             // 
-            // DTPExamEnd
+            // DtpExamEnd
             // 
-            this.DTPExamEnd.Checked = false;
-            this.DTPExamEnd.CustomFormat = "yyyy-MM-dd dddd HH:mm:ss";
-            this.DTPExamEnd.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.DTPExamEnd.Location = new System.Drawing.Point(9, 22);
-            this.DTPExamEnd.Name = "DTPExamEnd";
-            this.DTPExamEnd.Size = new System.Drawing.Size(305, 23);
-            this.DTPExamEnd.TabIndex = 39;
-            this.DTPExamEnd.ValueChanged += new System.EventHandler(this.FormSettings_SettingsChanged);
+            this.DtpExamEnd.Checked = false;
+            this.DtpExamEnd.CustomFormat = "yyyy-MM-dd dddd HH:mm:ss";
+            this.DtpExamEnd.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.DtpExamEnd.Location = new System.Drawing.Point(9, 22);
+            this.DtpExamEnd.Name = "DtpExamEnd";
+            this.DtpExamEnd.Size = new System.Drawing.Size(305, 23);
+            this.DtpExamEnd.TabIndex = 39;
+            this.DtpExamEnd.ValueChanged += new System.EventHandler(this.FormSettings_SettingsChanged);
             // 
             // ButtonSave
             // 
@@ -271,7 +272,7 @@
             // 
             // GBoxExamEnd
             // 
-            this.GBoxExamEnd.Controls.Add(this.DTPExamEnd);
+            this.GBoxExamEnd.Controls.Add(this.DtpExamEnd);
             this.GBoxExamEnd.Location = new System.Drawing.Point(7, 134);
             this.GBoxExamEnd.Name = "GBoxExamEnd";
             this.GBoxExamEnd.Size = new System.Drawing.Size(353, 58);
@@ -281,7 +282,7 @@
             // 
             // GBoxExamStart
             // 
-            this.GBoxExamStart.Controls.Add(this.DTPExamStart);
+            this.GBoxExamStart.Controls.Add(this.DtpExamStart);
             this.GBoxExamStart.Location = new System.Drawing.Point(7, 70);
             this.GBoxExamStart.Name = "GBoxExamStart";
             this.GBoxExamStart.Size = new System.Drawing.Size(353, 58);
@@ -380,9 +381,8 @@
             this.CheckBoxShowPast.AutoSize = true;
             this.CheckBoxShowPast.Location = new System.Drawing.Point(9, 72);
             this.CheckBoxShowPast.Name = "CheckBoxShowPast";
-            this.CheckBoxShowPast.Size = new System.Drawing.Size(291, 19);
+            this.CheckBoxShowPast.Size = new System.Drawing.Size(15, 14);
             this.CheckBoxShowPast.TabIndex = 3;
-            this.CheckBoxShowPast.Text = "显示 \"考试已过去了多久\" (距离...已过去了...)(&P)";
             this.CheckBoxShowPast.UseVisualStyleBackColor = true;
             this.CheckBoxShowPast.CheckedChanged += new System.EventHandler(this.CheckBoxShowPast_CheckedChanged);
             // 
@@ -391,9 +391,8 @@
             this.CheckBoxShowEnd.AutoSize = true;
             this.CheckBoxShowEnd.Location = new System.Drawing.Point(9, 47);
             this.CheckBoxShowEnd.Name = "CheckBoxShowEnd";
-            this.CheckBoxShowEnd.Size = new System.Drawing.Size(290, 19);
+            this.CheckBoxShowEnd.Size = new System.Drawing.Size(15, 14);
             this.CheckBoxShowEnd.TabIndex = 2;
-            this.CheckBoxShowEnd.Text = "显示 \"考试还有多久结束\" (距离...结束还有...)(&E)";
             this.CheckBoxShowEnd.UseVisualStyleBackColor = true;
             this.CheckBoxShowEnd.CheckedChanged += new System.EventHandler(this.CheckBoxShowEnd_CheckedChanged);
             // 
@@ -501,6 +500,7 @@
             // 
             // GBoxColors
             // 
+            this.GBoxColors.Controls.Add(this.ButtonAdvanced);
             this.GBoxColors.Controls.Add(this.LabelPreviewColor4);
             this.GBoxColors.Controls.Add(this.LabelColor41);
             this.GBoxColors.Controls.Add(this.LabelColor42);
@@ -526,10 +526,21 @@
             this.GBoxColors.TabStop = false;
             this.GBoxColors.Text = "字体颜色";
             // 
+            // ButtonAdvanced
+            // 
+            this.ButtonAdvanced.AutoSize = true;
+            this.ButtonAdvanced.Location = new System.Drawing.Point(103, 137);
+            this.ButtonAdvanced.Name = "ButtonAdvanced";
+            this.ButtonAdvanced.Size = new System.Drawing.Size(88, 25);
+            this.ButtonAdvanced.TabIndex = 20;
+            this.ButtonAdvanced.Text = "高级选项(&A)";
+            this.ButtonAdvanced.UseVisualStyleBackColor = true;
+            this.ButtonAdvanced.Click += new System.EventHandler(this.ButtonAdvanced_Click);
+            // 
             // LabelPreviewColor4
             // 
             this.LabelPreviewColor4.AutoSize = true;
-            this.LabelPreviewColor4.Location = new System.Drawing.Point(200, 119);
+            this.LabelPreviewColor4.Location = new System.Drawing.Point(200, 118);
             this.LabelPreviewColor4.Name = "LabelPreviewColor4";
             this.LabelPreviewColor4.Size = new System.Drawing.Size(133, 15);
             this.LabelPreviewColor4.TabIndex = 19;
@@ -569,27 +580,24 @@
             this.LabelPreviewColor1.AutoSize = true;
             this.LabelPreviewColor1.Location = new System.Drawing.Point(200, 53);
             this.LabelPreviewColor1.Name = "LabelPreviewColor1";
-            this.LabelPreviewColor1.Size = new System.Drawing.Size(77, 15);
+            this.LabelPreviewColor1.Size = new System.Drawing.Size(0, 15);
             this.LabelPreviewColor1.TabIndex = 15;
-            this.LabelPreviewColor1.Text = "距离...还有...";
             // 
             // LabelPreviewColor2
             // 
             this.LabelPreviewColor2.AutoSize = true;
             this.LabelPreviewColor2.Location = new System.Drawing.Point(200, 75);
             this.LabelPreviewColor2.Name = "LabelPreviewColor2";
-            this.LabelPreviewColor2.Size = new System.Drawing.Size(103, 15);
+            this.LabelPreviewColor2.Size = new System.Drawing.Size(0, 15);
             this.LabelPreviewColor2.TabIndex = 14;
-            this.LabelPreviewColor2.Text = "距离...结束还有...";
             // 
             // LabelPreviewColor3
             // 
             this.LabelPreviewColor3.AutoSize = true;
             this.LabelPreviewColor3.Location = new System.Drawing.Point(200, 97);
             this.LabelPreviewColor3.Name = "LabelPreviewColor3";
-            this.LabelPreviewColor3.Size = new System.Drawing.Size(103, 15);
+            this.LabelPreviewColor3.Size = new System.Drawing.Size(0, 15);
             this.LabelPreviewColor3.TabIndex = 13;
-            this.LabelPreviewColor3.Text = "距离...已过去了...";
             // 
             // LabelLine01
             // 
@@ -845,8 +853,8 @@
         private System.Windows.Forms.Button ButtonSyncTime;
         private System.Windows.Forms.TextBox TextBoxExamName;
         private System.Windows.Forms.Button ButtonRestart;
-        private System.Windows.Forms.DateTimePicker DTPExamStart;
-        private System.Windows.Forms.DateTimePicker DTPExamEnd;
+        private System.Windows.Forms.DateTimePicker DtpExamStart;
+        private System.Windows.Forms.DateTimePicker DtpExamEnd;
         private System.Windows.Forms.Button ButtonSave;
         private System.Windows.Forms.TabControl TabControlMain;
         private System.Windows.Forms.TabPage TabPageGeneral;
@@ -904,5 +912,6 @@
         private System.Windows.Forms.Label LabelLine05;
         private System.Windows.Forms.ComboBox ComboBoxPosition;
         private System.Windows.Forms.Label LabelChar1;
+        private System.Windows.Forms.Button ButtonAdvanced;
     }
 }

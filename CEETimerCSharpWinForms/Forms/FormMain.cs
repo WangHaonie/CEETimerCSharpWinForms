@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -30,6 +31,7 @@ namespace CEETimerCSharpWinForms.Forms
         private FontStyle SelectedFontStyle;
         private List<PairItems<Color, Color>> CountdownColors;
         private List<PairItems<Color, Color>> DefaultColors;
+        private List<PairItems<PairItems<int, TimeSpan>, PairItems<Color, Color>>> ColorRules;
         private string ExamName;
 
         private enum CountdownState
@@ -106,6 +108,7 @@ namespace CEETimerCSharpWinForms.Forms
             ScreenIndex = int.TryParse(configManager.ReadConfig(ConfigItems.KScreen), out int tmpk) ? tmpk : 0;
             PositionIndex = int.TryParse(configManager.ReadConfig(ConfigItems.KPosition), out int tmpu) ? tmpu : 0;
             ShowXOnlyIndex = int.TryParse(configManager.ReadConfig(ConfigItems.KShowValue), out int tmpl) ? tmpl : 0;
+            try { ColorRules = ColorRulesHelper.GetColorRules(configManager.ReadArray(ConfigItems.KColorRules)); } catch { ColorRules = []; }
             int.TryParse(configManager.ReadConfig(ConfigItems.KPosX), out int x);
             int.TryParse(configManager.ReadConfig(ConfigItems.KPosY), out int y);
             CountdownColors = [];
@@ -275,7 +278,8 @@ namespace CEETimerCSharpWinForms.Forms
                     ScreenIndex = ScreenIndex,
                     PositionIndex = PositionIndex,
                     DefaultColors = DefaultColors,
-                    CountdownColors = CountdownColors
+                    CountdownColors = CountdownColors,
+                    ColorRules = ColorRules
                 };
 
                 formSettings.ConfigChanged += RefreshSettings;
@@ -308,15 +312,18 @@ namespace CEETimerCSharpWinForms.Forms
         {
             if (IsCountdownReady && DateTime.Now < ExamStartTime)
             {
-                SetCountdownText(ExamStartTime - DateTime.Now, $"距离{ExamName}还有", CountdownColors[0]);
+                var Span = ExamStartTime - DateTime.Now;
+                ApplyColorRule(0, Span, $"距离{ExamName}{ColorRulesHelper.StartHint}");
             }
             else if (IsCountdownReady && DateTime.Now < ExamEndTime && IsShowEnd)
             {
-                SetCountdownText(ExamEndTime - DateTime.Now, $"距离{ExamName}结束还有", CountdownColors[1]);
+                var Span = ExamEndTime - DateTime.Now;
+                ApplyColorRule(1, Span, $"距离{ExamName}{ColorRulesHelper.LeftHint}");
             }
             else if (IsCountdownReady && DateTime.Now >= ExamEndTime && IsShowEnd && IsShowPast)
             {
-                SetCountdownText(DateTime.Now - ExamEndTime, $"距离{ExamName}已过去了", CountdownColors[2]);
+                var Span = DateTime.Now - ExamEndTime;
+                ApplyColorRule(2, Span, $"距离{ExamName}{ColorRulesHelper.PastHint}");
             }
             else
             {
@@ -330,6 +337,25 @@ namespace CEETimerCSharpWinForms.Forms
                 ApplyLocation();
                 KeepOnScreen();
             }
+        }
+
+        private void ApplyColorRule(int Phase, TimeSpan Span, string Hint)
+        {
+            var Rules = ColorRules.Where(i => i.Item1.Item1 == Phase).Select(x => new { Tick = x.Item1.Item2, Fore = x.Item2.Item1, Back = x.Item2.Item2 }).OrderBy(x => x.Tick).ToList();
+
+            if (Rules.Count > 0)
+            {
+                foreach (var Rule in Rules)
+                {
+                    if (Phase == 2 ? (Span >= Rule.Tick - new TimeSpan(0, 0, 0, 1)) : (Span <= Rule.Tick))
+                    {
+                        SetCountdown(Span, Hint, Rule.Fore, Rule.Back);
+                        return;
+                    }
+                }
+            }
+
+            SetCountdown(Span, Hint, CountdownColors[Phase].Item1, CountdownColors[Phase].Item2);
         }
 
         private void ApplyLocation()
@@ -352,10 +378,10 @@ namespace CEETimerCSharpWinForms.Forms
             }
         }
 
-        private void SetCountdownText(TimeSpan Span, string Hint, PairItems<Color, Color> ColorGroup)
+        private void SetCountdown(TimeSpan Span, string Hint, Color Fore, Color Back)
         {
-            LabelCountdown.ForeColor = ColorGroup.Item1;
-            BackColor = ColorGroup.Item2;
+            LabelCountdown.ForeColor = Fore;
+            BackColor = Back;
 
             LabelCountdown.Text = SelectedState switch
             {
@@ -367,6 +393,12 @@ namespace CEETimerCSharpWinForms.Forms
                 CountdownState.SecondsOnly => $"{Hint}{Span.TotalSeconds:0}秒",
                 _ => throw new Exception()
             };
+        }
+
+        private List<PairItems<TimeSpan, PairItems<Color, Color>>> GetColorRules()
+        {
+            return [new(new TimeSpan(0, 2, 0) + new TimeSpan(0, 0, 1), new(Color.Green, Color.White)),
+                    new(new TimeSpan(0, 1, 0) + new TimeSpan(0, 0, 1), new(Color.Black, Color.White))];
         }
 
         private void CompatibleWithPPTService()

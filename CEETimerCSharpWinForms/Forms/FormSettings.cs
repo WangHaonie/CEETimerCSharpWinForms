@@ -1,4 +1,5 @@
-﻿using CEETimerCSharpWinForms.Modules;
+﻿using CEETimerCSharpWinForms.Dialogs;
+using CEETimerCSharpWinForms.Modules;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -29,6 +30,7 @@ namespace CEETimerCSharpWinForms.Forms
         public int PositionIndex { get; set; }
         public List<PairItems<Color, Color>> CountdownColors { get; set; }
         public List<PairItems<Color, Color>> DefaultColors { get; set; }
+        public List<PairItems<PairItems<int, TimeSpan>, PairItems<Color, Color>>> ColorRules { get; set; }
         public string ExamName { get; set; }
         public event EventHandler ConfigChanged;
 
@@ -92,6 +94,11 @@ namespace CEETimerCSharpWinForms.Forms
             LabelExamNameCounter.ForeColor = Color.Red;
             TextBoxExamName.MaxLength = ConfigPolicy.MaxExamNameLength;
             GBoxExamName.Text = $"考试名称 ({ConfigPolicy.MinExamNameLength}~{ConfigPolicy.MaxExamNameLength}字)";
+            CheckBoxShowEnd.Text = $"显示 \"考试还有多久结束\" (距离...{ColorRulesHelper.LeftHint}...)(&E)";
+            CheckBoxShowPast.Text = $"显示 \"考试已过去了多久\" (距离...{ColorRulesHelper.PastHint}...)(&P)";
+            LabelPreviewColor1.Text = $"距离...{ColorRulesHelper.StartHint}...";
+            LabelPreviewColor2.Text = $"距离...{ColorRulesHelper.LeftHint}...";
+            LabelPreviewColor3.Text = $"距离...{ColorRulesHelper.PastHint}...";
 
             List<PairItems<string, int>> Shows = [new("天", 0), new("时", 1), new("分", 2), new("秒", 3)];
             ComboBoxShowXOnly.DataSource = Shows;
@@ -132,13 +139,13 @@ namespace CEETimerCSharpWinForms.Forms
             CheckBoxStartup.Checked = (Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true)?.GetValue(LaunchManager.AppNameEn) is string regvalue) && regvalue.Equals($"\"{LaunchManager.CurrentExecutable}\"", StringComparison.OrdinalIgnoreCase);
             CheckBoxTopMost.Checked = IsTopMost;
             TextBoxExamName.Text = ExamName;
-            DTPExamStart.Value = ExamStartTime;
-            DTPExamEnd.Value = ExamEndTime;
+            DtpExamStart.Value = ExamStartTime;
+            DtpExamEnd.Value = ExamEndTime;
             CheckBoxMemOpti.Checked = IsMemoryOptimizationEnabled;
             CheckBoxDraggable.Checked = IsDraggable;
             CheckBoxShowXOnly.Checked = IsShowXOnly;
             CheckBoxRounding.Checked = IsRounding;
-            CheckBoxShowEnd.Checked = DTPExamEnd.Enabled = IsShowEnd;
+            CheckBoxShowEnd.Checked = DtpExamEnd.Enabled = IsShowEnd;
             CheckBoxShowPast.Checked = IsShowPast;
             CheckBoxPptSvc.Checked = IsPPTService;
             CheckBoxUniTopMost.Checked = TopMost;
@@ -198,13 +205,13 @@ namespace CEETimerCSharpWinForms.Forms
         {
             FormSettings_SettingsChanged(sender, e);
             ChangeWorkingStyle(WorkingArea.ShowLeftPast, CheckBoxShowEnd.Checked);
-            DTPExamEnd.Enabled = CheckBoxShowEnd.Checked;
+            DtpExamEnd.Enabled = CheckBoxShowEnd.Checked;
 
             if (!IsFormLoading && CheckBoxShowEnd.Checked)
             {
                 MessageX.Popup("由于已开启显示考试结束倒计时，请设置考试结束日期和时间。", MessageLevel.Info, this);
                 TabControlMain.SelectedTab = TabPageGeneral;
-                DTPExamEnd.Focus();
+                DtpExamEnd.Focus();
             }
         }
 
@@ -307,6 +314,20 @@ namespace CEETimerCSharpWinForms.Forms
         {
             FormSettings_SettingsChanged(sender, e);
             ChangeWorkingStyle(WorkingArea.DefaultColor);
+        }
+
+        private void ButtonAdvanced_Click(object sender, EventArgs e)
+        {
+            ColorRulesManager _ColorRulesManager = new()
+            {
+                ColorRules = ColorRules
+            };
+
+            if (_ColorRulesManager.ShowDialog() == DialogResult.OK)
+            {
+                FormSettings_SettingsChanged(sender, e);
+                ColorRules = _ColorRulesManager.ColorRules;
+            }
         }
 
         private void ButtonRestart_MouseDown(object sender, MouseEventArgs e)
@@ -463,7 +484,7 @@ namespace CEETimerCSharpWinForms.Forms
         private bool IsSettingsFormatValid()
         {
             ExamName = TextBoxExamName.Text.RemoveIllegalChars();
-            TimeSpan ExamTimeSpan = DTPExamEnd.Value - DTPExamStart.Value;
+            TimeSpan ExamTimeSpan = DtpExamEnd.Value - DtpExamStart.Value;
             string UniMsg = "";
             string TimeMsg = "";
 
@@ -473,9 +494,9 @@ namespace CEETimerCSharpWinForms.Forms
                 return false;
             }
 
-            if (DTPExamEnd.Enabled)
+            if (DtpExamEnd.Enabled)
             {
-                if (DTPExamEnd.Value <= DTPExamStart.Value)
+                if (DtpExamEnd.Value <= DtpExamStart.Value)
                 {
                     MessageX.Popup("考试结束时间必须在开始时间之后！", MessageLevel.Error, this, TabControlMain, TabPageGeneral);
                     return false;
@@ -646,8 +667,8 @@ namespace CEETimerCSharpWinForms.Forms
                 new ConfigManager().WriteConfig(new()
                 {
                     { ConfigItems.KExamName, ExamName },
-                    { ConfigItems.KStartTime, $"{DTPExamStart.Value:yyyyMMddHHmmss}" },
-                    { ConfigItems.KEndTime, $"{DTPExamEnd.Value:yyyyMMddHHmmss}" },
+                    { ConfigItems.KStartTime, $"{DtpExamStart.Value:yyyyMMddHHmmss}" },
+                    { ConfigItems.KEndTime, $"{DtpExamEnd.Value:yyyyMMddHHmmss}" },
                     { ConfigItems.KMemOpti, $"{CheckBoxMemOpti.Checked}" },
                     { ConfigItems.KTopMost, $"{CheckBoxTopMost.Checked}" },
                     { ConfigItems.KShowXOnly, $"{CheckBoxShowXOnly.Checked}" },
@@ -662,14 +683,15 @@ namespace CEETimerCSharpWinForms.Forms
                     { ConfigItems.KSeewoPptSvc, $"{CheckBoxPptSvc.Checked}" },
                     { ConfigItems.KFont, $"{CountdownFont.Name}, {CountdownFont.Size}pt" },
                     { ConfigItems.KFontStyle, $"{CountdownFontStyle}" },
-                    { ConfigItems.KFore1, $"{LabelColor11.BackColor.R},{LabelColor11.BackColor.G},{LabelColor11.BackColor.B}" },
-                    { ConfigItems.KBack1, $"{LabelColor12.BackColor.R},{LabelColor12.BackColor.G},{LabelColor12.BackColor.B}" },
-                    { ConfigItems.KFore2, $"{LabelColor21.BackColor.R},{LabelColor21.BackColor.G},{LabelColor21.BackColor.B}" },
-                    { ConfigItems.KBack2, $"{LabelColor22.BackColor.R},{LabelColor22.BackColor.G},{LabelColor22.BackColor.B}" },
-                    { ConfigItems.KFore3, $"{LabelColor31.BackColor.R},{LabelColor31.BackColor.G},{LabelColor31.BackColor.B}" },
-                    { ConfigItems.KBack3, $"{LabelColor32.BackColor.R},{LabelColor32.BackColor.G},{LabelColor32.BackColor.B}" },
-                    { ConfigItems.KFore4, $"{LabelColor41.BackColor.R},{LabelColor41.BackColor.G},{LabelColor41.BackColor.B}" },
-                    { ConfigItems.KBack4, $"{LabelColor42.BackColor.R},{LabelColor42.BackColor.G},{LabelColor42.BackColor.B}" }
+                    { ConfigItems.KFore1, $"{LabelColor11.BackColor.ToRgb()}" },
+                    { ConfigItems.KBack1, $"{LabelColor12.BackColor.ToRgb()}" },
+                    { ConfigItems.KFore2, $"{LabelColor21.BackColor.ToRgb()}" },
+                    { ConfigItems.KBack2, $"{LabelColor22.BackColor.ToRgb()}" },
+                    { ConfigItems.KFore3, $"{LabelColor31.BackColor.ToRgb()}" },
+                    { ConfigItems.KBack3, $"{LabelColor32.BackColor.ToRgb()}" },
+                    { ConfigItems.KFore4, $"{LabelColor41.BackColor.ToRgb()}" },
+                    { ConfigItems.KBack4, $"{LabelColor42.BackColor.ToRgb()}" },
+                    { ConfigItems.KColorRules, ColorRulesHelper.Format(ColorRules)}
                 });
             }
             catch { }

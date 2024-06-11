@@ -12,19 +12,7 @@ namespace CEETimerCSharpWinForms.Modules
 
             if (Regex.IsMatch(s, @"^\d{1,3},\d{1,3},\d{1,3}$"))
             {
-                string[] RGB = s.Split(',');
-                int R = int.Parse(RGB[0]);
-                int G = int.Parse(RGB[1]);
-                int B = int.Parse(RGB[2]);
-
-                if (!(R.IsRGB() && G.IsRGB() && B.IsRGB()))
-                {
-                    return false;
-                }
-                else
-                {
-                    color = Color.FromArgb(R, G, B);
-                }
+                color = GetColor(s);
             }
             else
             {
@@ -32,6 +20,23 @@ namespace CEETimerCSharpWinForms.Modules
             }
 
             return true;
+        }
+
+        public static Color GetColor(string rgb)
+        {
+            string[] RGB = rgb.Split(',');
+            int R = int.Parse(RGB[0]);
+            int G = int.Parse(RGB[1]);
+            int B = int.Parse(RGB[2]);
+
+            if (!(R.IsRGB() && G.IsRGB() && B.IsRGB()))
+            {
+                return Color.Empty;
+            }
+            else
+            {
+                return Color.FromArgb(R, G, B);
+            }
         }
 
         public static bool IsNiceContrast(Color Fore, Color Back)

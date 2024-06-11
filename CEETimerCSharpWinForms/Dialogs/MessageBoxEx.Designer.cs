@@ -1,4 +1,4 @@
-﻿namespace CEETimerCSharpWinForms.Forms
+﻿namespace CEETimerCSharpWinForms.Dialogs
 {
     partial class MessageBoxEx
     {

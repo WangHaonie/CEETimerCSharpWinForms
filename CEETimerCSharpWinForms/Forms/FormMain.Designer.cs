@@ -47,7 +47,7 @@
             this.LabelCountdown.ForeColor = System.Drawing.Color.Black;
             this.LabelCountdown.Location = new System.Drawing.Point(0, 0);
             this.LabelCountdown.Name = "LabelCountdown";
-            this.LabelCountdown.Size = new System.Drawing.Size(107, 15);
+            this.LabelCountdown.Size = new System.Drawing.Size(81, 15);
             this.LabelCountdown.TabIndex = 0;
             this.LabelCountdown.Text = "正在加载中...";
             // 
@@ -95,7 +95,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(104, 23);
+            this.ClientSize = new System.Drawing.Size(162, 23);
             this.ContextMenuStrip = this.ContextMenuMain;
             this.ControlBox = false;
             this.Controls.Add(this.LabelCountdown);

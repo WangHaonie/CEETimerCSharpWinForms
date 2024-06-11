@@ -1,4 +1,4 @@
-﻿using CEETimerCSharpWinForms.Forms;
+﻿using CEETimerCSharpWinForms.Dialogs;
 using System;
 using System.Drawing;
 using System.Media;
