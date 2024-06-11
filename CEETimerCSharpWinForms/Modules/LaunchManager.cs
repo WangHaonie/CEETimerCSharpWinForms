@@ -156,20 +156,32 @@ namespace CEETimerCSharpWinForms.Modules
 
         private static void HandleException(Exception ex)
         {
-            if (MessageX.Popup($"程序出现意外错误，无法继续运行，非常抱歉给您带来不便，建议您截图保存以下信息并发送给软件开发者。\n或者您可以点击 \"是\" 来重启应用程序，\"否\" 关闭应用程序{ex.ToMessage()}", MessageLevel.Error, Buttons: MessageBoxExButtons.YesNo) == DialogResult.Yes)
-            {
-                Shutdown(Restart: true);
-            }
-            else
-            {
-                Shutdown();
-            }
+            var ExOutput = string.Format(@"
+╭───────────────────────────────────────────────────╮
+日期和时间：{0}{1}
+╰───────────────────────────────────────────────────╯
+", DateTime.Now.ToString("yyyy-MM-dd dddd HH:mm:ss.ffffff"), ex.ToMessage());
+
+            var ExFileName = "UnhandledException.txt";
+            var ExFilePath = $"{CurrentExecutablePath}{ExFileName}";
+
+            Clipboard.SetText(ExOutput);
+            File.AppendAllText(ExFilePath, ExOutput);
+
+            var _DialogResult = MessageX.Popup($"程序出现意外错误，无法继续运行，非常抱歉给您带来不便，相关错误信息已写入到安装文件夹中的 {ExFileName} 文件和系统剪切板，\n建议您将相关信息并发送给软件开发者以便我们更好的定位并解决问题。\n或者您也可以点击 \"是\" 来重启应用程序，\"否\" 关闭应用程序{ex.ToMessage()}", MessageLevel.Error, Buttons: MessageBoxExButtons.YesNo);
+            OpenDir();
+            Shutdown(Restart: _DialogResult == DialogResult.Yes);
         }
 
         public static void ShowLastForm()
         {
             var LastForm = GetOpenForms().LastOrDefault();
             LastForm?.Invoke(new Action(LastForm.ReActivate));
+        }
+
+        public static void OpenDir()
+        {
+            Process.Start(CurrentExecutablePath);
         }
     }
 }

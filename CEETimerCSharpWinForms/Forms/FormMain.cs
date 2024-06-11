@@ -300,7 +300,7 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void ContextOpenDir_Click(object sender, EventArgs e)
         {
-            Process.Start(LaunchManager.CurrentExecutablePath);
+            LaunchManager.OpenDir();
         }
 
         private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
