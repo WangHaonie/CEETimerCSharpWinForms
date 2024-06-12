@@ -683,14 +683,14 @@ namespace CEETimerCSharpWinForms.Forms
                     { ConfigItems.KSeewoPptSvc, $"{CheckBoxPptSvc.Checked}" },
                     { ConfigItems.KFont, $"{CountdownFont.Name}, {CountdownFont.Size}pt" },
                     { ConfigItems.KFontStyle, $"{CountdownFontStyle}" },
-                    { ConfigItems.KFore1, $"{LabelColor11.BackColor.ToRgb()}" },
-                    { ConfigItems.KBack1, $"{LabelColor12.BackColor.ToRgb()}" },
-                    { ConfigItems.KFore2, $"{LabelColor21.BackColor.ToRgb()}" },
-                    { ConfigItems.KBack2, $"{LabelColor22.BackColor.ToRgb()}" },
-                    { ConfigItems.KFore3, $"{LabelColor31.BackColor.ToRgb()}" },
-                    { ConfigItems.KBack3, $"{LabelColor32.BackColor.ToRgb()}" },
-                    { ConfigItems.KFore4, $"{LabelColor41.BackColor.ToRgb()}" },
-                    { ConfigItems.KBack4, $"{LabelColor42.BackColor.ToRgb()}" },
+                    { ConfigItems.KFore1, LabelColor11.BackColor.ToRgb() },
+                    { ConfigItems.KBack1, LabelColor12.BackColor.ToRgb() },
+                    { ConfigItems.KFore2, LabelColor21.BackColor.ToRgb() },
+                    { ConfigItems.KBack2, LabelColor22.BackColor.ToRgb() },
+                    { ConfigItems.KFore3, LabelColor31.BackColor.ToRgb() },
+                    { ConfigItems.KBack3, LabelColor32.BackColor.ToRgb() },
+                    { ConfigItems.KFore4, LabelColor41.BackColor.ToRgb() },
+                    { ConfigItems.KBack4, LabelColor42.BackColor.ToRgb() },
                     { ConfigItems.KColorRules, ColorRulesHelper.Format(ColorRules)}
                 });
             }
