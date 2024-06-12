@@ -34,7 +34,7 @@
             this.ToolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.ContextEdit = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextDelete = new System.Windows.Forms.ToolStripMenuItem();
-            this.ListViewMain = new System.Windows.Forms.ListView();
+            this.ListViewMain = new CEETimerCSharpWinForms.Controls.ListViewEx();
             this.ColumnRuleType = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ColumnExamTick = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ColumnForeColor = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -186,7 +186,6 @@
             this.ContextMenuMain.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
 
         #endregion
@@ -194,7 +193,7 @@
         private System.Windows.Forms.ContextMenuStrip ContextMenuMain;
         private System.Windows.Forms.ToolStripMenuItem ContextAdd;
         private System.Windows.Forms.ToolStripMenuItem ContextDelete;
-        private System.Windows.Forms.ListView ListViewMain;
+        private CEETimerCSharpWinForms.Controls.ListViewEx ListViewMain;
         private System.Windows.Forms.ColumnHeader ColumnRuleType;
         private System.Windows.Forms.ColumnHeader ColumnExamTick;
         private System.Windows.Forms.ColumnHeader ColumnForeColor;

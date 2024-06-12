@@ -140,6 +140,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\ListViewEx.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Dialogs\ColorRuleDialog.cs">
       <SubType>Form</SubType>
     </Compile>
