@@ -43,7 +43,7 @@ namespace CEETimerCSharpWinForms.Dialogs
                     {
                         var Part1 = Rule.Item1;
                         var Part2 = Rule.Item2;
-                        AddListViewItem(Part1.Item1, ColorRulesHelper.GetExamTickText(Part1.Item2 - ColorRulesHelper.TsThreshold), Part2.Item1, Part2.Item2);
+                        AddListViewItem(Part1.Item1, ColorRulesHelper.GetExamTickText(Part1.Item2), Part2.Item1, Part2.Item2);
                     }
                 }
             }
@@ -74,6 +74,12 @@ namespace CEETimerCSharpWinForms.Dialogs
             }
         }
 
+        private void ColorRulesManager_RulesChanged(bool Changed)
+        {
+            RulesChanged = Changed;
+            ButtonOK.Enabled = Changed;
+        }
+
         private void ContextDelete_Click(object sender, EventArgs e)
         {
             if (MessageX.Popup("确认删除所选规则吗？此操作将不可撤销！", MessageLevel.Warning, this, Buttons: MessageBoxExButtons.YesNo) == DialogResult.Yes)
@@ -81,8 +87,9 @@ namespace CEETimerCSharpWinForms.Dialogs
                 foreach (ListViewItem Item in ListViewMain.SelectedItems)
                 {
                     ListViewMain.Items.Remove(Item);
-                    RulesChanged = true;
                 }
+
+                ColorRulesManager_RulesChanged(true);
             }
         }
 
@@ -94,6 +101,7 @@ namespace CEETimerCSharpWinForms.Dialogs
 
         private void ListViewMain_ColumnWidthChanging(object sender, ColumnWidthChangingEventArgs e)
         {
+            e.NewWidth = ((ListView)sender).Columns[e.ColumnIndex].Width;
             e.Cancel = true;
         }
 
@@ -146,7 +154,7 @@ namespace CEETimerCSharpWinForms.Dialogs
 
         private void AddListViewItem(int RuleTypeIndex, string ExamTick, Color Fore, Color Back, ListViewItem Item = null)
         {
-            RulesChanged = !IsFormLoading;
+            ColorRulesManager_RulesChanged(!IsFormLoading);
 
             var RuleTypeText = ColorRulesHelper.GetRuleTypeText(RuleTypeIndex);
             var _Fore = Fore.ToRgb();
@@ -158,15 +166,15 @@ namespace CEETimerCSharpWinForms.Dialogs
 
                 if (Duplicate != null)
                 {
-                    if (MessageX.Popup("检测到即将添加的规则与现有的重复，是否覆盖？", MessageLevel.Warning, this, Buttons: MessageBoxExButtons.YesNo) == DialogResult.Yes)
+                    if (!IsFormLoading)
                     {
-                        ModifyOrOverrideItem(Duplicate);
-                        return;
+                        if (MessageX.Popup("检测到即将添加的规则与现有的重复，是否覆盖？", MessageLevel.Warning, this, Buttons: MessageBoxExButtons.YesNo) == DialogResult.Yes)
+                        {
+                            ModifyOrOverrideItem(Duplicate);
+                            return;
+                        }
                     }
-                    else
-                    {
-                        return;
-                    }
+                    return;
                 }
             }
 

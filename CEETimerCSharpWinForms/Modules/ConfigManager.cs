@@ -208,5 +208,12 @@ namespace CEETimerCSharpWinForms.Modules
         public const int MinFontSize = 10;
         public const int MaxFontSize = 28;
         public const string DefaultFont = "Microsoft YaHei, 17.25pt";
+        public static TimeSpan TsMaxAllowed => new(65535, 23, 59, 59);
+        public static TimeSpan TsMinAllowed => new(0, 0, 0, 1);
+
+        public static T NotAllowed<T>(string ExMsg)
+        {
+            throw new Exception(ExMsg);
+        }
     }
 }

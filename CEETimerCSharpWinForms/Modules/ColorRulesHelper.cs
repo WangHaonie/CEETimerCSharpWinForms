@@ -14,7 +14,6 @@ namespace CEETimerCSharpWinForms.Modules
             public string Back { get; set; } = back;
         }
 
-        public static TimeSpan TsThreshold => new(0, 0, 0, 1);
         public static char[] TsSeparator => ['天', '时', '分', '秒'];
 
         public const string StartHint = "还有";
@@ -34,7 +33,7 @@ namespace CEETimerCSharpWinForms.Modules
             "0" => 0,
             "1" => 1,
             "2" => 2,
-            _ => 0
+            _ => ConfigPolicy.NotAllowed<int>("无效的 TypeIndex")
         };
 
         public static string GetRuleTypeText(int i) => i switch
@@ -64,7 +63,14 @@ namespace CEETimerCSharpWinForms.Modules
             int m = int.Parse(_TimeSpan[2]);
             int s = int.Parse(_TimeSpan[3]);
 
-            return new TimeSpan(d, h, m, s) + TsThreshold;
+            var ts = new TimeSpan(d, h, m, s);
+
+            if (ts < ConfigPolicy.TsMinAllowed || ts > ConfigPolicy.TsMaxAllowed)
+            {
+                ConfigPolicy.NotAllowed<TimeSpan>($"无效的 ExamTick：{str}");
+            }
+
+            return ts;
         }
 
         public static string GetExamTickText(TimeSpan timeSpan)
@@ -85,7 +91,7 @@ namespace CEETimerCSharpWinForms.Modules
             {
                 var Part1 = Rule.Item1;
                 var Part2 = Rule.Item2;
-                tmp.Add(new($"{Part1.Item1}", GetRawExamTick(Part1.Item2 - TsThreshold), Part2.Item1.ToRgb(), Part2.Item2.ToRgb()));
+                tmp.Add(new($"{Part1.Item1}", GetRawExamTick(Part1.Item2), Part2.Item1.ToRgb(), Part2.Item2.ToRgb()));
             }
 
             return tmp;
@@ -97,8 +103,16 @@ namespace CEETimerCSharpWinForms.Modules
 
             foreach (var Rule in cfg)
             {
+                var fore = ColorHelper.GetColor(Rule.Fore);
+                var back = ColorHelper.GetColor(Rule.Back);
+
+                if (!ColorHelper.IsNiceContrast(fore, back))
+                {
+                    ConfigPolicy.NotAllowed<Color>("无效的颜色");
+                }
+
                 var part1 = new PairItems<int, TimeSpan>(GetRuleTypeIndexFromRaw(Rule.Type), GetExamTickFormRaw(Rule.Tick));
-                var part2 = new PairItems<Color, Color>(ColorHelper.GetColor(Rule.Fore), ColorHelper.GetColor(Rule.Back));
+                var part2 = new PairItems<Color, Color>(fore, back);
                 tmp.Add(new(part1, part2));
             }
 
