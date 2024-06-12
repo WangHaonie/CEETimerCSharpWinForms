@@ -192,7 +192,7 @@ namespace CEETimerCSharpWinForms.Forms
 
             if (!IsFormLoading && CheckBoxShowEnd.Checked)
             {
-                MessageX.Popup("由于已开启显示考试结束倒计时，请设置考试结束日期和时间。", MessageLevel.Info, this);
+                MessageX.Popup("由于已开启显示考试结束倒计时，请设置考试结束日期和时间。", MessageLevel.Info);
                 TabControlMain.SelectedTab = TabPageGeneral;
                 DtpExamEnd.Focus();
             }
@@ -414,7 +414,7 @@ namespace CEETimerCSharpWinForms.Forms
             }
             else if (HasSettingsChanged)
             {
-                switch (MessageX.Popup("检测到设置被更改但没有保存，是否立即进行保存？", MessageLevel.Warning, this, Buttons: MessageBoxExButtons.YesNo))
+                switch (MessageX.Popup("检测到设置被更改但没有保存，是否立即进行保存？", MessageLevel.Warning, Buttons: MessageBoxExButtons.YesNo))
                 {
                     case DialogResult.Yes:
                         e.Cancel = true;
