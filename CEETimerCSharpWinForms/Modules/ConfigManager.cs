@@ -120,7 +120,7 @@ namespace CEETimerCSharpWinForms.Modules
                 }
                 else
                 {
-                    throw new Exception();
+                    ConfigPolicy.NotAllowed<Dictionary<string, object>>();
                 }
             }
             catch
@@ -211,9 +211,10 @@ namespace CEETimerCSharpWinForms.Modules
         public static TimeSpan TsMaxAllowed => new(65535, 23, 59, 59);
         public static TimeSpan TsMinAllowed => new(0, 0, 0, 1);
 
-        public static T NotAllowed<T>(string ExMsg)
+        public static T NotAllowed<T>()
         {
-            throw new Exception(ExMsg);
+            throw new Exception(); // 看似只是抛出一个没有任何信息的异常，实际上有大作用
+            // 什么？为什么要用T？因为要在 switch 表达式里浑水摸鱼
         }
     }
 }

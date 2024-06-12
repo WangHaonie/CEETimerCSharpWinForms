@@ -15,6 +15,12 @@ namespace CEETimerCSharpWinForms.Modules
         }
 
         public static char[] TsSeparator => ['天', '时', '分', '秒'];
+        public static TimeSpan GetExamTick(string str) => GetExamTickInternal(str, TsSeparator);
+        public static TimeSpan GetExamTickFormRaw(string str) => GetExamTickInternal(str, [',']);
+        public static string GetExamTickText(TimeSpan timeSpan)
+            => $"{timeSpan.Days}{TsSeparator[0]}{timeSpan.Hours}{TsSeparator[1]}{timeSpan.Minutes}{TsSeparator[2]}{timeSpan.Seconds}{TsSeparator[3]}";
+        public static string GetRawExamTick(TimeSpan timeSpan)
+            => $"{timeSpan.Days},{timeSpan.Hours},{timeSpan.Minutes},{timeSpan.Seconds}";
 
         public const string StartHint = "还有";
         public const string LeftHint = "结束还有";
@@ -33,7 +39,7 @@ namespace CEETimerCSharpWinForms.Modules
             "0" => 0,
             "1" => 1,
             "2" => 2,
-            _ => ConfigPolicy.NotAllowed<int>("无效的 TypeIndex")
+            _ => ConfigPolicy.NotAllowed<int>()
         };
 
         public static string GetRuleTypeText(int i) => i switch
@@ -43,45 +49,7 @@ namespace CEETimerCSharpWinForms.Modules
             2 => PastHint,
             _ => StartHint
         };
-
-        public static TimeSpan GetExamTick(string str)
-        {
-            return GetExamTickInternal(str, TsSeparator);
-        }
-
-        public static TimeSpan GetExamTickFormRaw(string str)
-        {
-            return GetExamTickInternal(str, [',']);
-        }
-
-        private static TimeSpan GetExamTickInternal(string str, char[] Separator)
-        {
-            var _TimeSpan = str.Split(Separator);
-
-            int d = int.Parse(_TimeSpan[0]);
-            int h = int.Parse(_TimeSpan[1]);
-            int m = int.Parse(_TimeSpan[2]);
-            int s = int.Parse(_TimeSpan[3]);
-
-            var ts = new TimeSpan(d, h, m, s);
-
-            if (ts < ConfigPolicy.TsMinAllowed || ts > ConfigPolicy.TsMaxAllowed)
-            {
-                ConfigPolicy.NotAllowed<TimeSpan>($"无效的 ExamTick：{str}");
-            }
-
-            return ts;
-        }
-
-        public static string GetExamTickText(TimeSpan timeSpan)
-        {
-            return $"{timeSpan.Days}{TsSeparator[0]}{timeSpan.Hours}{TsSeparator[1]}{timeSpan.Minutes}{TsSeparator[2]}{timeSpan.Seconds}{TsSeparator[3]}";
-        }
-
-        public static string GetRawExamTick(TimeSpan timeSpan)
-        {
-            return $"{timeSpan.Days},{timeSpan.Hours},{timeSpan.Minutes},{timeSpan.Seconds}";
-        }
+        
 
         public static List<Config> Format(List<PairItems<PairItems<int, TimeSpan>, PairItems<Color, Color>>> Rules)
         {
@@ -108,7 +76,7 @@ namespace CEETimerCSharpWinForms.Modules
 
                 if (!ColorHelper.IsNiceContrast(fore, back))
                 {
-                    ConfigPolicy.NotAllowed<Color>("无效的颜色");
+                    ConfigPolicy.NotAllowed<Color>();
                 }
 
                 var part1 = new PairItems<int, TimeSpan>(GetRuleTypeIndexFromRaw(Rule.Type), GetExamTickFormRaw(Rule.Tick));
@@ -117,6 +85,25 @@ namespace CEETimerCSharpWinForms.Modules
             }
 
             return tmp;
+        }
+
+        private static TimeSpan GetExamTickInternal(string str, char[] Separator)
+        {
+            var _TimeSpan = str.Split(Separator);
+
+            int d = int.Parse(_TimeSpan[0]);
+            int h = int.Parse(_TimeSpan[1]);
+            int m = int.Parse(_TimeSpan[2]);
+            int s = int.Parse(_TimeSpan[3]);
+
+            var ts = new TimeSpan(d, h, m, s);
+
+            if (ts < ConfigPolicy.TsMinAllowed || ts > ConfigPolicy.TsMaxAllowed)
+            {
+                ConfigPolicy.NotAllowed<TimeSpan>();
+            }
+
+            return ts;
         }
     }
 }

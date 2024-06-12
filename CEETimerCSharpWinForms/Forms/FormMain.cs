@@ -152,7 +152,7 @@ namespace CEETimerCSharpWinForms.Forms
                     1 => CountdownState.HoursOnly,
                     2 => CountdownState.MinutesOnly,
                     3 => CountdownState.SecondsOnly,
-                    _ => throw new Exception()
+                    _ => ConfigPolicy.NotAllowed<CountdownState>()
                 };
             }
 
@@ -163,7 +163,7 @@ namespace CEETimerCSharpWinForms.Forms
 
                 if (SelectedFont.Size > ConfigPolicy.MaxFontSize || SelectedFont.Size < ConfigPolicy.MinFontSize)
                 {
-                    throw new Exception();
+                    ConfigPolicy.NotAllowed<Font>();
                 }
             }
             catch
@@ -313,17 +313,17 @@ namespace CEETimerCSharpWinForms.Forms
             if (IsCountdownReady && DateTime.Now < ExamStartTime)
             {
                 var Span = ExamStartTime - DateTime.Now;
-                ApplyColorRule(0, Span, $"距离{ExamName}{ColorRulesHelper.StartHint}");
+                ApplyColorRule(0, Span, ExamName, ColorRulesHelper.StartHint);
             }
             else if (IsCountdownReady && DateTime.Now < ExamEndTime && IsShowEnd)
             {
                 var Span = ExamEndTime - DateTime.Now;
-                ApplyColorRule(1, Span, $"距离{ExamName}{ColorRulesHelper.LeftHint}");
+                ApplyColorRule(1, Span, ExamName, ColorRulesHelper.LeftHint);
             }
             else if (IsCountdownReady && DateTime.Now > ExamEndTime && IsShowEnd && IsShowPast)
             {
                 var Span = DateTime.Now - ExamEndTime;
-                ApplyColorRule(2, Span, $"距离{ExamName}{ColorRulesHelper.PastHint}");
+                ApplyColorRule(2, Span, ExamName, ColorRulesHelper.PastHint);
             }
             else
             {
@@ -339,7 +339,7 @@ namespace CEETimerCSharpWinForms.Forms
             }
         }
 
-        private void ApplyColorRule(int Phase, TimeSpan Span, string Hint)
+        private void ApplyColorRule(int Phase, TimeSpan Span, string ExamName, string Hint)
         {
             var r = ColorRules.Where(i => i.Item1.Item1 == Phase).Select(x => new { Tick = x.Item1.Item2, Fore = x.Item2.Item1, Back = x.Item2.Item2 });
             var R = Phase == 2 ? r.OrderByDescending(x => x.Tick) : r.OrderBy(x => x.Tick);
@@ -351,13 +351,13 @@ namespace CEETimerCSharpWinForms.Forms
                 {
                     if (Phase == 2 ? (Span >= Rule.Tick) : (Span <= Rule.Tick + new TimeSpan(0, 0, 0, 1)))
                     {
-                        SetCountdown(Span, Hint, Rule.Fore, Rule.Back);
+                        SetCountdown(Span, ExamName, Hint, Rule.Fore, Rule.Back);
                         return;
                     }
                 }
             }
 
-            SetCountdown(Span, Hint, CountdownColors[Phase].Item1, CountdownColors[Phase].Item2);
+            SetCountdown(Span, ExamName, Hint, CountdownColors[Phase].Item1, CountdownColors[Phase].Item2);
         }
 
         private void ApplyLocation()
@@ -375,25 +375,26 @@ namespace CEETimerCSharpWinForms.Forms
                     6 => new(SelectedScreen.Right - Width, SelectedScreen.Top),
                     7 => new(SelectedScreen.Right - Width, SelectedScreen.Top + SelectedScreen.Height / 2 - Height / 2),
                     8 => new(SelectedScreen.Right - Width, SelectedScreen.Bottom - Height),
-                    _ => throw new Exception()
+                    _ => ConfigPolicy.NotAllowed<Point>()
                 };
             }
         }
 
-        private void SetCountdown(TimeSpan Span, string Hint, Color Fore, Color Back)
+        private void SetCountdown(TimeSpan Span, string ExamName, string Hint, Color Fore, Color Back)
         {
             LabelCountdown.ForeColor = Fore;
             BackColor = Back;
+            ExamName += "距离";
 
             LabelCountdown.Text = SelectedState switch
             {
-                CountdownState.Normal => $"{Hint}{Span.Days}天{Span.Hours:00}时{Span.Minutes:00}分{Span.Seconds:00}秒",
-                CountdownState.DaysOnly => $"{Hint}{Span.Days}天",
+                CountdownState.Normal => $"{ExamName}{Hint}{Span.Days}天{Span.Hours:00}时{Span.Minutes:00}分{Span.Seconds:00}秒",
+                CountdownState.DaysOnly => $"{ExamName}{Hint}{Span.Days}天",
                 CountdownState.DaysOnlyWithRounding => $"{Hint}{Span.Days + 1}天",
-                CountdownState.HoursOnly => $"{Hint}{Span.TotalHours:0}小时",
-                CountdownState.MinutesOnly => $"{Hint}{Span.TotalMinutes:0}分钟",
-                CountdownState.SecondsOnly => $"{Hint}{Span.TotalSeconds:0}秒",
-                _ => throw new Exception()
+                CountdownState.HoursOnly => $"{ExamName}{Hint}{Span.TotalHours:0}小时",
+                CountdownState.MinutesOnly => $"{ExamName}{Hint}{Span.TotalMinutes:0}分钟",
+                CountdownState.SecondsOnly => $"{ExamName}{Hint}{Span.TotalSeconds:0}秒",
+                _ => ConfigPolicy.NotAllowed<string>()
             };
         }
 
@@ -445,7 +446,7 @@ namespace CEETimerCSharpWinForms.Forms
 
                 if (MemoryUsage > 9437184)
                 {
-                    throw new Exception();
+                    ConfigPolicy.NotAllowed<int>();
                 }
             }
             catch
