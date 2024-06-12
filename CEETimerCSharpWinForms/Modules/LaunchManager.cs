@@ -103,6 +103,7 @@ namespace CEETimerCSharpWinForms.Modules
         public static void Shutdown(bool Restart = false)
         {
             ProcessHelper.RunProcess("cmd.exe", $"/c taskkill /f /fi \"PID eq {Process.GetCurrentProcess().Id}\" /im {CurrentExecutableName} {(Restart ? $"& start \"\" \"{CurrentExecutable}\"" : "")}");
+            Environment.Exit(255);
         }
 
         public static void CheckAdmin(out string UserName, bool QueryUserName = false)
