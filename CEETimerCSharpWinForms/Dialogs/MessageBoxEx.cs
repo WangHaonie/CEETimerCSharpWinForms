@@ -40,14 +40,9 @@ namespace CEETimerCSharpWinForms.Dialogs
             }
 
             StartPosition = Position;
-
-            ButtonB.Location = new(Width - ButtonB.Width - 15.WithDpi(this), PanelHead.Height + 10.WithDpi(this));
-            ButtonA.Location = new(ButtonB.Location.X - ButtonA.Width - 6.WithDpi(this), ButtonB.Location.Y);
-
+            UIHelper.AlignControls(this, ButtonA, ButtonB, PanelHead);
             if (AutoClose) AutoCloseAsync();
-
             ShowDialog(OwnerForm);
-
             return _DialogResult;
         }
 

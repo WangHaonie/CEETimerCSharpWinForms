@@ -14,11 +14,12 @@ namespace CEETimerCSharpWinForms.Modules
             public string Back { get; set; } = back;
         }
 
+        public static TimeSpan TsThreshold => new(0, 0, 0, 1);
+        public static char[] TsSeparator => ['天', '时', '分', '秒'];
+
         public const string StartHint = "还有";
         public const string LeftHint = "结束还有";
         public const string PastHint = "已过去了";
-
-        public static char[] TimeSpanSeparator => ['天', '时', '分', '秒'];
 
         public static int GetRuleTypeIndex(string s) => s switch
         {
@@ -46,7 +47,7 @@ namespace CEETimerCSharpWinForms.Modules
 
         public static TimeSpan GetExamTick(string str)
         {
-            return GetExamTickInternal(str, TimeSpanSeparator);
+            return GetExamTickInternal(str, TsSeparator);
         }
 
         public static TimeSpan GetExamTickFormRaw(string str)
@@ -63,12 +64,12 @@ namespace CEETimerCSharpWinForms.Modules
             int m = int.Parse(_TimeSpan[2]);
             int s = int.Parse(_TimeSpan[3]);
 
-            return new TimeSpan(d, h, m, s) + new TimeSpan(0, 0, 0, 1);
+            return new TimeSpan(d, h, m, s) + TsThreshold;
         }
 
         public static string GetExamTickText(TimeSpan timeSpan)
         {
-            return $"{timeSpan.Days}{TimeSpanSeparator[0]}{timeSpan.Hours}{TimeSpanSeparator[1]}{timeSpan.Minutes}{TimeSpanSeparator[2]}{timeSpan.Seconds}{TimeSpanSeparator[3]}";
+            return $"{timeSpan.Days}{TsSeparator[0]}{timeSpan.Hours}{TsSeparator[1]}{timeSpan.Minutes}{TsSeparator[2]}{timeSpan.Seconds}{TsSeparator[3]}";
         }
 
         public static string GetRawExamTick(TimeSpan timeSpan)
@@ -84,7 +85,7 @@ namespace CEETimerCSharpWinForms.Modules
             {
                 var Part1 = Rule.Item1;
                 var Part2 = Rule.Item2;
-                tmp.Add(new($"{Part1.Item1}", GetRawExamTick(Part1.Item2 - new TimeSpan(0, 0, 0, 1)), Part2.Item1.ToRgb(), Part2.Item2.ToRgb()));
+                tmp.Add(new($"{Part1.Item1}", GetRawExamTick(Part1.Item2 - TsThreshold), Part2.Item1.ToRgb(), Part2.Item2.ToRgb()));
             }
 
             return tmp;

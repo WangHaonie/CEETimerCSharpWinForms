@@ -18,12 +18,9 @@ namespace CEETimerCSharpWinForms.Dialogs
         public ColorRuleDialog()
         {
             InitializeComponent();
-
-            List<PairItems<string, int>> ComboSource = [new(ColorRulesHelper.StartHint, 0), new(ColorRulesHelper.LeftHint, 1), new(ColorRulesHelper.PastHint, 2)];
-            ComboBoxRuleType.DataSource = ComboSource;
-            ComboBoxRuleType.DisplayMember = "Item1";
-            ComboBoxRuleType.ValueMember = "Item2";
-
+            UIHelper.BindData(ComboBoxRuleType, [new(ColorRulesHelper.StartHint, 0), new(ColorRulesHelper.LeftHint, 1), new(ColorRulesHelper.PastHint, 2)]);
+            UIHelper.AlignControls(this, ButtonOK, ButtonCancel, PanelMain);
+            UIHelper.AlignControls(this, ComboBoxRuleType, LabelChars01);
             TopMost = FormMain.IsUniTopMost;
         }
 
@@ -31,7 +28,7 @@ namespace CEETimerCSharpWinForms.Dialogs
         {
             ComboBoxRuleType.SelectedIndex = RuleType;
 
-            var Ticks = ExamTick.Split(ColorRulesHelper.TimeSpanSeparator);
+            var Ticks = ExamTick.Split(ColorRulesHelper.TsSeparator);
 
             if (Ticks.Length > 1)
             {

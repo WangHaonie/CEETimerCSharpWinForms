@@ -29,17 +29,26 @@ namespace CEETimerCSharpWinForms.Dialogs
 
         private void ColorRulesManager_Load(object sender, EventArgs e)
         {
-            if (ColorRules != null || ColorRules.Count == 0)
+            if (ColorRules != null)
             {
-                ListViewMain.Items.Clear();
-
-                foreach (var Rule in ColorRules)
+                if (ColorRules.Count == 0)
                 {
-                    var Part1 = Rule.Item1;
-                    var Part2 = Rule.Item2;
-                    AddListViewItem(Part1.Item1, ColorRulesHelper.GetExamTickText(Part1.Item2 - new TimeSpan(0, 0, 0, 1)), Part2.Item1, Part2.Item2);
+                    ListViewMain.Items.Add(new ListViewItem(["文本测试", "65535天23时59分59秒", "255,255,255", "255,255,255"]));
+                    AdjustColumnWidth(); // 触发一次自适应宽度，防止 ListView 为空时所有列在高 DPI 下糊为一坨
+                    ListViewMain.Items.Clear();
+                }
+                else
+                {
+                    foreach (var Rule in ColorRules)
+                    {
+                        var Part1 = Rule.Item1;
+                        var Part2 = Rule.Item2;
+                        AddListViewItem(Part1.Item1, ColorRulesHelper.GetExamTickText(Part1.Item2 - ColorRulesHelper.TsThreshold), Part2.Item1, Part2.Item2);
+                    }
                 }
             }
+
+            UIHelper.AlignControls(this, ButtonOK, ButtonCancel, ListViewMain);
         }
 
         private void ContextAdd_Click(object sender, EventArgs e)
@@ -72,6 +81,7 @@ namespace CEETimerCSharpWinForms.Dialogs
                 foreach (ListViewItem Item in ListViewMain.SelectedItems)
                 {
                     ListViewMain.Items.Remove(Item);
+                    RulesChanged = true;
                 }
             }
         }
@@ -137,6 +147,7 @@ namespace CEETimerCSharpWinForms.Dialogs
         private void AddListViewItem(int RuleTypeIndex, string ExamTick, Color Fore, Color Back, ListViewItem Item = null)
         {
             RulesChanged = !IsFormLoading;
+
             var RuleTypeText = ColorRulesHelper.GetRuleTypeText(RuleTypeIndex);
             var _Fore = Fore.ToRgb();
             var _Back = Back.ToRgb();
@@ -166,7 +177,7 @@ namespace CEETimerCSharpWinForms.Dialogs
             }
 
             ListViewMain.Items.Add(new ListViewItem([$"{RuleTypeText}", $"{ExamTick}", $"{_Fore}", $"{_Back}"]));
-            AdjustColumnWidth();
+            IDontKownWhatToNameThis();
 
             void ModifyOrOverrideItem(ListViewItem Item)
             {
@@ -174,7 +185,13 @@ namespace CEETimerCSharpWinForms.Dialogs
                 Item.SubItems[1].Text = $"{ExamTick}";
                 Item.SubItems[2].Text = $"{_Fore}";
                 Item.SubItems[3].Text = $"{_Back}";
+                IDontKownWhatToNameThis();
+            }
+
+            void IDontKownWhatToNameThis()
+            {
                 AdjustColumnWidth();
+                SortItems();
             }
         }
 
@@ -217,8 +234,6 @@ namespace CEETimerCSharpWinForms.Dialogs
             {
                 column.Width = -2;
             }
-
-            SortItems();
         }
 
         private void SortItems()

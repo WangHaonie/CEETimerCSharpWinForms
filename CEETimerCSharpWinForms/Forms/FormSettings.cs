@@ -74,10 +74,10 @@ namespace CEETimerCSharpWinForms.Forms
 
             if (Extensions.DpiRatio != 1)
             {
-                AlignControlPos(CheckBoxShowXOnly, ComboBoxShowXOnly, -1);
-                AlignControlPos(LabelScreens, ComboBoxScreens);
-                AlignControlPos(LabelChar1, ComboBoxPosition);
-                AlignControlPos(TextBoxExamName, LabelExamNameCounter);
+                UIHelper.AlignControls(this, ComboBoxShowXOnly, CheckBoxShowXOnly, -1);
+                UIHelper.AlignControls(this, ComboBoxScreens, LabelScreens);
+                UIHelper.AlignControls(this, ComboBoxPosition, LabelChar1);
+                UIHelper.AlignControls(this, LabelExamNameCounter, TextBoxExamName);
             }
 
             HasSettingsChanged = false;
@@ -99,16 +99,8 @@ namespace CEETimerCSharpWinForms.Forms
             LabelPreviewColor1.Text = $"距离...{ColorRulesHelper.StartHint}...";
             LabelPreviewColor2.Text = $"距离...{ColorRulesHelper.LeftHint}...";
             LabelPreviewColor3.Text = $"距离...{ColorRulesHelper.PastHint}...";
-
-            List<PairItems<string, int>> Shows = [new("天", 0), new("时", 1), new("分", 2), new("秒", 3)];
-            ComboBoxShowXOnly.DataSource = Shows;
-            ComboBoxShowXOnly.DisplayMember = "Item1";
-            ComboBoxShowXOnly.ValueMember = "Item2";
-
-            List<PairItems<string, int>> Positions = [new("左上角", 0), new("左部中央", 1), new("左下角", 2), new("上部中央", 3), new("中央", 4), new("下部中央", 5), new("右上角", 6), new("右部中央", 7), new("右下角", 8)];
-            ComboBoxPosition.DataSource = Positions;
-            ComboBoxPosition.DisplayMember = "Item1";
-            ComboBoxPosition.ValueMember = "Item2";
+            UIHelper.BindData(ComboBoxShowXOnly, [new("天", 0), new("时", 1), new("分", 2), new("秒", 3)]);
+            UIHelper.BindData(ComboBoxPosition, [new("左上角", 0), new("左部中央", 1), new("左下角", 2), new("上部中央", 3), new("中央", 4), new("下部中央", 5), new("右上角", 6), new("右部中央", 7), new("右下角", 8)]);
 
             List<PairItems<string, int>> Monitors = [new("<请选择>", 0)];
             Screen[] CurrentScreens = Screen.AllScreens;
@@ -117,10 +109,9 @@ namespace CEETimerCSharpWinForms.Forms
                 var CurrentScreen = CurrentScreens[i];
                 Monitors.Add(new($"{i + 1} {CurrentScreen.DeviceName} ({CurrentScreen.Bounds.Width}x{CurrentScreen.Bounds.Height})", i + 1));
             }
-            ComboBoxScreens.DataSource = Monitors;
-            ComboBoxScreens.DisplayMember = "Item1";
-            ComboBoxScreens.ValueMember = "Item2";
+            UIHelper.BindData(ComboBoxScreens, Monitors);
 
+            UIHelper.AlignControls(this, ButtonSave, ButtonCancel, TabControlMain);
             ColorLabels = [LabelColor12, LabelColor22, LabelColor32, LabelColor42, LabelColor11, LabelColor21, LabelColor31, LabelColor41];
             foreach (var l in ColorLabels)
             {
@@ -129,9 +120,6 @@ namespace CEETimerCSharpWinForms.Forms
                 l.MouseMove += ColorLabels_MouseMove;
                 l.MouseUp += ColorLabels_MouseUp;
             }
-
-            ButtonCancel.Location = new(TabControlMain.Location.X + TabControlMain.Width - ButtonCancel.Width, ButtonCancel.Location.Y);
-            ButtonSave.Location = new(ButtonCancel.Location.X - ButtonSave.Width - 6.WithDpi(this), ButtonSave.Location.Y);
         }
 
         private void RefreshSettings()
@@ -155,11 +143,6 @@ namespace CEETimerCSharpWinForms.Forms
             ChangeWorkingStyle(WorkingArea.ChangeFont, NewFont: new(CountdownFont, CountdownFontStyle));
             ChangePptsvcCtrlStyle(null, EventArgs.Empty);
             ComboBoxShowXOnly.SelectedIndex = IsShowXOnly ? ShowXOnlyIndex : 0;
-        }
-
-        private void AlignControlPos(Control Reference, Control Target, int Adjust = 0)
-        {
-            Target.Top = Reference.Top + Reference.Height / 2 - Target.Height / 2 + Adjust.WithDpi(this);
         }
 
         private void FormSettings_SettingsChanged(object sender, EventArgs e)

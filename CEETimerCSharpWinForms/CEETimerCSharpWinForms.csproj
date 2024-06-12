@@ -187,6 +187,7 @@
     <Compile Include="Modules\ListViewItemComparer.cs" />
     <Compile Include="Modules\PairItems.cs" />
     <Compile Include="Modules\ProcessHelper.cs" />
+    <Compile Include="Modules\UIHelper.cs" />
     <Compile Include="Modules\UpdateChecker.cs" />
     <Compile Include="Modules\ConfigManager.cs" />
     <Compile Include="Modules\Extensions.cs" />

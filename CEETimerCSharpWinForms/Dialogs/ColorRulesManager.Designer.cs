@@ -85,7 +85,6 @@
             // 
             // ListViewMain
             // 
-            this.ListViewMain.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.ListViewMain.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.ColumnRuleType,
             this.ColumnExamTick,
@@ -129,6 +128,7 @@
             // ButtonOK
             // 
             this.ButtonOK.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.ButtonOK.Enabled = false;
             this.ButtonOK.Location = new System.Drawing.Point(208, 289);
             this.ButtonOK.Name = "ButtonOK";
             this.ButtonOK.Size = new System.Drawing.Size(75, 23);

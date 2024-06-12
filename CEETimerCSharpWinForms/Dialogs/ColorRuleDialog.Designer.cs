@@ -55,7 +55,7 @@
             // 
             // ButtonOK
             // 
-            this.ButtonOK.Location = new System.Drawing.Point(339, 59);
+            this.ButtonOK.Location = new System.Drawing.Point(299, 59);
             this.ButtonOK.Name = "ButtonOK";
             this.ButtonOK.Size = new System.Drawing.Size(75, 23);
             this.ButtonOK.TabIndex = 7;
@@ -66,7 +66,7 @@
             // ButtonCancel
             // 
             this.ButtonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.ButtonCancel.Location = new System.Drawing.Point(420, 59);
+            this.ButtonCancel.Location = new System.Drawing.Point(380, 59);
             this.ButtonCancel.Name = "ButtonCancel";
             this.ButtonCancel.Size = new System.Drawing.Size(75, 23);
             this.ButtonCancel.TabIndex = 6;
@@ -134,35 +134,35 @@
             // NudSeconds
             // 
             this.NudSeconds.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.NudSeconds.Location = new System.Drawing.Point(399, 4);
+            this.NudSeconds.Location = new System.Drawing.Point(373, 4);
             this.NudSeconds.Maximum = new decimal(new int[] {
             59,
             0,
             0,
             0});
             this.NudSeconds.Name = "NudSeconds";
-            this.NudSeconds.Size = new System.Drawing.Size(50, 23);
+            this.NudSeconds.Size = new System.Drawing.Size(39, 23);
             this.NudSeconds.TabIndex = 9;
             this.NudSeconds.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // NudMinutes
             // 
             this.NudMinutes.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.NudMinutes.Location = new System.Drawing.Point(325, 4);
+            this.NudMinutes.Location = new System.Drawing.Point(310, 4);
             this.NudMinutes.Maximum = new decimal(new int[] {
             59,
             0,
             0,
             0});
             this.NudMinutes.Name = "NudMinutes";
-            this.NudMinutes.Size = new System.Drawing.Size(50, 23);
+            this.NudMinutes.Size = new System.Drawing.Size(39, 23);
             this.NudMinutes.TabIndex = 8;
             this.NudMinutes.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // LabelChars05
             // 
             this.LabelChars05.AutoSize = true;
-            this.LabelChars05.Location = new System.Drawing.Point(451, 6);
+            this.LabelChars05.Location = new System.Drawing.Point(414, 6);
             this.LabelChars05.Name = "LabelChars05";
             this.LabelChars05.Size = new System.Drawing.Size(39, 15);
             this.LabelChars05.TabIndex = 7;
@@ -171,7 +171,7 @@
             // LabelChars04
             // 
             this.LabelChars04.AutoSize = true;
-            this.LabelChars04.Location = new System.Drawing.Point(377, 6);
+            this.LabelChars04.Location = new System.Drawing.Point(351, 6);
             this.LabelChars04.Name = "LabelChars04";
             this.LabelChars04.Size = new System.Drawing.Size(20, 15);
             this.LabelChars04.TabIndex = 5;
@@ -180,7 +180,7 @@
             // LabelChars03
             // 
             this.LabelChars03.AutoSize = true;
-            this.LabelChars03.Location = new System.Drawing.Point(303, 6);
+            this.LabelChars03.Location = new System.Drawing.Point(288, 4);
             this.LabelChars03.Name = "LabelChars03";
             this.LabelChars03.Size = new System.Drawing.Size(20, 15);
             this.LabelChars03.TabIndex = 3;
@@ -189,21 +189,21 @@
             // NudHours
             // 
             this.NudHours.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.NudHours.Location = new System.Drawing.Point(251, 4);
+            this.NudHours.Location = new System.Drawing.Point(247, 4);
             this.NudHours.Maximum = new decimal(new int[] {
             23,
             0,
             0,
             0});
             this.NudHours.Name = "NudHours";
-            this.NudHours.Size = new System.Drawing.Size(50, 23);
+            this.NudHours.Size = new System.Drawing.Size(39, 23);
             this.NudHours.TabIndex = 2;
             this.NudHours.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // LabelChars02
             // 
             this.LabelChars02.AutoSize = true;
-            this.LabelChars02.Location = new System.Drawing.Point(229, 6);
+            this.LabelChars02.Location = new System.Drawing.Point(225, 6);
             this.LabelChars02.Name = "LabelChars02";
             this.LabelChars02.Size = new System.Drawing.Size(20, 15);
             this.LabelChars02.TabIndex = 1;
@@ -219,7 +219,7 @@
             0,
             0});
             this.NudDays.Name = "NudDays";
-            this.NudDays.Size = new System.Drawing.Size(65, 23);
+            this.NudDays.Size = new System.Drawing.Size(61, 23);
             this.NudDays.TabIndex = 0;
             this.NudDays.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
@@ -241,7 +241,7 @@
             this.PanelMain.Controls.Add(this.NudDays);
             this.PanelMain.Location = new System.Drawing.Point(0, 0);
             this.PanelMain.Name = "PanelMain";
-            this.PanelMain.Size = new System.Drawing.Size(495, 55);
+            this.PanelMain.Size = new System.Drawing.Size(456, 55);
             this.PanelMain.TabIndex = 14;
             // 
             // LabelPreviewColor
@@ -262,7 +262,7 @@
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.CancelButton = this.ButtonCancel;
-            this.ClientSize = new System.Drawing.Size(495, 87);
+            this.ClientSize = new System.Drawing.Size(456, 87);
             this.Controls.Add(this.LabelPreviewColor);
             this.Controls.Add(this.PanelMain);
             this.Controls.Add(this.ButtonOK);

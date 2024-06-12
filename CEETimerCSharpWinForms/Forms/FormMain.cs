@@ -347,7 +347,7 @@ namespace CEETimerCSharpWinForms.Forms
             {
                 foreach (var Rule in Rules)
                 {
-                    if (Phase == 2 ? (Span >= Rule.Tick - new TimeSpan(0, 0, 0, 1)) : (Span <= Rule.Tick))
+                    if (Phase == 2 ? (Span >= Rule.Tick - ColorRulesHelper.TsThreshold) : (Span <= Rule.Tick))
                     {
                         SetCountdown(Span, Hint, Rule.Fore, Rule.Back);
                         return;
