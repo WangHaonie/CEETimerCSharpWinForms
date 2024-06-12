@@ -320,7 +320,7 @@ namespace CEETimerCSharpWinForms.Forms
                 var Span = ExamEndTime - DateTime.Now;
                 ApplyColorRule(1, Span, $"距离{ExamName}{ColorRulesHelper.LeftHint}");
             }
-            else if (IsCountdownReady && DateTime.Now >= ExamEndTime && IsShowEnd && IsShowPast)
+            else if (IsCountdownReady && DateTime.Now > ExamEndTime && IsShowEnd && IsShowPast)
             {
                 var Span = DateTime.Now - ExamEndTime;
                 ApplyColorRule(2, Span, $"距离{ExamName}{ColorRulesHelper.PastHint}");
@@ -341,13 +341,15 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void ApplyColorRule(int Phase, TimeSpan Span, string Hint)
         {
-            var Rules = ColorRules.Where(i => i.Item1.Item1 == Phase).Select(x => new { Tick = x.Item1.Item2, Fore = x.Item2.Item1, Back = x.Item2.Item2 }).OrderBy(x => x.Tick).ToList();
+            var r = ColorRules.Where(i => i.Item1.Item1 == Phase).Select(x => new { Tick = x.Item1.Item2, Fore = x.Item2.Item1, Back = x.Item2.Item2 });
+            var R = Phase == 2 ? r.OrderByDescending(x => x.Tick) : r.OrderBy(x => x.Tick);
+            var Rules = R.ToList();
 
             if (Rules.Count > 0)
             {
                 foreach (var Rule in Rules)
                 {
-                    if (Phase == 2 ? (Span >= Rule.Tick - ColorRulesHelper.TsThreshold) : (Span <= Rule.Tick))
+                    if (Phase == 2 ? (Span >= Rule.Tick) : (Span <= Rule.Tick + new TimeSpan(0, 0, 0, 1)))
                     {
                         SetCountdown(Span, Hint, Rule.Fore, Rule.Back);
                         return;
