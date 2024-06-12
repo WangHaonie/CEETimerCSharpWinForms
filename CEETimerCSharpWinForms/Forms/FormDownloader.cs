@@ -138,7 +138,7 @@ namespace CEETimerCSharpWinForms.Forms
                 cts?.Cancel();
                 LabelDownloading.Text = "用户已取消下载。";
                 IsCancelled = true;
-                MessageX.Popup($"你已取消下载！\n\n稍后可以在 关于 窗口点击图标来再次检查更新。", MessageLevel.Warning, this);
+                MessageX.Popup($"你已取消下载！\n\n稍后可以在 关于 窗口点击图标来再次检查更新。", MessageLevel.Warning);
             }
 
             Close();

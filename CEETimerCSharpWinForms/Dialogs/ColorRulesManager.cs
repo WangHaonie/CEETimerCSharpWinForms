@@ -82,7 +82,7 @@ namespace CEETimerCSharpWinForms.Dialogs
 
         private void ContextDelete_Click(object sender, EventArgs e)
         {
-            if (MessageX.Popup("确认删除所选规则吗？此操作将不可撤销！", MessageLevel.Warning, this, Buttons: MessageBoxExButtons.YesNo) == DialogResult.Yes)
+            if (MessageX.Popup("确认删除所选规则吗？此操作将不可撤销！", MessageLevel.Warning, Buttons: MessageBoxExButtons.YesNo) == DialogResult.Yes)
             {
                 foreach (ListViewItem Item in ListViewMain.SelectedItems)
                 {
@@ -135,7 +135,7 @@ namespace CEETimerCSharpWinForms.Dialogs
         {
             if (RulesChanged)
             {
-                switch (MessageX.Popup("检测到颜色规则已更改，是否保存？", MessageLevel.Warning, this, Buttons: MessageBoxExButtons.YesNo))
+                switch (MessageX.Popup("检测到颜色规则已更改，是否保存？", MessageLevel.Warning, Buttons: MessageBoxExButtons.YesNo))
                 {
                     case DialogResult.Yes:
                         e.Cancel = true;
@@ -168,7 +168,7 @@ namespace CEETimerCSharpWinForms.Dialogs
                 {
                     if (!IsFormLoading)
                     {
-                        if (MessageX.Popup("检测到即将添加的规则与现有的重复，是否覆盖？", MessageLevel.Warning, this, Buttons: MessageBoxExButtons.YesNo) == DialogResult.Yes)
+                        if (MessageX.Popup("检测到即将添加的规则与现有的重复，是否覆盖？", MessageLevel.Warning, Buttons: MessageBoxExButtons.YesNo) == DialogResult.Yes)
                         {
                             ModifyOrOverrideItem(Duplicate);
                             return;
