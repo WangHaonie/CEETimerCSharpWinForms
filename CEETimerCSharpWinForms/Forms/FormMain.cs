@@ -395,12 +395,6 @@ namespace CEETimerCSharpWinForms.Forms
             };
         }
 
-        private List<PairItems<TimeSpan, PairItems<Color, Color>>> GetColorRules()
-        {
-            return [new(new TimeSpan(0, 2, 0) + new TimeSpan(0, 0, 1), new(Color.Green, Color.White)),
-                    new(new TimeSpan(0, 1, 0) + new TimeSpan(0, 0, 1), new(Color.Black, Color.White))];
-        }
-
         private void CompatibleWithPPTService()
         {
             if (IsPPTService)
