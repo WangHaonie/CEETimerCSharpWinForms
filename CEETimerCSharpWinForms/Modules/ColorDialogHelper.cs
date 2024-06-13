@@ -70,7 +70,7 @@ namespace CEETimerCSharpWinForms.Modules
             {
                 new ConfigManager().WriteConfig(new()
                 {
-                    { ConfigItems.KCustomColors, CustomColorCollection }
+                    { ConfigItems.KCustomColors, ColorHelper.GetStringFromArgbArray(CustomColorCollection) }
                 });
             }
         }

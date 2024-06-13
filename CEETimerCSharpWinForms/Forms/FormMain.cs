@@ -109,6 +109,7 @@ namespace CEETimerCSharpWinForms.Forms
             PositionIndex = int.TryParse(configManager.ReadConfig(ConfigItems.KPosition), out int tmpu) ? tmpu : 0;
             ShowXOnlyIndex = int.TryParse(configManager.ReadConfig(ConfigItems.KShowValue), out int tmpl) ? tmpl : 0;
             try { ColorRules = ColorRulesHelper.GetColorRules(configManager.ReadArray(ConfigItems.KColorRules)); } catch { ColorRules = []; }
+            ColorDialogHelper.CustomColorCollection = ColorHelper.GetArgbArray(configManager.ReadConfig(ConfigItems.KCustomColors));
             int.TryParse(configManager.ReadConfig(ConfigItems.KPosX), out int x);
             int.TryParse(configManager.ReadConfig(ConfigItems.KPosY), out int y);
             CountdownColors = [];
