@@ -196,6 +196,7 @@ namespace CEETimerCSharpWinForms.Modules
         public const string KBack3 = "Back3";
         public const string KFore4 = "Fore4";
         public const string KBack4 = "Back4";
+        public const string KCustomColors = "CustomColors";
         public const string KColorRules = "ColorRules";
         public const string KPosX = "PosX";
         public const string KPosY = "PosY";

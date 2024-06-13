@@ -185,6 +185,7 @@
     <Compile Include="Dialogs\MessageBoxEx.Designer.cs">
       <DependentUpon>MessageBoxEx.cs</DependentUpon>
     </Compile>
+    <Compile Include="Modules\ColorDialogHelper.cs" />
     <Compile Include="Modules\ColorHelper.cs" />
     <Compile Include="Modules\ColorRulesHelper.cs" />
     <Compile Include="Modules\ListViewItemComparer.cs" />

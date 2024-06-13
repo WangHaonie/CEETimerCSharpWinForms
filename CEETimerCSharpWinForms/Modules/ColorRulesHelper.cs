@@ -49,7 +49,7 @@ namespace CEETimerCSharpWinForms.Modules
             2 => PastHint,
             _ => StartHint
         };
-        
+
 
         public static List<Config> Format(List<PairItems<PairItems<int, TimeSpan>, PairItems<Color, Color>>> Rules)
         {

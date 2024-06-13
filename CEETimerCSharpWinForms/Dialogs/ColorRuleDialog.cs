@@ -44,17 +44,11 @@ namespace CEETimerCSharpWinForms.Dialogs
         private void ColorLabels_Click(object sender, EventArgs e)
         {
             var LabelSender = (Label)sender;
-
-            ColorDialog ColorDialogMain = new()
-            {
-                AllowFullOpen = true,
-                Color = LabelSender.BackColor,
-                FullOpen = true
-            };
+            var ColorDialogMain = new ColorDialogHelper(LabelSender.BackColor);
 
             if (ColorDialogMain.ShowDialog() == DialogResult.OK)
             {
-                LabelSender.BackColor = ColorDialogMain.Color;
+                LabelSender.BackColor = ColorDialogMain.SelectedColor;
             }
 
             LabelPreviewColor.ForeColor = LabelForeColor.BackColor;
