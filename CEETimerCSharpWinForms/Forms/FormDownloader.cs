@@ -62,7 +62,7 @@ namespace CEETimerCSharpWinForms.Forms
                     var bytesRead = 0L;
                     var sw = Stopwatch.StartNew();
                     var size = UpdateChecker.UpdateSize;
-                    var totalBytes = response.Content.Headers.ContentLength ?? (size == 0 ? 358400L : size);
+                    var totalBytes = response.Content.Headers.ContentLength ?? (size == 0 ? 378880L : size);
 
                     while ((bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length)) > 0)
                     {

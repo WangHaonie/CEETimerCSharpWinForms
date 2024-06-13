@@ -43,7 +43,7 @@ launch:
 
 !include "MUI2.nsh"
 !define PRODUCT_NAME "高考倒计时"
-!define SETUP_FILENAME_NO_V "3.0.4"
+!define SETUP_FILENAME_NO_V "3.0.5"
 !define PRODUCT_VERSION "${SETUP_FILENAME_NO_V}"
 !define PRODUCT_TITLE "${PRODUCT_NAME} by ${PRODUCT_PUBLISHER}"
 !define PRODUCT_PUBLISHER "WangHaonie"
@@ -109,7 +109,7 @@ Section Uninstall
   Delete "$INSTDIR\uninst.exe"
   Delete "$INSTDIR\Newtonsoft.Json.dll"
   Delete "$INSTDIR\CEETimerCSharpWinForms.exe"
-  Delete "$INSTDIR\CEETimerCSharpWinForms.config"
+  Delete "$INSTDIR\CEETimerCSharpWinForms.cfg"
   Delete "$SMPROGRAMS\高考倒计时\卸载 高考倒计时.lnk"
   Delete "$SMPROGRAMS\高考倒计时\GitHub.lnk"
   Delete "$DESKTOP\高考倒计时.lnk"
