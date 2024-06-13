@@ -49,6 +49,7 @@ namespace CEETimerCSharpWinForms.Forms
         private bool IsWin10BelowRounded;
         private readonly int PptsvcThreshold = 1;
         private readonly int BorderRadius = 13;
+        private readonly string Juli = "距离";
         private CountdownState SelectedState;
         private Timer TimerCountdown;
         private System.Threading.Timer MemoryOptimizer;
@@ -385,16 +386,15 @@ namespace CEETimerCSharpWinForms.Forms
         {
             LabelCountdown.ForeColor = Fore;
             BackColor = Back;
-            ExamName += "距离";
 
             LabelCountdown.Text = SelectedState switch
             {
-                CountdownState.Normal => $"{ExamName}{Hint}{Span.Days}天{Span.Hours:00}时{Span.Minutes:00}分{Span.Seconds:00}秒",
-                CountdownState.DaysOnly => $"{ExamName}{Hint}{Span.Days}天",
-                CountdownState.DaysOnlyWithRounding => $"{Hint}{Span.Days + 1}天",
-                CountdownState.HoursOnly => $"{ExamName}{Hint}{Span.TotalHours:0}小时",
-                CountdownState.MinutesOnly => $"{ExamName}{Hint}{Span.TotalMinutes:0}分钟",
-                CountdownState.SecondsOnly => $"{ExamName}{Hint}{Span.TotalSeconds:0}秒",
+                CountdownState.Normal => $"{Juli}{ExamName}{Hint}{Span.Days}天{Span.Hours:00}时{Span.Minutes:00}分{Span.Seconds:00}秒",
+                CountdownState.DaysOnly => $"{Juli}{ExamName}{Hint}{Span.Days}天",
+                CountdownState.DaysOnlyWithRounding => $"{Juli}{ExamName}{Hint}{Span.Days + 1}天",
+                CountdownState.HoursOnly => $"{Juli}{ExamName}{Hint}{Span.TotalHours:0}小时",
+                CountdownState.MinutesOnly => $"{Juli}{ExamName}{Hint}{Span.TotalMinutes:0}分钟",
+                CountdownState.SecondsOnly => $"{Juli}{ExamName}{Hint}{Span.TotalSeconds:0}秒",
                 _ => ConfigPolicy.NotAllowed<string>()
             };
         }
