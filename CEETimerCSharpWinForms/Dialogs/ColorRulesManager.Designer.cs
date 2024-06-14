@@ -180,12 +180,13 @@
             this.Name = "ColorRulesManager";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "管理颜色规则 - 高考倒计时";
+            this.Text = "颜色规则管理器 - 高考倒计时";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ColorRulesManager_FormClosing);
             this.Load += new System.EventHandler(this.ColorRulesManager_Load);
             this.ContextMenuMain.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
 
         #endregion

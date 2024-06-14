@@ -156,7 +156,6 @@
             // DtpExamStart
             // 
             this.DtpExamStart.Checked = false;
-            this.DtpExamStart.CustomFormat = "yyyy-MM-dd dddd HH:mm:ss";
             this.DtpExamStart.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.DtpExamStart.Location = new System.Drawing.Point(9, 22);
             this.DtpExamStart.Name = "DtpExamStart";
@@ -167,7 +166,6 @@
             // DtpExamEnd
             // 
             this.DtpExamEnd.Checked = false;
-            this.DtpExamEnd.CustomFormat = "yyyy-MM-dd dddd HH:mm:ss";
             this.DtpExamEnd.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.DtpExamEnd.Location = new System.Drawing.Point(9, 22);
             this.DtpExamEnd.Name = "DtpExamEnd";
@@ -529,11 +527,11 @@
             // ButtonAdvanced
             // 
             this.ButtonAdvanced.AutoSize = true;
-            this.ButtonAdvanced.Location = new System.Drawing.Point(103, 137);
+            this.ButtonAdvanced.Location = new System.Drawing.Point(9, 137);
             this.ButtonAdvanced.Name = "ButtonAdvanced";
             this.ButtonAdvanced.Size = new System.Drawing.Size(88, 25);
             this.ButtonAdvanced.TabIndex = 20;
-            this.ButtonAdvanced.Text = "高级选项(&A)";
+            this.ButtonAdvanced.Text = "颜色规则(&A)";
             this.ButtonAdvanced.UseVisualStyleBackColor = true;
             this.ButtonAdvanced.Click += new System.EventHandler(this.ButtonAdvanced_Click);
             // 
@@ -610,7 +608,7 @@
             // ButtonDefaultColor
             // 
             this.ButtonDefaultColor.AutoSize = true;
-            this.ButtonDefaultColor.Location = new System.Drawing.Point(9, 137);
+            this.ButtonDefaultColor.Location = new System.Drawing.Point(103, 137);
             this.ButtonDefaultColor.Name = "ButtonDefaultColor";
             this.ButtonDefaultColor.Size = new System.Drawing.Size(88, 25);
             this.ButtonDefaultColor.TabIndex = 11;
