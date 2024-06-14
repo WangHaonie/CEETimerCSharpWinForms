@@ -9,7 +9,6 @@ namespace CEETimerCSharpWinForms.Dialogs
     public partial class ColorRuleDialog : Form
     {
         public int RuleType { get; set; }
-        public string RuleTypeText { get; private set; }
         public string ExamTick { get; set; } = "";
         public Color Fore { get; set; } = Color.Black;
         public Color Back { get; set; } = Color.White;
@@ -74,7 +73,6 @@ namespace CEETimerCSharpWinForms.Dialogs
             }
 
             RuleType = ComboBoxRuleType.SelectedIndex;
-            RuleTypeText = ((PairItems<string, int>)ComboBoxRuleType.SelectedItem).Item1;
             ExamTick = $"{NudDays.Value}天{NudHours.Value}时{NudMinutes.Value}分{NudSeconds.Value}秒";
             Fore = _Fore;
             Back = _Back;

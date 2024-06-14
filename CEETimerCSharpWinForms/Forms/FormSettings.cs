@@ -87,6 +87,8 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void InitializeExtra()
         {
+            DtpExamStart.CustomFormat = LaunchManager.DateTimeFormat;
+            DtpExamEnd.CustomFormat = LaunchManager.DateTimeFormat;
             LabelPptsvc.Text = "用于解决内置白板打开后底部工具栏会消失的问题。(或者\n你也可以开启拖动功能，将倒计时窗口拖动到其他位置)";
             LabelSyncTime.Text = "将当前系统时间与网络同步以确保准确无误。\n注意: 此项会将系统的 NTP 服务器设置为 ntp1.aliyun.com, 并\n且将自动启动 Windows Time 服务, 请谨慎操作。";
             LabelLine01.Text = "请点击色块来选择文字、背景颜色。将一个色块拖放到其它\n色块上可快速应用相同的颜色。";

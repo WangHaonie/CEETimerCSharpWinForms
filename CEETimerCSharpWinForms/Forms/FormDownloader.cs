@@ -28,7 +28,7 @@ namespace CEETimerCSharpWinForms.Forms
 
         private async void FormDownloader_Load(object sender, EventArgs e)
         {
-            string LatestVersion = UpdateChecker.CurrentLatest;
+            string LatestVersion = Updater.CurrentLatest;
             string SelectedVersion = ManualVersion;
 
             if (string.IsNullOrWhiteSpace(LatestVersion))
@@ -61,7 +61,7 @@ namespace CEETimerCSharpWinForms.Forms
                     var totalBytesRead = 0L;
                     var bytesRead = 0L;
                     var sw = Stopwatch.StartNew();
-                    var size = UpdateChecker.UpdateSize;
+                    var size = Updater.UpdateSize;
                     var totalBytes = response.Content.Headers.ContentLength ?? (size == 0 ? 378880L : size);
 
                     while ((bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length)) > 0)

@@ -185,7 +185,7 @@ namespace CEETimerCSharpWinForms.Dialogs
             }
 
             ListViewMain.Items.Add(new ListViewItem([$"{RuleTypeText}", $"{ExamTick}", $"{_Fore}", $"{_Back}"]));
-            IDontKownWhatToNameThis();
+            IDontKnowWhatToNameThis();
 
             void ModifyOrOverrideItem(ListViewItem Item)
             {
@@ -193,10 +193,10 @@ namespace CEETimerCSharpWinForms.Dialogs
                 Item.SubItems[1].Text = $"{ExamTick}";
                 Item.SubItems[2].Text = $"{_Fore}";
                 Item.SubItems[3].Text = $"{_Back}";
-                IDontKownWhatToNameThis();
+                IDontKnowWhatToNameThis();
             }
 
-            void IDontKownWhatToNameThis()
+            void IDontKnowWhatToNameThis()
             {
                 AdjustColumnWidth();
                 SortItems();

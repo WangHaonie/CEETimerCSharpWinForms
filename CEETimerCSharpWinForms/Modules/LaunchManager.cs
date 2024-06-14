@@ -24,6 +24,7 @@ namespace CEETimerCSharpWinForms.Modules
         public const string InfoMsg = "提示 - 高考倒计时";
         public const string WarnMsg = "警告 - 高考倒计时";
         public const string ErrMsg = "错误 - 高考倒计时";
+        public const string DateTimeFormat = "yyyy-MM-dd dddd HH:mm:ss";
         public const string RequestUA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36";
 
         public static readonly string CurrentExecutablePath = AppDomain.CurrentDomain.BaseDirectory;
@@ -161,7 +162,7 @@ namespace CEETimerCSharpWinForms.Modules
 ╭───────────────────────────────────────────────────╮
 日期和时间：{0}{1}
 ╰───────────────────────────────────────────────────╯
-", DateTime.Now.ToString("yyyy-MM-dd dddd HH:mm:ss.ffffff"), ex.ToMessage());
+", DateTime.Now.ToString(DateTimeFormat), ex.ToMessage());
 
             var ExFileName = "UnhandledException.txt";
             var ExFilePath = $"{CurrentExecutablePath}{ExFileName}";
