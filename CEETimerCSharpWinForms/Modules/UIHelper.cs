@@ -36,7 +36,7 @@ namespace CEETimerCSharpWinForms.Modules
         /// <param name="Owner">所在窗体</param>
         /// <param name="Target">目标控件</param>
         /// <param name="Reference">参照控件</param>
-        /// <param name="Adjust">[可选] 微调</param>
+        /// <param name="Tweak">[可选] 微调</param>
         public static void AlignControls(Form Owner, Control Target, Control Reference, int Tweak = 0)
         {
             Target.Top = Reference.Top + Reference.Height / 2 - Target.Height / 2 + Tweak.WithDpi(Owner);

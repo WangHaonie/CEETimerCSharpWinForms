@@ -314,18 +314,15 @@ namespace CEETimerCSharpWinForms.Forms
         {
             if (IsCountdownReady && DateTime.Now < ExamStartTime)
             {
-                var Span = ExamStartTime - DateTime.Now;
-                ApplyColorRule(0, Span, ExamName, ColorRulesHelper.StartHint);
+                ApplyColorRule(0, ExamStartTime - DateTime.Now, ExamName, ColorRulesHelper.StartHint);
             }
             else if (IsCountdownReady && DateTime.Now < ExamEndTime && IsShowEnd)
             {
-                var Span = ExamEndTime - DateTime.Now;
-                ApplyColorRule(1, Span, ExamName, ColorRulesHelper.LeftHint);
+                ApplyColorRule(1, ExamEndTime - DateTime.Now, ExamName, ColorRulesHelper.LeftHint);
             }
             else if (IsCountdownReady && DateTime.Now > ExamEndTime && IsShowEnd && IsShowPast)
             {
-                var Span = DateTime.Now - ExamEndTime;
-                ApplyColorRule(2, Span, ExamName, ColorRulesHelper.PastHint);
+                ApplyColorRule(2, DateTime.Now - ExamEndTime, ExamName, ColorRulesHelper.PastHint);
             }
             else
             {
