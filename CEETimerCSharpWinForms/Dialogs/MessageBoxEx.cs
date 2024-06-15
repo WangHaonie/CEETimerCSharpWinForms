@@ -21,6 +21,7 @@ namespace CEETimerCSharpWinForms.Dialogs
 
         public DialogResult ShowCore(Form OwnerForm, string Message, string Title, Icon MessageBoxExIcon, SystemSound Sound, MessageBoxExButtons Buttons, FormStartPosition Position, bool AutoClose)
         {
+            UIHelper.SetLabelAutoWrap(LabelMessage);
             LabelMessage.Text = Message;
             Text = Title;
             PicBoxIcon.Image = MessageBoxExIcon.ToBitmap();

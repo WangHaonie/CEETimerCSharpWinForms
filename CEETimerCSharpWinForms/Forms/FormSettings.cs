@@ -67,18 +67,17 @@ namespace CEETimerCSharpWinForms.Forms
         {
             TopMost = FormMain.IsUniTopMost;
             InitializeExtra();
-            ChangeWorkingStyle(WorkingArea.Funny, false);
             ChangeWorkingStyle(WorkingArea.LastColor);
             RefreshSettings();
             ChangeWorkingStyle(WorkingArea.ShowLeftPast, IsShowEnd);
 
-            if (Extensions.DpiRatio != 1)
+            UIHelper.AdjustOnlyInHighDpi(() =>
             {
-                UIHelper.AlignControls(this, ComboBoxShowXOnly, CheckBoxShowXOnly, -1);
-                UIHelper.AlignControls(this, ComboBoxScreens, LabelScreens);
-                UIHelper.AlignControls(this, ComboBoxPosition, LabelChar1);
-                UIHelper.AlignControls(this, LabelExamNameCounter, TextBoxExamName);
-            }
+                UIHelper.AlignControls(ComboBoxShowXOnly, CheckBoxShowXOnly, -1);
+                UIHelper.AlignControls(ComboBoxScreens, LabelScreens);
+                UIHelper.AlignControls(ComboBoxPosition, LabelChar1);
+                UIHelper.AlignControls(LabelExamNameCounter, TextBoxExamName);
+            });
 
             HasSettingsChanged = false;
             ButtonSave.Enabled = false;
@@ -87,11 +86,10 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void InitializeExtra()
         {
+            ChangeWorkingStyle(WorkingArea.Funny, false);
+
             DtpExamStart.CustomFormat = LaunchManager.DateTimeFormat;
             DtpExamEnd.CustomFormat = LaunchManager.DateTimeFormat;
-            LabelPptsvc.Text = "用于解决内置白板打开后底部工具栏会消失的问题。(或者\n你也可以开启拖动功能，将倒计时窗口拖动到其他位置)";
-            LabelSyncTime.Text = "将当前系统时间与网络同步以确保准确无误。\n注意: 此项会将系统的 NTP 服务器设置为 ntp1.aliyun.com, 并\n且将自动启动 Windows Time 服务, 请谨慎操作。";
-            LabelLine01.Text = "请点击色块来选择文字、背景颜色。将一个色块拖放到其它\n色块上可快速应用相同的颜色。";
             LabelExamNameCounter.Text = $"0/{ConfigPolicy.MaxExamNameLength}";
             LabelExamNameCounter.ForeColor = Color.Red;
             TextBoxExamName.MaxLength = ConfigPolicy.MaxExamNameLength;
@@ -113,7 +111,12 @@ namespace CEETimerCSharpWinForms.Forms
             }
             UIHelper.BindData(ComboBoxScreens, Monitors);
 
-            UIHelper.AlignControls(this, ButtonSave, ButtonCancel, TabControlMain);
+            UIHelper.AlignControls(ButtonSave, ButtonCancel, TabControlMain);
+            UIHelper.SetLabelAutoWrap(LabelPptsvc, GBoxPptsvc);
+            UIHelper.SetLabelAutoWrap(LabelSyncTime, GBoxSyncTime);
+            UIHelper.SetLabelAutoWrap(LabelLine01, GBoxColors);
+            UIHelper.SetLabelAutoWrap(LabelRestart, GBoxRestart);
+
             ColorLabels = [LabelColor12, LabelColor22, LabelColor32, LabelColor42, LabelColor11, LabelColor21, LabelColor31, LabelColor41];
             foreach (var l in ColorLabels)
             {
@@ -122,6 +125,15 @@ namespace CEETimerCSharpWinForms.Forms
                 l.MouseMove += ColorLabels_MouseMove;
                 l.MouseUp += ColorLabels_MouseUp;
             }
+
+            UIHelper.CompactControlsX(ComboBoxShowXOnly, CheckBoxShowXOnly);
+            UIHelper.CompactControlsX(CheckBoxRounding, ComboBoxShowXOnly, 10);
+            UIHelper.CompactControlsX(ComboBoxScreens, LabelScreens);
+            UIHelper.CompactControlsX(LabelChar1, ComboBoxScreens);
+            UIHelper.CompactControlsX(ComboBoxPosition, LabelChar1);
+
+            UIHelper.CompactControlsY(ButtonSyncTime, LabelSyncTime, 3);
+            UIHelper.CompactControlsY(ButtonRestart, LabelRestart, 3);
         }
 
         private void RefreshSettings()
@@ -295,7 +307,7 @@ namespace CEETimerCSharpWinForms.Forms
             ChangeWorkingStyle(WorkingArea.DefaultColor);
         }
 
-        private void ButtonAdvanced_Click(object sender, EventArgs e)
+        private void ButtonColorRules_Click(object sender, EventArgs e)
         {
             ColorRulesManager _ColorRulesManager = new()
             {
@@ -538,7 +550,7 @@ namespace CEETimerCSharpWinForms.Forms
         {
             try
             {
-                if (!LaunchManager.IsAdmin) MessageX.Popup("检测到当前用户不具有管理员权限，运行该操作会发生错误。\n\n程序将在此消息框关闭后尝试弹出 UAC 提示框，前提要把系统的 UAC 设置\n为 \"仅当应用尝试更改我的计算机时通知我\" 或及以上，否则将无法进行授权。\n\n稍后若没有看见提示框，请更改 UAC 设置：开始菜单搜索 uac", MessageLevel.Warning, this);
+                if (!LaunchManager.IsAdmin) MessageX.Popup("检测到当前用户不具有管理员权限，运行该操作会发生错误。\n\n程序将在此消息框关闭后尝试弹出 UAC 提示框，前提要把系统的 UAC 设置为 \"仅当应用尝试更改我的计算机时通知我\" 或及以上，否则将无法进行授权。\n\n稍后若没有看见提示框，请更改 UAC 设置：开始菜单搜索 uac", MessageLevel.Warning, this);
 
                 Process SyncTimeProcess = ProcessHelper.RunProcess("cmd.exe", "/c net stop w32time & sc config w32time start= auto & net start w32time && w32tm /config /manualpeerlist:ntp1.aliyun.com /syncfromflags:manual /reliable:YES /update && w32tm /resync && w32tm /resync", AdminRequired: true);
 
@@ -580,7 +592,7 @@ namespace CEETimerCSharpWinForms.Forms
                     break;
                 case WorkingArea.Funny:
                     GBoxRestart.Text = IsWorking ? "关闭倒计时" : "重启倒计时";
-                    LabelRestart.Text = $"用于更改了屏幕缩放之后, 可以点击此按钮来重启程序以确\n保窗口的文字不会变模糊。{(IsWorking ? "(●'◡'●)" : "")}";
+                    LabelRestart.Text = $"用于更改了屏幕缩放之后, 可以点击此按钮来重启程序以确保窗口的文字不会变模糊。{(IsWorking ? "(●'◡'●)" : "")}";
                     ButtonRestart.Text = IsWorking ? "点击关闭(&L)" : "点击重启(&R)";
                     break;
                 case WorkingArea.SetPPTService:

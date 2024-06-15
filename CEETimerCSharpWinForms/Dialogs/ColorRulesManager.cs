@@ -48,7 +48,9 @@ namespace CEETimerCSharpWinForms.Dialogs
                 }
             }
 
-            UIHelper.AlignControls(this, ButtonOK, ButtonCancel, ListViewMain);
+            UIHelper.AlignControls(ButtonOK, ButtonCancel, ListViewMain);
+            UIHelper.CompactControlsY(ButtonOK, ListViewMain, 3);
+            UIHelper.CompactControlsY(ButtonCancel, ListViewMain, 3);
         }
 
         private void ContextAdd_Click(object sender, EventArgs e)

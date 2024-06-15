@@ -180,7 +180,7 @@
             // LabelChars03
             // 
             this.LabelChars03.AutoSize = true;
-            this.LabelChars03.Location = new System.Drawing.Point(288, 4);
+            this.LabelChars03.Location = new System.Drawing.Point(288, 6);
             this.LabelChars03.Name = "LabelChars03";
             this.LabelChars03.Size = new System.Drawing.Size(20, 15);
             this.LabelChars03.TabIndex = 3;

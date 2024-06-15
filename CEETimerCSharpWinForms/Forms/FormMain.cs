@@ -195,7 +195,7 @@ namespace CEETimerCSharpWinForms.Forms
             ApplyLocation();
             CompatibleWithPPTService();
 
-            foreach (var form in LaunchManager.GetOpenForms())
+            foreach (var form in UIHelper.GetOpenForms())
             {
                 if (form == this) continue;
                 form.TopMost = IsUniTopMost;

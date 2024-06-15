@@ -64,7 +64,7 @@
             this.ComboBoxScreens = new System.Windows.Forms.ComboBox();
             this.TabPageAppearance = new System.Windows.Forms.TabPage();
             this.GBoxColors = new System.Windows.Forms.GroupBox();
-            this.ButtonAdvanced = new System.Windows.Forms.Button();
+            this.ButtonColorRules = new System.Windows.Forms.Button();
             this.LabelPreviewColor4 = new System.Windows.Forms.Label();
             this.LabelColor41 = new System.Windows.Forms.Label();
             this.LabelColor42 = new System.Windows.Forms.Label();
@@ -344,8 +344,9 @@
             this.LabelPptsvc.AutoSize = true;
             this.LabelPptsvc.Location = new System.Drawing.Point(6, 19);
             this.LabelPptsvc.Name = "LabelPptsvc";
-            this.LabelPptsvc.Size = new System.Drawing.Size(0, 15);
+            this.LabelPptsvc.Size = new System.Drawing.Size(652, 15);
             this.LabelPptsvc.TabIndex = 0;
+            this.LabelPptsvc.Text = "用于解决内置白板打开后底部工具栏会消失的问题。(或者你也可以开启拖动功能，将倒计时窗口拖动到其他位置)";
             // 
             // GBoxContent
             // 
@@ -498,7 +499,7 @@
             // 
             // GBoxColors
             // 
-            this.GBoxColors.Controls.Add(this.ButtonAdvanced);
+            this.GBoxColors.Controls.Add(this.ButtonColorRules);
             this.GBoxColors.Controls.Add(this.LabelPreviewColor4);
             this.GBoxColors.Controls.Add(this.LabelColor41);
             this.GBoxColors.Controls.Add(this.LabelColor42);
@@ -524,16 +525,16 @@
             this.GBoxColors.TabStop = false;
             this.GBoxColors.Text = "字体颜色";
             // 
-            // ButtonAdvanced
+            // ButtonColorRules
             // 
-            this.ButtonAdvanced.AutoSize = true;
-            this.ButtonAdvanced.Location = new System.Drawing.Point(9, 137);
-            this.ButtonAdvanced.Name = "ButtonAdvanced";
-            this.ButtonAdvanced.Size = new System.Drawing.Size(88, 25);
-            this.ButtonAdvanced.TabIndex = 20;
-            this.ButtonAdvanced.Text = "颜色规则(&A)";
-            this.ButtonAdvanced.UseVisualStyleBackColor = true;
-            this.ButtonAdvanced.Click += new System.EventHandler(this.ButtonAdvanced_Click);
+            this.ButtonColorRules.AutoSize = true;
+            this.ButtonColorRules.Location = new System.Drawing.Point(9, 137);
+            this.ButtonColorRules.Name = "ButtonColorRules";
+            this.ButtonColorRules.Size = new System.Drawing.Size(88, 25);
+            this.ButtonColorRules.TabIndex = 20;
+            this.ButtonColorRules.Text = "颜色规则(&A)";
+            this.ButtonColorRules.UseVisualStyleBackColor = true;
+            this.ButtonColorRules.Click += new System.EventHandler(this.ButtonColorRules_Click);
             // 
             // LabelPreviewColor4
             // 
@@ -602,8 +603,9 @@
             this.LabelLine01.AutoSize = true;
             this.LabelLine01.Location = new System.Drawing.Point(6, 19);
             this.LabelLine01.Name = "LabelLine01";
-            this.LabelLine01.Size = new System.Drawing.Size(0, 15);
+            this.LabelLine01.Size = new System.Drawing.Size(527, 15);
             this.LabelLine01.TabIndex = 12;
+            this.LabelLine01.Text = "请点击色块来选择文字、背景颜色。将一个色块拖放到其它色块上可快速应用相同的颜色。";
             // 
             // ButtonDefaultColor
             // 
@@ -791,8 +793,9 @@
             this.LabelSyncTime.AutoSize = true;
             this.LabelSyncTime.Location = new System.Drawing.Point(6, 19);
             this.LabelSyncTime.Name = "LabelSyncTime";
-            this.LabelSyncTime.Size = new System.Drawing.Size(0, 15);
+            this.LabelSyncTime.Size = new System.Drawing.Size(740, 15);
             this.LabelSyncTime.TabIndex = 20;
+            this.LabelSyncTime.Text = "使当前系统时间与网络同步。此项还会将系统的 NTP 服务器设置为 ntp1.aliyun.com, 并自动启动 Windows Time 服务, 请谨慎操作。";
             // 
             // FormSettings
             // 
@@ -910,6 +913,6 @@
         private System.Windows.Forms.Label LabelLine05;
         private System.Windows.Forms.ComboBox ComboBoxPosition;
         private System.Windows.Forms.Label LabelChar1;
-        private System.Windows.Forms.Button ButtonAdvanced;
+        private System.Windows.Forms.Button ButtonColorRules;
     }
 }

@@ -17,8 +17,6 @@ namespace CEETimerCSharpWinForms.Dialogs
         {
             InitializeComponent();
             UIHelper.BindData(ComboBoxRuleType, [new(ColorRulesHelper.StartHint, 0), new(ColorRulesHelper.LeftHint, 1), new(ColorRulesHelper.PastHint, 2)]);
-            UIHelper.AlignControls(this, ButtonOK, ButtonCancel, PanelMain);
-            UIHelper.AlignControls(this, ComboBoxRuleType, LabelChars01);
             TopMost = FormMain.IsUniTopMost;
         }
 
@@ -38,6 +36,11 @@ namespace CEETimerCSharpWinForms.Dialogs
 
             LabelForeColor.BackColor = LabelPreviewColor.ForeColor = Fore;
             LabelBackColor.BackColor = LabelPreviewColor.BackColor = Back;
+
+            UIHelper.AdjustOnlyInHighDpi(() => UIHelper.AlignControls([LabelChars02, LabelChars03, LabelChars04, LabelChars05, ComboBoxRuleType, NudDays, NudHours, NudMinutes, NudSeconds], LabelChars01));
+
+            UIHelper.AlignControls(ButtonOK, ButtonCancel, PanelMain);
+            UIHelper.AlignControls(ComboBoxRuleType, LabelChars01);
         }
 
         private void ColorLabels_Click(object sender, EventArgs e)

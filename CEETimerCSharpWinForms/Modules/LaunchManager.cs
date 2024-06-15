@@ -1,10 +1,8 @@
 ﻿using CEETimerCSharpWinForms.Forms;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -52,7 +50,7 @@ namespace CEETimerCSharpWinForms.Modules
 
                 if (!CurrentExecutableName.Equals(OriginalFileName, StringComparison.OrdinalIgnoreCase))
                 {
-                    MessageX.Popup($"为了您的使用体验，请不要更改程序文件名! \n程序将在该消息框自动关闭后尝试自动恢复到原文件名，若自动恢复失败请手动改回。\n\n当前文件名：{CurrentExecutableName}\n原始文件名：{OriginalFileName}", MessageLevel.Error, Position: FormStartPosition.CenterScreen, AutoClose: true);
+                    MessageX.Popup($"为了您的使用体验，请不要更改程序文件名! 程序将在该消息框自动关闭后尝试自动恢复到原文件名，若自动恢复失败请手动改回。\n\n当前文件名：{CurrentExecutableName}\n原始文件名：{OriginalFileName}", MessageLevel.Error, Position: FormStartPosition.CenterScreen, AutoClose: true);
                     ProcessHelper.RunProcess("cmd.exe", $"/c ren \"{CurrentExecutable}\" {OriginalFileName} & start \"\" \"{CurrentExecutablePath}{OriginalFileName}\" {AllArgs}");
                     Environment.Exit(4);
                 }
@@ -99,8 +97,6 @@ namespace CEETimerCSharpWinForms.Modules
             }
         }
 
-        public static IEnumerable<Form> GetOpenForms() => Application.OpenForms.Cast<Form>();
-
         public static void Shutdown(bool Restart = false)
         {
             ProcessHelper.RunProcess("cmd.exe", $"/c taskkill /f /fi \"PID eq {Process.GetCurrentProcess().Id}\" /im {CurrentExecutableName} {(Restart ? $"& start \"\" \"{CurrentExecutable}\"" : "")}");
@@ -130,7 +126,7 @@ namespace CEETimerCSharpWinForms.Modules
                 {
                     using var PipeServer = new NamedPipeServerStream(PipeName, PipeDirection.InOut);
                     PipeServer.WaitForConnection();
-                    ShowLastForm();
+                    UIHelper.ShowLastForm();
                 }
             }
             catch { }
@@ -170,15 +166,9 @@ namespace CEETimerCSharpWinForms.Modules
             Clipboard.SetText(ExOutput);
             File.AppendAllText(ExFilePath, ExOutput);
 
-            var _DialogResult = MessageX.Popup($"程序出现意外错误，无法继续运行，非常抱歉给您带来不便，相关错误信息已写入到安装文件夹中的 {ExFileName} 文件和系统剪切板，\n建议您将相关信息并发送给软件开发者以便我们更好的定位并解决问题。\n或者您也可以点击 \"是\" 来重启应用程序，\"否\" 关闭应用程序{ex.ToMessage()}", MessageLevel.Error, Buttons: MessageBoxExButtons.YesNo);
+            var _DialogResult = MessageX.Popup($"程序出现意外错误，无法继续运行，非常抱歉给您带来不便，相关错误信息已写入到安装文件夹中的 {ExFileName} 文件和系统剪切板，建议您将相关信息并发送给软件开发者以便我们更好的定位并解决问题。或者您也可以点击 \"是\" 来重启应用程序，\"否\" 关闭应用程序{ex.ToMessage()}", MessageLevel.Error, Buttons: MessageBoxExButtons.YesNo);
             OpenDir();
             Shutdown(Restart: _DialogResult == DialogResult.Yes);
-        }
-
-        public static void ShowLastForm()
-        {
-            var LastForm = GetOpenForms().LastOrDefault();
-            LastForm?.Invoke(new Action(LastForm.ReActivate));
         }
 
         public static void OpenDir()

@@ -8,7 +8,7 @@ namespace CEETimerCSharpWinForms.Modules
 {
     public static class Extensions
     {
-        public static int DpiRatio { get; private set; } = 0;
+        public static double DpiRatio { get; private set; } = 0;
         public static bool IsRGB(this int i) => i >= 0 && i <= 255;
         public static bool IsVersionNumber(this string v) => Regex.IsMatch(v, @"^\d+(\.\d+){1,3}$");
         public static double ToLuminance(this Color color) => color.R * 0.299 + color.G * 0.587 + color.B * 0.114;
@@ -30,18 +30,18 @@ namespace CEETimerCSharpWinForms.Modules
             => new(s.Trim().Replace(" ", "").Where(c => char.IsLetterOrDigit(c) || (c >= ' ' && c <= byte.MaxValue)).ToArray());
         #endregion
 
-        public static int WithDpi(this int px, Form form)
+        public static int WithDpi(this int px, Control control)
         {
             Graphics g = null;
             int pxScaled;
 
             if (DpiRatio == 0)
             {
-                g = form.CreateGraphics();
-                DpiRatio = (int)(g.DpiX / 96);
+                g = control.CreateGraphics();
+                DpiRatio = g.DpiX / 96;
             }
 
-            pxScaled = px * DpiRatio;
+            pxScaled = (int)(px * DpiRatio);
             g?.Dispose();
             return pxScaled;
         }
