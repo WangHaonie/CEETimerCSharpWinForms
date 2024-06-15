@@ -218,6 +218,29 @@ namespace CEETimerCSharpWinForms.Dialogs
             return null;
         }
 
+        private void RemoveDuplicate()
+        {
+            List<ListViewItem> ItemsToRemove = [];
+
+            for (int i = 0; i < ListViewMain.Items.Count; i++)
+            {
+                for (int j = i + 1; j < ListViewMain.Items.Count; j++)
+                {
+                    if (ListViewMain.Items[i].SubItems[0].Text == ListViewMain.Items[j].SubItems[0].Text &&
+                        ListViewMain.Items[i].SubItems[1].Text == ListViewMain.Items[j].SubItems[1].Text)
+                    {
+                        ItemsToRemove.Add(ListViewMain.Items[i]);
+                        break;
+                    }
+                }
+            }
+
+            foreach (var item in ItemsToRemove)
+            {
+                ListViewMain.Items.Remove(item);
+            }
+        }
+
         private void EditColorRule(ListViewItem Item)
         {
             IsEditMode = true;
@@ -233,6 +256,7 @@ namespace CEETimerCSharpWinForms.Dialogs
             if (_ColorRuleDialog.ShowDialog() == DialogResult.OK)
             {
                 AddListViewItem(_ColorRuleDialog.RuleType, _ColorRuleDialog.ExamTick, _ColorRuleDialog.Fore, _ColorRuleDialog.Back, Item);
+                RemoveDuplicate();
             }
 
             IsEditMode = false;
