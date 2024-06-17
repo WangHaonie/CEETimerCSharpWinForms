@@ -44,7 +44,7 @@ namespace CEETimerCSharpWinForms.Modules
         public static DialogResult Popup(string Message, MessageLevel Level, Form OwnerForm = null, TabControl ParentTabControl = null, TabPage ParentTabPage = null, MessageBoxExButtons Buttons = MessageBoxExButtons.OK, FormStartPosition Position = FormStartPosition.CenterParent, bool AutoClose = false)
         {
             var (Title, MessageBoxExIcon, Sound) = GetStuff(Level);
-            using var _MessageBoxEx = new MessageBoxEx();
+            using var _MessageBoxEx = new MessageBoxEx(Sound, Buttons, AutoClose);
 
             if (OwnerForm != null)
             {
@@ -81,7 +81,7 @@ namespace CEETimerCSharpWinForms.Modules
                     ParentTabControl.SelectedTab = ParentTabPage;
                 }
 
-                return _MessageBoxEx.ShowCore(OwnerForm, Message, Title, MessageBoxExIcon, Sound, Buttons, Position, AutoClose);
+                return _MessageBoxEx.ShowCore(OwnerForm, Message, Title, MessageBoxExIcon, Position);
             }
         }
 

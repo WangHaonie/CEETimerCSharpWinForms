@@ -28,25 +28,22 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.PanelHead = new System.Windows.Forms.Panel();
             this.LabelMessage = new System.Windows.Forms.Label();
             this.PicBoxIcon = new System.Windows.Forms.PictureBox();
-            this.ButtonB = new System.Windows.Forms.Button();
-            this.ButtonA = new System.Windows.Forms.Button();
-            this.PanelHead.SuspendLayout();
+            this.PanelMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PicBoxIcon)).BeginInit();
             this.SuspendLayout();
             // 
-            // PanelHead
+            // PanelMain
             // 
-            this.PanelHead.AutoSize = true;
-            this.PanelHead.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.PanelHead.Controls.Add(this.LabelMessage);
-            this.PanelHead.Controls.Add(this.PicBoxIcon);
-            this.PanelHead.Location = new System.Drawing.Point(0, 0);
-            this.PanelHead.Name = "PanelHead";
-            this.PanelHead.Size = new System.Drawing.Size(104, 44);
-            this.PanelHead.TabIndex = 0;
+            this.PanelMain.AutoSize = true;
+            this.PanelMain.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.PanelMain.Controls.Add(this.LabelMessage);
+            this.PanelMain.Controls.Add(this.PicBoxIcon);
+            this.PanelMain.Location = new System.Drawing.Point(0, 0);
+            this.PanelMain.Name = "PanelMain";
+            this.PanelMain.Size = new System.Drawing.Size(104, 44);
+            this.PanelMain.TabIndex = 0;
             // 
             // LabelMessage
             // 
@@ -75,7 +72,6 @@
             this.ButtonB.TabIndex = 2;
             this.ButtonB.Text = "B";
             this.ButtonB.UseVisualStyleBackColor = true;
-            this.ButtonB.Click += new System.EventHandler(this.ButtonB_Click);
             // 
             // ButtonA
             // 
@@ -85,7 +81,6 @@
             this.ButtonA.TabIndex = 3;
             this.ButtonA.Text = "A";
             this.ButtonA.UseVisualStyleBackColor = true;
-            this.ButtonA.Click += new System.EventHandler(this.ButtonA_Click);
             // 
             // MessageBoxEx
             // 
@@ -96,7 +91,7 @@
             this.ClientSize = new System.Drawing.Size(201, 83);
             this.Controls.Add(this.ButtonB);
             this.Controls.Add(this.ButtonA);
-            this.Controls.Add(this.PanelHead);
+            this.Controls.Add(this.PanelMain);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.KeyPreview = true;
@@ -106,8 +101,8 @@
             this.ShowIcon = false;
             this.Text = "MessageBoxEx";
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MessageBoxEx_KeyDown);
-            this.PanelHead.ResumeLayout(false);
-            this.PanelHead.PerformLayout();
+            this.PanelMain.ResumeLayout(false);
+            this.PanelMain.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PicBoxIcon)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -116,10 +111,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Panel PanelHead;
         private System.Windows.Forms.PictureBox PicBoxIcon;
         private System.Windows.Forms.Label LabelMessage;
-        private System.Windows.Forms.Button ButtonB;
-        private System.Windows.Forms.Button ButtonA;
     }
 }

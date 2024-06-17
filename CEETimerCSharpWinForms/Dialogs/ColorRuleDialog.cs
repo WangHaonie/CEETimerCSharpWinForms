@@ -1,4 +1,5 @@
-﻿using CEETimerCSharpWinForms.Forms;
+﻿using CEETimerCSharpWinForms.Controls;
+using CEETimerCSharpWinForms.Forms;
 using CEETimerCSharpWinForms.Modules;
 using System;
 using System.Drawing;
@@ -6,7 +7,7 @@ using System.Windows.Forms;
 
 namespace CEETimerCSharpWinForms.Dialogs
 {
-    public partial class ColorRuleDialog : Form
+    public partial class ColorRuleDialog : DialogEx
     {
         public int RuleType { get; set; }
         public string ExamTick { get; set; } = "";
@@ -20,7 +21,7 @@ namespace CEETimerCSharpWinForms.Dialogs
             TopMost = FormMain.IsUniTopMost;
         }
 
-        private void ColorRuleDialog_Load(object sender, EventArgs e)
+        protected override void OnDialogLoad()
         {
             ComboBoxRuleType.SelectedIndex = RuleType;
 
@@ -39,7 +40,7 @@ namespace CEETimerCSharpWinForms.Dialogs
 
             UIHelper.AdjustOnlyInHighDpi(() => UIHelper.AlignControls([LabelChars02, LabelChars03, LabelChars04, LabelChars05, ComboBoxRuleType, NudDays, NudHours, NudMinutes, NudSeconds], LabelChars01));
 
-            UIHelper.AlignControls(ButtonOK, ButtonCancel, PanelMain);
+            UIHelper.AlignControls(ButtonA, ButtonB, PanelMain);
             UIHelper.AlignControls(ComboBoxRuleType, LabelChars01);
         }
 
@@ -59,7 +60,7 @@ namespace CEETimerCSharpWinForms.Dialogs
             ColorDialogMain.Dispose();
         }
 
-        private void ButtonOK_Click(object sender, EventArgs e)
+        protected override void OnButtonAClicked()
         {
             var _Fore = LabelForeColor.BackColor;
             var _Back = LabelBackColor.BackColor;
@@ -80,8 +81,7 @@ namespace CEETimerCSharpWinForms.Dialogs
             Fore = _Fore;
             Back = _Back;
 
-            DialogResult = DialogResult.OK;
-            Close();
+            base.OnButtonAClicked();
         }
     }
 }

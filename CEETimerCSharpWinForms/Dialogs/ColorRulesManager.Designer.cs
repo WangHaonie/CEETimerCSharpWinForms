@@ -39,8 +39,6 @@
             this.ColumnExamTick = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ColumnForeColor = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ColumnBackColor = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.ButtonOK = new System.Windows.Forms.Button();
-            this.ButtonCancel = new System.Windows.Forms.Button();
             this.LabelInfo = new System.Windows.Forms.Label();
             this.ContextMenuMain.SuspendLayout();
             this.SuspendLayout();
@@ -125,28 +123,24 @@
             this.ColumnBackColor.Text = "背景颜色";
             this.ColumnBackColor.Width = 65;
             // 
-            // ButtonOK
+            // ButtonA
             // 
-            this.ButtonOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.ButtonOK.Enabled = false;
-            this.ButtonOK.Location = new System.Drawing.Point(208, 289);
-            this.ButtonOK.Name = "ButtonOK";
-            this.ButtonOK.Size = new System.Drawing.Size(75, 23);
-            this.ButtonOK.TabIndex = 5;
-            this.ButtonOK.Text = "确定(&O)";
-            this.ButtonOK.UseVisualStyleBackColor = true;
-            this.ButtonOK.Click += new System.EventHandler(this.ButtonOK_Click);
+            this.ButtonA.Enabled = false;
+            this.ButtonA.Location = new System.Drawing.Point(208, 289);
+            this.ButtonA.Name = "ButtonA";
+            this.ButtonA.Size = new System.Drawing.Size(75, 23);
+            this.ButtonA.TabIndex = 5;
+            this.ButtonA.Text = "确定(&O)";
+            this.ButtonA.UseVisualStyleBackColor = true;
             // 
-            // ButtonCancel
+            // ButtonB
             // 
-            this.ButtonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.ButtonCancel.Location = new System.Drawing.Point(289, 289);
-            this.ButtonCancel.Name = "ButtonCancel";
-            this.ButtonCancel.Size = new System.Drawing.Size(75, 23);
-            this.ButtonCancel.TabIndex = 4;
-            this.ButtonCancel.Text = "取消(&C)";
-            this.ButtonCancel.UseVisualStyleBackColor = true;
-            this.ButtonCancel.Click += new System.EventHandler(this.ButtonCancel_Click);
+            this.ButtonB.Location = new System.Drawing.Point(289, 289);
+            this.ButtonB.Name = "ButtonB";
+            this.ButtonB.Size = new System.Drawing.Size(75, 23);
+            this.ButtonB.TabIndex = 4;
+            this.ButtonB.Text = "取消(&C)";
+            this.ButtonB.UseVisualStyleBackColor = true;
             // 
             // LabelInfo
             // 
@@ -159,16 +153,16 @@
             // 
             // ColorRulesManager
             // 
-            this.AcceptButton = this.ButtonOK;
+            this.AcceptButton = this.ButtonA;
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.CancelButton = this.ButtonCancel;
+            this.CancelButton = this.ButtonB;
             this.ClientSize = new System.Drawing.Size(370, 317);
             this.Controls.Add(this.LabelInfo);
-            this.Controls.Add(this.ButtonOK);
-            this.Controls.Add(this.ButtonCancel);
+            this.Controls.Add(this.ButtonA);
+            this.Controls.Add(this.ButtonB);
             this.Controls.Add(this.ListViewMain);
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -181,8 +175,6 @@
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "颜色规则管理器 - 高考倒计时";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ColorRulesManager_FormClosing);
-            this.Load += new System.EventHandler(this.ColorRulesManager_Load);
             this.ContextMenuMain.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -199,8 +191,6 @@
         private System.Windows.Forms.ColumnHeader ColumnExamTick;
         private System.Windows.Forms.ColumnHeader ColumnForeColor;
         private System.Windows.Forms.ColumnHeader ColumnBackColor;
-        private System.Windows.Forms.Button ButtonOK;
-        private System.Windows.Forms.Button ButtonCancel;
         private System.Windows.Forms.Label LabelInfo;
         private System.Windows.Forms.ToolStripSeparator ToolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem ContextEdit;

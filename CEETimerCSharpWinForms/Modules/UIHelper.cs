@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CEETimerCSharpWinForms.Forms;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -74,6 +75,18 @@ namespace CEETimerCSharpWinForms.Modules
             }
         }
 
+        public static Screen GetCurrentScreen()
+        {
+            var CurrentForms = GetOpenForms();
+
+            if (CurrentForms.Count() <= 1 && CurrentForms.FirstOrDefault() is not FormMain)
+            {
+                return Screen.FromPoint(Cursor.Position);
+            }
+
+            return Screen.FromControl(CurrentForms.FirstOrDefault());
+        }
+
         private static void SetLabelAutoWrapInternal(Label Target, Size NewSize)
         {
             #region 来自网络
@@ -88,18 +101,6 @@ namespace CEETimerCSharpWinForms.Modules
             Target.AutoSize = true;
             Target.MaximumSize = NewSize;
             #endregion
-        }
-
-        private static Screen GetCurrentScreen()
-        {
-            var CurrentForms = GetOpenForms();
-
-            if (CurrentForms.Count() <= 1)
-            {
-                return Screen.FromPoint(Cursor.Position);
-            }
-
-            return Screen.FromControl(CurrentForms.FirstOrDefault());
         }
     }
 }

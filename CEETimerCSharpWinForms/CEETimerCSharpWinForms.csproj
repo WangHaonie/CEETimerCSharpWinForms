@@ -140,6 +140,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\DialogEx.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Controls\ListViewEx.cs">
       <SubType>Component</SubType>
     </Compile>

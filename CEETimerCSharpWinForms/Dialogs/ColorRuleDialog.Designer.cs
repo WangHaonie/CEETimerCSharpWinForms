@@ -28,8 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.ButtonOK = new System.Windows.Forms.Button();
-            this.ButtonCancel = new System.Windows.Forms.Button();
             this.LabelForeColor = new System.Windows.Forms.Label();
             this.LabelBackColor = new System.Windows.Forms.Label();
             this.LabelChars07 = new System.Windows.Forms.Label();
@@ -44,7 +42,6 @@
             this.NudHours = new System.Windows.Forms.NumericUpDown();
             this.LabelChars02 = new System.Windows.Forms.Label();
             this.NudDays = new System.Windows.Forms.NumericUpDown();
-            this.PanelMain = new System.Windows.Forms.Panel();
             this.LabelPreviewColor = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.NudSeconds)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NudMinutes)).BeginInit();
@@ -53,25 +50,24 @@
             this.PanelMain.SuspendLayout();
             this.SuspendLayout();
             // 
-            // ButtonOK
+            // ButtonA
             // 
-            this.ButtonOK.Location = new System.Drawing.Point(299, 59);
-            this.ButtonOK.Name = "ButtonOK";
-            this.ButtonOK.Size = new System.Drawing.Size(75, 23);
-            this.ButtonOK.TabIndex = 7;
-            this.ButtonOK.Text = "确定(&O)";
-            this.ButtonOK.UseVisualStyleBackColor = true;
-            this.ButtonOK.Click += new System.EventHandler(this.ButtonOK_Click);
+            this.ButtonA.Location = new System.Drawing.Point(299, 59);
+            this.ButtonA.Name = "ButtonA";
+            this.ButtonA.Size = new System.Drawing.Size(75, 23);
+            this.ButtonA.TabIndex = 7;
+            this.ButtonA.Text = "确定(&O)";
+            this.ButtonA.UseVisualStyleBackColor = true;
             // 
-            // ButtonCancel
+            // ButtonB
             // 
-            this.ButtonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.ButtonCancel.Location = new System.Drawing.Point(380, 59);
-            this.ButtonCancel.Name = "ButtonCancel";
-            this.ButtonCancel.Size = new System.Drawing.Size(75, 23);
-            this.ButtonCancel.TabIndex = 6;
-            this.ButtonCancel.Text = "取消(&C)";
-            this.ButtonCancel.UseVisualStyleBackColor = true;
+            this.ButtonB.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.ButtonB.Location = new System.Drawing.Point(380, 59);
+            this.ButtonB.Name = "ButtonB";
+            this.ButtonB.Size = new System.Drawing.Size(75, 23);
+            this.ButtonB.TabIndex = 6;
+            this.ButtonB.Text = "取消(&C)";
+            this.ButtonB.UseVisualStyleBackColor = true;
             // 
             // LabelForeColor
             // 
@@ -256,17 +252,17 @@
             // 
             // ColorRuleDialog
             // 
-            this.AcceptButton = this.ButtonOK;
+            this.AcceptButton = this.ButtonA;
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.CancelButton = this.ButtonCancel;
+            this.CancelButton = this.ButtonB;
             this.ClientSize = new System.Drawing.Size(456, 87);
             this.Controls.Add(this.LabelPreviewColor);
             this.Controls.Add(this.PanelMain);
-            this.Controls.Add(this.ButtonOK);
-            this.Controls.Add(this.ButtonCancel);
+            this.Controls.Add(this.ButtonA);
+            this.Controls.Add(this.ButtonB);
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -277,7 +273,6 @@
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "颜色规则 - 高考倒计时";
-            this.Load += new System.EventHandler(this.ColorRuleDialog_Load);
             ((System.ComponentModel.ISupportInitialize)(this.NudSeconds)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.NudMinutes)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.NudHours)).EndInit();
@@ -291,8 +286,6 @@
 
         #endregion
 
-        private System.Windows.Forms.Button ButtonOK;
-        private System.Windows.Forms.Button ButtonCancel;
         private System.Windows.Forms.Label LabelForeColor;
         private System.Windows.Forms.Label LabelBackColor;
         private System.Windows.Forms.Label LabelChars07;
@@ -307,7 +300,6 @@
         private System.Windows.Forms.NumericUpDown NudHours;
         private System.Windows.Forms.Label LabelChars02;
         private System.Windows.Forms.NumericUpDown NudDays;
-        private System.Windows.Forms.Panel PanelMain;
         private System.Windows.Forms.Label LabelPreviewColor;
     }
 }

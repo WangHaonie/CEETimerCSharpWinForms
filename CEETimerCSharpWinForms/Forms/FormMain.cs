@@ -437,10 +437,7 @@ namespace CEETimerCSharpWinForms.Forms
         {
             try
             {
-                Process ProcessGetCurrentMemory = ProcessHelper.RunProcess("powershell.exe", $"-Command (Get-Counter \\\"\\Process({LaunchManager.AppNameEn})\\Working Set - Private\\\").CounterSamples.CookedValue", RedirectOutput: true);
-
-                ProcessGetCurrentMemory.WaitForExit();
-                int MemoryUsage = int.Parse(ProcessGetCurrentMemory.StandardOutput.ReadToEnd().Trim());
+                int MemoryUsage = int.Parse(ProcessHelper.GetProcessOutput(ProcessHelper.RunProcess("powershell.exe", $"-Command (Get-Counter \\\"\\Process({LaunchManager.AppNameEn})\\Working Set - Private\\\").CounterSamples.CookedValue", RedirectOutput: true)));
 
                 if (MemoryUsage > 9437184)
                 {

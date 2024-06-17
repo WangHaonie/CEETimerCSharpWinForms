@@ -1,4 +1,5 @@
-﻿using CEETimerCSharpWinForms.Forms;
+﻿using CEETimerCSharpWinForms.Controls;
+using CEETimerCSharpWinForms.Forms;
 using CEETimerCSharpWinForms.Modules;
 using System;
 using System.Collections.Generic;
@@ -9,25 +10,23 @@ using System.Windows.Forms;
 
 namespace CEETimerCSharpWinForms.Dialogs
 {
-    public partial class ColorRulesManager : Form
+    public partial class ColorRulesManager : DialogEx
     {
         public List<PairItems<PairItems<int, TimeSpan>, PairItems<Color, Color>>> ColorRules { get; set; }
 
         private bool IsEditMode;
         private bool RulesChanged;
-        private bool IsFormLoading;
         private ListView.ListViewItemCollection GetAllItems() => ListViewMain.Items;
 
         public ColorRulesManager()
         {
-            IsFormLoading = true;
             InitializeComponent();
-            Shown += (sender, e) => IsFormLoading = false;
+            Controls.Remove(PanelMain);
             TopMost = FormMain.IsUniTopMost;
             RulesChanged = false;
         }
 
-        private void ColorRulesManager_Load(object sender, EventArgs e)
+        protected override void OnDialogLoad()
         {
             if (ColorRules != null)
             {
@@ -48,9 +47,9 @@ namespace CEETimerCSharpWinForms.Dialogs
                 }
             }
 
-            UIHelper.AlignControls(ButtonOK, ButtonCancel, ListViewMain);
-            UIHelper.CompactControlsY(ButtonOK, ListViewMain, 3);
-            UIHelper.CompactControlsY(ButtonCancel, ListViewMain, 3);
+            UIHelper.AlignControls(ButtonA, ButtonB, ListViewMain);
+            UIHelper.CompactControlsY(ButtonA, ListViewMain, 3);
+            UIHelper.CompactControlsY(ButtonB, ListViewMain, 3);
         }
 
         private void ContextAdd_Click(object sender, EventArgs e)
@@ -79,7 +78,7 @@ namespace CEETimerCSharpWinForms.Dialogs
         private void ColorRulesManager_RulesChanged(bool Changed)
         {
             RulesChanged = Changed;
-            ButtonOK.Enabled = Changed;
+            ButtonA.Enabled = Changed;
         }
 
         private void ContextDelete_Click(object sender, EventArgs e)
@@ -115,7 +114,7 @@ namespace CEETimerCSharpWinForms.Dialogs
             }
         }
 
-        private void ButtonOK_Click(object sender, EventArgs e)
+        protected override void OnButtonAClicked()
         {
             ColorRules = [];
 
@@ -125,15 +124,11 @@ namespace CEETimerCSharpWinForms.Dialogs
             }
 
             RulesChanged = false;
-            Close();
+
+            base.OnButtonAClicked();
         }
 
-        private void ButtonCancel_Click(object sender, EventArgs e)
-        {
-            Close();
-        }
-
-        private void ColorRulesManager_FormClosing(object sender, FormClosingEventArgs e)
+        protected override void OnDialogClosing(FormClosingEventArgs e)
         {
             if (RulesChanged)
             {
@@ -141,7 +136,7 @@ namespace CEETimerCSharpWinForms.Dialogs
                 {
                     case DialogResult.Yes:
                         e.Cancel = true;
-                        ButtonOK_Click(sender, e);
+                        OnButtonAClicked();
                         break;
                     case DialogResult.None:
                         e.Cancel = true;
@@ -156,7 +151,7 @@ namespace CEETimerCSharpWinForms.Dialogs
 
         private void AddListViewItem(int RuleTypeIndex, string ExamTick, Color Fore, Color Back, ListViewItem Item = null)
         {
-            ColorRulesManager_RulesChanged(!IsFormLoading);
+            ColorRulesManager_RulesChanged(!IsDialogLoading);
 
             var RuleTypeText = ColorRulesHelper.GetRuleTypeText(RuleTypeIndex);
             var _Fore = Fore.ToRgb();
@@ -168,7 +163,7 @@ namespace CEETimerCSharpWinForms.Dialogs
 
                 if (Duplicate != null)
                 {
-                    if (!IsFormLoading)
+                    if (!IsDialogLoading)
                     {
                         if (MessageX.Popup("检测到即将添加的规则与现有的重复，是否覆盖？", MessageLevel.Warning, Buttons: MessageBoxExButtons.YesNo) == DialogResult.Yes)
                         {
