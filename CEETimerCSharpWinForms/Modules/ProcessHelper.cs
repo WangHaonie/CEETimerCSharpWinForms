@@ -14,5 +14,11 @@ namespace CEETimerCSharpWinForms.Modules
             RedirectStandardOutput = RedirectOutput,
             Verb = AdminRequired ? "runas" : ""
         });
+
+        public static string GetProcessOutput(Process process)
+        {
+            process.WaitForExit();
+            return process.StandardOutput.ReadToEnd().Trim();
+        }
     }
 }

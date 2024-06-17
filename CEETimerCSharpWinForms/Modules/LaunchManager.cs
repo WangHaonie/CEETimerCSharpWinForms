@@ -112,9 +112,7 @@ namespace CEETimerCSharpWinForms.Modules
 
             if (QueryUserName)
             {
-                var UserNameGet = ProcessHelper.RunProcess("cmd.exe", "/c whoami", RedirectOutput: true);
-                UserNameGet.WaitForExit();
-                UserName = UserNameGet.StandardOutput.ReadToEnd().Trim();
+                UserName = ProcessHelper.GetProcessOutput(ProcessHelper.RunProcess("cmd.exe", "/c whoami", RedirectOutput: true));
             }
         }
 
