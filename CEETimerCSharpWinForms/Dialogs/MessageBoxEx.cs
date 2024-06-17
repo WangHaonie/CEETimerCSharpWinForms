@@ -57,7 +57,7 @@ namespace CEETimerCSharpWinForms.Dialogs
 
             StartPosition = Position;
 
-            if (OwnerForm == null)
+            if (OwnerForm == null && !UIHelper.IsNormalStart(UIHelper.GetOpenForms()))
             {
                 StartPosition = FormStartPosition.Manual;
                 var CurrentScreen = UIHelper.GetCurrentScreen().WorkingArea;

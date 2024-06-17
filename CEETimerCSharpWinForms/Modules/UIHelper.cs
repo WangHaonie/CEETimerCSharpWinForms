@@ -79,12 +79,17 @@ namespace CEETimerCSharpWinForms.Modules
         {
             var CurrentForms = GetOpenForms();
 
-            if (CurrentForms.Count() <= 1 && CurrentForms.FirstOrDefault() is not FormMain)
+            if (CurrentForms.Count() <= 1 && !IsNormalStart(CurrentForms))
             {
                 return Screen.FromPoint(Cursor.Position);
             }
 
             return Screen.FromControl(CurrentForms.FirstOrDefault());
+        }
+
+        public static bool IsNormalStart(IEnumerable<Form> Forms)
+        {
+            return Forms.FirstOrDefault() is not FormMain;
         }
 
         private static void SetLabelAutoWrapInternal(Label Target, Size NewSize)
