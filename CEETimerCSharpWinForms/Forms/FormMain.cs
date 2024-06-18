@@ -411,7 +411,8 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void RefreshScreen()
         {
-            SelectedScreen = Screen.AllScreens[ScreenIndex - 1 == -1 ? 0 : ScreenIndex - 1].WorkingArea;
+            var SelectedIndex = ScreenIndex - 1;
+            SelectedScreen = Screen.AllScreens[SelectedIndex == -1 ? 0 : SelectedIndex].WorkingArea;
         }
 
         private void KeepOnScreen()

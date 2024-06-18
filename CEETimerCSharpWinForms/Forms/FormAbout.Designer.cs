@@ -50,7 +50,6 @@
             // 
             // ButtonClose
             // 
-            this.ButtonClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.ButtonClose.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ButtonClose.Location = new System.Drawing.Point(130, 66);
             this.ButtonClose.Name = "ButtonClose";
