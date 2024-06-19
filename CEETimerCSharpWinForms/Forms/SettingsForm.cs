@@ -163,7 +163,7 @@ namespace CEETimerCSharpWinForms.Forms
             ComboBoxShowXOnly.SelectedIndex = IsShowXOnly ? ShowXOnlyIndex : 0;
         }
 
-        private void SettingsForm_SettingsChanged(object sender, EventArgs e)
+        private void SettingsChanged(object sender, EventArgs e)
         {
             if (!IsFormLoading)
             {
@@ -174,7 +174,7 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void TextBoxExamName_TextChanged(object sender, EventArgs e)
         {
-            SettingsForm_SettingsChanged(sender, e);
+            SettingsChanged(sender, e);
             int CharCount = TextBoxExamName.Text.RemoveIllegalChars().Length;
             LabelExamNameCounter.Text = $"{CharCount}/{ConfigPolicy.MaxExamNameLength}";
             LabelExamNameCounter.ForeColor = (CharCount > ConfigPolicy.MaxExamNameLength || CharCount < ConfigPolicy.MinExamNameLength) ? Color.Red : Color.Black;
@@ -182,7 +182,7 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void CheckBoxShowXOnly_CheckedChanged(object sender, EventArgs e)
         {
-            SettingsForm_SettingsChanged(sender, e);
+            SettingsChanged(sender, e);
             CheckBoxRounding.Enabled = ComboBoxShowXOnly.Enabled = CheckBoxShowXOnly.Checked;
             ComboBoxShowXOnly.SelectedIndex = CheckBoxShowXOnly.Checked ? ShowXOnlyIndex : 0;
             ChangeCustomTextStyle(sender);
@@ -208,7 +208,7 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void CheckBoxShowEnd_CheckedChanged(object sender, EventArgs e)
         {
-            SettingsForm_SettingsChanged(sender, e);
+            SettingsChanged(sender, e);
             ChangeWorkingStyle(WorkingArea.ShowLeftPast, CheckBoxShowEnd.Checked);
             DtpExamEnd.Enabled = CheckBoxShowEnd.Checked;
 
@@ -222,14 +222,14 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void CheckBoxShowPast_CheckedChanged(object sender, EventArgs e)
         {
-            SettingsForm_SettingsChanged(sender, e);
+            SettingsChanged(sender, e);
             CheckBoxShowEnd.Checked = CheckBoxShowPast.Checked;
             CheckBoxShowEnd.Enabled = !CheckBoxShowPast.Checked;
         }
 
         private void CheckBoxCustomText_CheckedChanged(object sender, EventArgs e)
         {
-            SettingsForm_SettingsChanged(sender, e);
+            SettingsChanged(sender, e);
             ChangeCustomTextStyle(sender);
         }
 
@@ -239,7 +239,7 @@ namespace CEETimerCSharpWinForms.Forms
 
             if (_CustomTextDialog.ShowDialog() == DialogResult.OK)
             {
-                SettingsForm_SettingsChanged(sender, e);
+                SettingsChanged(sender, e);
                 CustomTextRaw = _CustomTextDialog.CustomText;
             }
 
@@ -262,7 +262,7 @@ namespace CEETimerCSharpWinForms.Forms
 
             if (FontDialogMain.ShowDialog() == DialogResult.OK)
             {
-                SettingsForm_SettingsChanged(sender, e);
+                SettingsChanged(sender, e);
                 ChangeWorkingStyle(WorkingArea.ChangeFont, NewFont: FontDialogMain.Font);
             }
 
@@ -272,7 +272,7 @@ namespace CEETimerCSharpWinForms.Forms
         private void ButtonDefaultFont_Click(object sender, EventArgs e)
         {
             ChangeWorkingStyle(WorkingArea.ChangeFont, NewFont: new((Font)fontConverter.ConvertFromString(ConfigPolicy.DefaultFont), FontStyle.Bold));
-            SettingsForm_SettingsChanged(sender, e);
+            SettingsChanged(sender, e);
         }
 
         private void ColorLabels_Click(object sender, EventArgs e)
@@ -282,7 +282,7 @@ namespace CEETimerCSharpWinForms.Forms
 
             if (ColorDialogMain.ShowDialog() == DialogResult.OK)
             {
-                SettingsForm_SettingsChanged(sender, e);
+                SettingsChanged(sender, e);
                 LabelSender.BackColor = ColorDialogMain.SelectedColor;
                 ChangeWorkingStyle(WorkingArea.SelectedColor);
             }
@@ -321,7 +321,7 @@ namespace CEETimerCSharpWinForms.Forms
                 if (TargetControl != null && TargetControl is Label TagetLabel && ColorLabels.Contains(TagetLabel) && LabelSender != TagetLabel)
                 {
                     TagetLabel.BackColor = LabelSender.BackColor;
-                    SettingsForm_SettingsChanged(sender, e);
+                    SettingsChanged(sender, e);
                     ChangeWorkingStyle(WorkingArea.SelectedColor);
                 }
             }
@@ -330,7 +330,7 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void ButtonDefaultColor_Click(object sender, EventArgs e)
         {
-            SettingsForm_SettingsChanged(sender, e);
+            SettingsChanged(sender, e);
             ChangeWorkingStyle(WorkingArea.DefaultColor);
         }
 
@@ -343,7 +343,7 @@ namespace CEETimerCSharpWinForms.Forms
 
             if (_ColorRulesManager.ShowDialog() == DialogResult.OK)
             {
-                SettingsForm_SettingsChanged(sender, e);
+                SettingsChanged(sender, e);
                 ColorRules = _ColorRulesManager.ColorRules;
             }
         }
@@ -423,14 +423,14 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void ComboBoxShowXOnly_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SettingsForm_SettingsChanged(sender, e);
+            SettingsChanged(sender, e);
             CheckBoxRounding.Visible = ComboBoxShowXOnly.SelectedIndex == 0;
             CheckBoxRounding.Checked = ComboBoxShowXOnly.SelectedIndex == 0 && IsRounding;
         }
 
         private void ComboBoxScreens_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SettingsForm_SettingsChanged(sender, e);
+            SettingsChanged(sender, e);
 
             ComboBoxPosition.Enabled = !CheckBoxDraggable.Checked && ComboBoxScreens.SelectedIndex != 0;
             ComboBoxPosition.SelectedIndex = ComboBoxPosition.Enabled ? PositionIndex : 0;
@@ -504,7 +504,7 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void ChangePptsvcCtrlStyle(object sender, EventArgs e)
         {
-            SettingsForm_SettingsChanged(sender, e);
+            SettingsChanged(sender, e);
 
             var a = CheckBoxTopMost.Checked;
             var b = ComboBoxPosition.SelectedIndex == 0;
@@ -700,7 +700,7 @@ namespace CEETimerCSharpWinForms.Forms
         {
             try
             {
-                RegistryKey reg = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+                using var reg = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
 
                 if (CheckBoxStartup.Checked)
                     reg.SetValue(LaunchManager.AppNameEn, $"\"{LaunchManager.CurrentExecutable}\"");
