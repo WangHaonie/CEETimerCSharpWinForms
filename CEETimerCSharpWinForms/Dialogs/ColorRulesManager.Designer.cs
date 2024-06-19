@@ -149,7 +149,7 @@
             this.LabelInfo.Name = "LabelInfo";
             this.LabelInfo.Size = new System.Drawing.Size(332, 15);
             this.LabelInfo.TabIndex = 6;
-            this.LabelInfo.Text = "允许自定义各时刻要显示的颜色，请右键表格进行操作。";
+            this.LabelInfo.Text = "自定义各时刻要显示的颜色，请右键表格进行操作。";
             // 
             // ColorRulesManager
             // 

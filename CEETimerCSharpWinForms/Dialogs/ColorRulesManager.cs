@@ -20,7 +20,6 @@ namespace CEETimerCSharpWinForms.Dialogs
         {
             InitializeComponent();
             Controls.Remove(PanelMain);
-            IsUserChanged = false;
         }
 
         protected override void OnDialogLoad()
@@ -72,12 +71,6 @@ namespace CEETimerCSharpWinForms.Dialogs
             }
         }
 
-        private void ColorRulesManager_RulesChanged(bool Changed)
-        {
-            IsUserChanged = Changed;
-            ButtonA.Enabled = Changed;
-        }
-
         private void ContextDelete_Click(object sender, EventArgs e)
         {
             if (MessageX.Popup("确认删除所选规则吗？此操作将不可撤销！", MessageLevel.Warning, Buttons: MessageBoxExButtons.YesNo) == DialogResult.Yes)
@@ -87,7 +80,7 @@ namespace CEETimerCSharpWinForms.Dialogs
                     ListViewMain.Items.Remove(Item);
                 }
 
-                ColorRulesManager_RulesChanged(true);
+                UserChanged();
             }
         }
 
@@ -125,7 +118,7 @@ namespace CEETimerCSharpWinForms.Dialogs
 
         private void AddListViewItem(int RuleTypeIndex, string ExamTick, Color Fore, Color Back, ListViewItem Item = null)
         {
-            ColorRulesManager_RulesChanged(!IsDialogLoading);
+            UserChanged();
 
             var RuleTypeText = ColorRulesHelper.GetRuleTypeText(RuleTypeIndex);
             var _Fore = Fore.ToRgb();
@@ -137,14 +130,15 @@ namespace CEETimerCSharpWinForms.Dialogs
 
                 if (Duplicate != null)
                 {
-                    if (!IsDialogLoading)
+                    Execute(() =>
                     {
                         if (MessageX.Popup("检测到即将添加的规则与现有的重复，是否覆盖？", MessageLevel.Warning, Buttons: MessageBoxExButtons.YesNo) == DialogResult.Yes)
                         {
                             ModifyOrOverrideItem(Duplicate);
                             return;
                         }
-                    }
+                    });
+
                     return;
                 }
             }

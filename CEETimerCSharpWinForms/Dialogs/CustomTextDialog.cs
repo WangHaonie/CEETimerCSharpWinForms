@@ -62,15 +62,6 @@ namespace CEETimerCSharpWinForms.Dialogs
             base.OnButtonAClicked();
         }
 
-        private void UserChanged()
-        {
-            if (!IsDialogLoading && !ButtonA.Enabled)
-            {
-                IsUserChanged = true;
-                ButtonA.Enabled = true;
-            }
-        }
-
         private string RemoveInvalid(string s)
         {
             return s.RemoveIllegalChars();

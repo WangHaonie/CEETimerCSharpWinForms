@@ -1,5 +1,6 @@
 ﻿using CEETimerCSharpWinForms.Forms;
 using CEETimerCSharpWinForms.Modules;
+using System;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -10,8 +11,8 @@ namespace CEETimerCSharpWinForms.Controls
         protected Panel PanelMain;
         protected Button ButtonB;
         protected Button ButtonA;
-        protected bool IsDialogLoading { get; private set; }
-        protected bool IsUserChanged { get; set; }
+        private bool IsDialogLoading;
+        private bool IsUserChanged;
 
         public DialogEx()
         {
@@ -61,6 +62,23 @@ namespace CEETimerCSharpWinForms.Controls
         {
             DialogResult = DialogResult.Cancel;
             Close();
+        }
+
+        protected void UserChanged()
+        {
+            if (!IsDialogLoading && !ButtonA.Enabled)
+            {
+                IsUserChanged = true;
+                ButtonA.Enabled = true;
+            }
+        }
+
+        protected void Execute(Action action)
+        {
+            if (!IsDialogLoading)
+            {
+                action.Invoke();
+            }
         }
 
         protected virtual void OnDialogClosing(FormClosingEventArgs e)
