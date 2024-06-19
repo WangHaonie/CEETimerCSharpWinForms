@@ -160,12 +160,10 @@
             this.CancelButton = this.ButtonB;
             this.ClientSize = new System.Drawing.Size(370, 317);
             this.Controls.Add(this.LabelInfo);
-            this.Controls.Add(this.ButtonA);
-            this.Controls.Add(this.ButtonB);
             this.Controls.Add(this.ListViewMain);
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.KeyPreview = true;
             this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;

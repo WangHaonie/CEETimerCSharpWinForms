@@ -33,7 +33,7 @@ namespace CEETimerCSharpWinForms.Controls
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
             DoubleBuffered = true;
             Font = new("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            FormBorderStyle = FormBorderStyle.FixedDialog;
+            FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
             MinimizeBox = false;
             ShowIcon = false;

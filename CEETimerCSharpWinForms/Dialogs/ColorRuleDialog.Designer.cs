@@ -259,8 +259,6 @@
             this.ClientSize = new System.Drawing.Size(456, 87);
             this.Controls.Add(this.LabelPreviewColor);
             this.Controls.Add(this.PanelMain);
-            this.Controls.Add(this.ButtonA);
-            this.Controls.Add(this.ButtonB);
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;

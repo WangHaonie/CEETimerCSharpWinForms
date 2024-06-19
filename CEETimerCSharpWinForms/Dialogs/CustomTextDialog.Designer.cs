@@ -98,7 +98,7 @@
             this.LabelInfo.Name = "LabelInfo";
             this.LabelInfo.Size = new System.Drawing.Size(284, 60);
             this.LabelInfo.TabIndex = 7;
-            this.LabelInfo.Text = "自定义倒计时的文本，用占位符表示变量\r\n{x}-考试名称 {d}-天 {h}-时 {m}-分 {s}-秒\r\n{rd}-四舍五入的天数 {th}-总小时数 {tm}" +
+            this.LabelInfo.Text = "自定义倒计时的文本，用占位符表示变量：\r\n{x}-考试名称 {d}-天 {h}-时 {m}-分 {s}-秒\r\n{rd}-四舍五入的天数 {th}-总小时数 {tm}" +
     "-总分钟数\r\n{ts}-总秒数。比如 \"{x}还有{d}.{h}:{m}:{s}\"。";
             // 
             // PanelMain
@@ -156,15 +156,21 @@
             this.CancelButton = this.ButtonB;
             this.ClientSize = new System.Drawing.Size(312, 197);
             this.Controls.Add(this.ButtonReset);
-            this.Controls.Add(this.ButtonA);
-            this.Controls.Add(this.ButtonB);
             this.Controls.Add(this.PanelMain);
+            this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Margin = new System.Windows.Forms.Padding(4);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "CustomTextDialog";
             this.Text = "自定义文本 - 高考倒计时";
+            this.ShowIcon = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.PanelMain.ResumeLayout(false);
             this.PanelMain.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 

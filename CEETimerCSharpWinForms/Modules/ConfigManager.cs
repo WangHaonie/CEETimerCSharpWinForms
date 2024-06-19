@@ -167,7 +167,7 @@ namespace CEETimerCSharpWinForms.Modules
                 }
             }
 
-            return JSorted.ToString();
+            return JSorted.ToString(Formatting.None);
         }
 
         private static readonly string[] Placeholders = ["{x}", "{d}", "{h}", "{m}", "{s}", "{rd}", "{th}", "{tm}", "{ts}"];
