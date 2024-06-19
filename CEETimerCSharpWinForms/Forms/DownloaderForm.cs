@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace CEETimerCSharpWinForms.Forms
 {
-    public partial class FormDownloader : Form
+    public partial class DownloaderForm : Form
     {
         public static string ManualVersion { get; set; } = LaunchManager.AppVersion;
 
@@ -18,15 +18,15 @@ namespace CEETimerCSharpWinForms.Forms
         private string DownloadUrl;
         private string DownloadPath;
 
-        public FormDownloader()
+        public DownloaderForm()
         {
             InitializeComponent();
-            TopMost = FormMain.IsUniTopMost;
+            TopMost = MainForm.IsUniTopMost;
             ButtonCancel.Location = new(ProgressBarMain.Location.X + ProgressBarMain.Width - ButtonCancel.Width, ButtonCancel.Location.Y);
             ButtonRetry.Location = new(ButtonCancel.Location.X - ButtonRetry.Width - 6.WithDpi(this), ButtonRetry.Location.Y);
         }
 
-        private async void FormDownloader_Load(object sender, EventArgs e)
+        private async void DownloaderForm_Load(object sender, EventArgs e)
         {
             string LatestVersion = Updater.CurrentLatest;
             string SelectedVersion = ManualVersion;
@@ -152,7 +152,7 @@ namespace CEETimerCSharpWinForms.Forms
             LinkBroswer.Enabled = true;
         }
 
-        private void FormDownloader_FormClosing(object sender, FormClosingEventArgs e)
+        private void DownloaderForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             e.Cancel = !IsCancelled;
         }

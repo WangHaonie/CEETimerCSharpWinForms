@@ -94,7 +94,7 @@ namespace CEETimerCSharpWinForms.Modules
 
         public static bool IsNormalStart(IEnumerable<Form> Forms)
         {
-            return Forms.FirstOrDefault() is FormMain;
+            return Forms.FirstOrDefault() is MainForm;
         }
 
         private static void SetLabelAutoWrapInternal(Label Target, Size NewSize)

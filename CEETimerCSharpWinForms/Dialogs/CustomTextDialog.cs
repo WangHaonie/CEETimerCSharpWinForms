@@ -3,7 +3,7 @@ using CEETimerCSharpWinForms.Modules;
 
 namespace CEETimerCSharpWinForms.Dialogs
 {
-    public partial class CustomTextDialog : DialogEx //System.Windows.Forms.Form
+    public partial class CustomTextDialog : DialogEx
     {
         public string[] CustomText { get; set; }
         public static string[] DefaultText { get; } = ["距离{x}还有{d}天{h}时{m}分{s}秒", "距离{x}结束还有{d}天{h}时{m}分{s}秒", "距离{x}已过去了{d}天{h}时{m}分{s}秒"];

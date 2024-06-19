@@ -1,6 +1,6 @@
 ﻿namespace CEETimerCSharpWinForms.Forms
 {
-    partial class FormSettings
+    partial class SettingsForm
     {
         /// <summary>
         /// Required designer variable.
@@ -162,7 +162,7 @@
             this.DtpExamStart.Name = "DtpExamStart";
             this.DtpExamStart.Size = new System.Drawing.Size(305, 23);
             this.DtpExamStart.TabIndex = 38;
-            this.DtpExamStart.ValueChanged += new System.EventHandler(this.FormSettings_SettingsChanged);
+            this.DtpExamStart.ValueChanged += new System.EventHandler(this.SettingsForm_SettingsChanged);
             // 
             // DtpExamEnd
             // 
@@ -172,7 +172,7 @@
             this.DtpExamEnd.Name = "DtpExamEnd";
             this.DtpExamEnd.Size = new System.Drawing.Size(305, 23);
             this.DtpExamEnd.TabIndex = 39;
-            this.DtpExamEnd.ValueChanged += new System.EventHandler(this.FormSettings_SettingsChanged);
+            this.DtpExamEnd.ValueChanged += new System.EventHandler(this.SettingsForm_SettingsChanged);
             // 
             // ButtonSave
             // 
@@ -232,7 +232,7 @@
             this.CheckBoxMemOpti.TabIndex = 2;
             this.CheckBoxMemOpti.Text = "在需要时自动清理内存(&M)";
             this.CheckBoxMemOpti.UseVisualStyleBackColor = true;
-            this.CheckBoxMemOpti.CheckedChanged += new System.EventHandler(this.FormSettings_SettingsChanged);
+            this.CheckBoxMemOpti.CheckedChanged += new System.EventHandler(this.SettingsForm_SettingsChanged);
             // 
             // CheckBoxUniTopMost
             // 
@@ -243,7 +243,7 @@
             this.CheckBoxUniTopMost.TabIndex = 4;
             this.CheckBoxUniTopMost.Text = "顶置本程序的其他窗口(&U)";
             this.CheckBoxUniTopMost.UseVisualStyleBackColor = true;
-            this.CheckBoxUniTopMost.CheckedChanged += new System.EventHandler(this.FormSettings_SettingsChanged);
+            this.CheckBoxUniTopMost.CheckedChanged += new System.EventHandler(this.SettingsForm_SettingsChanged);
             // 
             // CheckBoxTopMost
             // 
@@ -267,7 +267,7 @@
             this.CheckBoxStartup.TabIndex = 18;
             this.CheckBoxStartup.Text = "开机自动启动倒计时(&B)";
             this.CheckBoxStartup.UseVisualStyleBackColor = true;
-            this.CheckBoxStartup.CheckedChanged += new System.EventHandler(this.FormSettings_SettingsChanged);
+            this.CheckBoxStartup.CheckedChanged += new System.EventHandler(this.SettingsForm_SettingsChanged);
             // 
             // GBoxExamEnd
             // 
@@ -338,7 +338,7 @@
             this.CheckBoxPptSvc.Size = new System.Drawing.Size(15, 14);
             this.CheckBoxPptSvc.TabIndex = 3;
             this.CheckBoxPptSvc.UseVisualStyleBackColor = true;
-            this.CheckBoxPptSvc.CheckedChanged += new System.EventHandler(this.FormSettings_SettingsChanged);
+            this.CheckBoxPptSvc.CheckedChanged += new System.EventHandler(this.SettingsForm_SettingsChanged);
             // 
             // LabelPptsvc
             // 
@@ -423,7 +423,7 @@
             this.CheckBoxRounding.TabIndex = 1;
             this.CheckBoxRounding.Text = "将不足一天的时间视为一天(&N)";
             this.CheckBoxRounding.UseVisualStyleBackColor = true;
-            this.CheckBoxRounding.CheckedChanged += new System.EventHandler(this.FormSettings_SettingsChanged);
+            this.CheckBoxRounding.CheckedChanged += new System.EventHandler(this.SettingsForm_SettingsChanged);
             // 
             // CheckBoxShowXOnly
             // 
@@ -825,7 +825,7 @@
             this.CheckBoxCustomText.UseVisualStyleBackColor = true;
             this.CheckBoxCustomText.CheckedChanged += new System.EventHandler(this.CheckBoxCustomText_CheckedChanged);
             // 
-            // FormSettings
+            // SettingsForm
             // 
             this.AcceptButton = this.ButtonSave;
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -841,13 +841,13 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
-            this.Name = "FormSettings";
+            this.Name = "SettingsForm";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "设置 - 高考倒计时";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormSettings_FormClosing);
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormSettings_FormClosed);
-            this.Load += new System.EventHandler(this.FormSettings_Load);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SettingsForm_FormClosing);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.SettingsForm_FormClosed);
+            this.Load += new System.EventHandler(this.SettingsForm_Load);
             this.TabControlMain.ResumeLayout(false);
             this.TabPageGeneral.ResumeLayout(false);
             this.GBoxOthers.ResumeLayout(false);

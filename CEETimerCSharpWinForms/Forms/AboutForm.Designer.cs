@@ -1,6 +1,6 @@
 ﻿namespace CEETimerCSharpWinForms.Forms
 {
-    partial class FormAbout
+    partial class AboutForm
     {
         /// <summary>
         /// Required designer variable.
@@ -121,7 +121,7 @@
             this.PicBoxLogo.TabStop = false;
             this.PicBoxLogo.MouseClick += new System.Windows.Forms.MouseEventHandler(this.PicBoxLogo_MouseClick);
             // 
-            // FormAbout
+            // AboutForm
             // 
             this.AcceptButton = this.ButtonClose;
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -134,11 +134,11 @@
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
-            this.Name = "FormAbout";
+            this.Name = "AboutForm";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "关于此程序";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormAbout_FormClosing);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.AboutForm_FormClosing);
             this.PanelMain.ResumeLayout(false);
             this.PanelMain.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PicBoxLogo)).EndInit();

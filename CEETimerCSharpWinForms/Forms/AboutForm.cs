@@ -6,14 +6,14 @@ using System.Windows.Forms;
 
 namespace CEETimerCSharpWinForms.Forms
 {
-    public partial class FormAbout : Form
+    public partial class AboutForm : Form
     {
         private bool IsCheckingUpdate = false;
 
-        public FormAbout()
+        public AboutForm()
         {
             InitializeComponent();
-            TopMost = FormMain.IsUniTopMost;
+            TopMost = MainForm.IsUniTopMost;
             LabelInfo.Text = $"{LaunchManager.AppName}\n版本 v{LaunchManager.AppVersion} x64 ({LaunchManager.AppBuildDate})";
             LabelLicense.Text = $"Licensed under the GNU GPL, v3.\n{LaunchManager.CopyrightInfo}";
         }
@@ -50,7 +50,7 @@ namespace CEETimerCSharpWinForms.Forms
             Close();
         }
 
-        private void FormAbout_FormClosing(object sender, FormClosingEventArgs e)
+        private void AboutForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             e.Cancel = IsCheckingUpdate;
         }

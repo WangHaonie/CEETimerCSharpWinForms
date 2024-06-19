@@ -1,6 +1,6 @@
 ﻿namespace CEETimerCSharpWinForms.Forms
 {
-    partial class FormDownloader
+    partial class DownloaderForm
     {
         /// <summary>
         /// Required designer variable.
@@ -110,7 +110,7 @@
             this.LinkBroswer.Text = "浏览器下载";
             this.LinkBroswer.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkBroswer_LinkClicked);
             // 
-            // FormDownloader
+            // DownloaderForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
@@ -127,12 +127,12 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximizeBox = false;
-            this.Name = "FormDownloader";
+            this.Name = "DownloaderForm";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "更新进度 - 高考倒计时";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormDownloader_FormClosing);
-            this.Load += new System.EventHandler(this.FormDownloader_Load);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.DownloaderForm_FormClosing);
+            this.Load += new System.EventHandler(this.DownloaderForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

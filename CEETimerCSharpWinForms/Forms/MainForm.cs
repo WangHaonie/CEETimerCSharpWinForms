@@ -11,7 +11,7 @@ using System.Windows.Forms;
 
 namespace CEETimerCSharpWinForms.Forms
 {
-    public partial class FormMain : Form
+    public partial class MainForm : Form
     {
         public static bool IsUniTopMost { get; private set; } = true;
 
@@ -58,18 +58,18 @@ namespace CEETimerCSharpWinForms.Forms
         private Point LastLocation;
         private Point LastMouseLocation;
         private Rectangle SelectedScreen;
-        private FormSettings formSettings;
-        private FormAbout formAbout;
+        private SettingsForm _SettingsForm;
+        private AboutForm _AboutForm;
         private readonly ConfigManager configManager = new();
         private readonly FontConverter fontConverter = new();
 
-        public FormMain()
+        public MainForm()
         {
             InitializeComponent();
-            SizeChanged += FormMain_SizeChanged;
+            SizeChanged += MainForm_SizeChanged;
         }
 
-        private void FormMain_Load(object sender, EventArgs e)
+        private void MainForm_Load(object sender, EventArgs e)
         {
             DefaultColors = [new(Color.Red, Color.White), new(Color.Green, Color.White), new(Color.Black, Color.White), new(Color.Black, Color.White)];
             SystemEvents.DisplaySettingsChanged += SystemEvents_DisplaySettingsChanged;
@@ -83,7 +83,7 @@ namespace CEETimerCSharpWinForms.Forms
             _ = 1.WithDpi(this);
         }
 
-        private void FormMain_SizeChanged(object sender, EventArgs e)
+        private void MainForm_SizeChanged(object sender, EventArgs e)
         {
             if (IsWin10BelowRounded)
             {
@@ -264,9 +264,9 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void ContextSettings_Click(object sender, EventArgs e)
         {
-            if (formSettings == null || formSettings.IsDisposed)
+            if (_SettingsForm == null || _SettingsForm.IsDisposed)
             {
-                formSettings = new()
+                _SettingsForm = new()
                 {
                     IsMemoryOptimizationEnabled = IsMemoryOptimizationEnabled,
                     IsTopMost = TopMost,
@@ -291,20 +291,20 @@ namespace CEETimerCSharpWinForms.Forms
                     ColorRules = ColorRules
                 };
 
-                formSettings.ConfigChanged += RefreshSettings;
+                _SettingsForm.ConfigChanged += RefreshSettings;
             }
 
-            formSettings.ReActivate();
+            _SettingsForm.ReActivate();
         }
 
         private void ContextAbout_Click(object sender, EventArgs e)
         {
-            if (formAbout == null || formAbout.IsDisposed)
+            if (_AboutForm == null || _AboutForm.IsDisposed)
             {
-                formAbout = new();
+                _AboutForm = new();
             }
 
-            formAbout.ReActivate();
+            _AboutForm.ReActivate();
         }
 
         private void ContextOpenDir_Click(object sender, EventArgs e)
@@ -312,7 +312,7 @@ namespace CEETimerCSharpWinForms.Forms
             LaunchManager.OpenDir();
         }
 
-        private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             e.Cancel = e.CloseReason != CloseReason.WindowsShutDown;
         }

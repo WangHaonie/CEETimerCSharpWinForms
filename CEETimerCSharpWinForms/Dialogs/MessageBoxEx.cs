@@ -25,17 +25,6 @@ namespace CEETimerCSharpWinForms.Dialogs
             AutoCloseRequired = AutoClose;
         }
 
-        private void MessageBoxEx_Shown(object sender, EventArgs e)
-        {
-            DialogSound.Play();
-            if (AutoCloseRequired) AutoCloseAsync();
-        }
-
-        protected override void OnDialogLoad()
-        {
-            TopMost = FormMain.IsUniTopMost;
-        }
-
         public DialogResult ShowCore(Form OwnerForm, string Message, string Title, Icon MessageBoxExIcon, FormStartPosition Position)
         {
             UIHelper.SetLabelAutoWrap(LabelMessage);
@@ -68,6 +57,17 @@ namespace CEETimerCSharpWinForms.Dialogs
             ButtonA.Location = new(ButtonB.Location.X - ButtonA.Width - 6.WithDpi(this), ButtonB.Location.Y);
             ShowDialog(OwnerForm);
             return _DialogResult;
+        }
+
+        protected override void OnDialogLoad()
+        {
+            TopMost = MainForm.IsUniTopMost;
+        }
+
+        private void MessageBoxEx_Shown(object sender, EventArgs e)
+        {
+            DialogSound.Play();
+            if (AutoCloseRequired) AutoCloseAsync();
         }
 
         protected override void OnButtonAClicked()

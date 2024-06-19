@@ -59,7 +59,7 @@ namespace CEETimerCSharpWinForms.Modules
                     if (Args.Length == 0)
                     {
                         Task.Run(() => CheckAdmin(out _));
-                        Application.Run(new FormMain());
+                        Application.Run(new MainForm());
                     }
                     else
                     {
@@ -74,8 +74,8 @@ namespace CEETimerCSharpWinForms.Modules
                                 MessageX.Popup($"当前用户 {UserName} {(IsAdmin ? "" : "不")}具有管理员权限。", MessageLevel.Info);
                                 break;
                             case "/fr":
-                                if (Args.Length > 1) FormDownloader.ManualVersion = Args[1];
-                                Application.Run(new FormDownloader());
+                                if (Args.Length > 1) DownloaderForm.ManualVersion = Args[1];
+                                Application.Run(new DownloaderForm());
                                 break;
                             default:
                                 MessageX.Popup($"无法解析的命令行参数：\n{AllArgs}", MessageLevel.Error, AutoClose: true);
