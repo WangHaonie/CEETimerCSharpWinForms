@@ -51,6 +51,7 @@
             this.CheckBoxPptSvc = new System.Windows.Forms.CheckBox();
             this.LabelPptsvc = new System.Windows.Forms.Label();
             this.GBoxContent = new System.Windows.Forms.GroupBox();
+            this.ButtonCustomText = new System.Windows.Forms.Button();
             this.ComboBoxShowXOnly = new System.Windows.Forms.ComboBox();
             this.CheckBoxShowPast = new System.Windows.Forms.CheckBox();
             this.CheckBoxShowEnd = new System.Windows.Forms.CheckBox();
@@ -92,6 +93,7 @@
             this.LabelRestart = new System.Windows.Forms.Label();
             this.GBoxSyncTime = new System.Windows.Forms.GroupBox();
             this.LabelSyncTime = new System.Windows.Forms.Label();
+            this.CheckBoxCustomText = new System.Windows.Forms.CheckBox();
             this.TabControlMain.SuspendLayout();
             this.TabPageGeneral.SuspendLayout();
             this.GBoxOthers.SuspendLayout();
@@ -343,12 +345,14 @@
             this.LabelPptsvc.AutoSize = true;
             this.LabelPptsvc.Location = new System.Drawing.Point(6, 19);
             this.LabelPptsvc.Name = "LabelPptsvc";
-            this.LabelPptsvc.Size = new System.Drawing.Size(652, 15);
+            this.LabelPptsvc.Size = new System.Drawing.Size(603, 15);
             this.LabelPptsvc.TabIndex = 0;
             this.LabelPptsvc.Text = "用于解决内置白板打开后底部工具栏会消失的问题。(或者你也可以开启拖动功能，将倒计时窗口拖动到其他位置)";
             // 
             // GBoxContent
             // 
+            this.GBoxContent.Controls.Add(this.CheckBoxCustomText);
+            this.GBoxContent.Controls.Add(this.ButtonCustomText);
             this.GBoxContent.Controls.Add(this.ComboBoxShowXOnly);
             this.GBoxContent.Controls.Add(this.CheckBoxShowPast);
             this.GBoxContent.Controls.Add(this.CheckBoxShowEnd);
@@ -360,6 +364,19 @@
             this.GBoxContent.TabIndex = 1;
             this.GBoxContent.TabStop = false;
             this.GBoxContent.Text = "倒计时内容";
+            // 
+            // ButtonCustomText
+            // 
+            this.ButtonCustomText.AutoSize = true;
+            this.ButtonCustomText.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.ButtonCustomText.Enabled = false;
+            this.ButtonCustomText.Location = new System.Drawing.Point(245, 68);
+            this.ButtonCustomText.Name = "ButtonCustomText";
+            this.ButtonCustomText.Size = new System.Drawing.Size(101, 25);
+            this.ButtonCustomText.TabIndex = 41;
+            this.ButtonCustomText.Text = "自定义文本(&W)";
+            this.ButtonCustomText.UseVisualStyleBackColor = true;
+            this.ButtonCustomText.Click += new System.EventHandler(this.ButtonCustomText_Click);
             // 
             // ComboBoxShowXOnly
             // 
@@ -379,8 +396,9 @@
             this.CheckBoxShowPast.AutoSize = true;
             this.CheckBoxShowPast.Location = new System.Drawing.Point(9, 72);
             this.CheckBoxShowPast.Name = "CheckBoxShowPast";
-            this.CheckBoxShowPast.Size = new System.Drawing.Size(15, 14);
+            this.CheckBoxShowPast.Size = new System.Drawing.Size(184, 19);
             this.CheckBoxShowPast.TabIndex = 3;
+            this.CheckBoxShowPast.Text = "显示 \"考试已过去了多久\"(&P)";
             this.CheckBoxShowPast.UseVisualStyleBackColor = true;
             this.CheckBoxShowPast.CheckedChanged += new System.EventHandler(this.CheckBoxShowPast_CheckedChanged);
             // 
@@ -389,8 +407,9 @@
             this.CheckBoxShowEnd.AutoSize = true;
             this.CheckBoxShowEnd.Location = new System.Drawing.Point(9, 47);
             this.CheckBoxShowEnd.Name = "CheckBoxShowEnd";
-            this.CheckBoxShowEnd.Size = new System.Drawing.Size(15, 14);
+            this.CheckBoxShowEnd.Size = new System.Drawing.Size(183, 19);
             this.CheckBoxShowEnd.TabIndex = 2;
+            this.CheckBoxShowEnd.Text = "显示 \"考试还有多久结束\"(&E)";
             this.CheckBoxShowEnd.UseVisualStyleBackColor = true;
             this.CheckBoxShowEnd.CheckedChanged += new System.EventHandler(this.CheckBoxShowEnd_CheckedChanged);
             // 
@@ -459,7 +478,7 @@
             this.LabelChar1.AutoSize = true;
             this.LabelChar1.Location = new System.Drawing.Point(234, 21);
             this.LabelChar1.Name = "LabelChar1";
-            this.LabelChar1.Size = new System.Drawing.Size(19, 15);
+            this.LabelChar1.Size = new System.Drawing.Size(20, 15);
             this.LabelChar1.TabIndex = 6;
             this.LabelChar1.Text = "的";
             // 
@@ -540,9 +559,9 @@
             this.LabelPreviewColor4.AutoSize = true;
             this.LabelPreviewColor4.Location = new System.Drawing.Point(200, 118);
             this.LabelPreviewColor4.Name = "LabelPreviewColor4";
-            this.LabelPreviewColor4.Size = new System.Drawing.Size(133, 15);
+            this.LabelPreviewColor4.Size = new System.Drawing.Size(124, 15);
             this.LabelPreviewColor4.TabIndex = 19;
-            this.LabelPreviewColor4.Text = "欢迎使用高考倒计时...";
+            this.LabelPreviewColor4.Text = "欢迎使用高考倒计时";
             // 
             // LabelColor41
             // 
@@ -796,6 +815,16 @@
             this.LabelSyncTime.TabIndex = 20;
             this.LabelSyncTime.Text = "使当前系统时间与网络同步。此项还会将系统的 NTP 服务器设置为 ntp1.aliyun.com, 并自动启动 Windows Time 服务, 请谨慎操作。";
             // 
+            // CheckBoxCustomText
+            // 
+            this.CheckBoxCustomText.AutoSize = true;
+            this.CheckBoxCustomText.Location = new System.Drawing.Point(229, 74);
+            this.CheckBoxCustomText.Name = "CheckBoxCustomText";
+            this.CheckBoxCustomText.Size = new System.Drawing.Size(15, 14);
+            this.CheckBoxCustomText.TabIndex = 42;
+            this.CheckBoxCustomText.UseVisualStyleBackColor = true;
+            this.CheckBoxCustomText.CheckedChanged += new System.EventHandler(this.CheckBoxCustomText_CheckedChanged);
+            // 
             // FormSettings
             // 
             this.AcceptButton = this.ButtonSave;
@@ -913,5 +942,7 @@
         private System.Windows.Forms.ComboBox ComboBoxPosition;
         private System.Windows.Forms.Label LabelChar1;
         private System.Windows.Forms.Button ButtonColorRules;
+        private System.Windows.Forms.Button ButtonCustomText;
+        private System.Windows.Forms.CheckBox CheckBoxCustomText;
     }
 }

@@ -1,5 +1,4 @@
 ﻿using CEETimerCSharpWinForms.Controls;
-using CEETimerCSharpWinForms.Forms;
 using CEETimerCSharpWinForms.Modules;
 using System;
 using System.Collections.Generic;
@@ -15,15 +14,13 @@ namespace CEETimerCSharpWinForms.Dialogs
         public List<PairItems<PairItems<int, TimeSpan>, PairItems<Color, Color>>> ColorRules { get; set; }
 
         private bool IsEditMode;
-        private bool RulesChanged;
         private ListView.ListViewItemCollection GetAllItems() => ListViewMain.Items;
 
         public ColorRulesManager()
         {
             InitializeComponent();
             Controls.Remove(PanelMain);
-            TopMost = FormMain.IsUniTopMost;
-            RulesChanged = false;
+            IsUserChanged = false;
         }
 
         protected override void OnDialogLoad()
@@ -77,7 +74,7 @@ namespace CEETimerCSharpWinForms.Dialogs
 
         private void ColorRulesManager_RulesChanged(bool Changed)
         {
-            RulesChanged = Changed;
+            IsUserChanged = Changed;
             ButtonA.Enabled = Changed;
         }
 
@@ -123,30 +120,7 @@ namespace CEETimerCSharpWinForms.Dialogs
                 ColorRules.Add(new(new(ColorRulesHelper.GetRuleTypeIndex(Item.SubItems[0].Text), ColorRulesHelper.GetExamTick(Item.SubItems[1].Text)), new(ColorHelper.GetColor(Item.SubItems[2].Text), ColorHelper.GetColor(Item.SubItems[3].Text))));
             }
 
-            RulesChanged = false;
-
             base.OnButtonAClicked();
-        }
-
-        protected override void OnDialogClosing(FormClosingEventArgs e)
-        {
-            if (RulesChanged)
-            {
-                switch (MessageX.Popup("检测到颜色规则已更改，是否保存？", MessageLevel.Warning, Buttons: MessageBoxExButtons.YesNo))
-                {
-                    case DialogResult.Yes:
-                        e.Cancel = true;
-                        OnButtonAClicked();
-                        break;
-                    case DialogResult.None:
-                        e.Cancel = true;
-                        break;
-                    default:
-                        RulesChanged = false;
-                        Close();
-                        break;
-                }
-            }
         }
 
         private void AddListViewItem(int RuleTypeIndex, string ExamTick, Color Fore, Color Back, ListViewItem Item = null)

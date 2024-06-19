@@ -22,6 +22,22 @@ namespace CEETimerCSharpWinForms.Modules
             Target.ValueMember = "Item2";
         }
 
+        public static void SetTextBoxMax(TextBox Target, int Max)
+        {
+            Target.MaxLength = Max;
+        }
+
+        public static void SetLabelAutoWrap(Label Target)
+        {
+            var CurrentScreenWidth = GetCurrentScreen().WorkingArea.Width;
+            SetLabelAutoWrapInternal(Target, new(CurrentScreenWidth / 2 + CurrentScreenWidth / 4, 0));
+        }
+
+        public static void SetLabelAutoWrap(Label Target, Control Parent)
+        {
+            SetLabelAutoWrapInternal(Target, new(Parent.Width - Target.Left, 0));
+        }
+
         public static void AlignControls(Button Btn1, Button Btn2, Control Reference)
         {
             Btn2.Location = new(Reference.Location.X + Reference.Width - Btn2.Width, Btn2.Location.Y);
@@ -51,17 +67,6 @@ namespace CEETimerCSharpWinForms.Modules
             Target.Top = Reference.Top + Reference.Height + Tweak.WithDpi(Target);
         }
 
-        public static void SetLabelAutoWrap(Label Target)
-        {
-            var CurrentScreenWidth = GetCurrentScreen().WorkingArea.Width;
-            SetLabelAutoWrapInternal(Target, new(CurrentScreenWidth / 2 + CurrentScreenWidth / 4, 0));
-        }
-
-        public static void SetLabelAutoWrap(Label Target, Control Parent)
-        {
-            SetLabelAutoWrapInternal(Target, new(Parent.Width - Target.Left, 0));
-        }
-
         public static IEnumerable<Form> GetOpenForms()
         {
             return Application.OpenForms.Cast<Form>();
@@ -89,7 +94,7 @@ namespace CEETimerCSharpWinForms.Modules
 
         public static bool IsNormalStart(IEnumerable<Form> Forms)
         {
-            return Forms.FirstOrDefault() is not FormMain;
+            return Forms.FirstOrDefault() is FormMain;
         }
 
         private static void SetLabelAutoWrapInternal(Label Target, Size NewSize)

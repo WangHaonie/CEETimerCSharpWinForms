@@ -22,6 +22,7 @@ namespace CEETimerCSharpWinForms.Forms
         private bool IsShowPast;
         private bool IsRounding;
         private bool IsPPTService;
+        private bool IsCustomText;
         private int ScreenIndex;
         private int PositionIndex;
         private int ShowXOnlyIndex;
@@ -33,6 +34,7 @@ namespace CEETimerCSharpWinForms.Forms
         private List<PairItems<Color, Color>> DefaultColors;
         private List<PairItems<PairItems<int, TimeSpan>, PairItems<Color, Color>>> ColorRules;
         private string ExamName;
+        private string[] CustomText;
 
         private enum CountdownState
         {
@@ -95,6 +97,7 @@ namespace CEETimerCSharpWinForms.Forms
             configManager.MountConfig(true);
 
             ExamName = configManager.ReadConfig(ConfigItems.KExamName);
+            CustomText = ConfigManager.GetCustomTextFormRaw(configManager.ReadConfig(ConfigItems.KCustomTextP1), configManager.ReadConfig(ConfigItems.KCustomTextP2), configManager.ReadConfig(ConfigItems.KCustomTextP3));
             ExamStartTime = DateTime.TryParseExact(configManager.ReadConfig(ConfigItems.KStartTime), "yyyyMMddHHmmss", null, DateTimeStyles.None, out DateTime tmpw) ? tmpw : DateTime.Now;
             ExamEndTime = DateTime.TryParseExact(configManager.ReadConfig(ConfigItems.KEndTime), "yyyyMMddHHmmss", null, DateTimeStyles.None, out DateTime tmpx) ? tmpx : DateTime.Now;
             IsMemoryOptimizationEnabled = bool.TryParse(configManager.ReadConfig(ConfigItems.KMemOpti), out bool tmpc) && tmpc;
@@ -106,6 +109,7 @@ namespace CEETimerCSharpWinForms.Forms
             IsDraggable = bool.TryParse(configManager.ReadConfig(ConfigItems.KDraggable), out bool tmph) && tmph;
             IsUniTopMost = bool.TryParse(configManager.ReadConfig(ConfigItems.KUniTopMost), out bool tmpi) && tmpi;
             IsPPTService = bool.TryParse(configManager.ReadConfig(ConfigItems.KSeewoPptSvc), out bool tmpj) && tmpj;
+            IsCustomText = bool.TryParse(configManager.ReadConfig(ConfigItems.KIsCustomText), out bool tmpo) && tmpo;
             ScreenIndex = int.TryParse(configManager.ReadConfig(ConfigItems.KScreen), out int tmpk) ? tmpk : 0;
             PositionIndex = int.TryParse(configManager.ReadConfig(ConfigItems.KPosition), out int tmpu) ? tmpu : 0;
             ShowXOnlyIndex = int.TryParse(configManager.ReadConfig(ConfigItems.KShowValue), out int tmpl) ? tmpl : 0;
@@ -136,6 +140,7 @@ namespace CEETimerCSharpWinForms.Forms
             ShowInTaskbar = !TopMost;
             IsShowPast = IsShowPast && IsShowEnd;
             IsRounding = IsRounding && IsShowXOnly && ShowXOnlyIndex == 0;
+            IsCustomText = IsCustomText && !IsShowXOnly;
             IsUniTopMost = IsUniTopMost && TopMost;
             if (ScreenIndex < 0 || ScreenIndex > Screen.AllScreens.Length) ScreenIndex = 0;
             if (PositionIndex < 0 || PositionIndex > 8) PositionIndex = 0;
@@ -270,6 +275,8 @@ namespace CEETimerCSharpWinForms.Forms
                     CountdownFont = LabelCountdown.Font,
                     CountdownFontStyle = LabelCountdown.Font.Style,
                     ExamName = ExamName,
+                    CustomTextRaw = CustomText,
+                    IsUserCustom = IsCustomText,
                     IsShowXOnly = IsShowXOnly,
                     ShowXOnlyIndex = ShowXOnlyIndex,
                     IsShowEnd = IsShowEnd,
@@ -350,13 +357,13 @@ namespace CEETimerCSharpWinForms.Forms
                 {
                     if (Phase == 2 ? (Span >= Rule.Tick) : (Span <= Rule.Tick + new TimeSpan(0, 0, 0, 1)))
                     {
-                        SetCountdown(Span, ExamName, Hint, Rule.Fore, Rule.Back);
+                        SetCountdown(Span, ExamName, Hint, Rule.Fore, Rule.Back, Phase);
                         return;
                     }
                 }
             }
 
-            SetCountdown(Span, ExamName, Hint, CountdownColors[Phase].Item1, CountdownColors[Phase].Item2);
+            SetCountdown(Span, ExamName, Hint, CountdownColors[Phase].Item1, CountdownColors[Phase].Item2, Phase);
         }
 
         private void ApplyLocation()
@@ -379,21 +386,37 @@ namespace CEETimerCSharpWinForms.Forms
             }
         }
 
-        private void SetCountdown(TimeSpan Span, string ExamName, string Hint, Color Fore, Color Back)
+        private void SetCountdown(TimeSpan Span, string ExamName, string Hint, Color Fore, Color Back, int Phase)
         {
             LabelCountdown.ForeColor = Fore;
             BackColor = Back;
 
-            LabelCountdown.Text = SelectedState switch
+            if (IsCustomText)
             {
-                CountdownState.Normal => $"{Juli}{ExamName}{Hint}{Span.Days}天{Span.Hours:00}时{Span.Minutes:00}分{Span.Seconds:00}秒",
-                CountdownState.DaysOnly => $"{Juli}{ExamName}{Hint}{Span.Days}天",
-                CountdownState.DaysOnlyWithRounding => $"{Juli}{ExamName}{Hint}{Span.Days + 1}天",
-                CountdownState.HoursOnly => $"{Juli}{ExamName}{Hint}{Span.TotalHours:0}小时",
-                CountdownState.MinutesOnly => $"{Juli}{ExamName}{Hint}{Span.TotalMinutes:0}分钟",
-                CountdownState.SecondsOnly => $"{Juli}{ExamName}{Hint}{Span.TotalSeconds:0}秒",
-                _ => ConfigPolicy.NotAllowed<string>()
-            };
+                LabelCountdown.Text = CustomText[Phase]
+                    .Replace("{x}", ExamName)
+                    .Replace("{d}", $"{Span.Days}")
+                    .Replace("{h}", $"{Span.Hours:00}")
+                    .Replace("{m}", $"{Span.Minutes:00}")
+                    .Replace("{s}", $"{Span.Seconds:00}")
+                    .Replace("{rd}", $"{Span.Days + 1}")
+                    .Replace("{th}", $"{Span.TotalHours:0}")
+                    .Replace("{tm}", $"{Span.TotalMinutes:0}")
+                    .Replace("{ts}", $"{Span.TotalSeconds:0}");
+            }
+            else
+            {
+                LabelCountdown.Text = SelectedState switch
+                {
+                    CountdownState.Normal => $"{Juli}{ExamName}{Hint}{Span.Days}天{Span.Hours:00}时{Span.Minutes:00}分{Span.Seconds:00}秒",
+                    CountdownState.DaysOnly => $"{Juli}{ExamName}{Hint}{Span.Days}天",
+                    CountdownState.DaysOnlyWithRounding => $"{Juli}{ExamName}{Hint}{Span.Days + 1}天",
+                    CountdownState.HoursOnly => $"{Juli}{ExamName}{Hint}{Span.TotalHours:0}小时",
+                    CountdownState.MinutesOnly => $"{Juli}{ExamName}{Hint}{Span.TotalMinutes:0}分钟",
+                    CountdownState.SecondsOnly => $"{Juli}{ExamName}{Hint}{Span.TotalSeconds:0}秒",
+                    _ => ConfigPolicy.NotAllowed<string>()
+                };
+            }
         }
 
         private void CompatibleWithPPTService()

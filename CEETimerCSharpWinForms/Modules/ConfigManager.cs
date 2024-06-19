@@ -1,10 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using CEETimerCSharpWinForms.Dialogs;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 
 namespace CEETimerCSharpWinForms.Modules
 {
@@ -167,6 +169,56 @@ namespace CEETimerCSharpWinForms.Modules
 
             return JSorted.ToString();
         }
+
+        private static readonly string[] Placeholders = ["{x}", "{d}", "{h}", "{m}", "{s}", "{rd}", "{th}", "{tm}", "{ts}"];
+
+        public static string[] GetCustomTextFormRaw(string p1, string p2, string p3)
+        {
+            string[] tmp = [p1, p2, p3];
+
+            if (IsValidCustomText(tmp, out _))
+            {
+                return tmp;
+            }
+
+            return CustomTextDialog.DefaultText;
+        }
+
+        public static bool IsValidCustomText(string[] arr, out string msg)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                var CustomText = arr[i];
+                var Index = $"第{i + 1}个自定义文本";
+                var Matches = Regex.Matches(CustomText, @"\{.*?\}");
+
+                if (string.IsNullOrWhiteSpace(CustomText))
+                {
+                    msg = $"{Index}不能为空白！";
+                    return false;
+                }
+
+                foreach (Match m in Matches)
+                {
+                    var mv = m.Value;
+
+                    if (!Placeholders.Contains(mv))
+                    {
+                        msg = $"在{Index}中检测到了无效的占位符 {mv}，请重新设置！";
+                        return false;
+                    }
+                }
+
+                if (Matches.Count == 0)
+                {
+                    msg = $"请在{Index}中至少使用一个占位符！";
+                    return false;
+                }
+            }
+
+            msg = "";
+            return true;
+        }
     }
 
     public static class ConfigItems
@@ -182,6 +234,10 @@ namespace CEETimerCSharpWinForms.Modules
         public const string KRounding = "Rounding";
         public const string KShowEnd = "ShowEnd";
         public const string KShowPast = "ShowPast";
+        public const string KIsCustomText = "Custom";
+        public const string KCustomTextP1 = "CustomP1";
+        public const string KCustomTextP2 = "CustomP2";
+        public const string KCustomTextP3 = "CustomP3";
         public const string KScreen = "Screen";
         public const string KPosition = "Position";
         public const string KDraggable = "Draggable";
@@ -206,9 +262,12 @@ namespace CEETimerCSharpWinForms.Modules
     {
         public const int MinExamNameLength = 2;
         public const int MaxExamNameLength = 10;
+        public const int MinCustomTextLength = 0;
+        public const int MaxCustomTextLength = 50;
         public const int MinFontSize = 10;
         public const int MaxFontSize = 28;
         public const string DefaultFont = "Microsoft YaHei, 17.25pt";
+        public static char[] CharsNotAllowed => ['\\', '/', '*', '?', '"', '\'', '<', '>', '|'];
         public static TimeSpan TsMaxAllowed => new(65535, 23, 59, 59);
         public static TimeSpan TsMinAllowed => new(0, 0, 0, 1);
 

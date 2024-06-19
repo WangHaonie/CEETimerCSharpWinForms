@@ -21,6 +21,7 @@ namespace CEETimerCSharpWinForms.Forms
         public bool IsRounding { get; set; }
         public bool IsPPTService { get; set; }
         public bool IsTopMost { get; set; }
+        public bool IsUserCustom { get; set; }
         public DateTime ExamStartTime { get; set; }
         public DateTime ExamEndTime { get; set; }
         public Font CountdownFont { get; set; }
@@ -32,6 +33,7 @@ namespace CEETimerCSharpWinForms.Forms
         public List<PairItems<Color, Color>> DefaultColors { get; set; }
         public List<PairItems<PairItems<int, TimeSpan>, PairItems<Color, Color>>> ColorRules { get; set; }
         public string ExamName { get; set; }
+        public string[] CustomTextRaw { get; set; }
         public event EventHandler ConfigChanged;
 
         private enum WorkingArea
@@ -53,6 +55,7 @@ namespace CEETimerCSharpWinForms.Forms
         private bool IsFunny;
         private bool IsFunnyClick;
         private bool IsFormLoading;
+        private bool ChangingCheckBox;
         private List<Label> ColorLabels;
         private List<PairItems<Color, Color>> SelectedColors;
         private readonly FontConverter fontConverter = new();
@@ -77,6 +80,8 @@ namespace CEETimerCSharpWinForms.Forms
                 UIHelper.AlignControls(ComboBoxScreens, LabelScreens);
                 UIHelper.AlignControls(ComboBoxPosition, LabelChar1);
                 UIHelper.AlignControls(LabelExamNameCounter, TextBoxExamName);
+                UIHelper.AlignControls(CheckBoxCustomText, CheckBoxShowPast);
+                UIHelper.AlignControls(ButtonCustomText, CheckBoxCustomText);
             });
 
             HasSettingsChanged = false;
@@ -92,10 +97,8 @@ namespace CEETimerCSharpWinForms.Forms
             DtpExamEnd.CustomFormat = LaunchManager.DateTimeFormat;
             LabelExamNameCounter.Text = $"0/{ConfigPolicy.MaxExamNameLength}";
             LabelExamNameCounter.ForeColor = Color.Red;
-            TextBoxExamName.MaxLength = ConfigPolicy.MaxExamNameLength;
+            UIHelper.SetTextBoxMax(TextBoxExamName, ConfigPolicy.MaxExamNameLength);
             GBoxExamName.Text = $"考试名称 ({ConfigPolicy.MinExamNameLength}~{ConfigPolicy.MaxExamNameLength}字)";
-            CheckBoxShowEnd.Text = $"显示 \"考试还有多久结束\" (距离...{ColorRulesHelper.LeftHint}...)(&E)";
-            CheckBoxShowPast.Text = $"显示 \"考试已过去了多久\" (距离...{ColorRulesHelper.PastHint}...)(&P)";
             LabelPreviewColor1.Text = $"距离...{ColorRulesHelper.StartHint}...";
             LabelPreviewColor2.Text = $"距离...{ColorRulesHelper.LeftHint}...";
             LabelPreviewColor3.Text = $"距离...{ColorRulesHelper.PastHint}...";
@@ -146,6 +149,7 @@ namespace CEETimerCSharpWinForms.Forms
             CheckBoxMemOpti.Checked = IsMemoryOptimizationEnabled;
             CheckBoxDraggable.Checked = IsDraggable;
             CheckBoxShowXOnly.Checked = IsShowXOnly;
+            CheckBoxCustomText.Checked = IsUserCustom;
             CheckBoxRounding.Checked = IsRounding;
             CheckBoxShowEnd.Checked = DtpExamEnd.Enabled = IsShowEnd;
             CheckBoxShowPast.Checked = IsShowPast;
@@ -161,8 +165,11 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void FormSettings_SettingsChanged(object sender, EventArgs e)
         {
-            HasSettingsChanged = true;
-            ButtonSave.Enabled = true;
+            if (!IsFormLoading)
+            {
+                HasSettingsChanged = true;
+                ButtonSave.Enabled = true;
+            }
         }
 
         private void TextBoxExamName_TextChanged(object sender, EventArgs e)
@@ -178,6 +185,7 @@ namespace CEETimerCSharpWinForms.Forms
             FormSettings_SettingsChanged(sender, e);
             CheckBoxRounding.Enabled = ComboBoxShowXOnly.Enabled = CheckBoxShowXOnly.Checked;
             ComboBoxShowXOnly.SelectedIndex = CheckBoxShowXOnly.Checked ? ShowXOnlyIndex : 0;
+            ChangeCustomTextStyle(sender);
 
             if (CheckBoxRounding.Checked && !CheckBoxShowXOnly.Checked)
             {
@@ -217,6 +225,25 @@ namespace CEETimerCSharpWinForms.Forms
             FormSettings_SettingsChanged(sender, e);
             CheckBoxShowEnd.Checked = CheckBoxShowPast.Checked;
             CheckBoxShowEnd.Enabled = !CheckBoxShowPast.Checked;
+        }
+
+        private void CheckBoxCustomText_CheckedChanged(object sender, EventArgs e)
+        {
+            FormSettings_SettingsChanged(sender, e);
+            ChangeCustomTextStyle(sender);
+        }
+
+        private void ButtonCustomText_Click(object sender, EventArgs e)
+        {
+            CustomTextDialog _CustomTextDialog = new() { CustomText = CustomTextRaw };
+
+            if (_CustomTextDialog.ShowDialog() == DialogResult.OK)
+            {
+                FormSettings_SettingsChanged(sender, e);
+                CustomTextRaw = _CustomTextDialog.CustomText;
+            }
+
+            _CustomTextDialog.Dispose();
         }
 
         private void ButtonFont_Click(object sender, EventArgs e)
@@ -450,6 +477,31 @@ namespace CEETimerCSharpWinForms.Forms
             ChangeWorkingStyle(WorkingArea.Funny, false);
         }
 
+        private void ChangeCustomTextStyle(object sender)
+        {
+            if (ChangingCheckBox) return;
+            ChangingCheckBox = true;
+            var cb = (CheckBox)sender;
+
+            try
+            {
+                if (cb == CheckBoxShowXOnly)
+                {
+                    CheckBoxCustomText.Enabled = !cb.Checked;
+                    ButtonCustomText.Enabled = false;
+                }
+                else
+                {
+                    ButtonCustomText.Enabled = cb.Checked;
+                    CheckBoxShowXOnly.Enabled = !cb.Checked;
+                }
+            }
+            finally
+            {
+                ChangingCheckBox = false;
+            }
+        }
+
         private void ChangePptsvcCtrlStyle(object sender, EventArgs e)
         {
             FormSettings_SettingsChanged(sender, e);
@@ -658,6 +710,10 @@ namespace CEETimerCSharpWinForms.Forms
                 new ConfigManager().WriteConfig(new()
                 {
                     { ConfigItems.KExamName, ExamName },
+                    { ConfigItems.KIsCustomText, $"{CheckBoxCustomText.Checked}" },
+                    { ConfigItems.KCustomTextP1, CustomTextRaw[0] },
+                    { ConfigItems.KCustomTextP2, CustomTextRaw[1] },
+                    { ConfigItems.KCustomTextP3, CustomTextRaw[2] },
                     { ConfigItems.KStartTime, $"{DtpExamStart.Value:yyyyMMddHHmmss}" },
                     { ConfigItems.KEndTime, $"{DtpExamEnd.Value:yyyyMMddHHmmss}" },
                     { ConfigItems.KMemOpti, $"{CheckBoxMemOpti.Checked}" },

@@ -27,7 +27,7 @@ namespace CEETimerCSharpWinForms.Modules
 
         */
         public static string RemoveIllegalChars(this string s)
-            => new(s.Trim().Replace(" ", "").Where(c => char.IsLetterOrDigit(c) || (c >= ' ' && c <= byte.MaxValue)).ToArray());
+            => new(s.Trim().Replace(" ", "").Where(c => char.IsLetterOrDigit(c) || (c >= ' ' && c <= byte.MaxValue)).Where(x => !ConfigPolicy.CharsNotAllowed.Contains(x)).ToArray());
         #endregion
 
         public static int WithDpi(this int px, Control control)

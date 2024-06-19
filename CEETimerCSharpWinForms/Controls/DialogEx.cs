@@ -1,4 +1,6 @@
-﻿using System.Drawing;
+﻿using CEETimerCSharpWinForms.Forms;
+using CEETimerCSharpWinForms.Modules;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace CEETimerCSharpWinForms.Controls
@@ -9,6 +11,7 @@ namespace CEETimerCSharpWinForms.Controls
         protected Button ButtonB;
         protected Button ButtonA;
         protected bool IsDialogLoading { get; private set; }
+        protected bool IsUserChanged { get; set; }
 
         public DialogEx()
         {
@@ -35,6 +38,7 @@ namespace CEETimerCSharpWinForms.Controls
             MinimizeBox = false;
             ShowIcon = false;
             StartPosition = FormStartPosition.CenterParent;
+            TopMost = FormMain.IsUniTopMost;
             Controls.AddRange([ButtonA, ButtonB]);
             ResumeLayout(false);
             Load += (sender, e) => OnDialogLoad();
@@ -48,6 +52,7 @@ namespace CEETimerCSharpWinForms.Controls
 
         protected virtual void OnButtonAClicked()
         {
+            IsUserChanged = false;
             DialogResult = DialogResult.OK;
             Close();
         }
@@ -60,7 +65,23 @@ namespace CEETimerCSharpWinForms.Controls
 
         protected virtual void OnDialogClosing(FormClosingEventArgs e)
         {
-            e.Cancel = false;
+            if (IsUserChanged)
+            {
+                switch (MessageX.Popup("是否保存当前更改？", MessageLevel.Warning, Buttons: MessageBoxExButtons.YesNo))
+                {
+                    case DialogResult.Yes:
+                        e.Cancel = true;
+                        OnButtonAClicked();
+                        break;
+                    case DialogResult.None:
+                        e.Cancel = true;
+                        break;
+                    default:
+                        IsUserChanged = false;
+                        Close();
+                        break;
+                }
+            }
         }
     }
 }
