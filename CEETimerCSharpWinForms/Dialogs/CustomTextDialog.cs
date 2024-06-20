@@ -6,7 +6,6 @@ namespace CEETimerCSharpWinForms.Dialogs
     public partial class CustomTextDialog : DialogEx
     {
         public string[] CustomText { get; set; }
-        public static string[] DefaultText { get; } = ["距离{x}还有{d}天{h}时{m}分{s}秒", "距离{x}结束还有{d}天{h}时{m}分{s}秒", "距离{x}已过去了{d}天{h}时{m}分{s}秒"];
 
         private string P1TextRaw;
         private string P2TextRaw;
@@ -40,9 +39,9 @@ namespace CEETimerCSharpWinForms.Dialogs
         {
             UserChanged();
 
-            TextBoxP1.Text = DefaultText[0];
-            TextBoxP2.Text = DefaultText[1];
-            TextBoxP3.Text = DefaultText[2];
+            TextBoxP1.Text = Placeholders.PH_P1;
+            TextBoxP2.Text = Placeholders.PH_P2;
+            TextBoxP3.Text = Placeholders.PH_P3;
         }
 
         protected override void OnButtonAClicked()

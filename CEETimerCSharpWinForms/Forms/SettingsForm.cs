@@ -99,9 +99,9 @@ namespace CEETimerCSharpWinForms.Forms
             LabelExamNameCounter.ForeColor = Color.Red;
             UIHelper.SetTextBoxMax(TextBoxExamName, ConfigPolicy.MaxExamNameLength);
             GBoxExamName.Text = $"考试名称 ({ConfigPolicy.MinExamNameLength}~{ConfigPolicy.MaxExamNameLength}字)";
-            LabelPreviewColor1.Text = $"距离...{ColorRulesHelper.StartHint}...";
-            LabelPreviewColor2.Text = $"距离...{ColorRulesHelper.LeftHint}...";
-            LabelPreviewColor3.Text = $"距离...{ColorRulesHelper.PastHint}...";
+            LabelPreviewColor1.Text = $"{Placeholders.PH_JULI}...{Placeholders.PH_START}...";
+            LabelPreviewColor2.Text = $"{Placeholders.PH_JULI}...{Placeholders.PH_LEFT}...";
+            LabelPreviewColor3.Text = $"{Placeholders.PH_JULI}...{Placeholders.PH_PAST}...";
             UIHelper.BindData(ComboBoxShowXOnly, [new("天", 0), new("时", 1), new("分", 2), new("秒", 3)]);
             UIHelper.BindData(ComboBoxPosition, [new("左上角", 0), new("左部中央", 1), new("左下角", 2), new("上部中央", 3), new("中央", 4), new("下部中央", 5), new("右上角", 6), new("右部中央", 7), new("右下角", 8)]);
 
@@ -159,7 +159,7 @@ namespace CEETimerCSharpWinForms.Forms
             ComboBoxPosition.SelectedValue = PositionIndex;
             ComboBoxShowXOnly.SelectedValue = ShowXOnlyIndex;
             ChangeWorkingStyle(WorkingArea.ChangeFont, NewFont: new(CountdownFont, CountdownFontStyle));
-            ChangePptsvcCtrlStyle(null, EventArgs.Empty);
+            ChangePptsvcStyle(null, EventArgs.Empty);
             ComboBoxShowXOnly.SelectedIndex = IsShowXOnly ? ShowXOnlyIndex : 0;
         }
 
@@ -196,7 +196,7 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void CheckBoxTopMost_CheckedChanged(object sender, EventArgs e)
         {
-            ChangePptsvcCtrlStyle(sender, e);
+            ChangePptsvcStyle(sender, e);
             CheckBoxUniTopMost.Enabled = CheckBoxTopMost.Checked;
 
             if (CheckBoxUniTopMost.Checked && !CheckBoxTopMost.Checked)
@@ -388,7 +388,7 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void CheckBoxDraggable_CheckedChanged(object sender, EventArgs e)
         {
-            ChangePptsvcCtrlStyle(sender, e);
+            ChangePptsvcStyle(sender, e);
             ComboBoxScreens.SelectedValue = CheckBoxDraggable.Checked ? 0 : ScreenIndex;
             ComboBoxPosition.SelectedValue = CheckBoxDraggable.Checked ? 0 : PositionIndex;
             LabelScreens.Enabled = LabelChar1.Enabled = ComboBoxScreens.Enabled = !CheckBoxDraggable.Checked;
@@ -502,7 +502,7 @@ namespace CEETimerCSharpWinForms.Forms
             }
         }
 
-        private void ChangePptsvcCtrlStyle(object sender, EventArgs e)
+        private void ChangePptsvcStyle(object sender, EventArgs e)
         {
             SettingsChanged(sender, e);
 

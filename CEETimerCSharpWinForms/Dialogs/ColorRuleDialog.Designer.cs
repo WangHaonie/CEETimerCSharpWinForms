@@ -1,4 +1,6 @@
-﻿namespace CEETimerCSharpWinForms.Dialogs
+﻿using CEETimerCSharpWinForms.Modules;
+
+namespace CEETimerCSharpWinForms.Dialogs
 {
     partial class ColorRuleDialog
     {
@@ -124,7 +126,7 @@
             this.LabelChars01.Name = "LabelChars01";
             this.LabelChars01.Size = new System.Drawing.Size(72, 15);
             this.LabelChars01.TabIndex = 10;
-            this.LabelChars01.Text = "当距离考试";
+            this.LabelChars01.Text = $"当{Placeholders.PH_JULI}考试";
             // 
             // NudSeconds
             // 

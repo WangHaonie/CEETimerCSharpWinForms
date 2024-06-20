@@ -16,7 +16,7 @@ namespace CEETimerCSharpWinForms.Dialogs
         public ColorRuleDialog()
         {
             InitializeComponent();
-            UIHelper.BindData(ComboBoxRuleType, [new(ColorRulesHelper.StartHint, 0), new(ColorRulesHelper.LeftHint, 1), new(ColorRulesHelper.PastHint, 2)]);
+            UIHelper.BindData(ComboBoxRuleType, [new(Placeholders.PH_START, 0), new(Placeholders.PH_LEFT, 1), new(Placeholders.PH_PAST, 2)]);
         }
 
         protected override void OnDialogLoad()

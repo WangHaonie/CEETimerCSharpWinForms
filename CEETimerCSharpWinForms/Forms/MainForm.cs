@@ -51,7 +51,6 @@ namespace CEETimerCSharpWinForms.Forms
         private bool IsWin10BelowRounded;
         private readonly int PptsvcThreshold = 1;
         private readonly int BorderRadius = 13;
-        private readonly string Juli = "距离";
         private CountdownState SelectedState;
         private Timer TimerCountdown;
         private System.Threading.Timer MemoryOptimizer;
@@ -329,15 +328,15 @@ namespace CEETimerCSharpWinForms.Forms
         {
             if (IsCountdownReady && DateTime.Now < ExamStartTime)
             {
-                ApplyColorRule(0, ExamStartTime - DateTime.Now, ExamName, ColorRulesHelper.StartHint);
+                ApplyColorRule(0, ExamStartTime - DateTime.Now, ExamName, Placeholders.PH_START);
             }
             else if (IsCountdownReady && DateTime.Now < ExamEndTime && IsShowEnd)
             {
-                ApplyColorRule(1, ExamEndTime - DateTime.Now, ExamName, ColorRulesHelper.LeftHint);
+                ApplyColorRule(1, ExamEndTime - DateTime.Now, ExamName, Placeholders.PH_LEFT);
             }
             else if (IsCountdownReady && DateTime.Now > ExamEndTime && IsShowEnd && IsShowPast)
             {
-                ApplyColorRule(2, DateTime.Now - ExamEndTime, ExamName, ColorRulesHelper.PastHint);
+                ApplyColorRule(2, DateTime.Now - ExamEndTime, ExamName, Placeholders.PH_PAST);
             }
             else
             {
@@ -402,26 +401,26 @@ namespace CEETimerCSharpWinForms.Forms
             if (IsCustomText)
             {
                 LabelCountdown.Text = CustomText[Phase]
-                    .Replace("{x}", ExamName)
-                    .Replace("{d}", $"{Span.Days}")
-                    .Replace("{h}", $"{Span.Hours:00}")
-                    .Replace("{m}", $"{Span.Minutes:00}")
-                    .Replace("{s}", $"{Span.Seconds:00}")
-                    .Replace("{rd}", $"{Span.Days + 1}")
-                    .Replace("{th}", $"{Span.TotalHours:0}")
-                    .Replace("{tm}", $"{Span.TotalMinutes:0}")
-                    .Replace("{ts}", $"{Span.TotalSeconds:0}");
+                    .Replace(Placeholders.PH_EXAMNAME, ExamName)
+                    .Replace(Placeholders.PH_DAYS, $"{Span.Days}")
+                    .Replace(Placeholders.PH_HOURS, $"{Span.Hours:00}")
+                    .Replace(Placeholders.PH_MINUTES, $"{Span.Minutes:00}")
+                    .Replace(Placeholders.PH_SECONDS, $"{Span.Seconds:00}")
+                    .Replace(Placeholders.PH_ROUNDEDDAYS, $"{Span.Days + 1}")
+                    .Replace(Placeholders.PH_TOTALHOURS, $"{Span.TotalHours:0}")
+                    .Replace(Placeholders.PH_TOTALMINUTES, $"{Span.TotalMinutes:0}")
+                    .Replace(Placeholders.PH_TOTALSECONDS, $"{Span.TotalSeconds:0}");
             }
             else
             {
                 LabelCountdown.Text = SelectedState switch
                 {
-                    CountdownState.Normal => $"{Juli}{ExamName}{Hint}{Span.Days}天{Span.Hours:00}时{Span.Minutes:00}分{Span.Seconds:00}秒",
-                    CountdownState.DaysOnly => $"{Juli}{ExamName}{Hint}{Span.Days}天",
-                    CountdownState.DaysOnlyWithRounding => $"{Juli}{ExamName}{Hint}{Span.Days + 1}天",
-                    CountdownState.HoursOnly => $"{Juli}{ExamName}{Hint}{Span.TotalHours:0}小时",
-                    CountdownState.MinutesOnly => $"{Juli}{ExamName}{Hint}{Span.TotalMinutes:0}分钟",
-                    CountdownState.SecondsOnly => $"{Juli}{ExamName}{Hint}{Span.TotalSeconds:0}秒",
+                    CountdownState.Normal => $"{Placeholders.PH_JULI}{ExamName}{Hint}{Span.Days}天{Span.Hours:00}时{Span.Minutes:00}分{Span.Seconds:00}秒",
+                    CountdownState.DaysOnly => $"{Placeholders.PH_JULI}{ExamName}{Hint}{Span.Days}天",
+                    CountdownState.DaysOnlyWithRounding => $"{Placeholders.PH_JULI}{ExamName}{Hint}{Span.Days + 1}天",
+                    CountdownState.HoursOnly => $"{Placeholders.PH_JULI}{ExamName}{Hint}{Span.TotalHours:0}小时",
+                    CountdownState.MinutesOnly => $"{Placeholders.PH_JULI}{ExamName}{Hint}{Span.TotalMinutes:0}分钟",
+                    CountdownState.SecondsOnly => $"{Placeholders.PH_JULI}{ExamName}{Hint}{Span.TotalSeconds:0}秒",
                     _ => ConfigPolicy.NotAllowed<string>()
                 };
             }
@@ -431,7 +430,7 @@ namespace CEETimerCSharpWinForms.Forms
         {
             if (IsPPTService)
             {
-                var ValidArea = Screen.GetWorkingArea(this);
+                var ValidArea = GetScreenWorkingArea();
 
                 if (Left == ValidArea.Left && Top == ValidArea.Top)
                 {
@@ -443,12 +442,12 @@ namespace CEETimerCSharpWinForms.Forms
         private void RefreshScreen()
         {
             var SelectedIndex = ScreenIndex - 1;
-            SelectedScreen = Screen.AllScreens[SelectedIndex == -1 ? 0 : SelectedIndex].WorkingArea;
+            SelectedScreen = GetScreenWorkingArea(SelectedIndex == -1 ? 0 : SelectedIndex);
         }
 
         private void KeepOnScreen()
         {
-            var ValidArea = Screen.GetWorkingArea(this);
+            var ValidArea = GetScreenWorkingArea();
 
             if (Left < ValidArea.Left) Left = ValidArea.Left;
             if (Top < ValidArea.Top) Top = ValidArea.Top;
@@ -494,6 +493,16 @@ namespace CEETimerCSharpWinForms.Forms
             {
                 IsWin10BelowRounded = true;
             }
+        }
+
+        private Rectangle GetScreenWorkingArea(int Index = -1)
+        {
+            if (Index >= 0)
+            {
+                return Screen.AllScreens[Index].WorkingArea;
+            }
+
+            return Screen.GetWorkingArea(this);
         }
 
         protected override void OnHandleCreated(EventArgs e)

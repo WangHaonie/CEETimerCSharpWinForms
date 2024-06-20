@@ -199,6 +199,7 @@
     <Compile Include="Modules\ColorRulesHelper.cs" />
     <Compile Include="Modules\ListViewItemComparer.cs" />
     <Compile Include="Modules\PairItems.cs" />
+    <Compile Include="Modules\Placeholders.cs" />
     <Compile Include="Modules\ProcessHelper.cs" />
     <Compile Include="Modules\UIHelper.cs" />
     <Compile Include="Modules\UpdateChecker.cs" />

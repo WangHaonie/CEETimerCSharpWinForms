@@ -22,15 +22,11 @@ namespace CEETimerCSharpWinForms.Modules
         public static string GetRawExamTick(TimeSpan timeSpan)
             => $"{timeSpan.Days},{timeSpan.Hours},{timeSpan.Minutes},{timeSpan.Seconds}";
 
-        public const string StartHint = "还有";
-        public const string LeftHint = "结束还有";
-        public const string PastHint = "已过去了";
-
         public static int GetRuleTypeIndex(string s) => s switch
         {
-            StartHint => 0,
-            LeftHint => 1,
-            PastHint => 2,
+            Placeholders.PH_START => 0,
+            Placeholders.PH_LEFT => 1,
+            Placeholders.PH_PAST => 2,
             _ => 0
         };
 
@@ -44,10 +40,10 @@ namespace CEETimerCSharpWinForms.Modules
 
         public static string GetRuleTypeText(int i) => i switch
         {
-            0 => StartHint,
-            1 => LeftHint,
-            2 => PastHint,
-            _ => StartHint
+            0 => Placeholders.PH_START,
+            1 => Placeholders.PH_LEFT,
+            2 => Placeholders.PH_PAST,
+            _ => Placeholders.PH_START
         };
 
 

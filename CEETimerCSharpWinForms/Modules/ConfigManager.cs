@@ -1,5 +1,4 @@
-﻿using CEETimerCSharpWinForms.Dialogs;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -170,8 +169,6 @@ namespace CEETimerCSharpWinForms.Modules
             return JSorted.ToString(Formatting.None);
         }
 
-        private static readonly string[] Placeholders = ["{x}", "{d}", "{h}", "{m}", "{s}", "{rd}", "{th}", "{tm}", "{ts}"];
-
         public static string[] GetCustomTextFormRaw(string p1, string p2, string p3)
         {
             string[] tmp = [p1, p2, p3];
@@ -181,11 +178,13 @@ namespace CEETimerCSharpWinForms.Modules
                 return tmp;
             }
 
-            return CustomTextDialog.DefaultText;
+            return [Placeholders.PH_P1, Placeholders.PH_P2, Placeholders.PH_P3];
         }
 
         public static bool IsValidCustomText(string[] arr, out string msg)
         {
+            string[] AllPHs = [Placeholders.PH_EXAMNAME, Placeholders.PH_DAYS, Placeholders.PH_HOURS, Placeholders.PH_MINUTES, Placeholders.PH_SECONDS, Placeholders.PH_ROUNDEDDAYS, Placeholders.PH_TOTALHOURS, Placeholders.PH_TOTALMINUTES, Placeholders.PH_TOTALSECONDS];
+
             for (int i = 0; i < 3; i++)
             {
                 var CustomText = arr[i];
@@ -202,7 +201,7 @@ namespace CEETimerCSharpWinForms.Modules
                 {
                     var mv = m.Value;
 
-                    if (!Placeholders.Contains(mv))
+                    if (!AllPHs.Contains(mv))
                     {
                         msg = $"在{Index}中检测到了无效的占位符 {mv}，请重新设置！";
                         return false;

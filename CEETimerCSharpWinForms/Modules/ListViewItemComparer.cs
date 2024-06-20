@@ -17,7 +17,7 @@ namespace CEETimerCSharpWinForms.Modules
 
             int SecondComparison = CompareSecondColumn(x.SubItems[1].Text, y.SubItems[1].Text);
 
-            if (x.SubItems[0].Text == ColorRulesHelper.PastHint)
+            if (x.SubItems[0].Text == Placeholders.PH_PAST)
             {
                 return -SecondComparison;
             }
@@ -28,9 +28,9 @@ namespace CEETimerCSharpWinForms.Modules
         private int CompareFirstColumn(string x, string y)
         {
             var Order = new Dictionary<string, int> {
-                { ColorRulesHelper.StartHint, 1 },
-                { ColorRulesHelper.LeftHint, 2 },
-                { ColorRulesHelper.PastHint, 3 }
+                { Placeholders.PH_START, 1 },
+                { Placeholders.PH_LEFT, 2 },
+                { Placeholders.PH_PAST, 3 }
             };
             return Order[x].CompareTo(Order[y]);
         }
