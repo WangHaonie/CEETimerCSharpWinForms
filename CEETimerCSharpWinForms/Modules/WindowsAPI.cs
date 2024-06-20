@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing.Printing;
 using System.Runtime.InteropServices;
 
 namespace CEETimerCSharpWinForms.Modules
@@ -63,22 +62,5 @@ namespace CEETimerCSharpWinForms.Modules
         [DllImport("dwmapi.dll", CharSet = CharSet.Unicode, PreserveSig = false)]
         public static extern void DwmSetWindowAttribute(IntPtr hWnd, DWMWINDOWATTRIBUTE dwAttribute, ref DWM_WINDOW_CORNER_PREFERENCE pvAttribute, uint cbAttribute);
         #endregion
-
-        [DllImport("dwmapi.dll")]
-        public static extern int DwmExtendFrameIntoClientArea(IntPtr hWnd, ref MARGINS pMarInset);
-
-        [DllImport("dwmapi.dll")]
-        public static extern int DwmSetWindowAttribute(IntPtr hwnd, int attr, ref int attrValue, int attrSize);
-
-        [DllImport("dwmapi.dll")]
-        public static extern int DwmIsCompositionEnabled(ref int pfEnabled);
-
-        public struct MARGINS
-        {
-            public int leftWidth;
-            public int rightWidth;
-            public int topHeight;
-            public int bottomHeight;
-        }
     }
 }

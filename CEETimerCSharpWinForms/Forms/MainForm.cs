@@ -505,58 +505,10 @@ namespace CEETimerCSharpWinForms.Forms
             return Screen.GetWorkingArea(this);
         }
 
-        private const int CS_DROPSHADOW = 0x00020000;
-        private bool AeroEnabled = true;
-        protected override CreateParams CreateParams
-        {
-            get
-            {
-                AeroEnabled = CheckAeroState();
-                CreateParams cp = base.CreateParams;
-                if (!AeroEnabled)
-                {
-                    cp.ClassStyle |= CS_DROPSHADOW;
-                }
-                return cp;
-            }
-        }
-        private bool CheckAeroState()
-        {
-            if (Environment.OSVersion.Version.Major >= 6)
-            {
-                int enabled = 0;
-                WindowsAPI.DwmIsCompositionEnabled(ref enabled);
-                return enabled == 1;
-            }
-
-            return false;
-        }
         protected override void OnHandleCreated(EventArgs e)
         {
             SetRoundedCorners();
             base.OnHandleCreated(e);
-        }
-        private const int WM_NCPAINT = 0x0085;
-        protected override void WndProc(ref Message m)
-        {
-            if (m.Msg == WM_NCPAINT)
-            {
-                if (AeroEnabled)
-                {
-                    var v = 2;
-                    WindowsAPI.DwmSetWindowAttribute(Handle, 2, ref v, 4);
-                    WindowsAPI.MARGINS margins = new()
-                    {
-                        bottomHeight = 1,
-                        leftWidth = 0,
-                        rightWidth = 0,
-                        topHeight = 0
-                    };
-
-                    WindowsAPI.DwmExtendFrameIntoClientArea(Handle, ref margins);
-                }
-            }
-            base.WndProc(ref m);
         }
     }
 }
