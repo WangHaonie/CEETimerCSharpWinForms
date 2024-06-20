@@ -212,11 +212,18 @@ namespace CEETimerCSharpWinForms.Forms
                 MemoryOptimizer = new(OptimizeMemory, null, TimeSpan.Zero, TimeSpan.FromMinutes(5));
 
             configManager.MountConfig(false);
+            SetLabelCountdownAutoWrap();
         }
 
         private void SystemEvents_DisplaySettingsChanged(object sender, EventArgs e)
         {
             RefreshScreen();
+            SetLabelCountdownAutoWrap();
+        }
+
+        private void SetLabelCountdownAutoWrap()
+        {
+            UIHelper.SetLabelAutoWrap(LabelCountdown, true);
         }
 
         #region 来自网络
@@ -255,6 +262,7 @@ namespace CEETimerCSharpWinForms.Forms
             {
                 KeepOnScreen();
                 CompatibleWithPPTService();
+                SetLabelCountdownAutoWrap();
                 SaveLocation();
             }
 
