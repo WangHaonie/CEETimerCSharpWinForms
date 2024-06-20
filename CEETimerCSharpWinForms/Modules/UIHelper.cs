@@ -30,7 +30,7 @@ namespace CEETimerCSharpWinForms.Modules
         public static void SetLabelAutoWrap(Label Target, bool FullSize = false)
         {
             var CurrentScreenWidth = GetCurrentScreen().WorkingArea.Width;
-            SetLabelAutoWrapInternal(Target, new(FullSize ? (int)(CurrentScreenWidth * 0.989) : (int)(CurrentScreenWidth * 0.75), 0));
+            SetLabelAutoWrapInternal(Target, new(FullSize ? CurrentScreenWidth - 10 : (int)(CurrentScreenWidth * 0.75), 0));
         }
 
         public static void SetLabelAutoWrap(Label Target, Control Parent)
