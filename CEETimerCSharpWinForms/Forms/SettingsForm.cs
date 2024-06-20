@@ -449,20 +449,7 @@ namespace CEETimerCSharpWinForms.Forms
             }
             else if (HasSettingsChanged)
             {
-                switch (MessageX.Popup("检测到设置被更改但没有保存，是否立即进行保存？", MessageLevel.Warning, Buttons: MessageBoxExButtons.YesNo))
-                {
-                    case DialogResult.Yes:
-                        e.Cancel = true;
-                        ButtonSave_Click(sender, e);
-                        break;
-                    case DialogResult.None:
-                        e.Cancel = true;
-                        break;
-                    default:
-                        HasSettingsChanged = false;
-                        Close();
-                        break;
-                }
+                UIHelper.ShowUserChangedWarning("检测到设置被更改但没有保存，是否立即进行保存？", e, () => ButtonSave_Click(sender, e), () => HasSettingsChanged = false);
             }
         }
 

@@ -85,20 +85,11 @@ namespace CEETimerCSharpWinForms.Controls
         {
             if (IsUserChanged)
             {
-                switch (MessageX.Popup("是否保存当前更改？", MessageLevel.Warning, Buttons: MessageBoxExButtons.YesNo))
+                UIHelper.ShowUserChangedWarning("是否保存当前更改？", e, OnButtonAClicked, () =>
                 {
-                    case DialogResult.Yes:
-                        e.Cancel = true;
-                        OnButtonAClicked();
-                        break;
-                    case DialogResult.None:
-                        e.Cancel = true;
-                        break;
-                    default:
-                        IsUserChanged = false;
-                        Close();
-                        break;
-                }
+                    IsUserChanged = false; 
+                    Close();
+                });
             }
         }
     }

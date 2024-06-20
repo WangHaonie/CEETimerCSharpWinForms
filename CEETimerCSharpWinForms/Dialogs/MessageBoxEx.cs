@@ -11,7 +11,7 @@ namespace CEETimerCSharpWinForms.Dialogs
 {
     public partial class MessageBoxEx : DialogEx
     {
-        private DialogResult _DialogResult;
+        private DialogResult Result;
         private readonly MessageBoxExButtons ButtonsEx;
         private readonly SystemSound DialogSound;
         private readonly bool AutoCloseRequired;
@@ -56,7 +56,7 @@ namespace CEETimerCSharpWinForms.Dialogs
             ButtonB.Location = new(Width - ButtonB.Width - 15.WithDpi(this), PanelMain.Height + 10.WithDpi(this));
             ButtonA.Location = new(ButtonB.Location.X - ButtonA.Width - 6.WithDpi(this), ButtonB.Location.Y);
             ShowDialog(OwnerForm);
-            return _DialogResult;
+            return Result;
         }
 
         protected override void OnDialogLoad()
@@ -72,13 +72,13 @@ namespace CEETimerCSharpWinForms.Dialogs
 
         protected override void OnButtonAClicked()
         {
-            if (ButtonsEx == MessageBoxExButtons.YesNo) _DialogResult = DialogResult.Yes;
+            Result = ButtonsEx == MessageBoxExButtons.YesNo ? DialogResult.Yes : DialogResult.None;
             Close();
         }
 
         protected override void OnButtonBClicked()
         {
-            _DialogResult = ButtonsEx == MessageBoxExButtons.YesNo ? DialogResult.No : DialogResult.OK;
+            Result = ButtonsEx == MessageBoxExButtons.YesNo ? DialogResult.No : DialogResult.OK;
             Close();
         }
 
