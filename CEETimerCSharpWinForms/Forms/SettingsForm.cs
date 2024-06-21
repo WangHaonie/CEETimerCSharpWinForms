@@ -518,7 +518,7 @@ namespace CEETimerCSharpWinForms.Forms
             string UniMsg = "";
             string TimeMsg = "";
 
-            if (string.IsNullOrWhiteSpace(ExamName) || (ExamName.Length < 2) || (ExamName.Length > 15))
+            if (string.IsNullOrWhiteSpace(ExamName) || (ExamName.Length is < ConfigPolicy.MinExamNameLength or > ConfigPolicy.MaxExamNameLength))
             {
                 MessageX.Popup("输入的考试名称有误！\n\n请检查输入的考试名称是否太长或太短！", MessageLevel.Error, this, TabControlMain, TabPageGeneral);
                 return false;
@@ -551,9 +551,9 @@ namespace CEETimerCSharpWinForms.Forms
 
                 if (!string.IsNullOrEmpty(UniMsg))
                 {
-                    var _DialogResult = MessageX.Popup(UniMsg, MessageLevel.Warning, this, TabControlMain, TabPageGeneral, Buttons: MessageBoxExButtons.YesNo);
+                    var _DialogResult = MessageX.Popup(UniMsg, MessageLevel.Warning, this, TabControlMain, TabPageGeneral, Buttons: MessageBoxButtonsEx.YesNo);
 
-                    if (_DialogResult == DialogResult.No || _DialogResult == DialogResult.None)
+                    if (_DialogResult is DialogResult.No or DialogResult.None)
                     {
                         return false;
                     }

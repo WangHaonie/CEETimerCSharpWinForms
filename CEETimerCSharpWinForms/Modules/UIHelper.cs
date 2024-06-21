@@ -17,7 +17,7 @@ namespace CEETimerCSharpWinForms.Modules
 
         public static void ShowUserChangedWarning(string WarningMsg, FormClosingEventArgs e, Action YesExecute, Action DefaultExecute)
         {
-            switch (MessageX.Popup(WarningMsg, MessageLevel.Warning, Buttons: MessageBoxExButtons.YesNo))
+            switch (MessageX.Popup(WarningMsg, MessageLevel.Warning, Buttons: MessageBoxButtonsEx.YesNo))
             {
                 case DialogResult.Yes:
                     e.Cancel = true;

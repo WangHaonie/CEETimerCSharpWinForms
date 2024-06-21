@@ -142,9 +142,9 @@ namespace CEETimerCSharpWinForms.Forms
             IsCustomText = IsCustomText && !IsShowXOnly;
             IsUniTopMost = IsUniTopMost && TopMost;
             if (ScreenIndex < 0 || ScreenIndex > Screen.AllScreens.Length) ScreenIndex = 0;
-            if (PositionIndex < 0 || PositionIndex > 8) PositionIndex = 0;
+            if (PositionIndex is < 0 or > 8) PositionIndex = 0;
             if (ShowXOnlyIndex > 3) ShowXOnlyIndex = 0;
-            if (ExamName.Length > ConfigPolicy.MaxExamNameLength || ExamName.Length < ConfigPolicy.MinExamNameLength) ExamName = "";
+            if (ExamName.Length is > ConfigPolicy.MaxExamNameLength or < ConfigPolicy.MinExamNameLength) ExamName = "";
             IsCountdownReady = !string.IsNullOrWhiteSpace(ExamName) && configManager.IsValidData(tmpw) && configManager.IsValidData(tmpx) && (tmpx > tmpw || !IsShowEnd);
             IsPPTService = IsPPTService && ((TopMost && ShowXOnlyIndex == 0) || IsDraggable);
 
@@ -167,7 +167,7 @@ namespace CEETimerCSharpWinForms.Forms
                 SelectedFont = (Font)fontConverter.ConvertFromString(configManager.ReadConfig(ConfigItems.KFont));
                 SelectedFontStyle = (FontStyle)Enum.Parse(typeof(FontStyle), configManager.ReadConfig(ConfigItems.KFontStyle));
 
-                if (SelectedFont.Size > ConfigPolicy.MaxFontSize || SelectedFont.Size < ConfigPolicy.MinFontSize)
+                if (SelectedFont.Size is > ConfigPolicy.MaxFontSize or < ConfigPolicy.MinFontSize)
                 {
                     ConfigPolicy.NotAllowed<Font>();
                 }

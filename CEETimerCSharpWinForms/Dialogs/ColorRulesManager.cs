@@ -73,7 +73,7 @@ namespace CEETimerCSharpWinForms.Dialogs
 
         private void ContextDelete_Click(object sender, EventArgs e)
         {
-            if (MessageX.Popup("确认删除所选规则吗？此操作将不可撤销！", MessageLevel.Warning, Buttons: MessageBoxExButtons.YesNo) == DialogResult.Yes)
+            if (MessageX.Popup("确认删除所选规则吗？此操作将不可撤销！", MessageLevel.Warning, Buttons: MessageBoxButtonsEx.YesNo) == DialogResult.Yes)
             {
                 foreach (ListViewItem Item in ListViewMain.SelectedItems)
                 {
@@ -132,7 +132,7 @@ namespace CEETimerCSharpWinForms.Dialogs
                 {
                     Execute(() =>
                     {
-                        if (MessageX.Popup("检测到即将添加的规则与现有的重复，是否覆盖？", MessageLevel.Warning, Buttons: MessageBoxExButtons.YesNo) == DialogResult.Yes)
+                        if (MessageX.Popup("检测到即将添加的规则与现有的重复，是否覆盖？", MessageLevel.Warning, Buttons: MessageBoxButtonsEx.YesNo) == DialogResult.Yes)
                         {
                             ModifyOrOverrideItem(Duplicate);
                             return;
@@ -149,15 +149,15 @@ namespace CEETimerCSharpWinForms.Dialogs
                 return;
             }
 
-            ListViewMain.Items.Add(new ListViewItem([$"{RuleTypeText}", $"{ExamTick}", $"{_Fore}", $"{_Back}"]));
+            ListViewMain.Items.Add(new ListViewItem([RuleTypeText, ExamTick, _Fore, _Back]));
             IDontKnowWhatToNameThis();
 
             void ModifyOrOverrideItem(ListViewItem Item)
             {
-                Item.SubItems[0].Text = $"{RuleTypeText}";
-                Item.SubItems[1].Text = $"{ExamTick}";
-                Item.SubItems[2].Text = $"{_Fore}";
-                Item.SubItems[3].Text = $"{_Back}";
+                Item.SubItems[0].Text = RuleTypeText;
+                Item.SubItems[1].Text = ExamTick;
+                Item.SubItems[2].Text = _Fore;
+                Item.SubItems[3].Text = _Back;
                 IDontKnowWhatToNameThis();
             }
 

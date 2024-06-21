@@ -164,7 +164,7 @@ namespace CEETimerCSharpWinForms.Modules
             Clipboard.SetText(ExOutput);
             File.AppendAllText(ExFilePath, ExOutput);
 
-            var _DialogResult = MessageX.Popup($"程序出现意外错误，无法继续运行，非常抱歉给您带来不便，相关错误信息已写入到安装文件夹中的 {ExFileName} 文件和系统剪切板，建议您将相关信息并发送给软件开发者以便我们更好的定位并解决问题。或者您也可以点击 \"是\" 来重启应用程序，\"否\" 关闭应用程序{ex.ToMessage()}", MessageLevel.Error, Buttons: MessageBoxExButtons.YesNo);
+            var _DialogResult = MessageX.Popup($"程序出现意外错误，无法继续运行，非常抱歉给您带来不便，相关错误信息已写入到安装文件夹中的 {ExFileName} 文件和系统剪切板，建议您将相关信息并发送给软件开发者以便我们更好的定位并解决问题。或者您也可以点击 \"是\" 来重启应用程序，\"否\" 关闭应用程序{ex.ToMessage()}", MessageLevel.Error, Buttons: MessageBoxButtonsEx.YesNo);
             OpenDir();
             Shutdown(Restart: _DialogResult == DialogResult.Yes);
         }

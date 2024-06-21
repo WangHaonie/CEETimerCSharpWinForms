@@ -11,7 +11,7 @@ namespace CEETimerCSharpWinForms.Modules
         Info, Warning, Error
     }
 
-    public enum MessageBoxExButtons
+    public enum MessageBoxButtonsEx
     {
         OK, YesNo
     }
@@ -41,7 +41,7 @@ namespace CEETimerCSharpWinForms.Modules
         /// <param name="Position">[可选] 消息框出现的位置</param>
         /// <param name="AutoClose">[可选] 是否允许消息框在3s后自动关闭</param>
         /// <returns>DialogResult</returns>
-        public static DialogResult Popup(string Message, MessageLevel Level, Form OwnerForm = null, TabControl ParentTabControl = null, TabPage ParentTabPage = null, MessageBoxExButtons Buttons = MessageBoxExButtons.OK, FormStartPosition Position = FormStartPosition.CenterParent, bool AutoClose = false)
+        public static DialogResult Popup(string Message, MessageLevel Level, Form OwnerForm = null, TabControl ParentTabControl = null, TabPage ParentTabPage = null, MessageBoxButtonsEx Buttons = MessageBoxButtonsEx.OK, FormStartPosition Position = FormStartPosition.CenterParent, bool AutoClose = false)
         {
             var (Title, MessageBoxExIcon, Sound) = GetStuff(Level);
             using var _MessageBoxEx = new MessageBoxEx(Sound, Buttons, AutoClose);

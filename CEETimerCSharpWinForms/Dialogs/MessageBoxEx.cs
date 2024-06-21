@@ -12,11 +12,11 @@ namespace CEETimerCSharpWinForms.Dialogs
     public partial class MessageBoxEx : DialogEx
     {
         private DialogResult Result;
-        private readonly MessageBoxExButtons ButtonsEx;
+        private readonly MessageBoxButtonsEx ButtonsEx;
         private readonly SystemSound DialogSound;
         private readonly bool AutoCloseRequired;
 
-        public MessageBoxEx(SystemSound Sound, MessageBoxExButtons Buttons, bool AutoClose)
+        public MessageBoxEx(SystemSound Sound, MessageBoxButtonsEx Buttons, bool AutoClose)
         {
             InitializeComponent();
             Shown += MessageBoxEx_Shown;
@@ -34,11 +34,11 @@ namespace CEETimerCSharpWinForms.Dialogs
 
             switch (ButtonsEx)
             {
-                case MessageBoxExButtons.YesNo:
+                case MessageBoxButtonsEx.YesNo:
                     ButtonA.Text = "是(&Y)";
                     ButtonB.Text = "否(&N)";
                     break;
-                case MessageBoxExButtons.OK:
+                case MessageBoxButtonsEx.OK:
                     ButtonA.Visible = ButtonA.Enabled = false;
                     ButtonB.Text = "确定(&O)";
                     break;
@@ -67,18 +67,18 @@ namespace CEETimerCSharpWinForms.Dialogs
         private void MessageBoxEx_Shown(object sender, EventArgs e)
         {
             DialogSound.Play();
-            if (AutoCloseRequired) AutoCloseAsync();
+            AutoCloseAsync();
         }
 
         protected override void OnButtonAClicked()
         {
-            Result = ButtonsEx == MessageBoxExButtons.YesNo ? DialogResult.Yes : DialogResult.None;
+            Result = ButtonsEx == MessageBoxButtonsEx.YesNo ? DialogResult.Yes : DialogResult.None;
             Close();
         }
 
         protected override void OnButtonBClicked()
         {
-            Result = ButtonsEx == MessageBoxExButtons.YesNo ? DialogResult.No : DialogResult.OK;
+            Result = ButtonsEx == MessageBoxButtonsEx.YesNo ? DialogResult.No : DialogResult.OK;
             Close();
         }
 
@@ -92,19 +92,22 @@ namespace CEETimerCSharpWinForms.Dialogs
 
         private async void AutoCloseAsync()
         {
-            await Task.Run(async () =>
+            if (AutoCloseRequired)
             {
-                await Task.Delay(3000);
+                await Task.Run(async () =>
+                {
+                    await Task.Delay(3000);
 
-                if (InvokeRequired)
-                {
-                    Invoke(new Action(() => Close()));
-                }
-                else
-                {
-                    Close();
-                }
-            });
+                    if (InvokeRequired)
+                    {
+                        Invoke(new Action(() => Close()));
+                    }
+                    else
+                    {
+                        Close();
+                    }
+                });
+            }
         }
     }
 }

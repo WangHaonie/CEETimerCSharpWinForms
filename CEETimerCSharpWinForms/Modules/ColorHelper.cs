@@ -71,7 +71,7 @@ namespace CEETimerCSharpWinForms.Modules
             }
             catch
             {
-                return Enumerable.Repeat(16777215, 16).ToArray();
+                return [.. Enumerable.Repeat(16777215, 16)];
             }
         }
 

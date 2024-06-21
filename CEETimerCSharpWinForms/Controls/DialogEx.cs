@@ -87,7 +87,7 @@ namespace CEETimerCSharpWinForms.Controls
             {
                 UIHelper.ShowUserChangedWarning("是否保存当前更改？", e, OnButtonAClicked, () =>
                 {
-                    IsUserChanged = false; 
+                    IsUserChanged = false;
                     Close();
                 });
             }

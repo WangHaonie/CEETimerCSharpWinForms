@@ -16,7 +16,7 @@ namespace CEETimerCSharpWinForms.Modules
 
         public ColorDialogHelper(Color color)
         {
-            _ColorDialog = new ColorDialog()
+            _ColorDialog = new()
             {
                 AllowFullOpen = true,
                 Color = color,
