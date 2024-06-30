@@ -103,7 +103,7 @@ namespace CEETimerCSharpWinForms.Modules
             double Contrast = (Math.Max(ForeLuminance, BackLuminance) + 0.05) / (Math.Min(ForeLuminance, BackLuminance) + 0.05);
             double Difference = Math.Sqrt(2 * Math.Pow(Fore.R - Back.R, 2) + 4 * Math.Pow(Fore.G - Back.G, 2) + 3 * Math.Pow(Fore.B - Back.B, 2));
 #if DEBUG
-            Console.WriteLine($"{Contrast} <-> {Difference}");
+            Console.WriteLine($"{Contrast} <-> {Difference}: {Fore}-{Back}");
 #endif
 
             if (Contrast >= 1000 && Difference < 320)

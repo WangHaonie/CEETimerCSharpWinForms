@@ -11,7 +11,7 @@ namespace CEETimerCSharpWinForms.Modules
         Info, Warning, Error
     }
 
-    public enum MessageBoxButtonsEx
+    public enum MessageBoxExButtons
     {
         OK, YesNo
     }
@@ -41,7 +41,7 @@ namespace CEETimerCSharpWinForms.Modules
         /// <param name="Position">[可选] 消息框出现的位置</param>
         /// <param name="AutoClose">[可选] 是否允许消息框在3s后自动关闭</param>
         /// <returns>DialogResult</returns>
-        public static DialogResult Popup(string Message, MessageLevel Level, Form OwnerForm = null, TabControl ParentTabControl = null, TabPage ParentTabPage = null, MessageBoxButtonsEx Buttons = MessageBoxButtonsEx.OK, FormStartPosition Position = FormStartPosition.CenterParent, bool AutoClose = false)
+        public static DialogResult Popup(string Message, MessageLevel Level, Form OwnerForm = null, TabControl ParentTabControl = null, TabPage ParentTabPage = null, MessageBoxExButtons Buttons = MessageBoxExButtons.OK, FormStartPosition Position = FormStartPosition.CenterParent, bool AutoClose = false)
         {
             var (Title, MessageBoxExIcon, Sound) = GetStuff(Level);
             using var _MessageBoxEx = new MessageBoxEx(Sound, Buttons, AutoClose);
@@ -59,20 +59,20 @@ namespace CEETimerCSharpWinForms.Modules
                     https://stackoverflow.com/a/29256646/21094697
 
                     */
-                    return (DialogResult)OwnerForm.Invoke(new Func<DialogResult>(ShowInternal));
+                    return (DialogResult)OwnerForm.Invoke(new Func<DialogResult>(ShowPopup));
                     #endregion
                 }
                 else
                 {
-                    return ShowInternal();
+                    return ShowPopup();
                 }
             }
             else
             {
-                return ShowInternal();
+                return ShowPopup();
             }
 
-            DialogResult ShowInternal()
+            DialogResult ShowPopup()
             {
                 OwnerForm?.ReActivate();
 
@@ -85,7 +85,7 @@ namespace CEETimerCSharpWinForms.Modules
             }
         }
 
-        public static (string, Icon, SystemSound) GetStuff(MessageLevel Level) => Level switch
+        private static (string, Icon, SystemSound) GetStuff(MessageLevel Level) => Level switch
         {
             #region 来自网络
             /*

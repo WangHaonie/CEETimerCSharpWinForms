@@ -37,8 +37,8 @@ namespace CEETimerCSharpWinForms.Modules
 
         private int CompareSecondColumn(string x, string y)
         {
-            TimeSpan tsx = ColorRulesHelper.GetExamTick(x);
-            TimeSpan tsy = ColorRulesHelper.GetExamTick(y);
+            TimeSpan tsx = CustomRuleHelper.GetExamTick(x);
+            TimeSpan tsy = CustomRuleHelper.GetExamTick(y);
             return tsy.CompareTo(tsx);
         }
     }

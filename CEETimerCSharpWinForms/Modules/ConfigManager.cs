@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text.RegularExpressions;
 
 namespace CEETimerCSharpWinForms.Modules
 {
@@ -72,13 +71,13 @@ namespace CEETimerCSharpWinForms.Modules
             }
         }
 
-        public List<ColorRulesHelper.Config> ReadArray(string Key)
+        public List<CustomRuleHelper.Config> ReadArray(string Key)
         {
             if (IsConfigMounted && JsonConfig != null && JsonConfig.ContainsKey(Key))
             {
                 if (JsonConfig[Key] is JArray arr)
                 {
-                    return arr.ToObject<List<ColorRulesHelper.Config>>();
+                    return arr.ToObject<List<CustomRuleHelper.Config>>();
                 }
             }
 
@@ -168,56 +167,6 @@ namespace CEETimerCSharpWinForms.Modules
 
             return JSorted.ToString(Formatting.None);
         }
-
-        public static string[] GetCustomTextFormRaw(string p1, string p2, string p3)
-        {
-            string[] tmp = [p1, p2, p3];
-
-            if (IsValidCustomText(tmp, out _))
-            {
-                return tmp;
-            }
-
-            return [Placeholders.PH_P1, Placeholders.PH_P2, Placeholders.PH_P3];
-        }
-
-        public static bool IsValidCustomText(string[] arr, out string msg)
-        {
-            string[] AllPHs = [Placeholders.PH_EXAMNAME, Placeholders.PH_DAYS, Placeholders.PH_HOURS, Placeholders.PH_MINUTES, Placeholders.PH_SECONDS, Placeholders.PH_ROUNDEDDAYS, Placeholders.PH_TOTALHOURS, Placeholders.PH_TOTALMINUTES, Placeholders.PH_TOTALSECONDS];
-
-            for (int i = 0; i < 3; i++)
-            {
-                var CustomText = arr[i];
-                var Index = $"第{i + 1}个自定义文本";
-                var Matches = Regex.Matches(CustomText, @"\{.*?\}");
-
-                if (string.IsNullOrWhiteSpace(CustomText))
-                {
-                    msg = $"{Index}不能为空白！";
-                    return false;
-                }
-
-                foreach (Match m in Matches)
-                {
-                    var mv = m.Value;
-
-                    if (!AllPHs.Contains(mv))
-                    {
-                        msg = $"在{Index}中检测到了无效的占位符 {mv}，请重新设置！";
-                        return false;
-                    }
-                }
-
-                if (Matches.Count == 0)
-                {
-                    msg = $"请在{Index}中至少使用一个占位符！";
-                    return false;
-                }
-            }
-
-            msg = "";
-            return true;
-        }
     }
 
     public static class ConfigItems
@@ -252,7 +201,7 @@ namespace CEETimerCSharpWinForms.Modules
         public const string KFore4 = "Fore4";
         public const string KBack4 = "Back4";
         public const string KCustomColors = "CustomColors";
-        public const string KColorRules = "ColorRules";
+        public const string KCustomRules = "CustomRules";
         public const string KPosX = "PosX";
         public const string KPosY = "PosY";
     }

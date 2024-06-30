@@ -11,7 +11,6 @@ namespace CEETimerCSharpWinForms.Controls
         {
             SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer, true);
             UpdateStyles();
-
             base.OnHandleCreated(e);
         }
     }
