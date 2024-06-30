@@ -41,15 +41,43 @@ namespace CEETimerCSharpWinForms.Controls
             StartPosition = FormStartPosition.CenterParent;
             TopMost = MainForm.IsUniTopMost;
             Controls.AddRange([ButtonA, ButtonB]);
-            ResumeLayout(false);
-            Load += (sender, e) => OnDialogLoad();
-            Shown += (sender, e) => IsDialogLoading = false;
+
             ButtonA.Click += (sender, e) => OnButtonAClicked();
             ButtonB.Click += (sender, e) => OnButtonBClicked();
-            FormClosing += (sender, e) => OnDialogClosing(e);
+
+            ResumeLayout(false);
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            OnDialogLoad();
+            AdjustUI();
+            base.OnLoad(e);
+        }
+
+        protected override void OnShown(EventArgs e)
+        {
+            OnDialogShown();
+            base.OnShown(e);
+        }
+
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            OnDialogClosing(e);
+            base.OnFormClosing(e);
         }
 
         protected abstract void OnDialogLoad();
+
+        protected virtual void OnDialogShown()
+        {
+            IsDialogLoading = false;
+        }
+
+        protected virtual void AdjustUI()
+        {
+            UIHelper.AlignControlsR(ButtonA, ButtonB, PanelMain);
+        }
 
         protected virtual void OnButtonAClicked()
         {
@@ -64,23 +92,6 @@ namespace CEETimerCSharpWinForms.Controls
             Close();
         }
 
-        protected void UserChanged()
-        {
-            if (!IsDialogLoading && !ButtonA.Enabled)
-            {
-                IsUserChanged = true;
-                ButtonA.Enabled = true;
-            }
-        }
-
-        protected void Execute(Action action)
-        {
-            if (!IsDialogLoading)
-            {
-                action.Invoke();
-            }
-        }
-
         protected virtual void OnDialogClosing(FormClosingEventArgs e)
         {
             if (IsUserChanged)
@@ -90,6 +101,23 @@ namespace CEETimerCSharpWinForms.Controls
                     IsUserChanged = false;
                     Close();
                 });
+            }
+        }
+
+        protected void UserChanged()
+        {
+            if (!IsDialogLoading && !ButtonA.Enabled)
+            {
+                IsUserChanged = true;
+                ButtonA.Enabled = true;
+            }
+        }
+
+        protected void Execute(Action Method)
+        {
+            if (!IsDialogLoading)
+            {
+                Method();
             }
         }
     }
