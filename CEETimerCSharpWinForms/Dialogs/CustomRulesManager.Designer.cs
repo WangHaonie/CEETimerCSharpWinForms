@@ -1,6 +1,6 @@
 ﻿namespace CEETimerCSharpWinForms.Dialogs
 {
-    partial class ColorRulesManager
+    partial class CustomRulesManager
     {
         /// <summary>
         /// Required designer variable.
@@ -34,12 +34,13 @@
             this.ToolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.ContextEdit = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextDelete = new System.Windows.Forms.ToolStripMenuItem();
+            this.LabelInfo = new System.Windows.Forms.Label();
             this.ListViewMain = new CEETimerCSharpWinForms.Controls.ListViewEx();
             this.ColumnRuleType = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ColumnExamTick = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ColumnForeColor = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ColumnBackColor = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.LabelInfo = new System.Windows.Forms.Label();
+            this.ColumnCustomText = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ContextMenuMain.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -52,34 +53,62 @@
             this.ContextDelete});
             this.ContextMenuMain.Name = "ContextMenuMain";
             this.ContextMenuMain.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.ContextMenuMain.Size = new System.Drawing.Size(117, 76);
+            this.ContextMenuMain.Size = new System.Drawing.Size(118, 76);
             this.ContextMenuMain.Opening += new System.ComponentModel.CancelEventHandler(this.ContextMenuMain_Opening);
             // 
             // ContextAdd
             // 
             this.ContextAdd.Name = "ContextAdd";
-            this.ContextAdd.Size = new System.Drawing.Size(116, 22);
+            this.ContextAdd.Size = new System.Drawing.Size(117, 22);
             this.ContextAdd.Text = "添加(&A)";
             this.ContextAdd.Click += new System.EventHandler(this.ContextAdd_Click);
             // 
             // ToolStripSeparator1
             // 
             this.ToolStripSeparator1.Name = "ToolStripSeparator1";
-            this.ToolStripSeparator1.Size = new System.Drawing.Size(113, 6);
+            this.ToolStripSeparator1.Size = new System.Drawing.Size(114, 6);
             // 
             // ContextEdit
             // 
             this.ContextEdit.Name = "ContextEdit";
-            this.ContextEdit.Size = new System.Drawing.Size(116, 22);
+            this.ContextEdit.Size = new System.Drawing.Size(117, 22);
             this.ContextEdit.Text = "编辑(&E)";
             this.ContextEdit.Click += new System.EventHandler(this.ContextEdit_Click);
             // 
             // ContextDelete
             // 
             this.ContextDelete.Name = "ContextDelete";
-            this.ContextDelete.Size = new System.Drawing.Size(116, 22);
+            this.ContextDelete.Size = new System.Drawing.Size(117, 22);
             this.ContextDelete.Text = "删除(&D)";
             this.ContextDelete.Click += new System.EventHandler(this.ContextDelete_Click);
+            // 
+            // ButtonA
+            // 
+            this.ButtonA.Enabled = false;
+            this.ButtonA.Location = new System.Drawing.Point(208, 289);
+            this.ButtonA.Name = "ButtonA";
+            this.ButtonA.Size = new System.Drawing.Size(75, 23);
+            this.ButtonA.TabIndex = 5;
+            this.ButtonA.Text = "确定(&O)";
+            this.ButtonA.UseVisualStyleBackColor = true;
+            // 
+            // ButtonB
+            // 
+            this.ButtonB.Location = new System.Drawing.Point(289, 289);
+            this.ButtonB.Name = "ButtonB";
+            this.ButtonB.Size = new System.Drawing.Size(75, 23);
+            this.ButtonB.TabIndex = 4;
+            this.ButtonB.Text = "取消(&C)";
+            this.ButtonB.UseVisualStyleBackColor = true;
+            // 
+            // LabelInfo
+            // 
+            this.LabelInfo.AutoSize = true;
+            this.LabelInfo.Location = new System.Drawing.Point(6, 7);
+            this.LabelInfo.Name = "LabelInfo";
+            this.LabelInfo.Size = new System.Drawing.Size(410, 15);
+            this.LabelInfo.TabIndex = 6;
+            this.LabelInfo.Text = "你可以在这里自定义倒计时在各时刻显示的颜色和内容，请右键表格进行操作。";
             // 
             // ListViewMain
             // 
@@ -87,7 +116,8 @@
             this.ColumnRuleType,
             this.ColumnExamTick,
             this.ColumnForeColor,
-            this.ColumnBackColor});
+            this.ColumnBackColor,
+            this.ColumnCustomText});
             this.ListViewMain.ContextMenuStrip = this.ContextMenuMain;
             this.ListViewMain.FullRowSelect = true;
             this.ListViewMain.GridLines = true;
@@ -95,7 +125,7 @@
             this.ListViewMain.HideSelection = false;
             this.ListViewMain.Location = new System.Drawing.Point(6, 25);
             this.ListViewMain.Name = "ListViewMain";
-            this.ListViewMain.Size = new System.Drawing.Size(358, 258);
+            this.ListViewMain.Size = new System.Drawing.Size(568, 258);
             this.ListViewMain.TabIndex = 1;
             this.ListViewMain.UseCompatibleStateImageBehavior = false;
             this.ListViewMain.View = System.Windows.Forms.View.Details;
@@ -123,35 +153,12 @@
             this.ColumnBackColor.Text = "背景颜色";
             this.ColumnBackColor.Width = 65;
             // 
-            // ButtonA
+            // ColumnCustomText
             // 
-            this.ButtonA.Enabled = false;
-            this.ButtonA.Location = new System.Drawing.Point(208, 289);
-            this.ButtonA.Name = "ButtonA";
-            this.ButtonA.Size = new System.Drawing.Size(75, 23);
-            this.ButtonA.TabIndex = 5;
-            this.ButtonA.Text = "确定(&O)";
-            this.ButtonA.UseVisualStyleBackColor = true;
+            this.ColumnCustomText.Text = "自定义文本";
+            this.ColumnCustomText.Width = 90;
             // 
-            // ButtonB
-            // 
-            this.ButtonB.Location = new System.Drawing.Point(289, 289);
-            this.ButtonB.Name = "ButtonB";
-            this.ButtonB.Size = new System.Drawing.Size(75, 23);
-            this.ButtonB.TabIndex = 4;
-            this.ButtonB.Text = "取消(&C)";
-            this.ButtonB.UseVisualStyleBackColor = true;
-            // 
-            // LabelInfo
-            // 
-            this.LabelInfo.AutoSize = true;
-            this.LabelInfo.Location = new System.Drawing.Point(6, 7);
-            this.LabelInfo.Name = "LabelInfo";
-            this.LabelInfo.Size = new System.Drawing.Size(332, 15);
-            this.LabelInfo.TabIndex = 6;
-            this.LabelInfo.Text = "自定义各时刻要显示的颜色，请右键表格进行操作。";
-            // 
-            // ColorRulesManager
+            // CustomRulesManager
             // 
             this.AcceptButton = this.ButtonA;
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -168,14 +175,13 @@
             this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "ColorRulesManager";
+            this.Name = "CustomRulesManager";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "颜色规则管理器 - 高考倒计时";
+            this.Text = "规则管理器 - 高考倒计时";
             this.ContextMenuMain.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
 
         #endregion
@@ -191,5 +197,6 @@
         private System.Windows.Forms.Label LabelInfo;
         private System.Windows.Forms.ToolStripSeparator ToolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem ContextEdit;
+        private System.Windows.Forms.ColumnHeader ColumnCustomText;
     }
 }

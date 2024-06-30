@@ -9,58 +9,63 @@ using System.Windows.Forms;
 
 namespace CEETimerCSharpWinForms.Dialogs
 {
-    public partial class ColorRulesManager : DialogEx
+    public partial class CustomRulesManager : DialogEx
     {
-        public List<PairItems<PairItems<int, TimeSpan>, PairItems<Color, Color>>> ColorRules { get; set; }
+        public List<TupleEx<TupleEx<int, TimeSpan>, TupleEx<Color, Color, string>>> CustomRules { get; set; }
+        public string[] Preferences { get; set; }
 
         private bool IsEditMode;
         private ListView.ListViewItemCollection GetAllItems() => ListViewMain.Items;
 
-        public ColorRulesManager()
+        public CustomRulesManager()
         {
             InitializeComponent();
-            Controls.Remove(PanelMain);
         }
 
         protected override void OnDialogLoad()
         {
-            if (ColorRules != null)
+            if (CustomRules != null)
             {
-                if (ColorRules.Count == 0)
+                if (CustomRules.Count == 0)
                 {
-                    ListViewMain.Items.Add(new ListViewItem(["文本测试", "65535天23时59分59秒", "255,255,255", "255,255,255"]));
+                    ListViewMain.Items.Add(new ListViewItem(["文本测试", "65535天23时59分59秒", "255,255,255", "255,255,255", Placeholders.PH_P1]));
                     AdjustColumnWidth(); // 触发一次自适应宽度，防止 ListView 为空时所有列在高 DPI 下糊为一坨
                     ListViewMain.Items.Clear();
                 }
                 else
                 {
-                    foreach (var Rule in ColorRules)
+                    foreach (var Rule in CustomRules)
                     {
                         var Part1 = Rule.Item1;
                         var Part2 = Rule.Item2;
-                        AddListViewItem(Part1.Item1, ColorRulesHelper.GetExamTickText(Part1.Item2), Part2.Item1, Part2.Item2);
+                        AddListViewItem(Part1.Item1, CustomRuleHelper.GetExamTickText(Part1.Item2), Part2.Item1, Part2.Item2, Part2.Item3);
                     }
                 }
             }
+        }
 
-            UIHelper.AlignControls(ButtonA, ButtonB, ListViewMain);
+        protected override void AdjustUI()
+        {
+            Controls.Remove(PanelMain);
+
+            UIHelper.AlignControlsR(ButtonA, ButtonB, ListViewMain);
             UIHelper.CompactControlsY(ButtonA, ListViewMain, 3);
             UIHelper.CompactControlsY(ButtonB, ListViewMain, 3);
         }
 
         private void ContextAdd_Click(object sender, EventArgs e)
         {
-            ColorRuleDialog _ColorRuleDialog = new();
+            RuleDialog RuleDialogMain = new();
 
-            if (_ColorRuleDialog.ShowDialog() == DialogResult.OK)
+            if (ShowRuleDialog(RuleDialogMain) == DialogResult.OK)
             {
-                AddListViewItem(_ColorRuleDialog.RuleType, _ColorRuleDialog.ExamTick, _ColorRuleDialog.Fore, _ColorRuleDialog.Back);
+                AddListViewItem(RuleDialogMain.RuleType, RuleDialogMain.ExamTick, RuleDialogMain.Fore, RuleDialogMain.Back, RuleDialogMain.CustomText);
             }
         }
 
         private void ContextEdit_Click(object sender, EventArgs e)
         {
-            EditColorRule(ListViewMain.SelectedItems[0]);
+            EditCustomRule(ListViewMain.SelectedItems[0]);
         }
 
         private void ListViewMain_KeyDown(object sender, KeyEventArgs e)
@@ -73,7 +78,7 @@ namespace CEETimerCSharpWinForms.Dialogs
 
         private void ContextDelete_Click(object sender, EventArgs e)
         {
-            if (MessageX.Popup("确认删除所选规则吗？此操作将不可撤销！", MessageLevel.Warning, Buttons: MessageBoxButtonsEx.YesNo) == DialogResult.Yes)
+            if (MessageX.Popup("确认删除所选规则吗？此操作将不可撤销！", MessageLevel.Warning, Buttons: MessageBoxExButtons.YesNo) == DialogResult.Yes)
             {
                 foreach (ListViewItem Item in ListViewMain.SelectedItems)
                 {
@@ -100,27 +105,27 @@ namespace CEETimerCSharpWinForms.Dialogs
         {
             if (e.Button == MouseButtons.Left && ListViewMain.HitTest(e.X, e.Y).Item != null && ListViewMain.SelectedItems.Count == 1)
             {
-                EditColorRule(ListViewMain.GetItemAt(e.X, e.Y));
+                EditCustomRule(ListViewMain.GetItemAt(e.X, e.Y));
             }
         }
 
         protected override void OnButtonAClicked()
         {
-            ColorRules = [];
+            CustomRules = [];
 
             foreach (ListViewItem Item in GetAllItems())
             {
-                ColorRules.Add(new(new(ColorRulesHelper.GetRuleTypeIndex(Item.SubItems[0].Text), ColorRulesHelper.GetExamTick(Item.SubItems[1].Text)), new(ColorHelper.GetColor(Item.SubItems[2].Text), ColorHelper.GetColor(Item.SubItems[3].Text))));
+                CustomRules.Add(new(new(CustomRuleHelper.GetRuleTypeIndex(Item.SubItems[0].Text), CustomRuleHelper.GetExamTick(Item.SubItems[1].Text)), new(ColorHelper.GetColor(Item.SubItems[2].Text), ColorHelper.GetColor(Item.SubItems[3].Text), Item.SubItems[4].Text)));
             }
 
             base.OnButtonAClicked();
         }
 
-        private void AddListViewItem(int RuleTypeIndex, string ExamTick, Color Fore, Color Back, ListViewItem Item = null)
+        private void AddListViewItem(int RuleTypeIndex, string ExamTick, Color Fore, Color Back, string CustomText, ListViewItem Item = null)
         {
             UserChanged();
 
-            var RuleTypeText = ColorRulesHelper.GetRuleTypeText(RuleTypeIndex);
+            var RuleTypeText = CustomRuleHelper.GetRuleTypeText(RuleTypeIndex);
             var _Fore = Fore.ToRgb();
             var _Back = Back.ToRgb();
 
@@ -132,7 +137,7 @@ namespace CEETimerCSharpWinForms.Dialogs
                 {
                     Execute(() =>
                     {
-                        if (MessageX.Popup("检测到即将添加的规则与现有的重复，是否覆盖？", MessageLevel.Warning, Buttons: MessageBoxButtonsEx.YesNo) == DialogResult.Yes)
+                        if (MessageX.Popup("检测到即将添加的规则与现有的重复，是否覆盖？", MessageLevel.Warning, Buttons: MessageBoxExButtons.YesNo) == DialogResult.Yes)
                         {
                             ModifyOrOverrideItem(Duplicate);
                             return;
@@ -149,7 +154,7 @@ namespace CEETimerCSharpWinForms.Dialogs
                 return;
             }
 
-            ListViewMain.Items.Add(new ListViewItem([RuleTypeText, ExamTick, _Fore, _Back]));
+            ListViewMain.Items.Add(new ListViewItem([RuleTypeText, ExamTick, _Fore, _Back, CustomText]));
             IDontKnowWhatToNameThis();
 
             void ModifyOrOverrideItem(ListViewItem Item)
@@ -158,6 +163,7 @@ namespace CEETimerCSharpWinForms.Dialogs
                 Item.SubItems[1].Text = ExamTick;
                 Item.SubItems[2].Text = _Fore;
                 Item.SubItems[3].Text = _Back;
+                Item.SubItems[4].Text = CustomText;
                 IDontKnowWhatToNameThis();
             }
 
@@ -204,25 +210,32 @@ namespace CEETimerCSharpWinForms.Dialogs
             }
         }
 
-        private void EditColorRule(ListViewItem Item)
+        private void EditCustomRule(ListViewItem Item)
         {
             IsEditMode = true;
 
-            ColorRuleDialog _ColorRuleDialog = new()
+            RuleDialog RuleDialogMain = new()
             {
-                RuleType = ColorRulesHelper.GetRuleTypeIndex(Item.SubItems[0].Text),
+                RuleType = CustomRuleHelper.GetRuleTypeIndex(Item.SubItems[0].Text),
                 ExamTick = Item.SubItems[1].Text,
                 Fore = ColorHelper.TryParseRGB(Item.SubItems[2].Text, out Color color1) ? color1 : Color.White,
-                Back = ColorHelper.TryParseRGB(Item.SubItems[3].Text, out Color color2) ? color2 : Color.White
+                Back = ColorHelper.TryParseRGB(Item.SubItems[3].Text, out Color color2) ? color2 : Color.White,
+                CustomText = Item.SubItems[4].Text
             };
 
-            if (_ColorRuleDialog.ShowDialog() == DialogResult.OK)
+            if (ShowRuleDialog(RuleDialogMain) == DialogResult.OK)
             {
-                AddListViewItem(_ColorRuleDialog.RuleType, _ColorRuleDialog.ExamTick, _ColorRuleDialog.Fore, _ColorRuleDialog.Back, Item);
+                AddListViewItem(RuleDialogMain.RuleType, RuleDialogMain.ExamTick, RuleDialogMain.Fore, RuleDialogMain.Back, RuleDialogMain.CustomText, Item);
                 RemoveDuplicate();
             }
 
             IsEditMode = false;
+        }
+
+        private DialogResult ShowRuleDialog(RuleDialog Dialog)
+        {
+            Dialog.CustomTextPreferences = Preferences;
+            return Dialog.ShowDialog();
         }
 
         private void AdjustColumnWidth()
