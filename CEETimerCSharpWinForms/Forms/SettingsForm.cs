@@ -29,9 +29,9 @@ namespace CEETimerCSharpWinForms.Forms
         public int ScreenIndex { get; set; }
         public int ShowXOnlyIndex { get; set; }
         public int PositionIndex { get; set; }
-        public List<PairItems<Color, Color>> CountdownColors { get; set; }
-        public List<PairItems<Color, Color>> DefaultColors { get; set; }
-        public List<PairItems<PairItems<int, TimeSpan>, PairItems<Color, Color>>> ColorRules { get; set; }
+        public List<TupleEx<Color, Color>> CountdownColors { get; set; }
+        public List<TupleEx<Color, Color>> DefaultColors { get; set; }
+        public List<TupleEx<TupleEx<int, TimeSpan>, TupleEx<Color, Color, string>>> UserCustomRules { get; set; }
         public string ExamName { get; set; }
         public string[] CustomTextRaw { get; set; }
         public event EventHandler ConfigChanged;
@@ -57,7 +57,7 @@ namespace CEETimerCSharpWinForms.Forms
         private bool IsFormLoading;
         private bool ChangingCheckBox;
         private List<Label> ColorLabels;
-        private List<PairItems<Color, Color>> SelectedColors;
+        private List<TupleEx<Color, Color>> SelectedColors;
         private readonly FontConverter fontConverter = new();
 
         public SettingsForm()
@@ -74,14 +74,15 @@ namespace CEETimerCSharpWinForms.Forms
             RefreshSettings();
             ChangeWorkingStyle(WorkingArea.ShowLeftPast, IsShowEnd);
 
-            UIHelper.AdjustOnlyInHighDpi(() =>
+            UIHelper.AdjustOnlyAtHighDpi(() =>
             {
-                UIHelper.AlignControls(ComboBoxShowXOnly, CheckBoxShowXOnly, -1);
-                UIHelper.AlignControls(ComboBoxScreens, LabelScreens);
-                UIHelper.AlignControls(ComboBoxPosition, LabelChar1);
-                UIHelper.AlignControls(LabelExamNameCounter, TextBoxExamName);
-                UIHelper.AlignControls(CheckBoxCustomText, CheckBoxShowPast);
-                UIHelper.AlignControls(ButtonCustomText, CheckBoxCustomText);
+                UIHelper.AlignControlsL(ButtonRulesMan, ButtonSave, TabControlMain);
+                UIHelper.AlignControlsX(ComboBoxShowXOnly, CheckBoxShowXOnly, -1);
+                UIHelper.AlignControlsX(ComboBoxScreens, LabelScreens);
+                UIHelper.AlignControlsX(ComboBoxPosition, LabelChar1);
+                UIHelper.AlignControlsX(LabelExamNameCounter, TextBoxExamName);
+                UIHelper.AlignControlsX(CheckBoxCustomText, CheckBoxShowPast);
+                UIHelper.AlignControlsX(ButtonCustomText, CheckBoxCustomText);
             });
 
             HasSettingsChanged = false;
@@ -105,7 +106,7 @@ namespace CEETimerCSharpWinForms.Forms
             UIHelper.BindData(ComboBoxShowXOnly, [new("天", 0), new("时", 1), new("分", 2), new("秒", 3)]);
             UIHelper.BindData(ComboBoxPosition, [new("左上角", 0), new("左部中央", 1), new("左下角", 2), new("上部中央", 3), new("中央", 4), new("下部中央", 5), new("右上角", 6), new("右部中央", 7), new("右下角", 8)]);
 
-            List<PairItems<string, int>> Monitors = [new("<请选择>", 0)];
+            List<TupleEx<string, int>> Monitors = [new("<请选择>", 0)];
             Screen[] CurrentScreens = Screen.AllScreens;
             for (int i = 0; i < CurrentScreens.Length; i++)
             {
@@ -113,12 +114,6 @@ namespace CEETimerCSharpWinForms.Forms
                 Monitors.Add(new($"{i + 1} {CurrentScreen.DeviceName} ({CurrentScreen.Bounds.Width}x{CurrentScreen.Bounds.Height})", i + 1));
             }
             UIHelper.BindData(ComboBoxScreens, Monitors);
-
-            UIHelper.AlignControls(ButtonSave, ButtonCancel, TabControlMain);
-            UIHelper.SetLabelAutoWrap(LabelPptsvc, GBoxPptsvc);
-            UIHelper.SetLabelAutoWrap(LabelSyncTime, GBoxSyncTime);
-            UIHelper.SetLabelAutoWrap(LabelLine01, GBoxColors);
-            UIHelper.SetLabelAutoWrap(LabelRestart, GBoxRestart);
 
             ColorLabels = [LabelColor12, LabelColor22, LabelColor32, LabelColor42, LabelColor11, LabelColor21, LabelColor31, LabelColor41];
             foreach (var l in ColorLabels)
@@ -129,12 +124,16 @@ namespace CEETimerCSharpWinForms.Forms
                 l.MouseUp += ColorLabels_MouseUp;
             }
 
+            UIHelper.AlignControlsR(ButtonSave, ButtonCancel, TabControlMain);
+            UIHelper.SetLabelAutoWrap(LabelPptsvc, GBoxPptsvc);
+            UIHelper.SetLabelAutoWrap(LabelSyncTime, GBoxSyncTime);
+            UIHelper.SetLabelAutoWrap(LabelLine01, GBoxColors);
+            UIHelper.SetLabelAutoWrap(LabelRestart, GBoxRestart);
             UIHelper.CompactControlsX(ComboBoxShowXOnly, CheckBoxShowXOnly);
             UIHelper.CompactControlsX(CheckBoxRounding, ComboBoxShowXOnly, 10);
             UIHelper.CompactControlsX(ComboBoxScreens, LabelScreens);
             UIHelper.CompactControlsX(LabelChar1, ComboBoxScreens);
             UIHelper.CompactControlsX(ComboBoxPosition, LabelChar1);
-
             UIHelper.CompactControlsY(ButtonSyncTime, LabelSyncTime, 3);
             UIHelper.CompactControlsY(ButtonRestart, LabelRestart, 3);
         }
@@ -334,19 +333,34 @@ namespace CEETimerCSharpWinForms.Forms
             ChangeWorkingStyle(WorkingArea.DefaultColor);
         }
 
-        private void ButtonColorRules_Click(object sender, EventArgs e)
+        private void ButtonRulesMan_Click(object sender, EventArgs e)
         {
-            ColorRulesManager _ColorRulesManager = new()
+            CustomRulesManager Manager = new()
             {
-                ColorRules = ColorRules
+                CustomRules = UserCustomRules,
+                Preferences = CheckBoxCustomText.Checked ? CustomTextRaw : [null, null, null]
             };
 
-            if (_ColorRulesManager.ShowDialog() == DialogResult.OK)
+            if (Manager.ShowDialog() == DialogResult.OK)
             {
                 SettingsChanged(sender, e);
-                ColorRules = _ColorRulesManager.ColorRules;
+                UserCustomRules = Manager.CustomRules;
             }
         }
+
+        /*
+        CustomRulesManager Manager = new()
+        {自定义倒计时在各时刻要显示的颜色和内容。
+            CustomRules = UserCustomRules,
+            Preferences = CheckBoxCustomText.Checked ? CustomTextRaw : [null, null, null]
+        };
+
+            if (Manager.ShowDialog() == DialogResult.OK)
+            {
+                SettingsChanged(sender, e);
+        UserCustomRules = Manager.CustomRules;
+            }
+         */
 
         private void ButtonRestart_MouseDown(object sender, MouseEventArgs e)
         {
@@ -551,7 +565,7 @@ namespace CEETimerCSharpWinForms.Forms
 
                 if (!string.IsNullOrEmpty(UniMsg))
                 {
-                    var _DialogResult = MessageX.Popup(UniMsg, MessageLevel.Warning, this, TabControlMain, TabPageGeneral, Buttons: MessageBoxButtonsEx.YesNo);
+                    var _DialogResult = MessageX.Popup(UniMsg, MessageLevel.Warning, this, TabControlMain, TabPageGeneral, Buttons: MessageBoxExButtons.YesNo);
 
                     if (_DialogResult is DialogResult.No or DialogResult.None)
                     {
@@ -561,7 +575,7 @@ namespace CEETimerCSharpWinForms.Forms
             }
 
             int ColorCheckMsg = 0;
-            SelectedColors = [new(LabelColor11.BackColor, LabelColor12.BackColor), new(LabelColor21.BackColor, LabelColor22.BackColor), new(LabelColor31.BackColor, LabelColor32.BackColor), new(LabelColor41.BackColor, LabelColor42.BackColor)];
+            SelectedColors = GetSelectedColors();
 
             for (int i = 0; i < 4; i++)
             {
@@ -615,6 +629,14 @@ namespace CEETimerCSharpWinForms.Forms
             {
                 MessageX.Popup($"命令执行时发生了错误。{ex.ToMessage()}", MessageLevel.Error, this, TabControlMain, TabPageTools);
             }
+        }
+
+        private List<TupleEx<Color, Color>> GetSelectedColors()
+        {
+            return [new(LabelColor11.BackColor, LabelColor12.BackColor),
+                    new(LabelColor21.BackColor, LabelColor22.BackColor),
+                    new(LabelColor31.BackColor, LabelColor32.BackColor),
+                    new(LabelColor41.BackColor, LabelColor42.BackColor)];
         }
 
         private void ChangeWorkingStyle(WorkingArea Where, bool IsWorking = true, int SubCase = 0, Font NewFont = null)
@@ -725,7 +747,7 @@ namespace CEETimerCSharpWinForms.Forms
                     { ConfigItems.KBack3, LabelColor32.BackColor.ToRgb() },
                     { ConfigItems.KFore4, LabelColor41.BackColor.ToRgb() },
                     { ConfigItems.KBack4, LabelColor42.BackColor.ToRgb() },
-                    { ConfigItems.KColorRules, ColorRulesHelper.Format(ColorRules)}
+                    { ConfigItems.KCustomRules, CustomRuleHelper.GetConfig(UserCustomRules)}
                 });
             }
             catch { }

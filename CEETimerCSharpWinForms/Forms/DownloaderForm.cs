@@ -22,8 +22,10 @@ namespace CEETimerCSharpWinForms.Forms
         {
             InitializeComponent();
             TopMost = MainForm.IsUniTopMost;
-            ButtonCancel.Location = new(ProgressBarMain.Location.X + ProgressBarMain.Width - ButtonCancel.Width, ButtonCancel.Location.Y);
-            ButtonRetry.Location = new(ButtonCancel.Location.X - ButtonRetry.Width - 6.WithDpi(this), ButtonRetry.Location.Y);
+            //ButtonCancel.Location = new(ProgressBarMain.Location.X + ProgressBarMain.Width - ButtonCancel.Width, ButtonCancel.Location.Y);
+            //ButtonRetry.Location = new(ButtonCancel.Location.X - ButtonRetry.Width - 6.WithDpi(this), ButtonRetry.Location.Y);
+            UIHelper.AlignControlsR(LinkBroswer, ProgressBarMain);
+            UIHelper.AlignControlsREx(ButtonRetry, ButtonCancel, ProgressBarMain);
         }
 
         private async void DownloaderForm_Load(object sender, EventArgs e)
@@ -69,9 +71,7 @@ namespace CEETimerCSharpWinForms.Forms
                         await fileStream.WriteAsync(buffer, 0, (int)bytesRead);
                         totalBytesRead += bytesRead;
 
-                        LabelSize.Text = $"已下载/总共：{totalBytesRead / 1024} KB / {totalBytes / 1024} KB";
-                        LabelSpeed.Text = $"下载速度：{totalBytesRead / sw.Elapsed.TotalSeconds / 1024:0.00} KB/s";
-                        ProgressBarMain.Value = (int)(totalBytesRead * 100 / totalBytes);
+                        UpdateUI(totalBytesRead / 1024, totalBytes / 1024, totalBytesRead / sw.Elapsed.TotalSeconds / 1024, (int)(totalBytesRead * 100 / totalBytes));
 
                         if (cts.Token.IsCancellationRequested)
                         {
@@ -155,6 +155,13 @@ namespace CEETimerCSharpWinForms.Forms
         private void DownloaderForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             e.Cancel = !IsCancelled;
+        }
+
+        private void UpdateUI(long Downloaded, long Total, double Speed, int Progress)
+        {
+            LabelSize.Text = $"已下载/总共：{Downloaded} KB / {Total} KB";
+            LabelSpeed.Text = $"下载速度：{Speed:0.00} KB/s";
+            ProgressBarMain.Value = Progress;
         }
     }
 }

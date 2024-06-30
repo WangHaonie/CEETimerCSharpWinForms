@@ -113,7 +113,7 @@
             this.PanelMain.Location = new System.Drawing.Point(0, 0);
             this.PanelMain.Margin = new System.Windows.Forms.Padding(4);
             this.PanelMain.Name = "PanelMain";
-            this.PanelMain.Size = new System.Drawing.Size(312, 166);
+            this.PanelMain.Size = new System.Drawing.Size(305, 156);
             this.PanelMain.TabIndex = 0;
             // 
             // ButtonA
@@ -138,7 +138,7 @@
             // 
             // ButtonReset
             // 
-            this.ButtonReset.Location = new System.Drawing.Point(2, 170);
+            this.ButtonReset.Location = new System.Drawing.Point(2, 172);
             this.ButtonReset.Name = "ButtonReset";
             this.ButtonReset.Size = new System.Drawing.Size(75, 23);
             this.ButtonReset.TabIndex = 10;

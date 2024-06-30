@@ -30,9 +30,9 @@ namespace CEETimerCSharpWinForms.Forms
         private DateTime ExamStartTime;
         private Font SelectedFont;
         private FontStyle SelectedFontStyle;
-        private List<PairItems<Color, Color>> CountdownColors;
-        private List<PairItems<Color, Color>> DefaultColors;
-        private List<PairItems<PairItems<int, TimeSpan>, PairItems<Color, Color>>> ColorRules;
+        private List<TupleEx<Color, Color>> CountdownColors;
+        private List<TupleEx<Color, Color>> DefaultColors;
+        private List<TupleEx<TupleEx<int, TimeSpan>, TupleEx<Color, Color, string>>> CustomRules;
         private string ExamName;
         private string[] CustomText;
 
@@ -96,7 +96,7 @@ namespace CEETimerCSharpWinForms.Forms
             configManager.MountConfig(true);
 
             ExamName = configManager.ReadConfig(ConfigItems.KExamName);
-            CustomText = ConfigManager.GetCustomTextFormRaw(configManager.ReadConfig(ConfigItems.KCustomTextP1), configManager.ReadConfig(ConfigItems.KCustomTextP2), configManager.ReadConfig(ConfigItems.KCustomTextP3));
+            CustomText = CustomRuleHelper.GetCustomTextFormRaw(configManager.ReadConfig(ConfigItems.KCustomTextP1), configManager.ReadConfig(ConfigItems.KCustomTextP2), configManager.ReadConfig(ConfigItems.KCustomTextP3));
             ExamStartTime = DateTime.TryParseExact(configManager.ReadConfig(ConfigItems.KStartTime), "yyyyMMddHHmmss", null, DateTimeStyles.None, out DateTime tmpw) ? tmpw : DateTime.Now;
             ExamEndTime = DateTime.TryParseExact(configManager.ReadConfig(ConfigItems.KEndTime), "yyyyMMddHHmmss", null, DateTimeStyles.None, out DateTime tmpx) ? tmpx : DateTime.Now;
             IsMemoryOptimizationEnabled = bool.TryParse(configManager.ReadConfig(ConfigItems.KMemOpti), out bool tmpc) && tmpc;
@@ -112,7 +112,7 @@ namespace CEETimerCSharpWinForms.Forms
             ScreenIndex = int.TryParse(configManager.ReadConfig(ConfigItems.KScreen), out int tmpk) ? tmpk : 0;
             PositionIndex = int.TryParse(configManager.ReadConfig(ConfigItems.KPosition), out int tmpu) ? tmpu : 0;
             ShowXOnlyIndex = int.TryParse(configManager.ReadConfig(ConfigItems.KShowValue), out int tmpl) ? tmpl : 0;
-            try { ColorRules = ColorRulesHelper.GetColorRules(configManager.ReadArray(ConfigItems.KColorRules)); } catch { ColorRules = []; }
+            try { CustomRules = CustomRuleHelper.ReadConfig(configManager.ReadArray(ConfigItems.KCustomRules)); } catch { CustomRules = []; }
             ColorDialogHelper.CustomColorCollection = ColorHelper.GetArgbArray(configManager.ReadConfig(ConfigItems.KCustomColors));
             int.TryParse(configManager.ReadConfig(ConfigItems.KPosX), out int x);
             int.TryParse(configManager.ReadConfig(ConfigItems.KPosY), out int y);
@@ -295,7 +295,7 @@ namespace CEETimerCSharpWinForms.Forms
                     PositionIndex = PositionIndex,
                     DefaultColors = DefaultColors,
                     CountdownColors = CountdownColors,
-                    ColorRules = ColorRules
+                    UserCustomRules = CustomRules
                 };
 
                 _SettingsForm.ConfigChanged += RefreshSettings;
@@ -354,7 +354,7 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void ApplyColorRule(int Phase, TimeSpan Span, string ExamName, string Hint)
         {
-            var r = ColorRules.Where(i => i.Item1.Item1 == Phase).Select(x => new { Tick = x.Item1.Item2, Fore = x.Item2.Item1, Back = x.Item2.Item2 });
+            var r = CustomRules.Where(i => i.Item1.Item1 == Phase).Select(x => new { Tick = x.Item1.Item2, Fore = x.Item2.Item1, Back = x.Item2.Item2, Custom = x.Item2.Item3 });
             var R = Phase == 2 ? r.OrderByDescending(x => x.Tick) : r.OrderBy(x => x.Tick);
             var Rules = R.ToList();
 
@@ -364,13 +364,13 @@ namespace CEETimerCSharpWinForms.Forms
                 {
                     if (Phase == 2 ? (Span >= Rule.Tick) : (Span <= Rule.Tick + new TimeSpan(0, 0, 0, 1)))
                     {
-                        SetCountdown(Span, ExamName, Hint, Rule.Fore, Rule.Back, Phase);
+                        SetCountdown(Span, ExamName, Hint, Rule.Fore, Rule.Back, Rule.Custom);
                         return;
                     }
                 }
             }
 
-            SetCountdown(Span, ExamName, Hint, CountdownColors[Phase].Item1, CountdownColors[Phase].Item2, Phase);
+            SetCountdown(Span, ExamName, Hint, CountdownColors[Phase].Item1, CountdownColors[Phase].Item2, CustomText[Phase]);
         }
 
         private void ApplyLocation()
@@ -393,23 +393,14 @@ namespace CEETimerCSharpWinForms.Forms
             }
         }
 
-        private void SetCountdown(TimeSpan Span, string ExamName, string Hint, Color Fore, Color Back, int Phase)
+        private void SetCountdown(TimeSpan Span, string ExamName, string Hint, Color Fore, Color Back, string Custom)
         {
             LabelCountdown.ForeColor = Fore;
             BackColor = Back;
 
             if (IsCustomText)
             {
-                LabelCountdown.Text = CustomText[Phase]
-                    .Replace(Placeholders.PH_EXAMNAME, ExamName)
-                    .Replace(Placeholders.PH_DAYS, $"{Span.Days}")
-                    .Replace(Placeholders.PH_HOURS, $"{Span.Hours:00}")
-                    .Replace(Placeholders.PH_MINUTES, $"{Span.Minutes:00}")
-                    .Replace(Placeholders.PH_SECONDS, $"{Span.Seconds:00}")
-                    .Replace(Placeholders.PH_ROUNDEDDAYS, $"{Span.Days + 1}")
-                    .Replace(Placeholders.PH_TOTALHOURS, $"{Span.TotalHours:0}")
-                    .Replace(Placeholders.PH_TOTALMINUTES, $"{Span.TotalMinutes:0}")
-                    .Replace(Placeholders.PH_TOTALSECONDS, $"{Span.TotalSeconds:0}");
+                SetCustomText(Custom, Span);
             }
             else
             {
@@ -424,6 +415,20 @@ namespace CEETimerCSharpWinForms.Forms
                     _ => ConfigPolicy.NotAllowed<string>()
                 };
             }
+        }
+
+        private void SetCustomText(string Custom, TimeSpan Span)
+        {
+            LabelCountdown.Text = Custom
+                    .Replace(Placeholders.PH_EXAMNAME, ExamName)
+                    .Replace(Placeholders.PH_DAYS, $"{Span.Days}")
+                    .Replace(Placeholders.PH_HOURS, $"{Span.Hours:00}")
+                    .Replace(Placeholders.PH_MINUTES, $"{Span.Minutes:00}")
+                    .Replace(Placeholders.PH_SECONDS, $"{Span.Seconds:00}")
+                    .Replace(Placeholders.PH_ROUNDEDDAYS, $"{Span.Days + 1}")
+                    .Replace(Placeholders.PH_TOTALHOURS, $"{Span.TotalHours:0}")
+                    .Replace(Placeholders.PH_TOTALMINUTES, $"{Span.TotalMinutes:0}")
+                    .Replace(Placeholders.PH_TOTALSECONDS, $"{Span.TotalSeconds:0}");
         }
 
         private void CompatibleWithPPTService()

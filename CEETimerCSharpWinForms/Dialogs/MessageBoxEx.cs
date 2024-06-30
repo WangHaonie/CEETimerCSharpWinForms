@@ -12,14 +12,13 @@ namespace CEETimerCSharpWinForms.Dialogs
     public partial class MessageBoxEx : DialogEx
     {
         private DialogResult Result;
-        private readonly MessageBoxButtonsEx ButtonsEx;
+        private readonly MessageBoxExButtons ButtonsEx;
         private readonly SystemSound DialogSound;
         private readonly bool AutoCloseRequired;
 
-        public MessageBoxEx(SystemSound Sound, MessageBoxButtonsEx Buttons, bool AutoClose)
+        public MessageBoxEx(SystemSound Sound, MessageBoxExButtons Buttons, bool AutoClose)
         {
             InitializeComponent();
-            Shown += MessageBoxEx_Shown;
             DialogSound = Sound;
             ButtonsEx = Buttons;
             AutoCloseRequired = AutoClose;
@@ -27,18 +26,17 @@ namespace CEETimerCSharpWinForms.Dialogs
 
         public DialogResult ShowCore(Form OwnerForm, string Message, string Title, Icon MessageBoxExIcon, FormStartPosition Position)
         {
-            UIHelper.SetLabelAutoWrap(LabelMessage);
             LabelMessage.Text = Message;
             Text = Title;
             PicBoxIcon.Image = MessageBoxExIcon.ToBitmap();
 
             switch (ButtonsEx)
             {
-                case MessageBoxButtonsEx.YesNo:
+                case MessageBoxExButtons.YesNo:
                     ButtonA.Text = "是(&Y)";
                     ButtonB.Text = "否(&N)";
                     break;
-                case MessageBoxButtonsEx.OK:
+                case MessageBoxExButtons.OK:
                     ButtonA.Visible = ButtonA.Enabled = false;
                     ButtonB.Text = "确定(&O)";
                     break;
@@ -49,12 +47,11 @@ namespace CEETimerCSharpWinForms.Dialogs
             if (OwnerForm == null && !UIHelper.IsNormalStart(UIHelper.GetOpenForms()))
             {
                 StartPosition = FormStartPosition.Manual;
+                Console.WriteLine(1);
                 var CurrentScreen = UIHelper.GetCurrentScreen().WorkingArea;
-                Location = new(CurrentScreen.Left + CurrentScreen.Width / 2 - Width / 2, CurrentScreen.Top + CurrentScreen.Height / 2 - Height / 2);
+                Location = new(CurrentScreen.Left + (CurrentScreen.Width - Width) / 2, CurrentScreen.Top + (CurrentScreen.Height - Height) / 2);
             }
 
-            ButtonB.Location = new(Width - ButtonB.Width - 15.WithDpi(this), PanelMain.Height + 10.WithDpi(this));
-            ButtonA.Location = new(ButtonB.Location.X - ButtonA.Width - 6.WithDpi(this), ButtonB.Location.Y);
             ShowDialog(OwnerForm);
             return Result;
         }
@@ -64,21 +61,28 @@ namespace CEETimerCSharpWinForms.Dialogs
             TopMost = MainForm.IsUniTopMost;
         }
 
-        private void MessageBoxEx_Shown(object sender, EventArgs e)
+        protected override void AdjustUI()
+        {
+            UIHelper.SetLabelAutoWrap(LabelMessage);
+            base.AdjustUI();
+        }
+
+        protected override void OnDialogShown()
         {
             DialogSound.Play();
             AutoCloseAsync();
+            base.OnDialogShown();
         }
 
         protected override void OnButtonAClicked()
         {
-            Result = ButtonsEx == MessageBoxButtonsEx.YesNo ? DialogResult.Yes : DialogResult.None;
+            Result = ButtonsEx == MessageBoxExButtons.YesNo ? DialogResult.Yes : DialogResult.None;
             Close();
         }
 
         protected override void OnButtonBClicked()
         {
-            Result = ButtonsEx == MessageBoxButtonsEx.YesNo ? DialogResult.No : DialogResult.OK;
+            Result = ButtonsEx == MessageBoxExButtons.YesNo ? DialogResult.No : DialogResult.OK;
             Close();
         }
 

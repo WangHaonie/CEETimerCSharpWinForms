@@ -40,7 +40,7 @@
             // LabelDownloading
             // 
             this.LabelDownloading.AutoSize = true;
-            this.LabelDownloading.Location = new System.Drawing.Point(11, 9);
+            this.LabelDownloading.Location = new System.Drawing.Point(2, 3);
             this.LabelDownloading.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.LabelDownloading.Name = "LabelDownloading";
             this.LabelDownloading.Size = new System.Drawing.Size(172, 15);
@@ -50,7 +50,7 @@
             // LabelSize
             // 
             this.LabelSize.AutoSize = true;
-            this.LabelSize.Location = new System.Drawing.Point(11, 50);
+            this.LabelSize.Location = new System.Drawing.Point(2, 44);
             this.LabelSize.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.LabelSize.Name = "LabelSize";
             this.LabelSize.Size = new System.Drawing.Size(146, 15);
@@ -61,7 +61,7 @@
             // LabelSpeed
             // 
             this.LabelSpeed.AutoSize = true;
-            this.LabelSpeed.Location = new System.Drawing.Point(11, 65);
+            this.LabelSpeed.Location = new System.Drawing.Point(2, 59);
             this.LabelSpeed.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.LabelSpeed.Name = "LabelSpeed";
             this.LabelSpeed.Size = new System.Drawing.Size(128, 15);
@@ -70,7 +70,7 @@
             // 
             // ProgressBarMain
             // 
-            this.ProgressBarMain.Location = new System.Drawing.Point(14, 26);
+            this.ProgressBarMain.Location = new System.Drawing.Point(5, 20);
             this.ProgressBarMain.Margin = new System.Windows.Forms.Padding(2);
             this.ProgressBarMain.Name = "ProgressBarMain";
             this.ProgressBarMain.Size = new System.Drawing.Size(344, 22);
@@ -79,7 +79,7 @@
             // ButtonRetry
             // 
             this.ButtonRetry.Enabled = false;
-            this.ButtonRetry.Location = new System.Drawing.Point(205, 60);
+            this.ButtonRetry.Location = new System.Drawing.Point(195, 47);
             this.ButtonRetry.Margin = new System.Windows.Forms.Padding(2);
             this.ButtonRetry.Name = "ButtonRetry";
             this.ButtonRetry.Size = new System.Drawing.Size(75, 25);
@@ -90,7 +90,7 @@
             // 
             // ButtonCancel
             // 
-            this.ButtonCancel.Location = new System.Drawing.Point(284, 60);
+            this.ButtonCancel.Location = new System.Drawing.Point(274, 47);
             this.ButtonCancel.Margin = new System.Windows.Forms.Padding(2);
             this.ButtonCancel.Name = "ButtonCancel";
             this.ButtonCancel.Size = new System.Drawing.Size(75, 25);
@@ -102,7 +102,7 @@
             // LinkBroswer
             // 
             this.LinkBroswer.AutoSize = true;
-            this.LinkBroswer.Location = new System.Drawing.Point(287, 9);
+            this.LinkBroswer.Location = new System.Drawing.Point(280, 3);
             this.LinkBroswer.Name = "LinkBroswer";
             this.LinkBroswer.Size = new System.Drawing.Size(72, 15);
             this.LinkBroswer.TabIndex = 9;
@@ -115,7 +115,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(369, 91);
+            this.ClientSize = new System.Drawing.Size(354, 76);
             this.Controls.Add(this.LinkBroswer);
             this.Controls.Add(this.ButtonCancel);
             this.Controls.Add(this.ButtonRetry);

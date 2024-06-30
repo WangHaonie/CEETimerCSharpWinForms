@@ -1,5 +1,6 @@
 ﻿using CEETimerCSharpWinForms.Controls;
 using CEETimerCSharpWinForms.Modules;
+using System;
 
 namespace CEETimerCSharpWinForms.Dialogs
 {
@@ -18,15 +19,6 @@ namespace CEETimerCSharpWinForms.Dialogs
 
         protected override void OnDialogLoad()
         {
-            UIHelper.SetLabelAutoWrap(LabelInfo, PanelMain);
-            UIHelper.AlignControls(ButtonA, ButtonB, TextBoxP3);
-            ButtonReset.Left = LabelP3.Left;
-            UIHelper.AlignControls(TextBoxP1, LabelP1);
-            UIHelper.AlignControls(TextBoxP2, LabelP2);
-            UIHelper.AlignControls(TextBoxP3, LabelP3);
-            UIHelper.SetTextBoxMax(TextBoxP1, ConfigPolicy.MaxCustomTextLength);
-            UIHelper.SetTextBoxMax(TextBoxP2, ConfigPolicy.MaxCustomTextLength);
-            UIHelper.SetTextBoxMax(TextBoxP3, ConfigPolicy.MaxCustomTextLength);
             TextBoxP1.Text = CustomText[0];
             TextBoxP2.Text = CustomText[1];
             TextBoxP3.Text = CustomText[2];
@@ -35,7 +27,21 @@ namespace CEETimerCSharpWinForms.Dialogs
             TextBoxP3.TextChanged += (sender, e) => UserChanged();
         }
 
-        private void ButtonReset_Click(object sender, System.EventArgs e)
+        protected override void AdjustUI()
+        {
+            base.AdjustUI();
+            UIHelper.SetLabelAutoWrap(LabelInfo, PanelMain);
+            UIHelper.AlignControlsL(ButtonReset, ButtonA, LabelP3);
+            UIHelper.AlignControlsX(TextBoxP1, LabelP1);
+            UIHelper.AlignControlsX(TextBoxP2, LabelP2);
+            UIHelper.AlignControlsX(TextBoxP3, LabelP3);
+            UIHelper.AlignControlsX(ButtonReset, ButtonA);
+            UIHelper.SetTextBoxMax(TextBoxP1, ConfigPolicy.MaxCustomTextLength);
+            UIHelper.SetTextBoxMax(TextBoxP2, ConfigPolicy.MaxCustomTextLength);
+            UIHelper.SetTextBoxMax(TextBoxP3, ConfigPolicy.MaxCustomTextLength);
+        }
+
+        private void ButtonReset_Click(object sender, EventArgs e)
         {
             UserChanged();
 
@@ -51,7 +57,7 @@ namespace CEETimerCSharpWinForms.Dialogs
             P3TextRaw = RemoveInvalid(TextBoxP3.Text);
             string[] tmp = [P1TextRaw, P2TextRaw, P3TextRaw];
 
-            if (!ConfigManager.IsValidCustomText(tmp, out string Error) && !string.IsNullOrWhiteSpace(Error))
+            if (!(bool)CustomRuleHelper.CheckCustomText(tmp, out string Error) && !string.IsNullOrWhiteSpace(Error))
             {
                 MessageX.Popup(Error, MessageLevel.Error);
                 return;

@@ -51,6 +51,7 @@
             this.CheckBoxPptSvc = new System.Windows.Forms.CheckBox();
             this.LabelPptsvc = new System.Windows.Forms.Label();
             this.GBoxContent = new System.Windows.Forms.GroupBox();
+            this.CheckBoxCustomText = new System.Windows.Forms.CheckBox();
             this.ButtonCustomText = new System.Windows.Forms.Button();
             this.ComboBoxShowXOnly = new System.Windows.Forms.ComboBox();
             this.CheckBoxShowPast = new System.Windows.Forms.CheckBox();
@@ -65,7 +66,6 @@
             this.ComboBoxScreens = new System.Windows.Forms.ComboBox();
             this.TabPageAppearance = new System.Windows.Forms.TabPage();
             this.GBoxColors = new System.Windows.Forms.GroupBox();
-            this.ButtonColorRules = new System.Windows.Forms.Button();
             this.LabelPreviewColor4 = new System.Windows.Forms.Label();
             this.LabelColor41 = new System.Windows.Forms.Label();
             this.LabelColor42 = new System.Windows.Forms.Label();
@@ -93,7 +93,7 @@
             this.LabelRestart = new System.Windows.Forms.Label();
             this.GBoxSyncTime = new System.Windows.Forms.GroupBox();
             this.LabelSyncTime = new System.Windows.Forms.Label();
-            this.CheckBoxCustomText = new System.Windows.Forms.CheckBox();
+            this.ButtonRulesMan = new System.Windows.Forms.Button();
             this.TabControlMain.SuspendLayout();
             this.TabPageGeneral.SuspendLayout();
             this.GBoxOthers.SuspendLayout();
@@ -114,6 +114,7 @@
             // 
             // ButtonCancel
             // 
+            this.ButtonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.ButtonCancel.Location = new System.Drawing.Point(306, 313);
             this.ButtonCancel.Name = "ButtonCancel";
             this.ButtonCancel.Size = new System.Drawing.Size(75, 25);
@@ -365,6 +366,16 @@
             this.GBoxContent.TabStop = false;
             this.GBoxContent.Text = "倒计时内容";
             // 
+            // CheckBoxCustomText
+            // 
+            this.CheckBoxCustomText.AutoSize = true;
+            this.CheckBoxCustomText.Location = new System.Drawing.Point(229, 74);
+            this.CheckBoxCustomText.Name = "CheckBoxCustomText";
+            this.CheckBoxCustomText.Size = new System.Drawing.Size(15, 14);
+            this.CheckBoxCustomText.TabIndex = 42;
+            this.CheckBoxCustomText.UseVisualStyleBackColor = true;
+            this.CheckBoxCustomText.CheckedChanged += new System.EventHandler(this.CheckBoxCustomText_CheckedChanged);
+            // 
             // ButtonCustomText
             // 
             this.ButtonCustomText.AutoSize = true;
@@ -517,7 +528,6 @@
             // 
             // GBoxColors
             // 
-            this.GBoxColors.Controls.Add(this.ButtonColorRules);
             this.GBoxColors.Controls.Add(this.LabelPreviewColor4);
             this.GBoxColors.Controls.Add(this.LabelColor41);
             this.GBoxColors.Controls.Add(this.LabelColor42);
@@ -542,17 +552,6 @@
             this.GBoxColors.TabIndex = 0;
             this.GBoxColors.TabStop = false;
             this.GBoxColors.Text = "字体颜色";
-            // 
-            // ButtonColorRules
-            // 
-            this.ButtonColorRules.AutoSize = true;
-            this.ButtonColorRules.Location = new System.Drawing.Point(9, 137);
-            this.ButtonColorRules.Name = "ButtonColorRules";
-            this.ButtonColorRules.Size = new System.Drawing.Size(88, 25);
-            this.ButtonColorRules.TabIndex = 20;
-            this.ButtonColorRules.Text = "颜色规则(&A)";
-            this.ButtonColorRules.UseVisualStyleBackColor = true;
-            this.ButtonColorRules.Click += new System.EventHandler(this.ButtonColorRules_Click);
             // 
             // LabelPreviewColor4
             // 
@@ -628,7 +627,7 @@
             // ButtonDefaultColor
             // 
             this.ButtonDefaultColor.AutoSize = true;
-            this.ButtonDefaultColor.Location = new System.Drawing.Point(103, 137);
+            this.ButtonDefaultColor.Location = new System.Drawing.Point(9, 137);
             this.ButtonDefaultColor.Name = "ButtonDefaultColor";
             this.ButtonDefaultColor.Size = new System.Drawing.Size(88, 25);
             this.ButtonDefaultColor.TabIndex = 11;
@@ -815,15 +814,16 @@
             this.LabelSyncTime.TabIndex = 20;
             this.LabelSyncTime.Text = "使当前系统时间与网络同步。此项还会将系统的 NTP 服务器设置为 ntp1.aliyun.com, 并自动启动 Windows Time 服务, 请谨慎操作。";
             // 
-            // CheckBoxCustomText
+            // ButtonRulesMan
             // 
-            this.CheckBoxCustomText.AutoSize = true;
-            this.CheckBoxCustomText.Location = new System.Drawing.Point(229, 74);
-            this.CheckBoxCustomText.Name = "CheckBoxCustomText";
-            this.CheckBoxCustomText.Size = new System.Drawing.Size(15, 14);
-            this.CheckBoxCustomText.TabIndex = 42;
-            this.CheckBoxCustomText.UseVisualStyleBackColor = true;
-            this.CheckBoxCustomText.CheckedChanged += new System.EventHandler(this.CheckBoxCustomText_CheckedChanged);
+            this.ButtonRulesMan.AutoSize = true;
+            this.ButtonRulesMan.Location = new System.Drawing.Point(4, 313);
+            this.ButtonRulesMan.Name = "ButtonRulesMan";
+            this.ButtonRulesMan.Size = new System.Drawing.Size(101, 25);
+            this.ButtonRulesMan.TabIndex = 20;
+            this.ButtonRulesMan.Text = "规则管理器(&G)";
+            this.ButtonRulesMan.UseVisualStyleBackColor = true;
+            this.ButtonRulesMan.Click += new System.EventHandler(this.ButtonRulesMan_Click);
             // 
             // SettingsForm
             // 
@@ -835,6 +835,7 @@
             this.CancelButton = this.ButtonCancel;
             this.ClientSize = new System.Drawing.Size(389, 344);
             this.Controls.Add(this.TabControlMain);
+            this.Controls.Add(this.ButtonRulesMan);
             this.Controls.Add(this.ButtonSave);
             this.Controls.Add(this.ButtonCancel);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -874,6 +875,7 @@
             this.GBoxSyncTime.ResumeLayout(false);
             this.GBoxSyncTime.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -941,8 +943,8 @@
         private System.Windows.Forms.Label LabelLine05;
         private System.Windows.Forms.ComboBox ComboBoxPosition;
         private System.Windows.Forms.Label LabelChar1;
-        private System.Windows.Forms.Button ButtonColorRules;
         private System.Windows.Forms.Button ButtonCustomText;
         private System.Windows.Forms.CheckBox CheckBoxCustomText;
+        private System.Windows.Forms.Button ButtonRulesMan;
     }
 }
