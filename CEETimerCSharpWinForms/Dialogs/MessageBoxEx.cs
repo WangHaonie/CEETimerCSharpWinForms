@@ -29,7 +29,21 @@ namespace CEETimerCSharpWinForms.Dialogs
             LabelMessage.Text = Message;
             Text = Title;
             PicBoxIcon.Image = MessageBoxExIcon.ToBitmap();
+            StartPosition = Position;
 
+            if (OwnerForm == null && !UIHelper.IsNormalStart(UIHelper.GetOpenForms()))
+            {
+                StartPosition = FormStartPosition.Manual;
+                var CurrentScreen = UIHelper.GetCurrentScreen().WorkingArea;
+                Location = new(CurrentScreen.Left + (CurrentScreen.Width - Width) / 2, CurrentScreen.Top + (CurrentScreen.Height - Height) / 2);
+            }
+
+            ShowDialog(OwnerForm);
+            return Result;
+        }
+
+        protected override void OnDialogLoad()
+        {
             switch (ButtonsEx)
             {
                 case MessageBoxExButtons.YesNo:
@@ -41,24 +55,6 @@ namespace CEETimerCSharpWinForms.Dialogs
                     ButtonB.Text = "确定(&O)";
                     break;
             }
-
-            StartPosition = Position;
-
-            if (OwnerForm == null && !UIHelper.IsNormalStart(UIHelper.GetOpenForms()))
-            {
-                StartPosition = FormStartPosition.Manual;
-                Console.WriteLine(1);
-                var CurrentScreen = UIHelper.GetCurrentScreen().WorkingArea;
-                Location = new(CurrentScreen.Left + (CurrentScreen.Width - Width) / 2, CurrentScreen.Top + (CurrentScreen.Height - Height) / 2);
-            }
-
-            ShowDialog(OwnerForm);
-            return Result;
-        }
-
-        protected override void OnDialogLoad()
-        {
-            TopMost = MainForm.IsUniTopMost;
         }
 
         protected override void AdjustUI()

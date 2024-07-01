@@ -13,7 +13,7 @@ namespace CEETimerCSharpWinForms.Forms
         public AboutForm()
         {
             InitializeComponent();
-            TopMost = MainForm.IsUniTopMost;
+            TopMost = MainForm.UniTopMost;
             LabelInfo.Text = $"{LaunchManager.AppName}\n版本 v{LaunchManager.AppVersion} x64 ({LaunchManager.AppBuildDate})";
             LabelLicense.Text = $"Licensed under the GNU GPL, v3.\n{LaunchManager.CopyrightInfo}";
         }

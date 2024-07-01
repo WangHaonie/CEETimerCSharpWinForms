@@ -68,7 +68,7 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void SettingsForm_Load(object sender, EventArgs e)
         {
-            TopMost = MainForm.IsUniTopMost;
+            TopMost = MainForm.UniTopMost;
             InitializeExtra();
             ChangeWorkingStyle(WorkingArea.LastColor);
             RefreshSettings();

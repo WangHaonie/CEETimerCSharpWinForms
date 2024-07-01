@@ -71,7 +71,7 @@ namespace CEETimerCSharpWinForms.Modules
             }
         }
 
-        public List<CustomRuleHelper.Config> ReadArray(string Key)
+        public List<CustomRuleHelper.Config> ReadConfigEx(string Key)
         {
             if (IsConfigMounted && JsonConfig != null && JsonConfig.ContainsKey(Key))
             {

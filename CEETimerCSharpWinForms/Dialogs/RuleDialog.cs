@@ -57,6 +57,7 @@ namespace CEETimerCSharpWinForms.Dialogs
             base.AdjustUI();
             UIHelper.SetLabelAutoWrap(LabelCustomInfo, PanelMain);
             UIHelper.AlignControlsX(ComboBoxRuleType, LabelChars01);
+
             UIHelper.AdjustOnlyAtHighDpi(() =>
             {
                 UIHelper.AlignControlsX([LabelChars02, LabelChars03, LabelChars04, LabelChars05, ComboBoxRuleType, NudDays, NudHours, NudMinutes, NudSeconds], LabelChars01);

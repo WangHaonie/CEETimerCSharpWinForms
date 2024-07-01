@@ -13,7 +13,7 @@ namespace CEETimerCSharpWinForms.Forms
 {
     public partial class MainForm : Form
     {
-        public static bool IsUniTopMost { get; private set; } = true;
+        public static bool UniTopMost { get; private set; } = true;
 
         private bool IsMemoryOptimizationEnabled;
         private bool IsShowXOnly;
@@ -106,13 +106,13 @@ namespace CEETimerCSharpWinForms.Forms
             IsShowPast = bool.TryParse(configManager.ReadConfig(ConfigItems.KShowPast), out bool tmpg) && tmpg;
             IsShowEnd = bool.TryParse(configManager.ReadConfig(ConfigItems.KShowEnd), out bool tmpf) && tmpf;
             IsDraggable = bool.TryParse(configManager.ReadConfig(ConfigItems.KDraggable), out bool tmph) && tmph;
-            IsUniTopMost = bool.TryParse(configManager.ReadConfig(ConfigItems.KUniTopMost), out bool tmpi) && tmpi;
+            UniTopMost = bool.TryParse(configManager.ReadConfig(ConfigItems.KUniTopMost), out bool tmpi) && tmpi;
             IsPPTService = bool.TryParse(configManager.ReadConfig(ConfigItems.KSeewoPptSvc), out bool tmpj) && tmpj;
             IsCustomText = bool.TryParse(configManager.ReadConfig(ConfigItems.KIsCustomText), out bool tmpo) && tmpo;
             ScreenIndex = int.TryParse(configManager.ReadConfig(ConfigItems.KScreen), out int tmpk) ? tmpk : 0;
             PositionIndex = int.TryParse(configManager.ReadConfig(ConfigItems.KPosition), out int tmpu) ? tmpu : 0;
             ShowXOnlyIndex = int.TryParse(configManager.ReadConfig(ConfigItems.KShowValue), out int tmpl) ? tmpl : 0;
-            try { CustomRules = CustomRuleHelper.ReadConfig(configManager.ReadArray(ConfigItems.KCustomRules)); } catch { CustomRules = []; }
+            try { CustomRules = CustomRuleHelper.GetObject(configManager.ReadConfigEx(ConfigItems.KCustomRules)); } catch { CustomRules = []; }
             ColorDialogHelper.CustomColorCollection = ColorHelper.GetArgbArray(configManager.ReadConfig(ConfigItems.KCustomColors));
             int.TryParse(configManager.ReadConfig(ConfigItems.KPosX), out int x);
             int.TryParse(configManager.ReadConfig(ConfigItems.KPosY), out int y);
@@ -140,7 +140,7 @@ namespace CEETimerCSharpWinForms.Forms
             IsShowPast = IsShowPast && IsShowEnd;
             IsRounding = IsRounding && IsShowXOnly && ShowXOnlyIndex == 0;
             IsCustomText = IsCustomText && !IsShowXOnly;
-            IsUniTopMost = IsUniTopMost && TopMost;
+            UniTopMost = UniTopMost && TopMost;
             if (ScreenIndex < 0 || ScreenIndex > Screen.AllScreens.Length) ScreenIndex = 0;
             if (PositionIndex is < 0 or > 8) PositionIndex = 0;
             if (ShowXOnlyIndex > 3) ShowXOnlyIndex = 0;
@@ -202,7 +202,7 @@ namespace CEETimerCSharpWinForms.Forms
             foreach (var form in UIHelper.GetOpenForms())
             {
                 if (form == this) continue;
-                form.TopMost = IsUniTopMost;
+                form.TopMost = UniTopMost;
             }
 
             MemoryOptimizer?.Dispose();

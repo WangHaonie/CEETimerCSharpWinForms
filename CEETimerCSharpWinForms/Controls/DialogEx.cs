@@ -39,7 +39,7 @@ namespace CEETimerCSharpWinForms.Controls
             MinimizeBox = false;
             ShowIcon = false;
             StartPosition = FormStartPosition.CenterParent;
-            TopMost = MainForm.IsUniTopMost;
+            TopMost = MainForm.UniTopMost;
             Controls.AddRange([ButtonA, ButtonB]);
 
             ButtonA.Click += (sender, e) => OnButtonAClicked();

@@ -71,13 +71,13 @@ namespace CEETimerCSharpWinForms.Modules
         }
 
         /// <summary>
-        /// 检查用户输入的自定义文本是否有效并输出错误信息。返回类型可以为 string: 自动更正后的文本、bool: 是否有效
+        /// 检查用户输入的自定义文本是否有效并输出错误信息。
         /// </summary>
         /// <param name="arr">包含了P1~P3自定义文本的集合。允许只包含一个元素，但要提供 index 参数</param>
         /// <param name="msg">错误信息</param>
         /// <param name="index">[仅进行单个判断时提供] 索引，可以为 0, 1, 2</param>
         /// <param name="ToBoolean">[仅进行单个判断时提供] 是否返回为 bool 类型</param>
-        /// <returns>string, bool</returns>
+        /// <returns>bool (是否有效), string (更正后的文本)</returns>
         public static object CheckCustomText(string[] arr, out string msg, int index = 0, bool ToBoolean = false)
         {
             bool Result = true;
@@ -132,7 +132,7 @@ namespace CEETimerCSharpWinForms.Modules
             return tmp;
         }
 
-        public static List<TupleEx<TupleEx<int, TimeSpan>, TupleEx<Color, Color, string>>> ReadConfig(List<Config> cfg)
+        public static List<TupleEx<TupleEx<int, TimeSpan>, TupleEx<Color, Color, string>>> GetObject(List<Config> cfg)
         {
             var tmp = new List<TupleEx<TupleEx<int, TimeSpan>, TupleEx<Color, Color, string>>>();
 

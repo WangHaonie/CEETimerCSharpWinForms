@@ -21,15 +21,14 @@ namespace CEETimerCSharpWinForms.Forms
         public DownloaderForm()
         {
             InitializeComponent();
-            TopMost = MainForm.IsUniTopMost;
-            //ButtonCancel.Location = new(ProgressBarMain.Location.X + ProgressBarMain.Width - ButtonCancel.Width, ButtonCancel.Location.Y);
-            //ButtonRetry.Location = new(ButtonCancel.Location.X - ButtonRetry.Width - 6.WithDpi(this), ButtonRetry.Location.Y);
-            UIHelper.AlignControlsR(LinkBroswer, ProgressBarMain);
-            UIHelper.AlignControlsREx(ButtonRetry, ButtonCancel, ProgressBarMain);
+            TopMost = MainForm.UniTopMost;
         }
 
         private async void DownloaderForm_Load(object sender, EventArgs e)
         {
+            UIHelper.AlignControlsR(LinkBroswer, ProgressBarMain);
+            UIHelper.AlignControlsREx(ButtonRetry, ButtonCancel, ProgressBarMain);
+
             string LatestVersion = Updater.CurrentLatest;
             string SelectedVersion = ManualVersion;
 
