@@ -58,6 +58,8 @@ namespace CEETimerCSharpWinForms.Forms
         private Point LastLocation;
         private Point LastMouseLocation;
         private Rectangle SelectedScreen;
+        private SettingsForm FormSettings;
+        private AboutForm FormAbout;
         private readonly ConfigManager configManager = new();
         private readonly FontConverter fontConverter = new();
 
@@ -227,6 +229,7 @@ namespace CEETimerCSharpWinForms.Forms
         #region 来自网络
         /*
         
+        无边框窗口的拖动 参考:
 
         C#创建无边框可拖动窗口 - 掘金
         https://juejin.cn/post/6989144829607280648
@@ -269,7 +272,9 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void ContextSettings_Click(object sender, EventArgs e)
         {
+            if (FormSettings == null || FormSettings.IsDisposed)
             {
+                FormSettings = new()
                 {
                     IsMemoryOptimizationEnabled = IsMemoryOptimizationEnabled,
                     IsTopMost = TopMost,
@@ -294,15 +299,20 @@ namespace CEETimerCSharpWinForms.Forms
                     UserCustomRules = CustomRules
                 };
 
+                FormSettings.ConfigChanged += RefreshSettings;
             }
 
+            FormSettings.ReActivate();
         }
 
         private void ContextAbout_Click(object sender, EventArgs e)
         {
+            if (FormAbout == null || FormAbout.IsDisposed)
             {
+                FormAbout = new();
             }
 
+            FormAbout.ReActivate();
         }
 
         private void ContextOpenDir_Click(object sender, EventArgs e)

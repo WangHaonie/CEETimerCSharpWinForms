@@ -3,10 +3,10 @@ using System;
 
 namespace CEETimerCSharpWinForms
 {
-    static class Program
+    internal static class Program
     {
         [STAThread]
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             LaunchManager.StartProgram(args);
         }

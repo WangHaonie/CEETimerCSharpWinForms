@@ -10,13 +10,15 @@ namespace CEETimerCSharpWinForms.Modules
     public static class UIHelper
     {
         /// <summary>
-        /// 向用户显示最后一个打开的窗体。
+        /// 获取所有已打开窗体。
         /// </summary>
-        public static void ShowLastForm()
-        {
-            var LastForm = GetOpenForms().LastOrDefault();
-            LastForm?.Invoke(new Action(LastForm.ReActivate));
-        }
+        public static List<Form> GetOpenForms() => FormManager.ShownForms;
+
+        /// <summary>
+        /// 判断程序是否为正常启动 (第一个窗体是否为倒计时)。
+        /// </summary>
+        /// <param name="Forms">已打开窗体的集合</param>
+        public static bool IsNormalStart(List<Form> Forms) => Forms.FirstOrDefault() is MainForm;
 
         /// <summary>
         /// 用于当用户未保存更改时显示警告。防止直接关闭消息框时也窗体会关闭。
@@ -177,14 +179,6 @@ namespace CEETimerCSharpWinForms.Modules
         }
 
         /// <summary>
-        /// 获取所有已打开窗体。
-        /// </summary>
-        public static IEnumerable<Form> GetOpenForms()
-        {
-            return Application.OpenForms.Cast<Form>();
-        }
-
-        /// <summary>
         /// 只允许在高DPI下进行对控件的调整。
         /// </summary>
         /// <param name="Method">要执行的方法</param>
@@ -196,10 +190,7 @@ namespace CEETimerCSharpWinForms.Modules
             }
         }
 
-        /// <summary>
-        /// 获取当前屏幕，决定消息框应该在鼠标所在屏幕还是在倒计时所在屏幕上显示。
-        /// </summary>
-        public static Screen GetCurrentScreen()
+        private static Screen GetCurrentScreen()
         {
             var CurrentForms = GetOpenForms();
 
@@ -211,27 +202,12 @@ namespace CEETimerCSharpWinForms.Modules
             return Screen.FromControl(CurrentForms.FirstOrDefault());
         }
 
-        /// <summary>
-        /// 判断程序是否为正常启动 (第一个窗体是否为倒计时)。
-        /// </summary>
-        /// <param name="Forms">已打开窗体的集合</param>
-        public static bool IsNormalStart(IEnumerable<Form> Forms)
-        {
-            return Forms.FirstOrDefault() is MainForm;
-        }
-
-        public static void SetToolTip(Control Target, string Tip)
-        {
-            var _ToolTip = new ToolTip() { AutoPopDelay = 1000 };
-            _ToolTip.SetToolTip(Target, Tip);
-        }
-
         private static void SetLabelAutoWrapCore(Label Target, Size NewSize)
         {
             #region 来自网络
             /*
             
-            Label 控件自动换行 参考：
+            Label 控件自动换行 参考:
 
             c# - Word wrap for a label in Windows Forms - Stack Overflow
             https://stackoverflow.com/a/3680595/21094697

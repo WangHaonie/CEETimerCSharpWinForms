@@ -53,7 +53,7 @@ namespace CEETimerCSharpWinForms.Modules
                     #region 来自网络
                     /*
 
-                    在 Invoke 方法内部获取到 DialogResult 返回值 参考：
+                    在 Invoke 方法内部获取到 DialogResult 返回值 参考:
 
                     c# - Return Ivoke message DialogResult - Stack Overflow
                     https://stackoverflow.com/a/29256646/21094697
@@ -90,13 +90,13 @@ namespace CEETimerCSharpWinForms.Modules
             #region 来自网络
             /*
 
-            获取 imageres.dll 里的 Info、Warning、Error 图标的索引参考：
+            获取 imageres.dll 里的 Info、Warning、Error 图标的索引参考:
 
             Icons in imageres.dll
             https://renenyffenegger.ch/development/Windows/PowerShell/examples/WinAPI/ExtractIconEx/imageres.html
 
 
-            播放与 MessageBox 同款音效参考：
+            播放与 MessageBox 同款音效参考:
 
             c# - Selecting sounds from Windows and playing them - Stack Overflow
             https://stackoverflow.com/a/5194223/21094697

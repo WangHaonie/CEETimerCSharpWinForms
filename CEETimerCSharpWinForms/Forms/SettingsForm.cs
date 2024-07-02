@@ -350,6 +350,7 @@ namespace CEETimerCSharpWinForms.Forms
         }
 
         /*
+        RulesManager Manager = new()
         {自定义倒计时在各时刻要显示的颜色和内容。
             CustomRules = UserCustomRules,
             Preferences = CheckBoxCustomText.Checked ? CustomTextRaw : [null, null, null]
@@ -413,6 +414,7 @@ namespace CEETimerCSharpWinForms.Forms
             #region
             /*
              
+            DropDown 自适应大小 参考:
 
             c# - Auto-width of ComboBox's content - Stack Overflow
             https://stackoverflow.com/a/16435431/21094697
@@ -603,6 +605,7 @@ namespace CEETimerCSharpWinForms.Forms
         {
             try
             {
+                if (!LaunchManager.IsAdmin) MessageX.Popup("检测到当前用户不具有管理员权限，运行该操作会发生错误。\n\n程序将在此消息框关闭后尝试弹出 UAC 提示框，前提要把系统的 UAC 设置为 \"仅当应用尝试更改我的计算机时通知我\" 或及以上，否则将无法进行授权。\n\n稍后若没有看见提示框，请更改 UAC 设置: 开始菜单搜索 uac", MessageLevel.Warning, this);
 
                 Process SyncTimeProcess = ProcessHelper.RunProcess("cmd.exe", "/c net stop w32time & sc config w32time start= auto & net start w32time && w32tm /config /manualpeerlist:ntp1.aliyun.com /syncfromflags:manual /reliable:YES /update && w32tm /resync && w32tm /resync", AdminRequired: true);
 

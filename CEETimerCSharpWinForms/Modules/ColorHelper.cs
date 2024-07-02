@@ -80,7 +80,7 @@ namespace CEETimerCSharpWinForms.Modules
             #region 来自网络
             /*
             
-            RGB 亮度计算公式 参考：
+            RGB 亮度计算公式 参考:
 
             image - Formula to determine perceived brightness of RGB color - Stack Overflow
             https://stackoverflow.com/a/596243/21094697

@@ -19,7 +19,7 @@ namespace CEETimerCSharpWinForms.Modules
         public static string CurrentLatest { get; private set; }
         public static long UpdateSize { get; private set; } = 0;
 
-        private DownloaderForm _DownloaderForm;
+        private DownloaderForm FormDownloader;
 
         public void CheckUpdate(bool IsProgramStart, Form OwnerForm)
         {
@@ -41,18 +41,18 @@ namespace CEETimerCSharpWinForms.Modules
                     {
                         if (MessageX.Popup($"检测到新版本，是否下载并安装？\n\n当前版本: v{LaunchManager.AppVersion}\n最新版本: v{CurrentLatest}\n发布日期: {PublishTime}\n\nv{CurrentLatest}更新日志: {UpdateLog}", MessageLevel.Info, OwnerForm, Buttons: MessageBoxExButtons.YesNo, Position: IsProgramStart ? FormStartPosition.CenterScreen : FormStartPosition.CenterParent) == DialogResult.Yes)
                         {
-                            if (_DownloaderForm == null || _DownloaderForm.IsDisposed)
+                            if (FormDownloader == null || FormDownloader.IsDisposed)
                             {
-                                _DownloaderForm = new DownloaderForm();
+                                FormDownloader = new();
                             }
 
-                            _DownloaderForm.ReActivate();
+                            FormDownloader.ReActivate();
                         }
                     }));
                 }
                 else if (!IsProgramStart)
                 {
-                    MessageX.Popup($"当前 v{LaunchManager.AppVersion} 已是最新版本。\n\n获取到的版本：v{CurrentLatest}\n发布日期: {PublishTime}\n\n当前版本更新日志: {UpdateLog}", MessageLevel.Info, OwnerForm);
+                    MessageX.Popup($"当前 v{LaunchManager.AppVersion} 已是最新版本。\n\n获取到的版本: v{CurrentLatest}\n发布日期: {PublishTime}\n\n当前版本更新日志: {UpdateLog}", MessageLevel.Info, OwnerForm);
                 }
             }
             catch (Exception ex)

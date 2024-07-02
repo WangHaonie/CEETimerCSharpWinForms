@@ -107,6 +107,8 @@ namespace CEETimerCSharpWinForms.Forms
                 {
                     MessageX.Popup($"无法下载更新文件！{ex.ToMessage()}", MessageLevel.Error);
                     LabelDownloading.Text = "下载失败，你可以点击 重试 来重新启动下载。";
+                    LabelSize.Text = "已下载/总共: N/A";
+                    LabelSpeed.Text = "下载速度: N/A";
                     ButtonRetry.Enabled = true;
                 }
 
@@ -123,6 +125,8 @@ namespace CEETimerCSharpWinForms.Forms
             ButtonRetry.Enabled = false;
             ProgressBarMain.Value = 0;
             LabelDownloading.Text = "正在重新下载更新文件，请稍侯...";
+            LabelSize.Text = "已下载/总共: (获取中...)";
+            LabelSpeed.Text = "下载速度: (获取中...)";
 
             await DownloadUpdate();
         }

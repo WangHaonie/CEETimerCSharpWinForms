@@ -13,7 +13,7 @@ namespace CEETimerCSharpWinForms.Modules
         #region 来自网络
         /* 
         
-        JSON 配置读写参考：
+        JSON 配置读写参考:
 
         C#--使用json配置文件方法【读写Json，适合小项目】 - 包子789654 - 博客园
         https://www.cnblogs.com/baozi789654/p/15645897.html
@@ -30,7 +30,7 @@ namespace CEETimerCSharpWinForms.Modules
             #region 来自网络
             /*
             
-            获取 ConfigItems 类里的所有 const string 的值 参考：
+            获取 ConfigItems 类里的所有 const string 的值 参考:
 
             c# - How can I  get all constants of a type by reflection? - Stack Overflow
             https://stackoverflow.com/a/41618045/21094697

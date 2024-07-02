@@ -8,7 +8,7 @@ namespace CEETimerCSharpWinForms.Modules
         #region 来自网络
         /*
         
-        通过清空工作集来实现减少内存占用参考：
+        通过清空工作集来实现减少内存占用参考:
 
         .NET EXE memory footprint - Stack Overflow
         https://stackoverflow.com/a/223300/21094697
@@ -21,7 +21,7 @@ namespace CEETimerCSharpWinForms.Modules
         #region 来自网络
         /*
         
-        提取 DLL 里的图标参考：
+        提取 DLL 里的图标参考:
 
         How can I use the images within shell32.dll in my C# project? - Stack Overflow
         https://stackoverflow.com/a/6873026/21094697
@@ -34,7 +34,7 @@ namespace CEETimerCSharpWinForms.Modules
         #region 来自网络
         /*
         
-        WinForms 无边框窗体自动圆角 参考：
+        WinForms 无边框窗体自动圆角 参考:
 
         Rounded Corners in C# windows forms - Stack Overflow
         https://stackoverflow.com/a/18822204/21094697

@@ -15,19 +15,19 @@ namespace CEETimerCSharpWinForms.Modules
         public static string ToRgb(this Color color) => $"{color.R},{color.G},{color.B}";
         public static string ToMessage(this Exception ex) => $"\n\n错误信息: \n{ex.Message}\n\n错误详情: \n{ex}";
         public static string FormatLog(this string updateLog, string latestVersion)
-            => Regex.Replace(updateLog.RemoveIllegalChars(), @"[#\>]", "").Replace($"v{latestVersion}更新日志新功能修复移除", "").Replace("+", "\n● ");
+            => $"\n{Regex.Replace(updateLog.RemoveIllegalChars(), @"[#\>]", "").Replace($"v{latestVersion}更新日志新功能修复移除", "").Replace("+", "\n● ")}";
 
         #region 来自网络
         /*
 
-        移除字符串里不可见的空格 (Unicode 控制字符) 参考：
+        移除字符串里不可见的空格 (Unicode 控制字符) 参考:
 
         c# - Removing hidden characters from within strings - Stack Overflow
         https://stackoverflow.com/a/40888424/21094697
 
         */
         public static string RemoveIllegalChars(this string s)
-            => new([.. s.Trim().Replace(" ", "").Where(c => char.IsLetterOrDigit(c) || (c >= ' ' && c <= byte.MaxValue)).Where(x => !ConfigPolicy.CharsNotAllowed.Contains(x))]);
+            => new(s.Trim().Replace(" ", "").Where(c => char.IsLetterOrDigit(c) || (c >= ' ' && c <= byte.MaxValue)).Where(x => !ConfigPolicy.CharsNotAllowed.Contains(x)).ToArray());
         #endregion
 
         public static int WithDpi(this int px, Control control)
