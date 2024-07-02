@@ -1,6 +1,6 @@
 ﻿namespace CEETimerCSharpWinForms.Dialogs
 {
-    partial class CustomRulesManager
+    partial class RulesManager
     {
         /// <summary>
         /// Required designer variable.
@@ -108,7 +108,7 @@
             this.LabelInfo.Name = "LabelInfo";
             this.LabelInfo.Size = new System.Drawing.Size(410, 15);
             this.LabelInfo.TabIndex = 6;
-            this.LabelInfo.Text = "你可以在这里自定义倒计时在各时刻显示的颜色和内容，请右键表格进行操作。";
+            this.LabelInfo.Text = "你可以在这里自定义倒计时在各时刻要显示的颜色和内容，请右键表格进行操作。";
             // 
             // ListViewMain
             // 
@@ -158,26 +158,12 @@
             this.ColumnCustomText.Text = "自定义文本";
             this.ColumnCustomText.Width = 90;
             // 
-            // CustomRulesManager
+            // RulesManager
             // 
-            this.AcceptButton = this.ButtonA;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
-            this.AutoSize = true;
-            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.CancelButton = this.ButtonB;
             this.ClientSize = new System.Drawing.Size(370, 317);
             this.Controls.Add(this.LabelInfo);
             this.Controls.Add(this.ListViewMain);
-            this.DoubleBuffered = true;
-            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.KeyPreview = true;
-            this.Margin = new System.Windows.Forms.Padding(4);
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "CustomRulesManager";
-            this.ShowIcon = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Name = "RulesManager";
             this.Text = "规则管理器 - 高考倒计时";
             this.ContextMenuMain.ResumeLayout(false);
             this.ResumeLayout(false);

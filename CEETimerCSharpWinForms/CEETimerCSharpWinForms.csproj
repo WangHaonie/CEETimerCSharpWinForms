@@ -152,11 +152,10 @@
     <Compile Include="Dialogs\RuleDialog.Designer.cs">
       <DependentUpon>RuleDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Dialogs\CustomRulesManager.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Dialogs\CustomRulesManager.Designer.cs">
-      <DependentUpon>CustomRulesManager.cs</DependentUpon>
+    <Compile Include="Dialogs\RulesManager.Designer.cs">
+      <DependentUpon>RulesManager.cs</DependentUpon>
     </Compile>
     <Compile Include="Dialogs\CustomTextDialog.cs">
       <SubType>Form</SubType>

@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace CEETimerCSharpWinForms.Dialogs
 {
-    public partial class CustomRulesManager : DialogEx
+    public partial class RulesManager : DialogEx
     {
         public List<TupleEx<TupleEx<int, TimeSpan>, TupleEx<Color, Color, string>>> CustomRules { get; set; }
         public string[] Preferences { get; set; }
@@ -17,7 +17,7 @@ namespace CEETimerCSharpWinForms.Dialogs
         private bool IsEditMode;
         private ListView.ListViewItemCollection GetAllItems() => ListViewMain.Items;
 
-        public CustomRulesManager()
+        public RulesManager() : base(true, true)
         {
             InitializeComponent();
         }
