@@ -138,7 +138,6 @@
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "关于此程序";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.AboutForm_FormClosing);
             this.PanelMain.ResumeLayout(false);
             this.PanelMain.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PicBoxLogo)).EndInit();

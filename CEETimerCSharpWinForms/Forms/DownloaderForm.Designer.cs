@@ -55,7 +55,6 @@
             this.LabelSize.Name = "LabelSize";
             this.LabelSize.Size = new System.Drawing.Size(146, 15);
             this.LabelSize.TabIndex = 0;
-            this.LabelSize.Text = "已下载/总共：(获取中...)";
             this.LabelSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // LabelSpeed
@@ -66,7 +65,6 @@
             this.LabelSpeed.Name = "LabelSpeed";
             this.LabelSpeed.Size = new System.Drawing.Size(128, 15);
             this.LabelSpeed.TabIndex = 0;
-            this.LabelSpeed.Text = "下载速度：(获取中...)";
             // 
             // ProgressBarMain
             // 
@@ -131,8 +129,6 @@
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "更新进度 - 高考倒计时";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.DownloaderForm_FormClosing);
-            this.Load += new System.EventHandler(this.DownloaderForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

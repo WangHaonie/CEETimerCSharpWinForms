@@ -1,4 +1,5 @@
-﻿using CEETimerCSharpWinForms.Modules;
+﻿using CEETimerCSharpWinForms.Controls;
+using CEETimerCSharpWinForms.Modules;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ using System.Windows.Forms;
 
 namespace CEETimerCSharpWinForms.Forms
 {
-    public partial class MainForm : Form
+    public partial class MainForm : TrackableForm
     {
         public static bool UniTopMost { get; private set; } = true;
 
@@ -57,8 +58,6 @@ namespace CEETimerCSharpWinForms.Forms
         private Point LastLocation;
         private Point LastMouseLocation;
         private Rectangle SelectedScreen;
-        private SettingsForm _SettingsForm;
-        private AboutForm _AboutForm;
         private readonly ConfigManager configManager = new();
         private readonly FontConverter fontConverter = new();
 
@@ -68,11 +67,11 @@ namespace CEETimerCSharpWinForms.Forms
             SizeChanged += MainForm_SizeChanged;
         }
 
-        private void MainForm_Load(object sender, EventArgs e)
+        protected override void OnTrackableFormLoad()
         {
             DefaultColors = [new(Color.Red, Color.White), new(Color.Green, Color.White), new(Color.Black, Color.White), new(Color.Black, Color.White)];
             SystemEvents.DisplaySettingsChanged += SystemEvents_DisplaySettingsChanged;
-            RefreshSettings(sender, e);
+            RefreshSettings(null, null);
             TimerCountdown = new() { Interval = 1000 };
             TimerCountdown.Tick += StartCountdown;
             TimerCountdown.Start();
@@ -228,7 +227,6 @@ namespace CEETimerCSharpWinForms.Forms
         #region 来自网络
         /*
         
-        无边框窗口的拖动 参考：
 
         C#创建无边框可拖动窗口 - 掘金
         https://juejin.cn/post/6989144829607280648
@@ -271,9 +269,7 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void ContextSettings_Click(object sender, EventArgs e)
         {
-            if (_SettingsForm == null || _SettingsForm.IsDisposed)
             {
-                _SettingsForm = new()
                 {
                     IsMemoryOptimizationEnabled = IsMemoryOptimizationEnabled,
                     IsTopMost = TopMost,
@@ -298,20 +294,15 @@ namespace CEETimerCSharpWinForms.Forms
                     UserCustomRules = CustomRules
                 };
 
-                _SettingsForm.ConfigChanged += RefreshSettings;
             }
 
-            _SettingsForm.ReActivate();
         }
 
         private void ContextAbout_Click(object sender, EventArgs e)
         {
-            if (_AboutForm == null || _AboutForm.IsDisposed)
             {
-                _AboutForm = new();
             }
 
-            _AboutForm.ReActivate();
         }
 
         private void ContextOpenDir_Click(object sender, EventArgs e)
@@ -319,7 +310,7 @@ namespace CEETimerCSharpWinForms.Forms
             LaunchManager.OpenDir();
         }
 
-        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        protected override void OnTrackableFormClosing(FormClosingEventArgs e)
         {
             e.Cancel = e.CloseReason != CloseReason.WindowsShutDown;
         }

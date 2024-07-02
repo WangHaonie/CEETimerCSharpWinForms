@@ -1,4 +1,5 @@
-﻿using CEETimerCSharpWinForms.Dialogs;
+﻿using CEETimerCSharpWinForms.Controls;
+using CEETimerCSharpWinForms.Dialogs;
 using CEETimerCSharpWinForms.Modules;
 using Microsoft.Win32;
 using System;
@@ -11,7 +12,7 @@ using System.Windows.Forms;
 
 namespace CEETimerCSharpWinForms.Forms
 {
-    public partial class SettingsForm : Form
+    public partial class SettingsForm : TrackableForm
     {
         public bool IsMemoryOptimizationEnabled { get; set; }
         public bool IsShowXOnly { get; set; }
@@ -66,9 +67,9 @@ namespace CEETimerCSharpWinForms.Forms
             IsFormLoading = true;
         }
 
-        private void SettingsForm_Load(object sender, EventArgs e)
+        protected override void OnTrackableFormLoad()
         {
-            TopMost = MainForm.UniTopMost;
+            base.OnTrackableFormLoad();
             InitializeExtra();
             ChangeWorkingStyle(WorkingArea.LastColor);
             RefreshSettings();
@@ -335,7 +336,7 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void ButtonRulesMan_Click(object sender, EventArgs e)
         {
-            CustomRulesManager Manager = new()
+            RulesManager Manager = new()
             {
                 CustomRules = UserCustomRules,
                 Preferences = CheckBoxCustomText.Checked ? CustomTextRaw : [null, null, null]
@@ -349,7 +350,6 @@ namespace CEETimerCSharpWinForms.Forms
         }
 
         /*
-        CustomRulesManager Manager = new()
         {自定义倒计时在各时刻要显示的颜色和内容。
             CustomRules = UserCustomRules,
             Preferences = CheckBoxCustomText.Checked ? CustomTextRaw : [null, null, null]
@@ -413,7 +413,6 @@ namespace CEETimerCSharpWinForms.Forms
             #region
             /*
              
-            DropDown 自适应大小 参考：
 
             c# - Auto-width of ComboBox's content - Stack Overflow
             https://stackoverflow.com/a/16435431/21094697
@@ -455,7 +454,7 @@ namespace CEETimerCSharpWinForms.Forms
             Close();
         }
 
-        private void SettingsForm_FormClosing(object sender, FormClosingEventArgs e)
+        protected override void OnTrackableFormClosing(FormClosingEventArgs e)
         {
             if (IsSyncingTime)
             {
@@ -463,11 +462,11 @@ namespace CEETimerCSharpWinForms.Forms
             }
             else if (HasSettingsChanged)
             {
-                UIHelper.ShowUserChangedWarning("检测到设置被更改但没有保存，是否立即进行保存？", e, () => ButtonSave_Click(sender, e), () => HasSettingsChanged = false);
+                UIHelper.ShowUserChangedWarning("检测到设置被更改但没有保存，是否立即进行保存？", e, () => ButtonSave_Click(null, e), () => HasSettingsChanged = false);
             }
         }
 
-        private void SettingsForm_FormClosed(object sender, FormClosedEventArgs e)
+        protected override void OnTrackableFormClosed()
         {
             if (InvokeChangeRequired)
             {
@@ -476,6 +475,7 @@ namespace CEETimerCSharpWinForms.Forms
             }
 
             ChangeWorkingStyle(WorkingArea.Funny, false);
+            base.OnTrackableFormClosed();
         }
 
         private void ChangeCustomTextStyle(object sender)
@@ -603,7 +603,6 @@ namespace CEETimerCSharpWinForms.Forms
         {
             try
             {
-                if (!LaunchManager.IsAdmin) MessageX.Popup("检测到当前用户不具有管理员权限，运行该操作会发生错误。\n\n程序将在此消息框关闭后尝试弹出 UAC 提示框，前提要把系统的 UAC 设置为 \"仅当应用尝试更改我的计算机时通知我\" 或及以上，否则将无法进行授权。\n\n稍后若没有看见提示框，请更改 UAC 设置：开始菜单搜索 uac", MessageLevel.Warning, this);
 
                 Process SyncTimeProcess = ProcessHelper.RunProcess("cmd.exe", "/c net stop w32time & sc config w32time start= auto & net start w32time && w32tm /config /manualpeerlist:ntp1.aliyun.com /syncfromflags:manual /reliable:YES /update && w32tm /resync && w32tm /resync", AdminRequired: true);
 

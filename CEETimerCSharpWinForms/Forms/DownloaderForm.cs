@@ -1,4 +1,5 @@
-﻿using CEETimerCSharpWinForms.Modules;
+﻿using CEETimerCSharpWinForms.Controls;
+using CEETimerCSharpWinForms.Modules;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -9,7 +10,7 @@ using System.Windows.Forms;
 
 namespace CEETimerCSharpWinForms.Forms
 {
-    public partial class DownloaderForm : Form
+    public partial class DownloaderForm : TrackableForm
     {
         public static string ManualVersion { get; set; } = LaunchManager.AppVersion;
 
@@ -21,11 +22,12 @@ namespace CEETimerCSharpWinForms.Forms
         public DownloaderForm()
         {
             InitializeComponent();
-            TopMost = MainForm.UniTopMost;
         }
 
-        private async void DownloaderForm_Load(object sender, EventArgs e)
+        protected override async void OnTrackableFormLoad()
         {
+            base.OnTrackableFormLoad();
+
             UIHelper.AlignControlsR(LinkBroswer, ProgressBarMain);
             UIHelper.AlignControlsREx(ButtonRetry, ButtonCancel, ProgressBarMain);
 
@@ -105,8 +107,6 @@ namespace CEETimerCSharpWinForms.Forms
                 {
                     MessageX.Popup($"无法下载更新文件！{ex.ToMessage()}", MessageLevel.Error);
                     LabelDownloading.Text = "下载失败，你可以点击 重试 来重新启动下载。";
-                    LabelSize.Text = "已下载/总共：N/A";
-                    LabelSpeed.Text = "下载速度：N/A";
                     ButtonRetry.Enabled = true;
                 }
 
@@ -123,8 +123,6 @@ namespace CEETimerCSharpWinForms.Forms
             ButtonRetry.Enabled = false;
             ProgressBarMain.Value = 0;
             LabelDownloading.Text = "正在重新下载更新文件，请稍侯...";
-            LabelSize.Text = "已下载/总共：(获取中...)";
-            LabelSpeed.Text = "下载速度：(获取中...)";
 
             await DownloadUpdate();
         }
@@ -151,16 +149,16 @@ namespace CEETimerCSharpWinForms.Forms
             LinkBroswer.Enabled = true;
         }
 
-        private void DownloaderForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            e.Cancel = !IsCancelled;
-        }
-
         private void UpdateUI(long Downloaded, long Total, double Speed, int Progress)
         {
-            LabelSize.Text = $"已下载/总共：{Downloaded} KB / {Total} KB";
-            LabelSpeed.Text = $"下载速度：{Speed:0.00} KB/s";
+            LabelSize.Text = $"已下载/总共: {Downloaded} KB / {Total} KB";
+            LabelSpeed.Text = $"下载速度: {Speed:0.00} KB/s";
             ProgressBarMain.Value = Progress;
+        }
+
+        protected override void OnTrackableFormClosing(FormClosingEventArgs e)
+        {
+            e.Cancel = !IsCancelled;
         }
     }
 }

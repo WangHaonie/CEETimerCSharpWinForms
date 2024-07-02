@@ -846,9 +846,6 @@
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "设置 - 高考倒计时";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SettingsForm_FormClosing);
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.SettingsForm_FormClosed);
-            this.Load += new System.EventHandler(this.SettingsForm_Load);
             this.TabControlMain.ResumeLayout(false);
             this.TabPageGeneral.ResumeLayout(false);
             this.GBoxOthers.ResumeLayout(false);

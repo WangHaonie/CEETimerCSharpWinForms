@@ -50,7 +50,6 @@ namespace CEETimerCSharpWinForms.Modules
 
                 if (!CurrentExecutableName.Equals(OriginalFileName, StringComparison.OrdinalIgnoreCase))
                 {
-                    MessageX.Popup($"为了您的使用体验，请不要更改程序文件名! 程序将在该消息框自动关闭后尝试自动恢复到原文件名，若自动恢复失败请手动改回。\n\n当前文件名：{CurrentExecutableName}\n原始文件名：{OriginalFileName}", MessageLevel.Error, Position: FormStartPosition.CenterScreen, AutoClose: true);
                     ProcessHelper.RunProcess("cmd.exe", $"/c ren \"{CurrentExecutable}\" {OriginalFileName} & start \"\" \"{CurrentExecutablePath}{OriginalFileName}\" {AllArgs}");
                     Environment.Exit(4);
                 }
@@ -67,7 +66,6 @@ namespace CEETimerCSharpWinForms.Modules
                         {
                             case "/?":
                             case "/h":
-                                MessageX.Popup("可用的命令行参数：\n\n/h    显示此帮助信息；\n/ac  检测当前用户是否具有管理员权限；\n/fr <版本号>\n        强制下载并安装指定的版本，留空则当前版本，\n        推荐在特殊情况下使用，不支持老版本。", MessageLevel.Info);
                                 break;
                             case "/ac":
                                 CheckAdmin(out string UserName, true);
@@ -78,7 +76,6 @@ namespace CEETimerCSharpWinForms.Modules
                                 Application.Run(new DownloaderForm());
                                 break;
                             default:
-                                MessageX.Popup($"无法解析的命令行参数：\n{AllArgs}", MessageLevel.Error, AutoClose: true);
                                 break;
                         }
                     }
@@ -124,7 +121,7 @@ namespace CEETimerCSharpWinForms.Modules
                 {
                     using var PipeServer = new NamedPipeServerStream(PipeName, PipeDirection.InOut);
                     PipeServer.WaitForConnection();
-                    UIHelper.ShowLastForm();
+                    FormManager.ShowLastForm();
                 }
             }
             catch { }
@@ -154,7 +151,7 @@ namespace CEETimerCSharpWinForms.Modules
         {
             var ExOutput = string.Format(@"
 ╭───────────────────────────────────────────────────╮
-日期和时间：{0}{1}
+日期和时间: {0}{1}
 ╰───────────────────────────────────────────────────╯
 ", DateTime.Now.ToString(DateTimeFormat), ex.ToMessage());
 

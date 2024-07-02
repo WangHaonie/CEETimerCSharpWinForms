@@ -109,8 +109,6 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "高考倒计时";
             this.TopMost = true;
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
-            this.Load += new System.EventHandler(this.MainForm_Load);
             this.ContextMenuMain.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();

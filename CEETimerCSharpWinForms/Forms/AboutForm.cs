@@ -1,4 +1,5 @@
-﻿using CEETimerCSharpWinForms.Modules;
+﻿using CEETimerCSharpWinForms.Controls;
+using CEETimerCSharpWinForms.Modules;
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -6,16 +7,20 @@ using System.Windows.Forms;
 
 namespace CEETimerCSharpWinForms.Forms
 {
-    public partial class AboutForm : Form
+    public partial class AboutForm : TrackableForm
     {
         private bool IsCheckingUpdate = false;
 
         public AboutForm()
         {
             InitializeComponent();
-            TopMost = MainForm.UniTopMost;
+        }
+
+        protected override void OnTrackableFormLoad()
+        {
             LabelInfo.Text = $"{LaunchManager.AppName}\n版本 v{LaunchManager.AppVersion} x64 ({LaunchManager.AppBuildDate})";
             LabelLicense.Text = $"Licensed under the GNU GPL, v3.\n{LaunchManager.CopyrightInfo}";
+            base.OnTrackableFormLoad();
         }
 
         private async void PicBoxLogo_MouseClick(object sender, MouseEventArgs e)
@@ -50,7 +55,7 @@ namespace CEETimerCSharpWinForms.Forms
             Close();
         }
 
-        private void AboutForm_FormClosing(object sender, FormClosingEventArgs e)
+        protected override void OnTrackableFormClosing(FormClosingEventArgs e)
         {
             e.Cancel = IsCheckingUpdate;
         }

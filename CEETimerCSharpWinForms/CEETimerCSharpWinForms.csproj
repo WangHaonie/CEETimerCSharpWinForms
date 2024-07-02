@@ -146,12 +146,16 @@
     <Compile Include="Controls\ListViewEx.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\TrackableForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Dialogs\RuleDialog.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Dialogs\RuleDialog.Designer.cs">
       <DependentUpon>RuleDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\RulesManager.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Dialogs\RulesManager.Designer.cs">
@@ -196,6 +200,7 @@
     <Compile Include="Modules\ColorDialogHelper.cs" />
     <Compile Include="Modules\ColorHelper.cs" />
     <Compile Include="Modules\CustomRuleHelper.cs" />
+    <Compile Include="Modules\FormManager.cs" />
     <Compile Include="Modules\ListViewItemComparer.cs" />
     <Compile Include="Modules\TupleEx.cs" />
     <Compile Include="Modules\Placeholders.cs" />
