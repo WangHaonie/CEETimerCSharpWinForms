@@ -147,7 +147,7 @@ namespace CEETimerCSharpWinForms.Modules
                 }
 
                 var part1 = new TupleEx<int, TimeSpan>(GetRuleTypeIndexFromRaw(Rule.Type), GetExamTickFormRaw(Rule.Tick));
-                var part2 = new TupleEx<Color, Color, string>(fore, back, (string)CheckCustomText([Rule.Text], out _, part1.Item1));
+                var part2 = new TupleEx<Color, Color, string>(fore, back, (string)CheckCustomText([Rule.Text.RemoveIllegalChars()], out _, part1.Item1));
                 tmp.Add(new(part1, part2));
             }
 
