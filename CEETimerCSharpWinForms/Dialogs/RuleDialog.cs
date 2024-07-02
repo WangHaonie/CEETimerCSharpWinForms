@@ -115,6 +115,7 @@ namespace CEETimerCSharpWinForms.Dialogs
             ExamTick = $"{NudDays.Value}天{NudHours.Value}时{NudMinutes.Value}分{NudSeconds.Value}秒";
             Fore = _Fore;
             Back = _Back;
+            CustomText = TextBoxCustomText.Text.RemoveIllegalChars();
 
             base.OnButtonAClicked();
         }
