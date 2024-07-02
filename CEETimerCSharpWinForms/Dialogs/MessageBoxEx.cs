@@ -1,5 +1,4 @@
 ﻿using CEETimerCSharpWinForms.Controls;
-using CEETimerCSharpWinForms.Forms;
 using CEETimerCSharpWinForms.Modules;
 using System;
 using System.Drawing;
@@ -16,7 +15,7 @@ namespace CEETimerCSharpWinForms.Dialogs
         private readonly SystemSound DialogSound;
         private readonly bool AutoCloseRequired;
 
-        public MessageBoxEx(SystemSound Sound, MessageBoxExButtons Buttons, bool AutoClose)
+        public MessageBoxEx(SystemSound Sound, MessageBoxExButtons Buttons, bool AutoClose) : base(false, true)
         {
             InitializeComponent();
             DialogSound = Sound;
@@ -29,15 +28,7 @@ namespace CEETimerCSharpWinForms.Dialogs
             LabelMessage.Text = Message;
             Text = Title;
             PicBoxIcon.Image = MessageBoxExIcon.ToBitmap();
-            StartPosition = Position;
-
-            if (OwnerForm == null && !UIHelper.IsNormalStart(UIHelper.GetOpenForms()))
-            {
-                StartPosition = FormStartPosition.Manual;
-                var CurrentScreen = UIHelper.GetCurrentScreen().WorkingArea;
-                Location = new(CurrentScreen.Left + (CurrentScreen.Width - Width) / 2, CurrentScreen.Top + (CurrentScreen.Height - Height) / 2);
-            }
-
+            StartPosition = (OwnerForm == null && !UIHelper.IsNormalStart(UIHelper.GetOpenForms())) ? FormStartPosition.CenterScreen : Position;
             ShowDialog(OwnerForm);
             return Result;
         }

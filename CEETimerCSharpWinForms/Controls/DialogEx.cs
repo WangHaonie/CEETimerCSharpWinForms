@@ -19,6 +19,20 @@ namespace CEETimerCSharpWinForms.Controls
             InitializeComponent();
         }
 
+        public DialogEx(bool BindButtons, bool ReadKeys) : this()
+        {
+            if (BindButtons)
+            {
+                AcceptButton = ButtonA;
+                CancelButton = ButtonB;
+            }
+
+            if (ReadKeys)
+            {
+                KeyPreview = true;
+            }
+        }
+
         private void InitializeComponent()
         {
             SuspendLayout();
@@ -28,17 +42,18 @@ namespace CEETimerCSharpWinForms.Controls
             ButtonA = new();
             ButtonB = new();
 
-            AutoScaleDimensions = new(96F, 96F);
             AutoScaleMode = AutoScaleMode.Dpi;
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
             DoubleBuffered = true;
             Font = new("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             FormBorderStyle = FormBorderStyle.FixedSingle;
+            Margin = new(4);
             MaximizeBox = false;
             MinimizeBox = false;
             ShowIcon = false;
             StartPosition = FormStartPosition.CenterParent;
+
             TopMost = MainForm.UniTopMost;
             Controls.AddRange([ButtonA, ButtonB]);
 
@@ -50,6 +65,7 @@ namespace CEETimerCSharpWinForms.Controls
 
         protected override void OnLoad(EventArgs e)
         {
+            KeepProperties();
             OnDialogLoad();
             AdjustUI();
             base.OnLoad(e);
@@ -119,6 +135,11 @@ namespace CEETimerCSharpWinForms.Controls
             {
                 Method();
             }
+        }
+
+        private void KeepProperties() // .NET 貌似会在初始化子类的时候重置基类的某些属性，故该方法可以在重置之后再次应用相关属性
+        {
+            AutoScaleDimensions = new(96F, 96F);
         }
     }
 }

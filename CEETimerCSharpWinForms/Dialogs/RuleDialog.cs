@@ -19,7 +19,7 @@ namespace CEETimerCSharpWinForms.Dialogs
         private string LastText;
         private readonly Dictionary<int, string> UserUnsavedText = [];
 
-        public RuleDialog()
+        public RuleDialog() : base(true, false)
         {
             InitializeComponent();
         }
@@ -60,9 +60,16 @@ namespace CEETimerCSharpWinForms.Dialogs
 
             UIHelper.AdjustOnlyAtHighDpi(() =>
             {
+                UIHelper.AlignControlsR(LinkReset, LabelCustomInfo);
                 UIHelper.AlignControlsX([LabelChars02, LabelChars03, LabelChars04, LabelChars05, ComboBoxRuleType, NudDays, NudHours, NudMinutes, NudSeconds], LabelChars01);
                 UIHelper.AlignControlsX([TextBoxCustomText, LinkReset], LabelCustomText);
+                UIHelper.CompactControlsX(LinkReset, TextBoxCustomText);
+                UIHelper.CompactControlsX(TextBoxCustomText, LabelCustomText);
+                UIHelper.AlignControlsR(LabelPreviewColor, LinkReset);
             });
+
+            PanelMain.AutoSize = true;
+            PanelMain.AutoSizeMode = AutoSizeMode.GrowOnly;
         }
 
         private void ColorLabels_Click(object sender, EventArgs e)
@@ -108,7 +115,6 @@ namespace CEETimerCSharpWinForms.Dialogs
             ExamTick = $"{NudDays.Value}天{NudHours.Value}时{NudMinutes.Value}分{NudSeconds.Value}秒";
             Fore = _Fore;
             Back = _Back;
-            CustomText = TextBoxCustomText.Text;
 
             base.OnButtonAClicked();
         }

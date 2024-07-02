@@ -83,18 +83,9 @@
             // 
             // MessageBoxEx
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
-            this.AutoSize = true;
-            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(201, 83);
             this.Controls.Add(this.PanelMain);
-            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.KeyPreview = true;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
             this.Name = "MessageBoxEx";
-            this.ShowIcon = false;
             this.Text = "MessageBoxEx";
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MessageBoxEx_KeyDown);
             this.PanelMain.ResumeLayout(false);

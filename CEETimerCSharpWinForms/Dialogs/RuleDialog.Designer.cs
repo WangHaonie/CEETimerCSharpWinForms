@@ -230,7 +230,7 @@
             this.LabelPreviewColor.Name = "LabelPreviewColor";
             this.LabelPreviewColor.Size = new System.Drawing.Size(61, 17);
             this.LabelPreviewColor.TabIndex = 20;
-            this.LabelPreviewColor.Text = "效果预览";
+            this.LabelPreviewColor.Text = "颜色效果预览";
             // 
             // TextBoxCustomText
             // 
@@ -257,7 +257,7 @@
             this.LabelCustomInfo.Name = "LabelCustomInfo";
             this.LabelCustomInfo.Size = new System.Drawing.Size(458, 45);
             this.LabelCustomInfo.TabIndex = 23;
-            this.LabelCustomInfo.Text = "用占位符表示变量：{x}-考试名称 {d}-天 {h}-时 {m}-分 {s}-秒 {rd}-四舍五入的天数 {th}-总小时数 {tm}-总分钟数 {ts}-总秒数。\r\n【注意】自定义文本仅在勾选了 设置>显示>自定义文本 时才会生效。";
+            this.LabelCustomInfo.Text = "用占位符表示变量: {x}-考试名称 {d}-天 {h}-时 {m}-分 {s}-秒 {rd}-四舍五入的天数 {th}-总小时数 {tm}-总分钟数 {ts}-总秒数。\r\n注意: 自定义文本仅在勾选了 设置>显示>自定义文本 时才会生效。";
             // 
             // PanelMain
             // 
@@ -298,23 +298,10 @@
             // 
             // RuleDialog
             // 
-            this.AcceptButton = this.ButtonA;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
-            this.AutoSize = true;
-            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.CancelButton = this.ButtonB;
             this.ClientSize = new System.Drawing.Size(456, 87);
             this.Controls.Add(this.LabelPreviewColor);
             this.Controls.Add(this.PanelMain);
-            this.DoubleBuffered = true;
-            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Margin = new System.Windows.Forms.Padding(4);
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
             this.Name = "RuleDialog";
-            this.ShowIcon = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "自定义规则 - 高考倒计时";
             ((System.ComponentModel.ISupportInitialize)(this.NudSeconds)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.NudMinutes)).EndInit();
