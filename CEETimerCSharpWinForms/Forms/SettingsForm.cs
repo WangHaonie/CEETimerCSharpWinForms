@@ -349,20 +349,6 @@ namespace CEETimerCSharpWinForms.Forms
             }
         }
 
-        /*
-        RulesManager Manager = new()
-        {自定义倒计时在各时刻要显示的颜色和内容。
-            CustomRules = UserCustomRules,
-            Preferences = CheckBoxCustomText.Checked ? CustomTextRaw : [null, null, null]
-        };
-
-            if (Manager.ShowDialog() == DialogResult.OK)
-            {
-                SettingsChanged(sender, e);
-        UserCustomRules = Manager.CustomRules;
-            }
-         */
-
         private void ButtonRestart_MouseDown(object sender, MouseEventArgs e)
         {
             IsFunny = IsFunnyClick;
@@ -464,7 +450,11 @@ namespace CEETimerCSharpWinForms.Forms
             }
             else if (HasSettingsChanged)
             {
-                UIHelper.ShowUserChangedWarning("检测到设置被更改但没有保存，是否立即进行保存？", e, () => ButtonSave_Click(null, e), () => HasSettingsChanged = false);
+                UIHelper.ShowUserChangedWarning("检测到当前设置未保存，是否立即进行保存？", e, () => ButtonSave_Click(null, e), () =>
+                {
+                    HasSettingsChanged = false;
+                    Close();
+                });
             }
         }
 

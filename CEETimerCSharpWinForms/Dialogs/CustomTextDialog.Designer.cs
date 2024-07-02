@@ -35,9 +35,6 @@
             this.TextBoxP1 = new System.Windows.Forms.TextBox();
             this.LabelP1 = new System.Windows.Forms.Label();
             this.LabelInfo = new System.Windows.Forms.Label();
-            //this.PanelMain = new System.Windows.Forms.Panel();
-            //this.ButtonA = new System.Windows.Forms.Button();
-            //this.ButtonB = new System.Windows.Forms.Button();
             this.ButtonReset = new System.Windows.Forms.Button();
             this.PanelMain.SuspendLayout();
             this.SuspendLayout();
@@ -161,9 +158,6 @@
 
         #endregion
 
-        //private System.Windows.Forms.Panel PanelMain;
-        //private System.Windows.Forms.Button ButtonA;
-        //private System.Windows.Forms.Button ButtonB;
         private System.Windows.Forms.Label LabelInfo;
         private System.Windows.Forms.TextBox TextBoxP2;
         private System.Windows.Forms.Label LabelP3;
