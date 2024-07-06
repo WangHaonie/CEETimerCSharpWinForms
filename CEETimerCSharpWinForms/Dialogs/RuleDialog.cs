@@ -57,6 +57,7 @@ namespace CEETimerCSharpWinForms.Dialogs
             base.AdjustUI();
             UIHelper.SetLabelAutoWrap(LabelCustomInfo, PanelMain);
             UIHelper.AlignControlsX(ComboBoxRuleType, LabelChars01);
+            UIHelper.AlignControlsR(LabelPreviewColor, LinkReset);
 
             UIHelper.AdjustOnlyAtHighDpi(() =>
             {
@@ -65,7 +66,6 @@ namespace CEETimerCSharpWinForms.Dialogs
                 UIHelper.AlignControlsX([TextBoxCustomText, LinkReset], LabelCustomText);
                 UIHelper.CompactControlsX(LinkReset, TextBoxCustomText);
                 UIHelper.CompactControlsX(TextBoxCustomText, LabelCustomText);
-                UIHelper.AlignControlsR(LabelPreviewColor, LinkReset);
             });
 
             PanelMain.AutoSize = true;
