@@ -8,6 +8,7 @@ using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows.Forms;
 
 namespace CEETimerCSharpWinForms.Forms
@@ -53,7 +54,8 @@ namespace CEETimerCSharpWinForms.Forms
         private readonly int PptsvcThreshold = 1;
         private readonly int BorderRadius = 13;
         private CountdownState SelectedState;
-        private Timer TimerCountdown;
+        private System.Windows.Forms.Timer LocationWatcher;
+        private System.Timers.Timer TimerCountdown;
         private System.Threading.Timer MemoryOptimizer;
         private Point LastLocation;
         private Point LastMouseLocation;
@@ -74,9 +76,15 @@ namespace CEETimerCSharpWinForms.Forms
             DefaultColors = [new(Color.Red, Color.White), new(Color.Green, Color.White), new(Color.Black, Color.White), new(Color.Black, Color.White)];
             SystemEvents.DisplaySettingsChanged += SystemEvents_DisplaySettingsChanged;
             RefreshSettings(null, null);
-            TimerCountdown = new() { Interval = 1000 };
-            TimerCountdown.Tick += StartCountdown;
+
+            TimerCountdown = new(1000) { AutoReset = true };
+            TimerCountdown.Elapsed += StartCountdown;
             TimerCountdown.Start();
+
+            LocationWatcher = new() { Interval = 1000 };
+            LocationWatcher.Tick += LocationWatcher_Tick;
+            LocationWatcher.Start();
+
             LabelCountdown.ForeColor = CountdownColors[3].Item1;
             BackColor = CountdownColors[3].Item2;
             Task.Run(() => UpdateChecker.CheckUpdate(true, this));
@@ -319,7 +327,16 @@ namespace CEETimerCSharpWinForms.Forms
             e.Cancel = e.CloseReason != CloseReason.WindowsShutDown;
         }
 
-        private void StartCountdown(object sender, EventArgs e)
+        private void LocationWatcher_Tick(object sender, EventArgs e)
+        {
+            if (!IsReadyToMove)
+            {
+                ApplyLocation();
+                KeepOnScreen();
+            }
+        }
+
+        private void StartCountdown(object sender, ElapsedEventArgs e)
         {
             if (IsCountdownReady && DateTime.Now < ExamStartTime)
             {
@@ -335,19 +352,11 @@ namespace CEETimerCSharpWinForms.Forms
             }
             else
             {
-                LabelCountdown.ForeColor = CountdownColors[3].Item1;
-                BackColor = CountdownColors[3].Item2;
-                LabelCountdown.Text = "欢迎使用高考倒计时";
-            }
-
-            if (!IsReadyToMove)
-            {
-                ApplyLocation();
-                KeepOnScreen();
+                InvokeCountdown("欢迎使用高考倒计时", CountdownColors[3].Item1, CountdownColors[3].Item2);
             }
         }
 
-        private void ApplyColorRule(int Phase, TimeSpan Span, string ExamName, string Hint)
+        private void ApplyColorRule(int Phase, TimeSpan Span, string Name, string Hint)
         {
             var r = CustomRules.Where(i => i.Item1.Item1 == Phase).Select(x => new { Tick = x.Item1.Item2, Fore = x.Item2.Item1, Back = x.Item2.Item2, Custom = x.Item2.Item3 });
             var R = Phase == 2 ? r.OrderByDescending(x => x.Tick) : r.OrderBy(x => x.Tick);
@@ -359,13 +368,13 @@ namespace CEETimerCSharpWinForms.Forms
                 {
                     if (Phase == 2 ? (Span >= Rule.Tick) : (Span <= Rule.Tick + new TimeSpan(0, 0, 0, 1)))
                     {
-                        SetCountdown(Span, ExamName, Hint, Rule.Fore, Rule.Back, Rule.Custom);
+                        SetCountdown(Span, Name, Hint, Rule.Fore, Rule.Back, Rule.Custom);
                         return;
                     }
                 }
             }
 
-            SetCountdown(Span, ExamName, Hint, CountdownColors[Phase].Item1, CountdownColors[Phase].Item2, CustomText[Phase]);
+            SetCountdown(Span, Name, Hint, CountdownColors[Phase].Item1, CountdownColors[Phase].Item2, CustomText[Phase]);
         }
 
         private void ApplyLocation()
@@ -388,42 +397,45 @@ namespace CEETimerCSharpWinForms.Forms
             }
         }
 
-        private void SetCountdown(TimeSpan Span, string ExamName, string Hint, Color Fore, Color Back, string Custom)
+        private void SetCountdown(TimeSpan Span, string Name, string Hint, Color Fore, Color Back, string Custom)
         {
-            LabelCountdown.ForeColor = Fore;
-            BackColor = Back;
-
-            if (IsCustomText)
-            {
-                SetCustomText(Custom, Span);
-            }
-            else
-            {
-                LabelCountdown.Text = SelectedState switch
-                {
-                    CountdownState.Normal => $"{Placeholders.PH_JULI}{ExamName}{Hint}{Span.Days}天{Span.Hours:00}时{Span.Minutes:00}分{Span.Seconds:00}秒",
-                    CountdownState.DaysOnly => $"{Placeholders.PH_JULI}{ExamName}{Hint}{Span.Days}天",
-                    CountdownState.DaysOnlyWithRounding => $"{Placeholders.PH_JULI}{ExamName}{Hint}{Span.Days + 1}天",
-                    CountdownState.HoursOnly => $"{Placeholders.PH_JULI}{ExamName}{Hint}{Span.TotalHours:0}小时",
-                    CountdownState.MinutesOnly => $"{Placeholders.PH_JULI}{ExamName}{Hint}{Span.TotalMinutes:0}分钟",
-                    CountdownState.SecondsOnly => $"{Placeholders.PH_JULI}{ExamName}{Hint}{Span.TotalSeconds:0}秒",
-                    _ => ConfigPolicy.NotAllowed<string>()
-                };
-            }
+            InvokeCountdown(IsCustomText ? GetCountdownWithCustomText(Span, Name, Custom) : GetCountdown(Span, Name, Hint), Fore, Back);
         }
 
-        private void SetCustomText(string Custom, TimeSpan Span)
+        private string GetCountdownWithCustomText(TimeSpan Span, string Name, string Custom)
         {
-            LabelCountdown.Text = Custom
-                    .Replace(Placeholders.PH_EXAMNAME, ExamName)
-                    .Replace(Placeholders.PH_DAYS, $"{Span.Days}")
-                    .Replace(Placeholders.PH_HOURS, $"{Span.Hours:00}")
-                    .Replace(Placeholders.PH_MINUTES, $"{Span.Minutes:00}")
-                    .Replace(Placeholders.PH_SECONDS, $"{Span.Seconds:00}")
-                    .Replace(Placeholders.PH_ROUNDEDDAYS, $"{Span.Days + 1}")
-                    .Replace(Placeholders.PH_TOTALHOURS, $"{Span.TotalHours:0}")
-                    .Replace(Placeholders.PH_TOTALMINUTES, $"{Span.TotalMinutes:0}")
-                    .Replace(Placeholders.PH_TOTALSECONDS, $"{Span.TotalSeconds:0}");
+            return Custom
+                .Replace(Placeholders.PH_EXAMNAME, Name)
+                .Replace(Placeholders.PH_DAYS, $"{Span.Days}")
+                .Replace(Placeholders.PH_HOURS, $"{Span.Hours:00}")
+                .Replace(Placeholders.PH_MINUTES, $"{Span.Minutes:00}")
+                .Replace(Placeholders.PH_SECONDS, $"{Span.Seconds:00}")
+                .Replace(Placeholders.PH_ROUNDEDDAYS, $"{Span.Days + 1}")
+                .Replace(Placeholders.PH_TOTALHOURS, $"{Span.TotalHours:0}")
+                .Replace(Placeholders.PH_TOTALMINUTES, $"{Span.TotalMinutes:0}")
+                .Replace(Placeholders.PH_TOTALSECONDS, $"{Span.TotalSeconds:0}");
+        }
+
+        private string GetCountdown(TimeSpan Span, string Name, string Hint) => SelectedState switch
+        {
+            CountdownState.Normal => $"{Placeholders.PH_JULI}{Name}{Hint}{Span.Days}天{Span.Hours:00}时{Span.Minutes:00}分{Span.Seconds:00}秒",
+            CountdownState.DaysOnly => $"{Placeholders.PH_JULI}{Name}{Hint}{Span.Days}天",
+            CountdownState.DaysOnlyWithRounding => $"{Placeholders.PH_JULI}{Name}{Hint}{Span.Days + 1}天",
+            CountdownState.HoursOnly => $"{Placeholders.PH_JULI}{Name}{Hint}{Span.TotalHours:0}小时",
+            CountdownState.MinutesOnly => $"{Placeholders.PH_JULI}{Name}{Hint}{Span.TotalMinutes:0}分钟",
+            CountdownState.SecondsOnly => $"{Placeholders.PH_JULI}{Name}{Hint}{Span.TotalSeconds:0}秒",
+            _ => ConfigPolicy.NotAllowed<string>()
+        };
+
+
+        private void InvokeCountdown(string CountdownText, Color Fore, Color Back)
+        {
+            BeginInvoke(() =>
+            {
+                LabelCountdown.Text = CountdownText;
+                LabelCountdown.ForeColor = Fore;
+                BackColor = Back;
+            });
         }
 
         private void CompatibleWithPPTService()
