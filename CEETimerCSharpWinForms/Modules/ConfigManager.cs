@@ -48,6 +48,7 @@ namespace CEETimerCSharpWinForms.Modules
                 {
                     Directory.Delete(ConfigFile);
                 }
+
                 File.Create(ConfigFile).Close();
             }
         }

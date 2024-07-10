@@ -207,7 +207,6 @@ namespace CEETimerCSharpWinForms.Forms
             }
 
             MemoryOptimizer?.Dispose();
-
             if (IsMemoryOptimizationEnabled)
                 MemoryOptimizer = new(OptimizeMemory, null, TimeSpan.Zero, TimeSpan.FromMinutes(5));
 
@@ -219,11 +218,6 @@ namespace CEETimerCSharpWinForms.Forms
         {
             RefreshScreen();
             SetLabelCountdownAutoWrap();
-        }
-
-        private void SetLabelCountdownAutoWrap()
-        {
-            UIHelper.SetLabelAutoWrap(LabelCountdown, true);
         }
 
         #region 来自网络
@@ -443,6 +437,11 @@ namespace CEETimerCSharpWinForms.Forms
                     Left = ValidArea.Left + PptsvcThreshold;
                 }
             }
+        }
+
+        private void SetLabelCountdownAutoWrap()
+        {
+            UIHelper.SetLabelAutoWrap(LabelCountdown, true);
         }
 
         private void RefreshScreen()

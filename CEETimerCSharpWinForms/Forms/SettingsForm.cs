@@ -656,7 +656,7 @@ namespace CEETimerCSharpWinForms.Forms
                 case WorkingArea.ChangeFont:
                     CountdownFont = NewFont;
                     CountdownFontStyle = NewFont.Style;
-                    LabelFont.Text = $"当前字体: {NewFont.Name}, {NewFont.Size}pt, {NewFont.Style}";
+                    LabelFont.Text = $"当前字体: {NewFont.Name}, {NewFont.Style}, {NewFont.Size}pt";
                     break;
                 case WorkingArea.LastColor:
                     LabelPreviewColor1.ForeColor = LabelColor11.BackColor = CountdownColors[0].Item1;
