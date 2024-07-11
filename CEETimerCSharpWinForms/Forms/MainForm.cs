@@ -50,12 +50,12 @@ namespace CEETimerCSharpWinForms.Forms
 
         private bool IsReadyToMove;
         private bool IsCountdownReady;
+        private bool IsCountdownRunning;
         private bool IsWin10BelowRounded;
         private readonly int PptsvcThreshold = 1;
         private readonly int BorderRadius = 13;
         private CountdownState SelectedState;
         private System.Windows.Forms.Timer LocationWatcher;
-        private System.Timers.Timer TimerCountdown;
         private System.Threading.Timer MemoryOptimizer;
         private Point LastLocation;
         private Point LastMouseLocation;
@@ -68,18 +68,14 @@ namespace CEETimerCSharpWinForms.Forms
         public MainForm()
         {
             InitializeComponent();
-            SizeChanged += MainForm_SizeChanged;
         }
 
         protected override void OnTrackableFormLoad()
         {
+            SizeChanged += MainForm_SizeChanged;
             DefaultColors = [new(Color.Red, Color.White), new(Color.Green, Color.White), new(Color.Black, Color.White), new(Color.Black, Color.White)];
             SystemEvents.DisplaySettingsChanged += SystemEvents_DisplaySettingsChanged;
             RefreshSettings(null, null);
-
-            TimerCountdown = new(1000) { AutoReset = true };
-            TimerCountdown.Elapsed += StartCountdown;
-            TimerCountdown.Start();
 
             LocationWatcher = new() { Interval = 1000 };
             LocationWatcher.Tick += LocationWatcher_Tick;
@@ -100,7 +96,7 @@ namespace CEETimerCSharpWinForms.Forms
             }
         }
 
-        private void RefreshSettings(object sender, EventArgs e)
+        private async void RefreshSettings(object sender, EventArgs e)
         {
             configManager.MountConfig(true);
 
@@ -217,6 +213,7 @@ namespace CEETimerCSharpWinForms.Forms
             MemoryOptimizer?.Dispose();
             if (IsMemoryOptimizationEnabled)
                 MemoryOptimizer = new(OptimizeMemory, null, TimeSpan.Zero, TimeSpan.FromMinutes(5));
+            await StartCountdown();
 
             configManager.MountConfig(false);
             SetLabelCountdownAutoWrap();
@@ -336,24 +333,35 @@ namespace CEETimerCSharpWinForms.Forms
             }
         }
 
-        private void StartCountdown(object sender, ElapsedEventArgs e)
+        private async Task StartCountdown()
         {
-            if (IsCountdownReady && DateTime.Now < ExamStartTime)
+            if (IsCountdownRunning) return;
+            IsCountdownRunning = true;
+
+            while (true)
             {
-                ApplyColorRule(0, ExamStartTime - DateTime.Now, ExamName, Placeholders.PH_START);
+                if (IsCountdownReady && DateTime.Now < ExamStartTime)
+                {
+                    ApplyColorRule(0, ExamStartTime - DateTime.Now, ExamName, Placeholders.PH_START);
+                }
+                else if (IsCountdownReady && DateTime.Now < ExamEndTime && IsShowEnd)
+                {
+                    ApplyColorRule(1, ExamEndTime - DateTime.Now, ExamName, Placeholders.PH_LEFT);
+                }
+                else if (IsCountdownReady && DateTime.Now > ExamEndTime && IsShowEnd && IsShowPast)
+                {
+                    ApplyColorRule(2, DateTime.Now - ExamEndTime, ExamName, Placeholders.PH_PAST);
+                }
+                else
+                {
+                    break;
+                }
+
+                await Task.Delay(1000);
             }
-            else if (IsCountdownReady && DateTime.Now < ExamEndTime && IsShowEnd)
-            {
-                ApplyColorRule(1, ExamEndTime - DateTime.Now, ExamName, Placeholders.PH_LEFT);
-            }
-            else if (IsCountdownReady && DateTime.Now > ExamEndTime && IsShowEnd && IsShowPast)
-            {
-                ApplyColorRule(2, DateTime.Now - ExamEndTime, ExamName, Placeholders.PH_PAST);
-            }
-            else
-            {
-                InvokeCountdown("欢迎使用高考倒计时", CountdownColors[3].Item1, CountdownColors[3].Item2);
-            }
+
+            IsCountdownRunning = false;
+            UpdateCountdown("欢迎使用高考倒计时", CountdownColors[3].Item1, CountdownColors[3].Item2);
         }
 
         private void ApplyColorRule(int Phase, TimeSpan Span, string Name, string Hint)
@@ -399,7 +407,7 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void SetCountdown(TimeSpan Span, string Name, string Hint, Color Fore, Color Back, string Custom)
         {
-            InvokeCountdown(IsCustomText ? GetCountdownWithCustomText(Span, Name, Custom) : GetCountdown(Span, Name, Hint), Fore, Back);
+            UpdateCountdown(IsCustomText ? GetCountdownWithCustomText(Span, Name, Custom) : GetCountdown(Span, Name, Hint), Fore, Back);
         }
 
         private string GetCountdownWithCustomText(TimeSpan Span, string Name, string Custom)
@@ -428,7 +436,7 @@ namespace CEETimerCSharpWinForms.Forms
         };
 
 
-        private void InvokeCountdown(string CountdownText, Color Fore, Color Back)
+        private void UpdateCountdown(string CountdownText, Color Fore, Color Back)
         {
             BeginInvoke(() =>
             {
