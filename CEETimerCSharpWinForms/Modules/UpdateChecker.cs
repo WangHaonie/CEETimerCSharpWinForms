@@ -37,7 +37,7 @@ namespace CEETimerCSharpWinForms.Modules
 
                 if (Version.Parse(CurrentLatest) > Version.Parse(LaunchManager.AppVersion))
                 {
-                    OwnerForm.Invoke(new Action(() =>
+                    OwnerForm.Invoke(() =>
                     {
                         if (MessageX.Popup($"检测到新版本，是否下载并安装？\n\n当前版本: v{LaunchManager.AppVersion}\n最新版本: v{CurrentLatest}\n发布日期: {PublishTime}\n\nv{CurrentLatest}更新日志: {UpdateLog}", MessageLevel.Info, OwnerForm, Buttons: MessageBoxExButtons.YesNo, Position: IsProgramStart ? FormStartPosition.CenterScreen : FormStartPosition.CenterParent) == DialogResult.Yes)
                         {
@@ -48,7 +48,7 @@ namespace CEETimerCSharpWinForms.Modules
 
                             FormDownloader.ReActivate();
                         }
-                    }));
+                    });
                 }
                 else if (!IsProgramStart)
                 {

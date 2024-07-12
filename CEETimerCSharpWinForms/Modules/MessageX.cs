@@ -59,7 +59,7 @@ namespace CEETimerCSharpWinForms.Modules
                     https://stackoverflow.com/a/29256646/21094697
 
                     */
-                    return (DialogResult)OwnerForm.Invoke(new Func<DialogResult>(ShowPopup));
+                    return (DialogResult)OwnerForm.Invoke(ShowPopup); // 等效于 Func<DialogResult>
                     #endregion
                 }
                 else

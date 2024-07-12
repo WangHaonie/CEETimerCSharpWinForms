@@ -33,7 +33,7 @@ namespace CEETimerCSharpWinForms.Modules
             lock (ShownForms)
             {
                 var lastForm = ShownForms.LastOrDefault();
-                lastForm?.Invoke(new Action(lastForm.ReActivate));
+                lastForm?.Invoke(lastForm.ReActivate);
             }
         }
     }

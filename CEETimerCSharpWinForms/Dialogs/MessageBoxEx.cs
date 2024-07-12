@@ -91,7 +91,7 @@ namespace CEETimerCSharpWinForms.Dialogs
 
                     if (InvokeRequired)
                     {
-                        Invoke(new Action(() => Close()));
+                        Invoke(Close);
                     }
                     else
                     {
