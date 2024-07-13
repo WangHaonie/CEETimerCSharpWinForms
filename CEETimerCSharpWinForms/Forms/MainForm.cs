@@ -8,7 +8,6 @@ using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Timers;
 using System.Windows.Forms;
 
 namespace CEETimerCSharpWinForms.Forms
