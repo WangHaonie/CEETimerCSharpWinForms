@@ -31,7 +31,7 @@ namespace CEETimerCSharpWinForms.Forms
             UIHelper.AlignControlsR(LinkBroswer, ProgressBarMain);
             UIHelper.AlignControlsREx(ButtonRetry, ButtonCancel, ProgressBarMain);
 
-            string LatestVersion = Updater.CurrentLatest;
+            string LatestVersion = Updater.LatestVersion;
             string SelectedVersion = ManualVersion;
 
             if (string.IsNullOrWhiteSpace(LatestVersion))

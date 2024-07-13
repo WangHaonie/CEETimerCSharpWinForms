@@ -16,7 +16,7 @@ namespace CEETimerCSharpWinForms.Modules
 
     public class Updater
     {
-        public static string CurrentLatest { get; private set; }
+        public static string LatestVersion { get; private set; }
         public static long UpdateSize { get; private set; } = 0;
 
         private DownloaderForm FormDownloader;
@@ -29,7 +29,7 @@ namespace CEETimerCSharpWinForms.Modules
             try
             {
                 string ResponseContent = _HttpClient.GetAsync("https://gitee.com/wanghaonie/CEETimerCSharpWinForms/raw/main/api/github.json").Result.EnsureSuccessStatusCode().Content.ReadAsStringAsync().Result;
-                string CurrentLatest = CurrentLatest = JObject.Parse(ResponseContent)["name"].ToString();
+                string CurrentLatest = LatestVersion = JObject.Parse(ResponseContent)["name"].ToString();
                 DateTime.TryParse(JObject.Parse(ResponseContent)["published_at"].ToString(), out DateTime result);
                 string PublishTime = result.AddHours(8).ToString(LaunchManager.DateTimeFormat);
                 string UpdateLog = JObject.Parse(ResponseContent)["body"].ToString().FormatLog(CurrentLatest);
