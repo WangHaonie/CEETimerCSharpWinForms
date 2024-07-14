@@ -90,4 +90,4 @@ CEETimerCSharpWinForms is licensed under the GNU General Public License v3.0 (GP
 ## 其他链接
 [CSDN 博客](https://blog.csdn.net/WHNdeCSDN/article/details/139425056)
 ## 打赏作者
-[传送门](https://wanghaonie.github.io/files/Reward.jpg)
+[传送门](https://wanghaonie.github.io/reward/reward.jpg)
