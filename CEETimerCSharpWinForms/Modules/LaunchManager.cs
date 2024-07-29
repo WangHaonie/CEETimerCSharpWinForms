@@ -11,25 +11,26 @@ namespace CEETimerCSharpWinForms.Modules
 {
     public static class LaunchManager
     {
+        public static string CurrentExecutableDir => AppDomain.CurrentDomain.BaseDirectory;
+        public static string CurrentExecutablePath => Application.ExecutablePath;
         public static bool IsAdmin { get; private set; }
 
         public const string AppName = "高考倒计时 by WangHaonie";
-        public const string AppNameEn = "CEETimerCSharpWinForms";
+        public const string AppNameEng = "CEETimerCSharpWinForms";
         public const string AppVersion = "3.0.7";
         public const string AppBuildDate = "2024/07/13";
         public const string CopyrightInfo = "Copyright © 2023-2024 WangHaonie";
-        public const string OriginalFileName = $"{AppNameEn}.exe";
+        public const string OriginalFileName = $"{AppNameEng}.exe";
         public const string InfoMsg = "提示 - 高考倒计时";
         public const string WarnMsg = "警告 - 高考倒计时";
         public const string ErrMsg = "错误 - 高考倒计时";
         public const string DateTimeFormat = "yyyy-MM-dd dddd HH:mm:ss";
-        public const string RequestUA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36";
+        public const string UpdateAPI = "https://gitee.com/WangHaonie/CEETimerCSharpWinForms/raw/main/api/github.json";
+        public const string UpdateURL = "https://gitee.com/WangHaonie/CEETimerCSharpWinForms/raw/main/download/CEETimerCSharpWinForms_{0}_x64_Setup.exe";
+        public const string RequestUA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36";
 
-        public static readonly string CurrentExecutablePath = AppDomain.CurrentDomain.BaseDirectory;
-        public static readonly string CurrentExecutable = Application.ExecutablePath;
-
-        private static readonly string PipeName = $"{AppNameEn}_[34c14833-98da-49f7-a2ab-369e88e73b95]";
-        private static readonly string CurrentExecutableName = Path.GetFileName(CurrentExecutable);
+        private static readonly string PipeName = $"{AppNameEng}_[34c14833-98da-49f7-a2ab-369e88e73b95]";
+        private static readonly string CurrentExecutableName = Path.GetFileName(CurrentExecutablePath);
 
         public static void StartProgram(string[] args)
         {
@@ -42,7 +43,7 @@ namespace CEETimerCSharpWinForms.Modules
             Application.ThreadException += Application_ThreadException;
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            using var MutexMain = new Mutex(true, $"{AppNameEn}_MUTEX_61c0097d-3682-421c-84e6-70ca37dc31dd_[A3F8B92E6D14]", out bool IsNewProcess);
+            using var MutexMain = new Mutex(true, $"{AppNameEng}_MUTEX_61c0097d-3682-421c-84e6-70ca37dc31dd_[A3F8B92E6D14]", out bool IsNewProcess);
 
             if (IsNewProcess)
             {
@@ -51,7 +52,7 @@ namespace CEETimerCSharpWinForms.Modules
                 if (!CurrentExecutableName.Equals(OriginalFileName, StringComparison.OrdinalIgnoreCase))
                 {
                     MessageX.Popup($"为了您的使用体验，请不要更改程序文件名! 程序将在该消息框自动关闭后尝试自动恢复到原文件名，若自动恢复失败请手动改回。\n\n当前文件名: {CurrentExecutableName}\n原始文件名: {OriginalFileName}", MessageLevel.Error, Position: FormStartPosition.CenterScreen, AutoClose: true);
-                    ProcessHelper.RunProcess("cmd.exe", $"/c ren \"{CurrentExecutable}\" {OriginalFileName} & start \"\" \"{CurrentExecutablePath}{OriginalFileName}\" {AllArgs}");
+                    ProcessHelper.RunProcess("cmd.exe", $"/c ren \"{CurrentExecutablePath}\" {OriginalFileName} & start \"\" \"{CurrentExecutableDir}{OriginalFileName}\" {AllArgs}");
                     Environment.Exit(4);
                 }
                 else
@@ -99,7 +100,7 @@ namespace CEETimerCSharpWinForms.Modules
 
         public static void Shutdown(bool Restart = false)
         {
-            ProcessHelper.RunProcess("cmd.exe", $"/c taskkill /f /fi \"PID eq {Process.GetCurrentProcess().Id}\" /im {CurrentExecutableName} {(Restart ? $"& start \"\" \"{CurrentExecutable}\"" : "")}");
+            ProcessHelper.RunProcess("cmd.exe", $"/c taskkill /f /fi \"PID eq {Process.GetCurrentProcess().Id}\" /im {CurrentExecutableName} {(Restart ? $"& start \"\" \"{CurrentExecutablePath}\"" : "")}");
             Environment.Exit(255);
         }
 
@@ -152,26 +153,22 @@ namespace CEETimerCSharpWinForms.Modules
 
         private static void HandleException(Exception ex)
         {
-            var ExOutput = string.Format(@"
-╭───────────────────────────────────────────────────╮
-日期和时间: {0}{1}
-╰───────────────────────────────────────────────────╯
-", DateTime.Now.ToString(DateTimeFormat), ex.ToMessage());
-
+            var ExOutput = $"\n\n================== v{AppVersion} - {DateTime.Now.ToString(DateTimeFormat)} =================={ex.ToMessage()}";
             var ExFileName = "UnhandledException.txt";
-            var ExFilePath = $"{CurrentExecutablePath}{ExFileName}";
+            var ExFilePath = $"{CurrentExecutableDir}{ExFileName}";
 
             Clipboard.SetText(ExOutput);
             File.AppendAllText(ExFilePath, ExOutput);
 
             var _DialogResult = MessageX.Popup($"程序出现意外错误，无法继续运行，非常抱歉给您带来不便，相关错误信息已写入到安装文件夹中的 {ExFileName} 文件和系统剪切板，建议您将相关信息并发送给软件开发者以便我们更好的定位并解决问题。或者您也可以点击 \"是\" 来重启应用程序，\"否\" 关闭应用程序{ex.ToMessage()}", MessageLevel.Error, Buttons: MessageBoxExButtons.YesNo);
-            OpenDir();
+
+            OpenInstallDir();
             Shutdown(Restart: _DialogResult == DialogResult.Yes);
         }
 
-        public static void OpenDir()
+        public static void OpenInstallDir()
         {
-            Process.Start(CurrentExecutablePath);
+            Process.Start(CurrentExecutableDir);
         }
     }
 }

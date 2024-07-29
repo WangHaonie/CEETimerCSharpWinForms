@@ -39,7 +39,7 @@ namespace CEETimerCSharpWinForms.Forms
                 LatestVersion = SelectedVersion.IsVersionNumber() ? SelectedVersion : LaunchManager.AppVersion;
             }
 
-            DownloadUrl = string.Format("https://gitee.com/WangHaonie/CEETimerCSharpWinForms/raw/main/download/CEETimerCSharpWinForms_{0}_x64_Setup.exe", LatestVersion);
+            DownloadUrl = string.Format(LaunchManager.UpdateURL, LatestVersion);
             DownloadPath = Path.Combine(Path.GetTempPath(), Path.GetFileName(new Uri(DownloadUrl).AbsolutePath));
 
             await DownloadUpdate();

@@ -28,7 +28,7 @@ namespace CEETimerCSharpWinForms.Modules
 
             try
             {
-                string ResponseContent = _HttpClient.GetAsync("https://gitee.com/wanghaonie/CEETimerCSharpWinForms/raw/main/api/github.json").Result.EnsureSuccessStatusCode().Content.ReadAsStringAsync().Result;
+                string ResponseContent = _HttpClient.GetAsync(LaunchManager.UpdateAPI).Result.EnsureSuccessStatusCode().Content.ReadAsStringAsync().Result;
                 string CurrentLatest = LatestVersion = JObject.Parse(ResponseContent)["name"].ToString();
                 DateTime.TryParse(JObject.Parse(ResponseContent)["published_at"].ToString(), out DateTime result);
                 string PublishTime = result.AddHours(8).ToString(LaunchManager.DateTimeFormat);

@@ -34,7 +34,7 @@
             this.ContextSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripSeparatorMain = new System.Windows.Forms.ToolStripSeparator();
-            this.ContextOpenDir = new System.Windows.Forms.ToolStripMenuItem();
+            this.ContextInstallDir = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextMenuMain.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -57,7 +57,7 @@
             this.ContextSettings,
             this.ContextAbout,
             this.ToolStripSeparatorMain,
-            this.ContextOpenDir});
+            this.ContextInstallDir});
             this.ContextMenuMain.Name = "Context";
             this.ContextMenuMain.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
             this.ContextMenuMain.Size = new System.Drawing.Size(183, 76);
@@ -82,12 +82,12 @@
             this.ToolStripSeparatorMain.Name = "ToolStripSeparatorMain";
             this.ToolStripSeparatorMain.Size = new System.Drawing.Size(179, 6);
             // 
-            // ContextOpenDir
+            // ContextInstallDir
             // 
-            this.ContextOpenDir.Name = "ContextOpenDir";
-            this.ContextOpenDir.Size = new System.Drawing.Size(182, 22);
-            this.ContextOpenDir.Text = "打开所在文件夹(&O)";
-            this.ContextOpenDir.Click += new System.EventHandler(this.ContextOpenDir_Click);
+            this.ContextInstallDir.Name = "ContextInstallDir";
+            this.ContextInstallDir.Size = new System.Drawing.Size(182, 22);
+            this.ContextInstallDir.Text = "安装目录(&D)";
+            this.ContextInstallDir.Click += new System.EventHandler(this.ContextInstallDir_Click);
             // 
             // MainForm
             // 
@@ -122,7 +122,7 @@
         private System.Windows.Forms.ToolStripMenuItem ContextAbout;
         private System.Windows.Forms.ToolStripMenuItem ContextSettings;
         private System.Windows.Forms.ToolStripSeparator ToolStripSeparatorMain;
-        private System.Windows.Forms.ToolStripMenuItem ContextOpenDir;
+        private System.Windows.Forms.ToolStripMenuItem ContextInstallDir;
     }
 }
 

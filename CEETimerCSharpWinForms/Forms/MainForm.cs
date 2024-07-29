@@ -313,9 +313,9 @@ namespace CEETimerCSharpWinForms.Forms
             FormAbout.ReActivate();
         }
 
-        private void ContextOpenDir_Click(object sender, EventArgs e)
+        private void ContextInstallDir_Click(object sender, EventArgs e)
         {
-            LaunchManager.OpenDir();
+            LaunchManager.OpenInstallDir();
         }
 
         protected override void OnTrackableFormClosing(FormClosingEventArgs e)
@@ -501,7 +501,7 @@ namespace CEETimerCSharpWinForms.Forms
         {
             try
             {
-                int MemoryUsage = int.Parse(ProcessHelper.GetProcessOutput(ProcessHelper.RunProcess("powershell.exe", $"-Command (Get-Counter \\\"\\Process({LaunchManager.AppNameEn})\\Working Set - Private\\\").CounterSamples.CookedValue", RedirectOutput: true)));
+                int MemoryUsage = int.Parse(ProcessHelper.GetProcessOutput(ProcessHelper.RunProcess("powershell.exe", $"-Command (Get-Counter \\\"\\Process({LaunchManager.AppNameEng})\\Working Set - Private\\\").CounterSamples.CookedValue", RedirectOutput: true)));
 
                 if (MemoryUsage > 9437184)
                 {
