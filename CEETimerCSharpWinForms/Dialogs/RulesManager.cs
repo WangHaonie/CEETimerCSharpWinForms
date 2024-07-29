@@ -11,7 +11,7 @@ namespace CEETimerCSharpWinForms.Dialogs
 {
     public partial class RulesManager : DialogEx
     {
-        public List<TupleEx<TupleEx<int, TimeSpan>, TupleEx<Color, Color, string>>> CustomRules { get; set; }
+        public List<TupleEx<int, TimeSpan, TupleEx<Color, Color, string>>> CustomRules { get; set; }
         public string[] Preferences { get; set; }
 
         private bool IsEditMode;
@@ -36,9 +36,8 @@ namespace CEETimerCSharpWinForms.Dialogs
                 {
                     foreach (var Rule in CustomRules)
                     {
-                        var Part1 = Rule.Item1;
-                        var Part2 = Rule.Item2;
-                        AddListViewItem(Part1.Item1, CustomRuleHelper.GetExamTickText(Part1.Item2), Part2.Item1, Part2.Item2, Part2.Item3);
+                        var Part2 = Rule.Item3;
+                        AddListViewItem(Rule.Item1, CustomRuleHelper.GetExamTickText(Rule.Item2), Part2.Item1, Part2.Item2, Part2.Item3);
                     }
                 }
             }
@@ -115,7 +114,7 @@ namespace CEETimerCSharpWinForms.Dialogs
 
             foreach (ListViewItem Item in GetAllItems())
             {
-                CustomRules.Add(new(new(CustomRuleHelper.GetRuleTypeIndex(Item.SubItems[0].Text), CustomRuleHelper.GetExamTick(Item.SubItems[1].Text)), new(ColorHelper.GetColor(Item.SubItems[2].Text), ColorHelper.GetColor(Item.SubItems[3].Text), Item.SubItems[4].Text)));
+                CustomRules.Add(new(CustomRuleHelper.GetRuleTypeIndex(Item.SubItems[0].Text), CustomRuleHelper.GetExamTick(Item.SubItems[1].Text), new(ColorHelper.GetColor(Item.SubItems[2].Text), ColorHelper.GetColor(Item.SubItems[3].Text), Item.SubItems[4].Text)));
             }
 
             base.OnButtonAClicked();

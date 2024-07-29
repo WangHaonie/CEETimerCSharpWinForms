@@ -32,7 +32,7 @@ namespace CEETimerCSharpWinForms.Forms
         public int PositionIndex { get; set; }
         public List<TupleEx<Color, Color>> CountdownColors { get; set; }
         public List<TupleEx<Color, Color>> DefaultColors { get; set; }
-        public List<TupleEx<TupleEx<int, TimeSpan>, TupleEx<Color, Color, string>>> UserCustomRules { get; set; }
+        public List<TupleEx<int, TimeSpan, TupleEx<Color, Color, string>>> UserCustomRules { get; set; }
         public string ExamName { get; set; }
         public string[] CustomTextRaw { get; set; }
         public event EventHandler ConfigChanged;

@@ -124,17 +124,16 @@ namespace CEETimerCSharpWinForms.Modules
 
             foreach (var Rule in Rules)
             {
-                var Part1 = Rule.Item1;
-                var Part2 = Rule.Item2;
-                tmp.Add(new($"{Part1.Item1}", GetExamTickConfig(Part1.Item2), Part2.Item1.ToRgb(), Part2.Item2.ToRgb(), Part2.Item3));
+                var Part2 = Rule.Item3;
+                tmp.Add(new($"{Rule.Item1}", GetExamTickConfig(Rule.Item2), Part2.Item1.ToRgb(), Part2.Item2.ToRgb(), Part2.Item3));
             }
 
             return tmp;
         }
 
-        public static List<TupleEx<TupleEx<int, TimeSpan>, TupleEx<Color, Color, string>>> GetObject(List<Config> cfg)
+        public static List<TupleEx<int, TimeSpan, TupleEx<Color, Color, string>>> GetObject(List<Config> cfg)
         {
-            var tmp = new List<TupleEx<TupleEx<int, TimeSpan>, TupleEx<Color, Color, string>>>();
+            var tmp = new List<TupleEx<int, TimeSpan, TupleEx<Color, Color, string>>>();
 
             foreach (var Rule in cfg)
             {
@@ -146,9 +145,8 @@ namespace CEETimerCSharpWinForms.Modules
                     ConfigPolicy.NotAllowed<Color>();
                 }
 
-                var part1 = new TupleEx<int, TimeSpan>(GetRuleTypeIndexFromRaw(Rule.Type), GetExamTickFormRaw(Rule.Tick));
-                var part2 = new TupleEx<Color, Color, string>(fore, back, (string)CheckCustomText([Rule.Text.RemoveIllegalChars()], out _, part1.Item1));
-                tmp.Add(new(part1, part2));
+                var item1 = GetRuleTypeIndexFromRaw(Rule.Type);
+                tmp.Add(new(item1, GetExamTickFormRaw(Rule.Tick), new(fore, back, (string)CheckCustomText([Rule.Text.RemoveIllegalChars()], out _, item1))));
             }
 
             return tmp;

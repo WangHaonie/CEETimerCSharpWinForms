@@ -33,7 +33,7 @@ namespace CEETimerCSharpWinForms.Forms
         private FontStyle SelectedFontStyle;
         private List<TupleEx<Color, Color>> CountdownColors;
         private List<TupleEx<Color, Color>> DefaultColors;
-        private List<TupleEx<TupleEx<int, TimeSpan>, TupleEx<Color, Color, string>>> CustomRules;
+        private List<TupleEx<int, TimeSpan, TupleEx<Color, Color, string>>> CustomRules;
         private string ExamName;
         private string[] CustomText;
 
@@ -365,18 +365,25 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void ApplyColorRule(int Phase, TimeSpan Span, string Name, string Hint)
         {
-            var r = CustomRules.Where(i => i.Item1.Item1 == Phase).Select(x => new { Tick = x.Item1.Item2, Fore = x.Item2.Item1, Back = x.Item2.Item2, Custom = x.Item2.Item3 });
-            var R = Phase == 2 ? r.OrderByDescending(x => x.Tick) : r.OrderBy(x => x.Tick);
-            var Rules = R.ToList();
-
-            if (Rules.Count > 0)
             {
-                foreach (var Rule in Rules)
+                var r = CustomRules.Where(i => i.Item1 == Phase).Select(x => new
                 {
-                    if (Phase == 2 ? (Span >= Rule.Tick) : (Span <= Rule.Tick + new TimeSpan(0, 0, 0, 1)))
+                    Tick = x.Item2,
+                    Fore = x.Item3.Item1,
+                    Back = x.Item3.Item2,
+                    Custom = x.Item3.Item3
+                });
+
+                var Rules = (Phase == 2 ? r.OrderByDescending(x => x.Tick) : r.OrderBy(x => x.Tick)).ToList();
+
+                if (Rules.Count > 0)
+                {
+                    foreach (var Rule in Rules)
                     {
-                        SetCountdown(Span, Name, Hint, Rule.Fore, Rule.Back, Rule.Custom);
-                        return;
+                        if (Phase == 2 ? (Span >= Rule.Tick) : (Span <= Rule.Tick + new TimeSpan(0, 0, 0, 1)))
+                        {
+                            SetCountdown(Span, Name, Hint, Rule.Fore, Rule.Back, Rule.Custom);
+                            return;
                     }
                 }
             }
