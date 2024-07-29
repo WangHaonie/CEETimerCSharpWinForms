@@ -212,10 +212,10 @@ namespace CEETimerCSharpWinForms.Forms
             MemoryOptimizer?.Dispose();
             if (IsMemoryOptimizationEnabled)
                 MemoryOptimizer = new(OptimizeMemory, null, TimeSpan.Zero, TimeSpan.FromMinutes(5));
-            await StartCountdown();
-
             configManager.MountConfig(false);
             SetLabelCountdownAutoWrap();
+
+            await StartCountdown();
         }
 
         private void SystemEvents_DisplaySettingsChanged(object sender, EventArgs e)
