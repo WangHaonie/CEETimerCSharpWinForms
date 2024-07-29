@@ -1,39 +1,33 @@
-﻿using CEETimerCSharpWinForms.Forms;
-using CEETimerCSharpWinForms.Modules;
-using System;
+﻿using CEETimerCSharpWinForms.Modules;
 using System.Windows.Forms;
 
 namespace CEETimerCSharpWinForms.Controls
 {
-    public abstract class TrackableForm : Form
+    public abstract class TrackableForm : AppForm
     {
-        protected override void OnLoad(EventArgs e)
+        protected override void OnAppFormLoad()
         {
             OnTrackableFormLoad();
-            base.OnLoad(e);
         }
 
-        protected override void OnShown(EventArgs e)
+        protected override void OnAppFormShown()
         {
             FormManager.Add(this);
-            base.OnShown(e);
         }
 
-        protected override void OnFormClosing(FormClosingEventArgs e)
+        protected override void OnAppFormClosing(FormClosingEventArgs e)
         {
             OnTrackableFormClosing(e);
-            base.OnFormClosing(e);
         }
 
-        protected override void OnClosed(EventArgs e)
+        protected override void OnAppFormClosed()
         {
             OnTrackableFormClosed();
-            base.OnClosed(e);
         }
 
         protected virtual void OnTrackableFormLoad()
         {
-            TopMost = MainForm.UniTopMost;
+            base.OnAppFormLoad();
         }
 
         protected abstract void OnTrackableFormClosing(FormClosingEventArgs e);

@@ -1,12 +1,11 @@
-﻿using CEETimerCSharpWinForms.Forms;
-using CEETimerCSharpWinForms.Modules;
+﻿using CEETimerCSharpWinForms.Modules;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
 
 namespace CEETimerCSharpWinForms.Controls
 {
-    public abstract class DialogEx : Form
+    public abstract class DialogEx : AppForm
     {
         protected Panel PanelMain;
         protected Button ButtonB;
@@ -54,7 +53,6 @@ namespace CEETimerCSharpWinForms.Controls
             ShowIcon = false;
             StartPosition = FormStartPosition.CenterParent;
 
-            TopMost = MainForm.UniTopMost;
             Controls.AddRange([ButtonA, ButtonB]);
 
             ButtonA.Click += (sender, e) => OnButtonAClicked();
@@ -63,24 +61,22 @@ namespace CEETimerCSharpWinForms.Controls
             ResumeLayout(false);
         }
 
-        protected override void OnLoad(EventArgs e)
+        protected override void OnAppFormLoad()
         {
             KeepProperties();
             OnDialogLoad();
             AdjustUI();
-            base.OnLoad(e);
+            base.OnAppFormLoad();
         }
 
-        protected override void OnShown(EventArgs e)
+        protected override void OnAppFormShown()
         {
             OnDialogShown();
-            base.OnShown(e);
         }
 
-        protected override void OnFormClosing(FormClosingEventArgs e)
+        protected override void OnAppFormClosing(FormClosingEventArgs e)
         {
             OnDialogClosing(e);
-            base.OnFormClosing(e);
         }
 
         protected abstract void OnDialogLoad();
