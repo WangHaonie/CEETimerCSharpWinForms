@@ -365,6 +365,7 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void ApplyColorRule(int Phase, TimeSpan Span, string Name, string Hint)
         {
+            if (IsCustomText)
             {
                 var r = CustomRules.Where(i => i.Item1 == Phase).Select(x => new
                 {
@@ -384,6 +385,7 @@ namespace CEETimerCSharpWinForms.Forms
                         {
                             SetCountdown(Span, Name, Hint, Rule.Fore, Rule.Back, Rule.Custom);
                             return;
+                        }
                     }
                 }
             }
