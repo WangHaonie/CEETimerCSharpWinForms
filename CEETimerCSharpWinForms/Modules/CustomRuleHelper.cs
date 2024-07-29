@@ -118,7 +118,7 @@ namespace CEETimerCSharpWinForms.Modules
             return Result;
         }
 
-        public static List<Config> GetConfig(List<TupleEx<TupleEx<int, TimeSpan>, TupleEx<Color, Color, string>>> Rules)
+        public static List<Config> GetConfig(List<TupleEx<int, TimeSpan, TupleEx<Color, Color, string>>> Rules)
         {
             var tmp = new List<Config>();
 
