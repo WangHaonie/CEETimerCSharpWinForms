@@ -32,7 +32,10 @@ namespace CEETimerCSharpWinForms.Forms
 
                 try
                 {
+                    var OriginalVersionString = LabelInfo.Text;
+                    LabelInfo.Text = $"{LaunchManager.AppName}\n正在检查更新，请稍候...";
                     await Task.Run(() => UpdateChecker.CheckUpdate(false, this));
+                    LabelInfo.Text = OriginalVersionString;
                 }
                 finally
                 {
