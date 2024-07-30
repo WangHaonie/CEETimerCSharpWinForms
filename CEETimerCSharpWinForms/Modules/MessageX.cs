@@ -6,16 +6,6 @@ using System.Windows.Forms;
 
 namespace CEETimerCSharpWinForms.Modules
 {
-    public enum MessageLevel
-    {
-        Info, Warning, Error
-    }
-
-    public enum MessageBoxExButtons
-    {
-        OK, YesNo
-    }
-
     public static class MessageX
     {
         private static readonly Icon InfoIcon;

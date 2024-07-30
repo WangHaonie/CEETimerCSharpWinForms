@@ -53,7 +53,7 @@ namespace CEETimerCSharpWinForms.Modules
                 {
                     MessageX.Popup($"为了您的使用体验，请不要更改程序文件名! 程序将在该消息框自动关闭后尝试自动恢复到原文件名，若自动恢复失败请手动改回。\n\n当前文件名: {CurrentExecutableName}\n原始文件名: {OriginalFileName}", MessageLevel.Error, Position: FormStartPosition.CenterScreen, AutoClose: true);
                     ProcessHelper.RunProcess("cmd.exe", $"/c ren \"{CurrentExecutablePath}\" {OriginalFileName} & start \"\" \"{CurrentExecutableDir}{OriginalFileName}\" {AllArgs}");
-                    Environment.Exit(4);
+                    Exit(ExitReason.InvalidExeName);
                 }
                 else
                 {
@@ -83,7 +83,8 @@ namespace CEETimerCSharpWinForms.Modules
                                 break;
                         }
                     }
-                    Environment.Exit(0);
+
+                    Exit(ExitReason.NormalExit);
                 }
             }
             else
@@ -94,14 +95,14 @@ namespace CEETimerCSharpWinForms.Modules
                 }
 
                 StartPipeClient();
-                Environment.Exit(1);
+                Exit(ExitReason.AnotherInstanceIsRunning);
             }
         }
 
         public static void Shutdown(bool Restart = false)
         {
             ProcessHelper.RunProcess("cmd.exe", $"/c taskkill /f /fi \"PID eq {Process.GetCurrentProcess().Id}\" /im {CurrentExecutableName} {(Restart ? $"& start \"\" \"{CurrentExecutablePath}\"" : "")}");
-            Environment.Exit(255);
+            Exit(ExitReason.UserShutdownOrRestart);
         }
 
         public static void CheckAdmin(out string UserName, bool QueryUserName = false)
@@ -169,6 +170,11 @@ namespace CEETimerCSharpWinForms.Modules
         public static void OpenInstallDir()
         {
             Process.Start(CurrentExecutableDir);
+        }
+
+        public static void Exit(ExitReason Reason)
+        {
+            Environment.Exit((int)Reason);
         }
     }
 }

@@ -37,18 +37,6 @@ namespace CEETimerCSharpWinForms.Forms
         public string[] CustomTextRaw { get; set; }
         public event EventHandler ConfigChanged;
 
-        private enum WorkingArea
-        {
-            Funny,
-            SyncTime,
-            SetPPTService,
-            LastColor,
-            SelectedColor,
-            DefaultColor,
-            ChangeFont,
-            ShowLeftPast
-        }
-
         private bool IsColorLabelsDragging;
         private bool IsSyncingTime;
         private bool HasSettingsChanged;

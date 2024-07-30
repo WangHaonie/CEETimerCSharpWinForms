@@ -203,6 +203,7 @@
     <Compile Include="Modules\ColorDialogHelper.cs" />
     <Compile Include="Modules\ColorHelper.cs" />
     <Compile Include="Modules\CustomRuleHelper.cs" />
+    <Compile Include="Modules\Enums.cs" />
     <Compile Include="Modules\FormManager.cs" />
     <Compile Include="Modules\ListViewItemComparer.cs" />
     <Compile Include="Modules\TupleEx.cs" />

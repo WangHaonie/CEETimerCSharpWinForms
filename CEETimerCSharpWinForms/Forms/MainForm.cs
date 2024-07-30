@@ -37,16 +37,6 @@ namespace CEETimerCSharpWinForms.Forms
         private string ExamName;
         private string[] CustomText;
 
-        private enum CountdownState
-        {
-            Normal,
-            DaysOnly,
-            DaysOnlyWithRounding,
-            HoursOnly,
-            MinutesOnly,
-            SecondsOnly
-        }
-
         private bool IsReadyToMove;
         private bool IsCountdownReady;
         private bool IsCountdownRunning;
@@ -518,8 +508,8 @@ namespace CEETimerCSharpWinForms.Forms
         {
             if (Environment.OSVersion.Version > new Version(10, 0, 21999))
             {
-                var attribute = WindowsAPI.DWMWINDOWATTRIBUTE.DWMWA_WINDOW_CORNER_PREFERENCE;
-                var preference = WindowsAPI.DWM_WINDOW_CORNER_PREFERENCE.DWMWCP_ROUND;
+                var attribute = DWMWINDOWATTRIBUTE.DWMWA_WINDOW_CORNER_PREFERENCE;
+                var preference = DWM_WINDOW_CORNER_PREFERENCE.DWMWCP_ROUND;
                 WindowsAPI.DwmSetWindowAttribute(Handle, attribute, ref preference, sizeof(uint));
             }
             else

@@ -96,7 +96,7 @@ namespace CEETimerCSharpWinForms.Forms
                     await Task.Delay(1800);
                     ProcessHelper.RunProcess("cmd.exe", $"/c start \"\" \"{DownloadPath}\" /S");
                     Close();
-                    Environment.Exit(0);
+                    LaunchManager.Exit(ExitReason.AppUpdating);
                 }
             }
             catch (Exception ex)
