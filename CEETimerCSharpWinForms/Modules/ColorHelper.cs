@@ -14,13 +14,10 @@ namespace CEETimerCSharpWinForms.Modules
             if (Regex.IsMatch(s, @"^\d{1,3},\d{1,3},\d{1,3}$"))
             {
                 color = GetColor(s);
-            }
-            else
-            {
-                return false;
+                return true;
             }
 
-            return true;
+            return false;
         }
 
         public static Color GetColor(string rgb)
