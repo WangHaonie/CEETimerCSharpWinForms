@@ -29,7 +29,6 @@ namespace CEETimerCSharpWinForms.Modules
 
         public static int GetRuleTypeIndex(string s) => s switch
         {
-            Placeholders.PH_START => 0,
             Placeholders.PH_LEFT => 1,
             Placeholders.PH_PAST => 2,
             _ => 0
@@ -37,15 +36,13 @@ namespace CEETimerCSharpWinForms.Modules
 
         public static int GetRuleTypeIndexFromRaw(string s) => s switch
         {
-            "0" => 0,
             "1" => 1,
             "2" => 2,
-            _ => ConfigPolicy.NotAllowed<int>()
+            _ => 0
         };
 
         public static string GetRuleTypeText(int i) => i switch
         {
-            0 => Placeholders.PH_START,
             1 => Placeholders.PH_LEFT,
             2 => Placeholders.PH_PAST,
             _ => Placeholders.PH_START
@@ -53,9 +50,9 @@ namespace CEETimerCSharpWinForms.Modules
 
         public static string GetCustomTextDefault(int Index, string[] Pref = null) => Index switch
         {
-            0 => Pref[0] ?? Placeholders.PH_P1,
             1 => Pref[1] ?? Placeholders.PH_P2,
-            _ => Pref[2] ?? Placeholders.PH_P3,
+            2 => Pref[2] ?? Placeholders.PH_P3,
+            _ => Pref[0] ?? Placeholders.PH_P1
         };
 
         public static string[] GetCustomTextFormRaw(string p1, string p2, string p3)

@@ -93,10 +93,9 @@ namespace CEETimerCSharpWinForms.Modules
 
             */
 
-            MessageLevel.Info => (LaunchManager.InfoMsg, InfoIcon, SystemSounds.Asterisk),
             MessageLevel.Warning => (LaunchManager.WarnMsg, WarningIcon, SystemSounds.Exclamation),
             MessageLevel.Error => (LaunchManager.ErrMsg, ErrorIcon, SystemSounds.Hand),
-            _ => ConfigPolicy.NotAllowed<(string, Icon, SystemSound)>()
+            _ => (LaunchManager.InfoMsg, InfoIcon, SystemSounds.Asterisk)
 
             #endregion
         };

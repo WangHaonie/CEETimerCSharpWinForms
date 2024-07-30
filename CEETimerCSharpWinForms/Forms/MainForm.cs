@@ -148,11 +148,10 @@ namespace CEETimerCSharpWinForms.Forms
             {
                 SelectedState = ShowXOnlyIndex switch
                 {
-                    0 => IsRounding ? CountdownState.DaysOnlyWithRounding : CountdownState.DaysOnly,
                     1 => CountdownState.HoursOnly,
                     2 => CountdownState.MinutesOnly,
                     3 => CountdownState.SecondsOnly,
-                    _ => ConfigPolicy.NotAllowed<CountdownState>()
+                    _ => IsRounding ? CountdownState.DaysOnlyWithRounding : CountdownState.DaysOnly
                 };
             }
 
@@ -389,7 +388,6 @@ namespace CEETimerCSharpWinForms.Forms
             {
                 Location = PositionIndex switch
                 {
-                    0 => IsPPTService ? new(SelectedScreen.Location.X + PptsvcThreshold, SelectedScreen.Location.Y) : SelectedScreen.Location,
                     1 => new(SelectedScreen.Left, SelectedScreen.Top + SelectedScreen.Height / 2 - Height / 2),
                     2 => new(SelectedScreen.Left, SelectedScreen.Bottom - Height),
                     3 => new(SelectedScreen.Left + SelectedScreen.Width / 2 - Width / 2, SelectedScreen.Top),
@@ -398,7 +396,7 @@ namespace CEETimerCSharpWinForms.Forms
                     6 => new(SelectedScreen.Right - Width, SelectedScreen.Top),
                     7 => new(SelectedScreen.Right - Width, SelectedScreen.Top + SelectedScreen.Height / 2 - Height / 2),
                     8 => new(SelectedScreen.Right - Width, SelectedScreen.Bottom - Height),
-                    _ => ConfigPolicy.NotAllowed<Point>()
+                    _ => IsPPTService ? new(SelectedScreen.Location.X + PptsvcThreshold, SelectedScreen.Location.Y) : SelectedScreen.Location
                 };
             }
         }
@@ -424,13 +422,12 @@ namespace CEETimerCSharpWinForms.Forms
 
         private string GetCountdown(TimeSpan Span, string Name, string Hint) => SelectedState switch
         {
-            CountdownState.Normal => $"{Placeholders.PH_JULI}{Name}{Hint}{Span.Days}天{Span.Hours:00}时{Span.Minutes:00}分{Span.Seconds:00}秒",
             CountdownState.DaysOnly => $"{Placeholders.PH_JULI}{Name}{Hint}{Span.Days}天",
             CountdownState.DaysOnlyWithRounding => $"{Placeholders.PH_JULI}{Name}{Hint}{Span.Days + 1}天",
             CountdownState.HoursOnly => $"{Placeholders.PH_JULI}{Name}{Hint}{Span.TotalHours:0}小时",
             CountdownState.MinutesOnly => $"{Placeholders.PH_JULI}{Name}{Hint}{Span.TotalMinutes:0}分钟",
             CountdownState.SecondsOnly => $"{Placeholders.PH_JULI}{Name}{Hint}{Span.TotalSeconds:0}秒",
-            _ => ConfigPolicy.NotAllowed<string>()
+            _ => $"{Placeholders.PH_JULI}{Name}{Hint}{Span.Days}天{Span.Hours:00}时{Span.Minutes:00}分{Span.Seconds:00}秒"
         };
 
 
