@@ -137,6 +137,7 @@ namespace CEETimerCSharpWinForms.Modules
             {
                 return false;
             }
+
             return true;
         }
 
