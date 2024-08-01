@@ -257,7 +257,6 @@
             this.LabelCustomInfo.Name = "LabelCustomInfo";
             this.LabelCustomInfo.Size = new System.Drawing.Size(458, 45);
             this.LabelCustomInfo.TabIndex = 23;
-            this.LabelCustomInfo.Text = "用占位符表示变量: {x}-考试名称 {d}-天 {h}-时 {m}-分 {s}-秒 {rd}-四舍五入的天数 {th}-总小时数 {tm}-总分钟数 {ts}-总秒数。\r\n注意: 自定义文本仅在勾选了 设置>显示>自定义文本 时才会生效。";
             // 
             // PanelMain
             // 

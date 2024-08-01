@@ -25,6 +25,8 @@ namespace CEETimerCSharpWinForms.Dialogs
             TextBoxP1.TextChanged += (sender, e) => UserChanged();
             TextBoxP2.TextChanged += (sender, e) => UserChanged();
             TextBoxP3.TextChanged += (sender, e) => UserChanged();
+
+            LabelInfo.Text = $"自定义倒计时的内容，用占位符表示变量:\n{Placeholders.PH_PHINFO}\n比如 \"{Placeholders.PH_EXAMNAME}还有{Placeholders.PH_DAYS}.{Placeholders.PH_HOURS}:{Placeholders.PH_MINUTES}:{Placeholders.PH_SECONDS}\"。";
         }
 
         protected override void AdjustUI()

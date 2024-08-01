@@ -56,6 +56,8 @@ namespace CEETimerCSharpWinForms.Forms
 
         protected override void AdjustUI()
         {
+            ChangeWorkingStyle(WorkingArea.Funny, false);
+
             AlignControlsR(ButtonSave, ButtonCancel, TabControlMain);
             SetLabelAutoWrap(LabelPptsvc, GBoxPptsvc);
             SetLabelAutoWrap(LabelSyncTime, GBoxSyncTime);
@@ -100,8 +102,6 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void InitializeExtra()
         {
-            ChangeWorkingStyle(WorkingArea.Funny, false);
-
             SetTextBoxMax(TextBoxExamName, ConfigPolicy.MaxExamNameLength);
             BindComboData(ComboBoxShowXOnly, [new("天", 0), new("时", 1), new("分", 2), new("秒", 3)]);
             BindComboData(ComboBoxPosition, [new("左上角", 0), new("左部中央", 1), new("左下角", 2), new("上部中央", 3), new("中央", 4), new("下部中央", 5), new("右上角", 6), new("右部中央", 7), new("右下角", 8)]);

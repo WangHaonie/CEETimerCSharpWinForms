@@ -1,4 +1,6 @@
-﻿namespace CEETimerCSharpWinForms.Dialogs
+﻿using CEETimerCSharpWinForms.Modules;
+
+namespace CEETimerCSharpWinForms.Dialogs
 {
     partial class CustomTextDialog
     {
@@ -95,7 +97,6 @@
             this.LabelInfo.Name = "LabelInfo";
             this.LabelInfo.Size = new System.Drawing.Size(284, 60);
             this.LabelInfo.TabIndex = 7;
-            this.LabelInfo.Text = "自定义倒计时的内容，用占位符表示变量:\n{x}-考试名称 {d}-天 {h}-时 {m}-分 {s}-秒 {rd}-四舍五入的天数 {th}-总小时数 {tm}-总分钟数 {ts}-总秒数。\n比如 \"{x}还有{d}.{h}:{m}:{s}\"。";
             // 
             // PanelMain
             // 
