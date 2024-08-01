@@ -200,7 +200,9 @@
     <Compile Include="Dialogs\MessageBoxEx.Designer.cs">
       <DependentUpon>MessageBoxEx.cs</DependentUpon>
     </Compile>
-    <Compile Include="Modules\ColorDialogHelper.cs" />
+    <Compile Include="Controls\ColorDialogEx.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Modules\ColorHelper.cs" />
     <Compile Include="Modules\CustomRuleHelper.cs" />
     <Compile Include="Modules\Enums.cs" />
