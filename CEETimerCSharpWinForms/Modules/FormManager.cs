@@ -6,7 +6,7 @@ namespace CEETimerCSharpWinForms.Modules
 {
     public static class FormManager
     {
-        public static List<Form> ShownForms { get; private set; } = [];
+        private static readonly List<Form> ShownForms = [];
 
         public static void Add(Form form)
         {
@@ -23,6 +23,11 @@ namespace CEETimerCSharpWinForms.Modules
                 ShownForms.Remove(form);
             }
         }
+
+        /// <summary>
+        /// 获取所有已打开窗体。
+        /// </summary>
+        public static List<Form> GetOpenForms() => ShownForms;
 
         /// <summary>
         /// 向用户显示最后一个打开的窗体。

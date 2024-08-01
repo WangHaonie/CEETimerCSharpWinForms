@@ -43,7 +43,6 @@ namespace CEETimerCSharpWinForms.Forms
         private bool InvokeChangeRequired;
         private bool IsFunny;
         private bool IsFunnyClick;
-        private bool IsFormLoading;
         private bool ChangingCheckBox;
         private List<Label> ColorLabels;
         private List<TupleEx<Color, Color>> SelectedColors;
@@ -53,48 +52,59 @@ namespace CEETimerCSharpWinForms.Forms
         {
             InitializeComponent();
             CompositedStyle = true;
-            IsFormLoading = true;
+        }
+
+        protected override void AdjustUI()
+        {
+            AlignControlsR(ButtonSave, ButtonCancel, TabControlMain);
+            SetLabelAutoWrap(LabelPptsvc, GBoxPptsvc);
+            SetLabelAutoWrap(LabelSyncTime, GBoxSyncTime);
+            SetLabelAutoWrap(LabelLine01, GBoxColors);
+            SetLabelAutoWrap(LabelRestart, GBoxRestart);
+            CompactControlsX(ComboBoxShowXOnly, CheckBoxShowXOnly);
+            CompactControlsX(CheckBoxRounding, ComboBoxShowXOnly, 10);
+            CompactControlsX(ComboBoxScreens, LabelScreens);
+            CompactControlsX(LabelChar1, ComboBoxScreens);
+            CompactControlsX(ComboBoxPosition, LabelChar1);
+            CompactControlsY(ButtonSyncTime, LabelSyncTime, 3);
+            CompactControlsY(ButtonRestart, LabelRestart, 3);
+
+            Adjust(() =>
+            {
+                AlignControlsL(ButtonRulesMan, ButtonSave, TabControlMain);
+                AlignControlsX(ComboBoxShowXOnly, CheckBoxShowXOnly, -1);
+                AlignControlsX(ComboBoxScreens, LabelScreens);
+                AlignControlsX(ComboBoxPosition, LabelChar1);
+                AlignControlsX(LabelExamNameCounter, TextBoxExamName);
+                AlignControlsX(CheckBoxCustomText, CheckBoxShowPast);
+                AlignControlsX(ButtonCustomText, CheckBoxCustomText);
+            });
+
+            GBoxExamName.Text = $"考试名称 ({ConfigPolicy.MinExamNameLength}~{ConfigPolicy.MaxExamNameLength}字)";
+            LabelPreviewColor1.Text = $"{Placeholders.PH_JULI}...{Placeholders.PH_START}...";
+            LabelPreviewColor2.Text = $"{Placeholders.PH_JULI}...{Placeholders.PH_LEFT}...";
+            LabelPreviewColor3.Text = $"{Placeholders.PH_JULI}...{Placeholders.PH_PAST}...";
+            DtpExamStart.CustomFormat = LaunchManager.DateTimeFormat;
+            DtpExamEnd.CustomFormat = LaunchManager.DateTimeFormat;
+            LabelExamNameCounter.Text = $"0/{ConfigPolicy.MaxExamNameLength}";
+            LabelExamNameCounter.ForeColor = Color.Red;
         }
 
         protected override void OnTrackableFormLoad()
         {
-            base.OnTrackableFormLoad();
             InitializeExtra();
             ChangeWorkingStyle(WorkingArea.LastColor);
             RefreshSettings();
             ChangeWorkingStyle(WorkingArea.ShowLeftPast, IsShowEnd);
-
-            UIHelper.AdjustOnlyAtHighDpi(() =>
-            {
-                UIHelper.AlignControlsL(ButtonRulesMan, ButtonSave, TabControlMain);
-                UIHelper.AlignControlsX(ComboBoxShowXOnly, CheckBoxShowXOnly, -1);
-                UIHelper.AlignControlsX(ComboBoxScreens, LabelScreens);
-                UIHelper.AlignControlsX(ComboBoxPosition, LabelChar1);
-                UIHelper.AlignControlsX(LabelExamNameCounter, TextBoxExamName);
-                UIHelper.AlignControlsX(CheckBoxCustomText, CheckBoxShowPast);
-                UIHelper.AlignControlsX(ButtonCustomText, CheckBoxCustomText);
-            });
-
-            HasSettingsChanged = false;
-            ButtonSave.Enabled = false;
-            IsFormLoading = false;
         }
 
         private void InitializeExtra()
         {
             ChangeWorkingStyle(WorkingArea.Funny, false);
 
-            DtpExamStart.CustomFormat = LaunchManager.DateTimeFormat;
-            DtpExamEnd.CustomFormat = LaunchManager.DateTimeFormat;
-            LabelExamNameCounter.Text = $"0/{ConfigPolicy.MaxExamNameLength}";
-            LabelExamNameCounter.ForeColor = Color.Red;
-            UIHelper.SetTextBoxMax(TextBoxExamName, ConfigPolicy.MaxExamNameLength);
-            GBoxExamName.Text = $"考试名称 ({ConfigPolicy.MinExamNameLength}~{ConfigPolicy.MaxExamNameLength}字)";
-            LabelPreviewColor1.Text = $"{Placeholders.PH_JULI}...{Placeholders.PH_START}...";
-            LabelPreviewColor2.Text = $"{Placeholders.PH_JULI}...{Placeholders.PH_LEFT}...";
-            LabelPreviewColor3.Text = $"{Placeholders.PH_JULI}...{Placeholders.PH_PAST}...";
-            UIHelper.BindData(ComboBoxShowXOnly, [new("天", 0), new("时", 1), new("分", 2), new("秒", 3)]);
-            UIHelper.BindData(ComboBoxPosition, [new("左上角", 0), new("左部中央", 1), new("左下角", 2), new("上部中央", 3), new("中央", 4), new("下部中央", 5), new("右上角", 6), new("右部中央", 7), new("右下角", 8)]);
+            SetTextBoxMax(TextBoxExamName, ConfigPolicy.MaxExamNameLength);
+            BindComboData(ComboBoxShowXOnly, [new("天", 0), new("时", 1), new("分", 2), new("秒", 3)]);
+            BindComboData(ComboBoxPosition, [new("左上角", 0), new("左部中央", 1), new("左下角", 2), new("上部中央", 3), new("中央", 4), new("下部中央", 5), new("右上角", 6), new("右部中央", 7), new("右下角", 8)]);
 
             List<TupleEx<string, int>> Monitors = [new("<请选择>", 0)];
             Screen[] CurrentScreens = Screen.AllScreens;
@@ -103,7 +113,7 @@ namespace CEETimerCSharpWinForms.Forms
                 var CurrentScreen = CurrentScreens[i];
                 Monitors.Add(new($"{i + 1} {CurrentScreen.DeviceName} ({CurrentScreen.Bounds.Width}x{CurrentScreen.Bounds.Height})", i + 1));
             }
-            UIHelper.BindData(ComboBoxScreens, Monitors);
+            BindComboData(ComboBoxScreens, Monitors);
 
             ColorLabels = [LabelColor12, LabelColor22, LabelColor32, LabelColor42, LabelColor11, LabelColor21, LabelColor31, LabelColor41];
             foreach (var l in ColorLabels)
@@ -113,19 +123,6 @@ namespace CEETimerCSharpWinForms.Forms
                 l.MouseMove += ColorLabels_MouseMove;
                 l.MouseUp += ColorLabels_MouseUp;
             }
-
-            UIHelper.AlignControlsR(ButtonSave, ButtonCancel, TabControlMain);
-            UIHelper.SetLabelAutoWrap(LabelPptsvc, GBoxPptsvc);
-            UIHelper.SetLabelAutoWrap(LabelSyncTime, GBoxSyncTime);
-            UIHelper.SetLabelAutoWrap(LabelLine01, GBoxColors);
-            UIHelper.SetLabelAutoWrap(LabelRestart, GBoxRestart);
-            UIHelper.CompactControlsX(ComboBoxShowXOnly, CheckBoxShowXOnly);
-            UIHelper.CompactControlsX(CheckBoxRounding, ComboBoxShowXOnly, 10);
-            UIHelper.CompactControlsX(ComboBoxScreens, LabelScreens);
-            UIHelper.CompactControlsX(LabelChar1, ComboBoxScreens);
-            UIHelper.CompactControlsX(ComboBoxPosition, LabelChar1);
-            UIHelper.CompactControlsY(ButtonSyncTime, LabelSyncTime, 3);
-            UIHelper.CompactControlsY(ButtonRestart, LabelRestart, 3);
         }
 
         private void RefreshSettings()
@@ -154,11 +151,11 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void SettingsChanged(object sender, EventArgs e)
         {
-            if (!IsFormLoading)
+            Execute(() =>
             {
                 HasSettingsChanged = true;
                 ButtonSave.Enabled = true;
-            }
+            });
         }
 
         private void TextBoxExamName_TextChanged(object sender, EventArgs e)
@@ -201,12 +198,15 @@ namespace CEETimerCSharpWinForms.Forms
             ChangeWorkingStyle(WorkingArea.ShowLeftPast, CheckBoxShowEnd.Checked);
             DtpExamEnd.Enabled = CheckBoxShowEnd.Checked;
 
-            if (!IsFormLoading && CheckBoxShowEnd.Checked)
+            Execute(() =>
             {
-                MessageX.Popup("由于已开启显示考试结束倒计时，请设置考试结束日期和时间。", MessageLevel.Info);
-                TabControlMain.SelectedTab = TabPageGeneral;
-                DtpExamEnd.Focus();
-            }
+                if (CheckBoxShowEnd.Checked)
+                {
+                    MessageX.Popup("由于已开启显示考试结束倒计时，请设置考试结束日期和时间。", MessageLevel.Info);
+                    TabControlMain.SelectedTab = TabPageGeneral;
+                    DtpExamEnd.Focus();
+                }
+            });
         }
 
         private void CheckBoxShowPast_CheckedChanged(object sender, EventArgs e)
@@ -439,7 +439,7 @@ namespace CEETimerCSharpWinForms.Forms
             }
             else if (HasSettingsChanged)
             {
-                UIHelper.ShowUserChangedWarning("检测到当前设置未保存，是否立即进行保存？", e, () => ButtonSave_Click(null, e), () =>
+                ShowUnsavedWarning("检测到当前设置未保存，是否立即进行保存？", e, () => ButtonSave_Click(null, null), () =>
                 {
                     HasSettingsChanged = false;
                     Close();

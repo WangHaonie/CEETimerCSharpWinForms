@@ -27,7 +27,7 @@ namespace CEETimerCSharpWinForms.Dialogs
             LabelMessage.Text = Message;
             Text = Title;
             PicBoxIcon.Image = MessageBoxExIcon.ToBitmap();
-            StartPosition = (OwnerForm == null && !UIHelper.IsNormalStart(UIHelper.GetOpenForms())) ? FormStartPosition.CenterScreen : Position;
+            StartPosition = (OwnerForm == null && !UIHelper.IsNormalStart(FormManager.GetOpenForms())) ? FormStartPosition.CenterScreen : Position;
             ShowDialog(OwnerForm);
             return Result;
         }
@@ -49,15 +49,14 @@ namespace CEETimerCSharpWinForms.Dialogs
 
         protected override void AdjustUI()
         {
-            UIHelper.SetLabelAutoWrap(LabelMessage);
-            base.AdjustUI();
+            SetLabelAutoWrap(LabelMessage);
+            AdjustPanel();
         }
 
         protected override void OnDialogShown()
         {
             DialogSound.Play();
             AutoCloseAsync();
-            base.OnDialogShown();
         }
 
         protected override void OnButtonAClicked()

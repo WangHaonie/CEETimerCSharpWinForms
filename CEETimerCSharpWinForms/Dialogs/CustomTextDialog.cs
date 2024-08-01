@@ -29,16 +29,16 @@ namespace CEETimerCSharpWinForms.Dialogs
 
         protected override void AdjustUI()
         {
-            base.AdjustUI();
-            UIHelper.SetLabelAutoWrap(LabelInfo, PanelMain);
-            UIHelper.AlignControlsL(ButtonReset, ButtonA, LabelP3);
-            UIHelper.AlignControlsX(TextBoxP1, LabelP1);
-            UIHelper.AlignControlsX(TextBoxP2, LabelP2);
-            UIHelper.AlignControlsX(TextBoxP3, LabelP3);
-            UIHelper.AlignControlsX(ButtonReset, ButtonA);
-            UIHelper.SetTextBoxMax(TextBoxP1, ConfigPolicy.MaxCustomTextLength);
-            UIHelper.SetTextBoxMax(TextBoxP2, ConfigPolicy.MaxCustomTextLength);
-            UIHelper.SetTextBoxMax(TextBoxP3, ConfigPolicy.MaxCustomTextLength);
+            AdjustPanel();
+            SetLabelAutoWrap(LabelInfo, PanelMain);
+            AlignControlsL(ButtonReset, ButtonA, LabelP3);
+            AlignControlsX(TextBoxP1, LabelP1);
+            AlignControlsX(TextBoxP2, LabelP2);
+            AlignControlsX(TextBoxP3, LabelP3);
+            AlignControlsX(ButtonReset, ButtonA);
+            SetTextBoxMax(TextBoxP1, ConfigPolicy.MaxCustomTextLength);
+            SetTextBoxMax(TextBoxP2, ConfigPolicy.MaxCustomTextLength);
+            SetTextBoxMax(TextBoxP3, ConfigPolicy.MaxCustomTextLength);
         }
 
         private void ButtonReset_Click(object sender, EventArgs e)

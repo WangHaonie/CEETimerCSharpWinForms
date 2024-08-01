@@ -1,6 +1,4 @@
-﻿using CEETimerCSharpWinForms.Modules;
-using System;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Windows.Forms;
 
 namespace CEETimerCSharpWinForms.Controls
@@ -11,15 +9,14 @@ namespace CEETimerCSharpWinForms.Controls
         protected Button ButtonB { get; set; }
         protected Button ButtonA { get; set; }
 
-        private bool IsDialogLoading;
         private bool IsUserChanged;
 
-        public DialogEx()
+        private DialogEx()
         {
             InitializeComponent();
         }
 
-        public DialogEx(bool BindButtons, bool ReadKeys) : this()
+        protected DialogEx(bool BindButtons, bool ReadKeys) : this()
         {
             if (BindButtons)
             {
@@ -37,7 +34,6 @@ namespace CEETimerCSharpWinForms.Controls
         {
             SuspendLayout();
 
-            IsDialogLoading = true;
             PanelMain = new();
             ButtonA = new();
             ButtonB = new();
@@ -66,8 +62,6 @@ namespace CEETimerCSharpWinForms.Controls
         {
             KeepProperties();
             OnDialogLoad();
-            AdjustUI();
-            base.OnAppFormLoad();
         }
 
         protected override void OnAppFormShown()
@@ -82,14 +76,11 @@ namespace CEETimerCSharpWinForms.Controls
 
         protected abstract void OnDialogLoad();
 
-        protected virtual void OnDialogShown()
-        {
-            IsDialogLoading = false;
-        }
+        protected virtual void OnDialogShown() { }
 
-        protected virtual void AdjustUI()
+        protected void AdjustPanel()
         {
-            UIHelper.AlignControlsR(ButtonA, ButtonB, PanelMain);
+            AlignControlsR(ButtonA, ButtonB, PanelMain);
         }
 
         protected virtual void OnButtonAClicked()
@@ -109,7 +100,7 @@ namespace CEETimerCSharpWinForms.Controls
         {
             if (IsUserChanged)
             {
-                UIHelper.ShowUserChangedWarning("是否保存当前更改？", e, OnButtonAClicked, () =>
+                ShowUnsavedWarning("是否保存当前更改？", e, OnButtonAClicked, () =>
                 {
                     IsUserChanged = false;
                     Close();
@@ -119,19 +110,14 @@ namespace CEETimerCSharpWinForms.Controls
 
         protected void UserChanged()
         {
-            if (!IsDialogLoading && !ButtonA.Enabled)
+            Execute(() =>
             {
-                IsUserChanged = true;
-                ButtonA.Enabled = true;
-            }
-        }
-
-        protected void Execute(Action Method)
-        {
-            if (!IsDialogLoading)
-            {
-                Method();
-            }
+                if (!ButtonA.Enabled)
+                {
+                    IsUserChanged = true;
+                    ButtonA.Enabled = true;
+                }
+            });
         }
 
         private void KeepProperties() // .NET 貌似会在初始化子类的时候重置基类的某些属性，故该方法可以在重置之后再次应用相关属性

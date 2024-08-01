@@ -192,7 +192,7 @@ namespace CEETimerCSharpWinForms.Forms
             ApplyLocation();
             CompatibleWithPPTService();
 
-            foreach (var form in UIHelper.GetOpenForms())
+            foreach (var form in FormManager.GetOpenForms())
             {
                 if (form == this) continue;
                 form.TopMost = UniTopMost;
@@ -456,7 +456,7 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void SetLabelCountdownAutoWrap()
         {
-            UIHelper.SetLabelAutoWrap(LabelCountdown, true);
+            SetLabelAutoWrap(LabelCountdown, true);
         }
 
         private void RefreshScreen()

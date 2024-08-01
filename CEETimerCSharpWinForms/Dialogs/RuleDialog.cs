@@ -26,7 +26,7 @@ namespace CEETimerCSharpWinForms.Dialogs
 
         protected override void OnDialogLoad()
         {
-            UIHelper.BindData(ComboBoxRuleType, [new(Placeholders.PH_START, 0), new(Placeholders.PH_LEFT, 1), new(Placeholders.PH_PAST, 2)]);
+            BindComboData(ComboBoxRuleType, [new(Placeholders.PH_START, 0), new(Placeholders.PH_LEFT, 1), new(Placeholders.PH_PAST, 2)]);
             ComboBoxRuleType.SelectedIndex = RuleType;
             var Ticks = ExamTick.Split(CustomRuleHelper.TsSeparator);
 
@@ -54,18 +54,18 @@ namespace CEETimerCSharpWinForms.Dialogs
 
         protected override void AdjustUI()
         {
-            base.AdjustUI();
-            UIHelper.SetLabelAutoWrap(LabelCustomInfo, PanelMain);
-            UIHelper.AlignControlsX(ComboBoxRuleType, LabelChars01);
-            UIHelper.AlignControlsR(LabelPreviewColor, LinkReset);
+            AdjustPanel();
+            SetLabelAutoWrap(LabelCustomInfo, PanelMain);
+            AlignControlsX(ComboBoxRuleType, LabelChars01);
+            AlignControlsR(LabelPreviewColor, LinkReset);
 
-            UIHelper.AdjustOnlyAtHighDpi(() =>
+            Adjust(() =>
             {
-                UIHelper.AlignControlsR(LinkReset, LabelCustomInfo);
-                UIHelper.AlignControlsX([LabelChars02, LabelChars03, LabelChars04, LabelChars05, ComboBoxRuleType, NudDays, NudHours, NudMinutes, NudSeconds], LabelChars01);
-                UIHelper.AlignControlsX([TextBoxCustomText, LinkReset], LabelCustomText);
-                UIHelper.CompactControlsX(LinkReset, TextBoxCustomText);
-                UIHelper.CompactControlsX(TextBoxCustomText, LabelCustomText);
+                AlignControlsR(LinkReset, LabelCustomInfo);
+                AlignControlsX([LabelChars02, LabelChars03, LabelChars04, LabelChars05, ComboBoxRuleType, NudDays, NudHours, NudMinutes, NudSeconds], LabelChars01);
+                AlignControlsX([TextBoxCustomText, LinkReset], LabelCustomText);
+                CompactControlsX(LinkReset, TextBoxCustomText);
+                CompactControlsX(TextBoxCustomText, LabelCustomText);
             });
 
             PanelMain.AutoSize = true;

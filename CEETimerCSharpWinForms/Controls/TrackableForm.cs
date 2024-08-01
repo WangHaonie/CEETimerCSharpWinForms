@@ -25,10 +25,7 @@ namespace CEETimerCSharpWinForms.Controls
             OnTrackableFormClosed();
         }
 
-        protected virtual void OnTrackableFormLoad()
-        {
-            base.OnAppFormLoad();
-        }
+        protected abstract void OnTrackableFormLoad();
 
         protected abstract void OnTrackableFormClosing(FormClosingEventArgs e);
 

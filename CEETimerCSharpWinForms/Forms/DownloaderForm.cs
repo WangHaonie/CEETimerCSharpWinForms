@@ -24,13 +24,14 @@ namespace CEETimerCSharpWinForms.Forms
             InitializeComponent();
         }
 
+        protected override void AdjustUI()
+        {
+            AlignControlsR(LinkBroswer, ProgressBarMain);
+            AlignControlsREx(ButtonRetry, ButtonCancel, ProgressBarMain);
+        }
+
         protected override async void OnTrackableFormLoad()
         {
-            base.OnTrackableFormLoad();
-
-            UIHelper.AlignControlsR(LinkBroswer, ProgressBarMain);
-            UIHelper.AlignControlsREx(ButtonRetry, ButtonCancel, ProgressBarMain);
-
             string LatestVersion = Updater.LatestVersion;
             string SelectedVersion = ManualVersion;
 
