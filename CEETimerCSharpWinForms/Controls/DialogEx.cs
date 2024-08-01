@@ -7,9 +7,10 @@ namespace CEETimerCSharpWinForms.Controls
 {
     public abstract class DialogEx : AppForm
     {
-        protected Panel PanelMain;
-        protected Button ButtonB;
-        protected Button ButtonA;
+        protected Panel PanelMain { get; set; }
+        protected Button ButtonB { get; set; }
+        protected Button ButtonA { get; set; }
+
         private bool IsDialogLoading;
         private bool IsUserChanged;
 
