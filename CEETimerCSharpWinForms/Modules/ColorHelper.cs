@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -37,7 +38,7 @@ namespace CEETimerCSharpWinForms.Modules
             }
         }
 
-        public static string GetStringFromArgbArray(int[] arr)
+        public static string GetStringFromArgbArray(IEnumerable<int> arr)
         {
             return string.Join(",", arr);
         }

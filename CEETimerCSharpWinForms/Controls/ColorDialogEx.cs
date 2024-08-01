@@ -13,16 +13,16 @@ namespace CEETimerCSharpWinForms.Controls
 
         public ColorDialogEx()
         {
-            base.AllowFullOpen = true;
-            base.FullOpen = true;
-            base.CustomColors = CustomColorCollection;
+            AllowFullOpen = true;
+            FullOpen = true;
+            CustomColors = CustomColorCollection;
         }
 
         public DialogResult ShowDialog(Color Default)
         {
-            base.Color = Default;
+            Color = Default;
             PreviousCustomColors = CustomColorCollection;
-            var _DialogResult = base.ShowDialog();
+            var _DialogResult = ShowDialog();
 
             if (_DialogResult == DialogResult.OK)
             {
