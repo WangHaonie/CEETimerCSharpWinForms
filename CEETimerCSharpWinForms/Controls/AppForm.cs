@@ -21,27 +21,27 @@ namespace CEETimerCSharpWinForms.Controls
             TopMost = MainForm.UniTopMost;
         }
 
-        protected override void OnLoad(EventArgs e)
+        protected sealed override void OnLoad(EventArgs e)
         {
             AdjustUI();
             OnAppFormLoad();
             base.OnLoad(e);
         }
 
-        protected override void OnShown(EventArgs e)
+        protected sealed override void OnShown(EventArgs e)
         {
             IsLoading = false;
             OnAppFormShown();
             base.OnShown(e);
         }
 
-        protected override void OnFormClosing(FormClosingEventArgs e)
+        protected sealed override void OnFormClosing(FormClosingEventArgs e)
         {
             OnAppFormClosing(e);
             base.OnFormClosing(e);
         }
 
-        protected override void OnClosed(EventArgs e)
+        protected sealed override void OnClosed(EventArgs e)
         {
             OnAppFormClosed();
             base.OnClosed(e);
@@ -57,7 +57,7 @@ namespace CEETimerCSharpWinForms.Controls
 
          */
 
-        protected override CreateParams CreateParams
+        protected sealed override CreateParams CreateParams
         {
             get
             {

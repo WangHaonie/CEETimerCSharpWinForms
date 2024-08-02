@@ -58,18 +58,18 @@ namespace CEETimerCSharpWinForms.Controls
             ResumeLayout(false);
         }
 
-        protected override void OnAppFormLoad()
+        protected sealed override void OnAppFormLoad()
         {
             KeepProperties();
             OnDialogLoad();
         }
 
-        protected override void OnAppFormShown()
+        protected sealed override void OnAppFormShown()
         {
             OnDialogShown();
         }
 
-        protected override void OnAppFormClosing(FormClosingEventArgs e)
+        protected sealed override void OnAppFormClosing(FormClosingEventArgs e)
         {
             OnDialogClosing(e);
         }

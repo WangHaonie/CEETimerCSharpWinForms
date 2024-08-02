@@ -5,22 +5,22 @@ namespace CEETimerCSharpWinForms.Controls
 {
     public abstract class TrackableForm : AppForm
     {
-        protected override void OnAppFormLoad()
+        protected sealed override void OnAppFormLoad()
         {
             OnTrackableFormLoad();
         }
 
-        protected override void OnAppFormShown()
+        protected sealed override void OnAppFormShown()
         {
             FormManager.Add(this);
         }
 
-        protected override void OnAppFormClosing(FormClosingEventArgs e)
+        protected sealed override void OnAppFormClosing(FormClosingEventArgs e)
         {
             OnTrackableFormClosing(e);
         }
 
-        protected override void OnAppFormClosed()
+        protected sealed override void OnAppFormClosed()
         {
             OnTrackableFormClosed();
         }

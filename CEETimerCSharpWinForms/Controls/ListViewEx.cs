@@ -5,7 +5,7 @@ using System.Windows.Forms;
 namespace CEETimerCSharpWinForms.Controls
 {
     [ToolboxItem(true)]
-    public class ListViewEx : ListView
+    public sealed class ListViewEx : ListView
     {
         protected override void OnHandleCreated(EventArgs e)
         {
