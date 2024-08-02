@@ -19,7 +19,7 @@ namespace CEETimerCSharpWinForms.Modules
         /// <returns></returns>
         public static Screen GetCurrentScreen()
         {
-            var CurrentForms = FormManager.GetOpenForms();
+            var CurrentForms = FormManager.OpenForms;
 
             if (CurrentForms.Count() <= 1 && !IsNormalStart(CurrentForms))
             {
