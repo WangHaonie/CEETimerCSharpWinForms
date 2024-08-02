@@ -15,7 +15,7 @@ namespace CEETimerCSharpWinForms.Modules
         public static string ToRgb(this Color color) => $"{color.R},{color.G},{color.B}";
         public static string ToMessage(this Exception ex) => $"\n\n错误信息: \n{ex.Message}\n\n错误详情: \n{ex}";
         public static string FormatLog(this string updateLog, string latestVersion)
-            => $"\n{Regex.Replace(updateLog.RemoveIllegalChars(), @"[#\>]", "").Replace($"v{latestVersion}更新日志新功能修复移除", "").Replace("+", "\n● ")}";
+            => $"{Regex.Replace(updateLog.RemoveIllegalChars(), @"[#\>]", "").Replace($"v{latestVersion}更新日志新功能修复移除", "").Replace("+", "\n● ")}";
 
         #region 来自网络
         /*
