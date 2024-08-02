@@ -40,6 +40,7 @@ namespace CEETimerCSharpWinForms.Forms
         private bool IsReadyToMove;
         private bool IsCountdownReady;
         private bool IsCountdownRunning;
+        private bool IsLocationWatcherRunning;
         private bool IsWin10BelowRounded;
         private readonly int PptsvcThreshold = 1;
         private readonly int BorderRadius = 13;
@@ -68,7 +69,6 @@ namespace CEETimerCSharpWinForms.Forms
 
             LocationWatcher = new() { Interval = 1000 };
             LocationWatcher.Tick += LocationWatcher_Tick;
-            LocationWatcher.Start();
 
             LabelCountdown.ForeColor = CountdownColors[3].Item1;
             BackColor = CountdownColors[3].Item2;
@@ -237,6 +237,7 @@ namespace CEETimerCSharpWinForms.Forms
         {
             if (IsReadyToMove)
             {
+                StartLocationWatcher();
                 Location = new(MousePosition.X - LastMouseLocation.X, MousePosition.Y - LastMouseLocation.Y);
             }
         }
@@ -244,8 +245,9 @@ namespace CEETimerCSharpWinForms.Forms
         private void LabelCountdown_MouseUp(object sender, MouseEventArgs e)
         {
             Cursor = Cursors.Default;
+            StopLocationWatcher();
 
-            if (LastLocation != Location && IsReadyToMove)
+            if (IsReadyToMove && Location != LastLocation)
             {
                 KeepOnScreen();
                 CompatibleWithPPTService();
@@ -256,6 +258,26 @@ namespace CEETimerCSharpWinForms.Forms
             IsReadyToMove = false;
         }
         #endregion
+
+        private void StartLocationWatcher()
+        {
+            if (IsLocationWatcherRunning)
+            {
+                return;
+            }
+
+            IsLocationWatcherRunning = true;
+            LocationWatcher.Start();
+        }
+
+        private void StopLocationWatcher()
+        {
+            if (IsLocationWatcherRunning)
+            {
+                LocationWatcher.Stop();
+                IsLocationWatcherRunning = false;
+            }
+        }
 
         private void ContextSettings_Click(object sender, EventArgs e)
         {
@@ -323,7 +345,11 @@ namespace CEETimerCSharpWinForms.Forms
 
         private async Task StartCountdown()
         {
-            if (IsCountdownRunning) return;
+            if (IsCountdownRunning)
+            {
+                return;
+            }
+
             IsCountdownRunning = true;
 
             while (true)
