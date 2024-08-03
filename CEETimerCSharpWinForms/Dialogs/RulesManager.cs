@@ -265,7 +265,6 @@ namespace CEETimerCSharpWinForms.Dialogs
 
         private void SelectAllItems()
         {
-            Console.WriteLine(1);
             var All = GetAllItems();
 
             if (All.Count() != 0)
