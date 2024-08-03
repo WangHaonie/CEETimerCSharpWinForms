@@ -29,7 +29,6 @@ namespace CEETimerCSharpWinForms.Dialogs
                 if (CustomRules.Count == 0)
                 {
                     AddItem("文本测试", "65535天23时59分59秒", "255,255,255", "255,255,255", Placeholders.PH_P1);
-                    AdjustColumnWidth(); // 触发一次自适应宽度，防止 ListView 为空时所有列在高 DPI 下糊为一坨
                     DeleteAllItems();
                 }
                 else
@@ -43,6 +42,8 @@ namespace CEETimerCSharpWinForms.Dialogs
                         }
                     });
                 }
+
+                AdjustColumnWidth();
             }
         }
 
@@ -133,6 +134,7 @@ namespace CEETimerCSharpWinForms.Dialogs
             var RuleTypeText = CustomRuleHelper.GetRuleTypeText(RuleTypeIndex);
             var _Fore = Fore.ToRgb();
             var _Back = Back.ToRgb();
+
             if (!IsEditMode)
             {
                 var Duplicate = GetDuplicate(RuleTypeText, ExamTick);
@@ -237,21 +239,22 @@ namespace CEETimerCSharpWinForms.Dialogs
         private void RemoveDuplicates()
         {
             var Uniques = new HashSet<string>();
-            var Duplicates = new List<int>();
+            var Duplicates = new List<ListViewItem>();
 
-            for (int i = 0; i < ListViewMain.Items.Count; i++)
+            for (int i = 0; i < GetAllItems().Count(); i++)
             {
-                string itemKey = ListViewMain.Items[i].SubItems[0].Text + ListViewMain.Items[i].SubItems[1].Text;
+                var CurrentItem = ListViewMain.Items[i];
+                string CurrentSubItemText = CurrentItem.SubItems[0].Text + CurrentItem.SubItems[1].Text;
 
-                if (!Uniques.Add(itemKey))
+                if (!Uniques.Add(CurrentSubItemText))
                 {
-                    Duplicates.Add(i);
+                    Duplicates.Add(CurrentItem);
                 }
             }
 
-            foreach (var i in Duplicates.OrderByDescending(i => i))
+            foreach (var Item in Duplicates)
             {
-                ListViewMain.Items.RemoveAt(i);
+                DeleteItem(Item);
             }
         }
 
