@@ -102,7 +102,7 @@ namespace CEETimerCSharpWinForms.Modules
 
         private static Icon GetIcon(int Index)
         {
-            WindowsAPI.ExtractIconEx("imageres.dll", Index, out IntPtr hIcon, out _, 1);
+            NativeInterop.ExtractIconEx("imageres.dll", Index, out IntPtr hIcon, out _, 1);
             return Icon.FromHandle(hIcon);
         }
     }

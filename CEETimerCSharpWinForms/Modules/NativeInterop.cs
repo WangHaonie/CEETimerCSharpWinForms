@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace CEETimerCSharpWinForms.Modules
 {
-    public static class WindowsAPI
+    public static class NativeInterop
     {
         #region 来自网络
         /*

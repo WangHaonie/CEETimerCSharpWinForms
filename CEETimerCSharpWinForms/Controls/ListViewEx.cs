@@ -1,10 +1,8 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Windows.Forms;
 
 namespace CEETimerCSharpWinForms.Controls
 {
-    [ToolboxItem(true)]
     public sealed class ListViewEx : ListView
     {
         protected override void OnHandleCreated(EventArgs e)

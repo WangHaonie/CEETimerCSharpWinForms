@@ -81,7 +81,7 @@ namespace CEETimerCSharpWinForms.Forms
             if (IsWin10BelowRounded)
             {
                 var _BorderRadius = BorderRadius.WithDpi(this);
-                Region = Region.FromHrgn(WindowsAPI.CreateRoundRectRgn(0, 0, Width, Height, _BorderRadius, _BorderRadius));
+                Region = Region.FromHrgn(NativeInterop.CreateRoundRectRgn(0, 0, Width, Height, _BorderRadius, _BorderRadius));
             }
         }
 
@@ -530,7 +530,7 @@ namespace CEETimerCSharpWinForms.Forms
             }
             catch
             {
-                WindowsAPI.EmptyWorkingSet(Process.GetCurrentProcess().Handle);
+                NativeInterop.EmptyWorkingSet(Process.GetCurrentProcess().Handle);
             }
         }
 
@@ -540,7 +540,7 @@ namespace CEETimerCSharpWinForms.Forms
             {
                 var attribute = DWMWINDOWATTRIBUTE.DWMWA_WINDOW_CORNER_PREFERENCE;
                 var preference = DWM_WINDOW_CORNER_PREFERENCE.DWMWCP_ROUND;
-                WindowsAPI.DwmSetWindowAttribute(Handle, attribute, ref preference, sizeof(uint));
+                NativeInterop.DwmSetWindowAttribute(Handle, attribute, ref preference, sizeof(uint));
             }
             else
             {
