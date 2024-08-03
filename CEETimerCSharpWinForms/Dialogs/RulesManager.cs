@@ -75,6 +75,12 @@ namespace CEETimerCSharpWinForms.Dialogs
             {
                 ContextDelete_Click(sender, e);
             }
+            else if (e.Control && e.KeyCode == Keys.A)
+            {
+                SelectAllItems();
+            }
+
+            e.Handled = true;
         }
 
         private void ContextDelete_Click(object sender, EventArgs e)
@@ -254,6 +260,20 @@ namespace CEETimerCSharpWinForms.Dialogs
             foreach (var Item in Duplicates)
             {
                 DeleteItem(Item);
+            }
+        }
+
+        private void SelectAllItems()
+        {
+            Console.WriteLine(1);
+            var All = GetAllItems();
+
+            if (All.Count() != 0)
+            {
+                foreach (var Item in All)
+                {
+                    Item.Selected = true;
+                }
             }
         }
 
