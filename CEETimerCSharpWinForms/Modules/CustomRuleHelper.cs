@@ -128,8 +128,31 @@ namespace CEETimerCSharpWinForms.Modules
             return tmp;
         }
 
-        public static List<TupleEx<int, TimeSpan, TupleEx<Color, Color, string>>> GetObject(List<Config> cfg)
+        public static List<TupleEx<int, TimeSpan, TupleEx<Color, Color, string>>> GetObject(IEnumerable<Config> cfg)
         {
+            #region LINQ 版，慢 1ms
+            /*
+            return (
+                from r in cfg
+                let fore = ColorHelper.GetColor(r.Fore)
+                let back = ColorHelper.GetColor(r.Back)
+                let item1 = GetRuleTypeIndexFromRaw(r.Type)
+                where IsValidColor(fore, back)
+                select new TupleEx<int, TimeSpan, TupleEx<Color, Color, string>>(item1, GetExamTickFormRaw(r.Tick), new(fore, back, (string)CheckCustomText([r.Text.RemoveIllegalChars()], out _, item1)))
+            ).ToList();
+
+            static bool IsValidColor(Color fore, Color back)
+            {
+                if (!ColorHelper.IsNiceContrast(fore, back))
+                {
+                    ConfigPolicy.NotAllowed<Color>();
+                }
+
+                return true;
+            }
+            */
+            #endregion
+
             var tmp = new List<TupleEx<int, TimeSpan, TupleEx<Color, Color, string>>>();
 
             foreach (var Rule in cfg)

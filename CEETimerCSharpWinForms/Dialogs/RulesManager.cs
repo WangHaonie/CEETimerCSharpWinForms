@@ -15,7 +15,7 @@ namespace CEETimerCSharpWinForms.Dialogs
         public string[] Preferences { get; set; }
 
         private bool IsEditMode;
-        private ListView.ListViewItemCollection GetAllItems() => ListViewMain.Items;
+        private IEnumerable<ListViewItem> GetAllItems() => ListViewMain.Items.Cast<ListViewItem>();
 
         public RulesManager() : base(true, true)
         {
@@ -28,17 +28,20 @@ namespace CEETimerCSharpWinForms.Dialogs
             {
                 if (CustomRules.Count == 0)
                 {
-                    ListViewMain.Items.Add(new ListViewItem(["文本测试", "65535天23时59分59秒", "255,255,255", "255,255,255", Placeholders.PH_P1]));
+                    AddItem("文本测试", "65535天23时59分59秒", "255,255,255", "255,255,255", Placeholders.PH_P1);
                     AdjustColumnWidth(); // 触发一次自适应宽度，防止 ListView 为空时所有列在高 DPI 下糊为一坨
-                    ListViewMain.Items.Clear();
+                    DeleteAllItems();
                 }
                 else
                 {
-                    foreach (var Rule in CustomRules)
+                    SuspendListView(() =>
                     {
-                        var Part2 = Rule.Item3;
-                        AddListViewItem(Rule.Item1, CustomRuleHelper.GetExamTickText(Rule.Item2), Part2.Item1, Part2.Item2, Part2.Item3);
-                    }
+                        foreach (var Rule in CustomRules)
+                        {
+                            var Part2 = Rule.Item3;
+                            AddItem(Rule.Item1, CustomRuleHelper.GetExamTickText(Rule.Item2), Part2.Item1, Part2.Item2, Part2.Item3);
+                        }
+                    });
                 }
             }
         }
@@ -57,7 +60,7 @@ namespace CEETimerCSharpWinForms.Dialogs
 
             if (ShowRuleDialog(RuleDialogMain) == DialogResult.OK)
             {
-                AddListViewItem(RuleDialogMain.RuleType, RuleDialogMain.ExamTick, RuleDialogMain.Fore, RuleDialogMain.Back, RuleDialogMain.CustomText);
+                AddItem(RuleDialogMain.RuleType, RuleDialogMain.ExamTick, RuleDialogMain.Fore, RuleDialogMain.Back, RuleDialogMain.CustomText);
             }
         }
 
@@ -80,7 +83,7 @@ namespace CEETimerCSharpWinForms.Dialogs
             {
                 foreach (ListViewItem Item in ListViewMain.SelectedItems)
                 {
-                    ListViewMain.Items.Remove(Item);
+                    DeleteItem(Item);
                 }
 
                 UserChanged();
@@ -109,24 +112,27 @@ namespace CEETimerCSharpWinForms.Dialogs
 
         protected override void OnButtonAClicked()
         {
-            CustomRules = [];
-
-            foreach (ListViewItem Item in GetAllItems())
-            {
-                CustomRules.Add(new(CustomRuleHelper.GetRuleTypeIndex(Item.SubItems[0].Text), CustomRuleHelper.GetExamTick(Item.SubItems[1].Text), new(ColorHelper.GetColor(Item.SubItems[2].Text), ColorHelper.GetColor(Item.SubItems[3].Text), Item.SubItems[4].Text)));
-            }
+            CustomRules = GetAllItems().Select(Item => new TupleEx<int, TimeSpan, TupleEx<Color, Color, string>>
+            (
+                CustomRuleHelper.GetRuleTypeIndex(Item.SubItems[0].Text),
+                CustomRuleHelper.GetExamTick(Item.SubItems[1].Text),
+                new(
+                    ColorHelper.GetColor(Item.SubItems[2].Text),
+                    ColorHelper.GetColor(Item.SubItems[3].Text),
+                    Item.SubItems[4].Text
+                   )
+            )).ToList();
 
             base.OnButtonAClicked();
         }
 
-        private void AddListViewItem(int RuleTypeIndex, string ExamTick, Color Fore, Color Back, string CustomText, ListViewItem Item = null)
+        private void AddItem(int RuleTypeIndex, string ExamTick, Color Fore, Color Back, string CustomText, ListViewItem Item = null)
         {
             UserChanged();
 
             var RuleTypeText = CustomRuleHelper.GetRuleTypeText(RuleTypeIndex);
             var _Fore = Fore.ToRgb();
             var _Back = Back.ToRgb();
-
             if (!IsEditMode)
             {
                 var Duplicate = GetDuplicate(RuleTypeText, ExamTick);
@@ -152,7 +158,7 @@ namespace CEETimerCSharpWinForms.Dialogs
                 return;
             }
 
-            ListViewMain.Items.Add(new ListViewItem([RuleTypeText, ExamTick, _Fore, _Back, CustomText]));
+            AddItem(RuleTypeText, ExamTick, _Fore, _Back, CustomText);
             IDontKnowWhatToNameThis();
 
             void ModifyOrOverrideItem(ListViewItem Item)
@@ -185,29 +191,6 @@ namespace CEETimerCSharpWinForms.Dialogs
             return null;
         }
 
-        private void RemoveDuplicate()
-        {
-            List<ListViewItem> ItemsToRemove = [];
-
-            for (int i = 0; i < ListViewMain.Items.Count; i++)
-            {
-                for (int j = i + 1; j < ListViewMain.Items.Count; j++)
-                {
-                    if (ListViewMain.Items[i].SubItems[0].Text == ListViewMain.Items[j].SubItems[0].Text &&
-                        ListViewMain.Items[i].SubItems[1].Text == ListViewMain.Items[j].SubItems[1].Text)
-                    {
-                        ItemsToRemove.Add(ListViewMain.Items[i]);
-                        break;
-                    }
-                }
-            }
-
-            foreach (var item in ItemsToRemove)
-            {
-                ListViewMain.Items.Remove(item);
-            }
-        }
-
         private void EditCustomRule(ListViewItem Item)
         {
             IsEditMode = true;
@@ -223,8 +206,8 @@ namespace CEETimerCSharpWinForms.Dialogs
 
             if (ShowRuleDialog(RuleDialogMain) == DialogResult.OK)
             {
-                AddListViewItem(RuleDialogMain.RuleType, RuleDialogMain.ExamTick, RuleDialogMain.Fore, RuleDialogMain.Back, RuleDialogMain.CustomText, Item);
-                RemoveDuplicate();
+                AddItem(RuleDialogMain.RuleType, RuleDialogMain.ExamTick, RuleDialogMain.Fore, RuleDialogMain.Back, RuleDialogMain.CustomText, Item);
+                RemoveDuplicates();
             }
 
             IsEditMode = false;
@@ -244,14 +227,64 @@ namespace CEETimerCSharpWinForms.Dialogs
             }
         }
 
+        private void SuspendListView(Action Operation)
+        {
+            ListViewMain.BeginUpdate();
+            Operation();
+            ListViewMain.EndUpdate();
+        }
+
+        private void RemoveDuplicates()
+        {
+            var Uniques = new HashSet<string>();
+            var Duplicates = new List<int>();
+
+            for (int i = 0; i < ListViewMain.Items.Count; i++)
+            {
+                string itemKey = ListViewMain.Items[i].SubItems[0].Text + ListViewMain.Items[i].SubItems[1].Text;
+
+                if (!Uniques.Add(itemKey))
+                {
+                    Duplicates.Add(i);
+                }
+            }
+
+            foreach (var i in Duplicates.OrderByDescending(i => i))
+            {
+                ListViewMain.Items.RemoveAt(i);
+            }
+        }
+
         private void SortItems()
         {
-            List<ListViewItem> Items = ListViewMain.Items.Cast<ListViewItem>().ToList();
+            List<ListViewItem> Items = GetAllItems().ToList();
             Items.Sort(new ListViewItemComparer());
-            ListViewMain.BeginUpdate();
-            ListViewMain.Items.Clear();
+
+            SuspendListView(() =>
+            {
+                DeleteAllItems();
+                AddItems(Items);
+            });
+        }
+
+        private void AddItem(string Column1, string Column2, string Column3, string Column4, string Column5)
+        {
+            ListViewMain.Items.Add(new ListViewItem([Column1, Column2, Column3, Column4, Column5]));
+        }
+
+        private void AddItems(IEnumerable<ListViewItem> Items)
+        {
             ListViewMain.Items.AddRange([.. Items]);
-            ListViewMain.EndUpdate();
+        }
+
+        private void DeleteItem(ListViewItem Item)
+        {
+            ListViewMain.Items.Remove(Item);
+        }
+
+        private void DeleteAllItems()
+        {
+            ListViewMain.Items.Clear();
         }
     }
 }

@@ -72,13 +72,13 @@ namespace CEETimerCSharpWinForms.Modules
             }
         }
 
-        public List<CustomRuleHelper.Config> ReadConfigEx(string Key)
+        public IEnumerable<CustomRuleHelper.Config> ReadConfigEx(string Key)
         {
             if (IsConfigMounted && JsonConfig != null && JsonConfig.ContainsKey(Key))
             {
                 if (JsonConfig[Key] is JArray arr)
                 {
-                    return arr.ToObject<List<CustomRuleHelper.Config>>();
+                    return arr.ToObject<IEnumerable<CustomRuleHelper.Config>>();
                 }
             }
 
