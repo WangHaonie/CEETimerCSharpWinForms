@@ -29,6 +29,7 @@ namespace CEETimerCSharpWinForms.Dialogs
                 if (CustomRules.Count == 0)
                 {
                     AddItem("文本测试", "65535天23时59分59秒", "255,255,255", "255,255,255", Placeholders.PH_P1);
+                    AdjustColumnWidth();
                     DeleteAllItems();
                 }
                 else
@@ -42,8 +43,6 @@ namespace CEETimerCSharpWinForms.Dialogs
                         }
                     });
                 }
-
-                AdjustColumnWidth();
             }
         }
 
