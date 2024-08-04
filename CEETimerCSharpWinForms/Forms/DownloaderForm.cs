@@ -22,6 +22,7 @@ namespace CEETimerCSharpWinForms.Forms
         public DownloaderForm()
         {
             InitializeComponent();
+            AdjustBeforeLoad = true;
         }
 
         protected override void AdjustUI()

@@ -14,6 +14,11 @@ namespace CEETimerCSharpWinForms.Controls
         /// </summary>
         protected bool CompositedStyle { get; set; }
 
+        /// <summary>
+        /// 获取或设置一个值，该值指示窗体是否应在加载之前就先开始调整 UI。
+        /// </summary>
+        protected bool AdjustBeforeLoad { get; set; }
+
         private bool IsLoading = true;
 
         protected AppForm()
@@ -23,8 +28,18 @@ namespace CEETimerCSharpWinForms.Controls
 
         protected sealed override void OnLoad(EventArgs e)
         {
-            AdjustUI();
+            if (AdjustBeforeLoad)
+            {
+                StartAdjustingUI();
+            }
+
             OnAppFormLoad();
+
+            if (!AdjustBeforeLoad)
+            {
+                StartAdjustingUI();
+            }
+
             base.OnLoad(e);
         }
 
@@ -173,12 +188,12 @@ namespace CEETimerCSharpWinForms.Controls
         }
 
         /// <summary>
-        /// 将一个特殊按钮 (通常位于窗体左下角) 与指定控件的左边缘对齐。
+        /// 将一个特殊控件 (通常位于窗体左下角) 与指定控件的左边缘对齐。
         /// </summary>
         /// <param name="Target">目标按钮</param>
         /// <param name="RightButton">右下角的按钮 (通常是确定或取消)</param>
         /// <param name="Reference">指定控件</param>
-        protected void AlignControlsL(Button Target, Button RightButton, Control Reference)
+        protected void AlignControlsL(Control Target, Button RightButton, Control Reference)
         {
             Target.Left = Reference.Left;
             Target.Top = RightButton.Top;
@@ -283,6 +298,11 @@ namespace CEETimerCSharpWinForms.Controls
         {
             Btn2.Location = new(Main.Location.X + Main.Width - Btn2.Width, yTweak);
             Btn1.Location = new(Btn2.Location.X - Btn1.Width - 6.WithDpi(Main), Btn2.Location.Y);
+        }
+
+        private void StartAdjustingUI()
+        {
+            AdjustUI();
         }
     }
 }

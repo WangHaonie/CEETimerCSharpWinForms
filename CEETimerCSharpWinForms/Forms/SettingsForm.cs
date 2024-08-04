@@ -54,10 +54,51 @@ namespace CEETimerCSharpWinForms.Forms
             CompositedStyle = true;
         }
 
+        protected override void OnTrackableFormLoad()
+        {
+            InitializeExtra();
+            RefreshSettings();
+            ChangeWorkingStyle(WorkingArea.LastColor);
+            ChangeWorkingStyle(WorkingArea.Funny, false);
+            ChangeWorkingStyle(WorkingArea.ShowLeftPast, IsShowEnd);
+        }
+
+        private void InitializeExtra()
+        {
+            GBoxExamName.Text = $"考试名称 ({ConfigPolicy.MinExamNameLength}~{ConfigPolicy.MaxExamNameLength}字)";
+            LabelPreviewColor1.Text = $"{Placeholders.PH_JULI}...{Placeholders.PH_START}...";
+            LabelPreviewColor2.Text = $"{Placeholders.PH_JULI}...{Placeholders.PH_LEFT}...";
+            LabelPreviewColor3.Text = $"{Placeholders.PH_JULI}...{Placeholders.PH_PAST}...";
+            DtpExamStart.CustomFormat = LaunchManager.DateTimeFormat;
+            DtpExamEnd.CustomFormat = LaunchManager.DateTimeFormat;
+            LabelExamNameCounter.Text = $"0/{ConfigPolicy.MaxExamNameLength}";
+            LabelExamNameCounter.ForeColor = Color.Red;
+
+            SetTextBoxMax(TextBoxExamName, ConfigPolicy.MaxExamNameLength);
+            BindComboData(ComboBoxShowXOnly, [new("天", 0), new("时", 1), new("分", 2), new("秒", 3)]);
+            BindComboData(ComboBoxPosition, [new("左上角", 0), new("左部中央", 1), new("左下角", 2), new("上部中央", 3), new("中央", 4), new("下部中央", 5), new("右上角", 6), new("右部中央", 7), new("右下角", 8)]);
+
+            List<TupleEx<string, int>> Monitors = [new("<请选择>", 0)];
+            Screen[] CurrentScreens = Screen.AllScreens;
+            for (int i = 0; i < CurrentScreens.Length; i++)
+            {
+                var CurrentScreen = CurrentScreens[i];
+                Monitors.Add(new($"{i + 1} {CurrentScreen.DeviceName} ({CurrentScreen.Bounds.Width}x{CurrentScreen.Bounds.Height})", i + 1));
+            }
+            BindComboData(ComboBoxScreens, Monitors);
+
+            ColorLabels = [LabelColor12, LabelColor22, LabelColor32, LabelColor42, LabelColor11, LabelColor21, LabelColor31, LabelColor41];
+            foreach (var l in ColorLabels)
+            {
+                l.Click += ColorLabels_Click;
+                l.MouseDown += ColorLabels_MouseDown;
+                l.MouseMove += ColorLabels_MouseMove;
+                l.MouseUp += ColorLabels_MouseUp;
+            }
+        }
+
         protected override void AdjustUI()
         {
-            ChangeWorkingStyle(WorkingArea.Funny, false);
-
             AlignControlsR(ButtonSave, ButtonCancel, TabControlMain);
             SetLabelAutoWrap(LabelPptsvc, GBoxPptsvc);
             SetLabelAutoWrap(LabelSyncTime, GBoxSyncTime);
@@ -81,48 +122,6 @@ namespace CEETimerCSharpWinForms.Forms
                 AlignControlsX(CheckBoxCustomText, CheckBoxShowPast);
                 AlignControlsX(ButtonCustomText, CheckBoxCustomText);
             });
-
-            GBoxExamName.Text = $"考试名称 ({ConfigPolicy.MinExamNameLength}~{ConfigPolicy.MaxExamNameLength}字)";
-            LabelPreviewColor1.Text = $"{Placeholders.PH_JULI}...{Placeholders.PH_START}...";
-            LabelPreviewColor2.Text = $"{Placeholders.PH_JULI}...{Placeholders.PH_LEFT}...";
-            LabelPreviewColor3.Text = $"{Placeholders.PH_JULI}...{Placeholders.PH_PAST}...";
-            DtpExamStart.CustomFormat = LaunchManager.DateTimeFormat;
-            DtpExamEnd.CustomFormat = LaunchManager.DateTimeFormat;
-            LabelExamNameCounter.Text = $"0/{ConfigPolicy.MaxExamNameLength}";
-            LabelExamNameCounter.ForeColor = Color.Red;
-        }
-
-        protected override void OnTrackableFormLoad()
-        {
-            InitializeExtra();
-            ChangeWorkingStyle(WorkingArea.LastColor);
-            RefreshSettings();
-            ChangeWorkingStyle(WorkingArea.ShowLeftPast, IsShowEnd);
-        }
-
-        private void InitializeExtra()
-        {
-            SetTextBoxMax(TextBoxExamName, ConfigPolicy.MaxExamNameLength);
-            BindComboData(ComboBoxShowXOnly, [new("天", 0), new("时", 1), new("分", 2), new("秒", 3)]);
-            BindComboData(ComboBoxPosition, [new("左上角", 0), new("左部中央", 1), new("左下角", 2), new("上部中央", 3), new("中央", 4), new("下部中央", 5), new("右上角", 6), new("右部中央", 7), new("右下角", 8)]);
-
-            List<TupleEx<string, int>> Monitors = [new("<请选择>", 0)];
-            Screen[] CurrentScreens = Screen.AllScreens;
-            for (int i = 0; i < CurrentScreens.Length; i++)
-            {
-                var CurrentScreen = CurrentScreens[i];
-                Monitors.Add(new($"{i + 1} {CurrentScreen.DeviceName} ({CurrentScreen.Bounds.Width}x{CurrentScreen.Bounds.Height})", i + 1));
-            }
-            BindComboData(ComboBoxScreens, Monitors);
-
-            ColorLabels = [LabelColor12, LabelColor22, LabelColor32, LabelColor42, LabelColor11, LabelColor21, LabelColor31, LabelColor41];
-            foreach (var l in ColorLabels)
-            {
-                l.Click += ColorLabels_Click;
-                l.MouseDown += ColorLabels_MouseDown;
-                l.MouseMove += ColorLabels_MouseMove;
-                l.MouseUp += ColorLabels_MouseUp;
-            }
         }
 
         private void RefreshSettings()
