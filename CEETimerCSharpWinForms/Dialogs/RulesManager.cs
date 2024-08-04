@@ -13,6 +13,7 @@ namespace CEETimerCSharpWinForms.Dialogs
     {
         public List<TupleEx<int, TimeSpan, TupleEx<Color, Color, string>>> CustomRules { get; set; }
         public string[] Preferences { get; set; }
+        public bool ShowWarning { get; set; }
 
         private bool IsEditMode;
         private IEnumerable<ListViewItem> GetAllItems() => ListViewMain.Items.Cast<ListViewItem>();
@@ -52,6 +53,8 @@ namespace CEETimerCSharpWinForms.Dialogs
             AlignControlsR(ButtonA, ButtonB, ListViewMain);
             CompactControlsY(ButtonA, ListViewMain, 3);
             CompactControlsY(ButtonB, ListViewMain, 3);
+            AlignControlsL(LabelWarning, ButtonA, ListViewMain);
+            LabelWarning.Visible = ShowWarning;
         }
 
         private void ContextAdd_Click(object sender, EventArgs e)

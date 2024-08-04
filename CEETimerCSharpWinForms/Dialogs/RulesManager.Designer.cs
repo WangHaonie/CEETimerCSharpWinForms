@@ -35,6 +35,7 @@
             this.ContextEdit = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextDelete = new System.Windows.Forms.ToolStripMenuItem();
             this.LabelInfo = new System.Windows.Forms.Label();
+            this.LabelWarning = new System.Windows.Forms.Label();
             this.ListViewMain = new CEETimerCSharpWinForms.Controls.ListViewEx();
             this.ColumnRuleType = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ColumnExamTick = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -110,6 +111,16 @@
             this.LabelInfo.TabIndex = 6;
             this.LabelInfo.Text = "你可以在这里自定义倒计时在各时刻要显示的颜色和内容，请右键表格进行操作。";
             // 
+            // LabelWarning
+            // 
+            this.LabelWarning.AutoSize = true;
+            this.LabelWarning.Location = new System.Drawing.Point(6, 7);
+            this.LabelWarning.Name = "LabelInfo";
+            this.LabelWarning.Size = new System.Drawing.Size(410, 15);
+            this.LabelWarning.TabIndex = 7;
+            this.LabelWarning.Text = "检测到未在设置勾选 自定义文本，在此添加的任何规则将不会生效！";
+            this.LabelWarning.ForeColor = System.Drawing.Color.Red;
+            // 
             // ListViewMain
             // 
             this.ListViewMain.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
@@ -162,6 +173,7 @@
             // 
             this.ClientSize = new System.Drawing.Size(370, 317);
             this.Controls.Add(this.LabelInfo);
+            this.Controls.Add(this.LabelWarning);
             this.Controls.Add(this.ListViewMain);
             this.Name = "RulesManager";
             this.Text = "规则管理器 - 高考倒计时";
@@ -181,6 +193,7 @@
         private System.Windows.Forms.ColumnHeader ColumnForeColor;
         private System.Windows.Forms.ColumnHeader ColumnBackColor;
         private System.Windows.Forms.Label LabelInfo;
+        private System.Windows.Forms.Label LabelWarning;
         private System.Windows.Forms.ToolStripSeparator ToolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem ContextEdit;
         private System.Windows.Forms.ColumnHeader ColumnCustomText;

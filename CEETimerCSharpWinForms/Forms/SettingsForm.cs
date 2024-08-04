@@ -328,7 +328,8 @@ namespace CEETimerCSharpWinForms.Forms
             RulesManager Manager = new()
             {
                 CustomRules = UserCustomRules,
-                Preferences = CheckBoxCustomText.Checked ? CustomTextRaw : [null, null, null]
+                Preferences = CheckBoxCustomText.Checked ? CustomTextRaw : [null, null, null],
+                ShowWarning = !CheckBoxCustomText.Checked
             };
 
             if (Manager.ShowDialog() == DialogResult.OK)
