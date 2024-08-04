@@ -26,7 +26,7 @@ namespace CEETimerCSharpWinForms.Dialogs
 
         protected override void OnDialogLoad()
         {
-            LabelCustomInfo.Text = $"用占位符表示变量: {Placeholders.PH_PHINFO}\r\n注意: 自定义文本仅在勾选了 设置>显示>自定义文本 时才会生效。";
+            LabelCustomInfo.Text = $"用占位符表示变量: {Placeholders.PH_PHINFO}";
 
             BindComboData(ComboBoxRuleType, [new(Placeholders.PH_START, 0), new(Placeholders.PH_LEFT, 1), new(Placeholders.PH_PAST, 2)]);
             ComboBoxRuleType.SelectedIndex = RuleType;
@@ -69,9 +69,6 @@ namespace CEETimerCSharpWinForms.Dialogs
                 CompactControlsX(LinkReset, TextBoxCustomText);
                 CompactControlsX(TextBoxCustomText, LabelCustomText);
             });
-
-            PanelMain.AutoSize = true;
-            PanelMain.AutoSizeMode = AutoSizeMode.GrowOnly;
         }
 
         private void ColorLabels_Click(object sender, EventArgs e)

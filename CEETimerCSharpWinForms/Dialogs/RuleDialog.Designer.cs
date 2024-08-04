@@ -281,7 +281,7 @@
             this.PanelMain.Controls.Add(this.ComboBoxRuleType);
             this.PanelMain.Location = new System.Drawing.Point(0, 0);
             this.PanelMain.Name = "PanelMain";
-            this.PanelMain.Size = new System.Drawing.Size(453, 130);
+            this.PanelMain.Size = new System.Drawing.Size(453, 113);
             this.PanelMain.TabIndex = 24;
             // 
             // LinkReset
