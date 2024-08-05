@@ -57,7 +57,7 @@ namespace CEETimerCSharpWinForms.Dialogs
         protected override void AdjustUI()
         {
             SetLabelAutoWrap(LabelCustomInfo, PanelMain);
-            EnablePanelAutoSize(AutoSizeMode.GrowAndShrink);
+            EnablePanelAutoSize(AutoSizeMode.GrowOnly);
             AdjustPanel();
             AlignControlsX(ComboBoxRuleType, LabelChars01);
             AlignControlsR(LabelPreviewColor, LinkReset);

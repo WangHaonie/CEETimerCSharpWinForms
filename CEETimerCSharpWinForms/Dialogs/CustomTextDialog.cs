@@ -1,6 +1,7 @@
 ﻿using CEETimerCSharpWinForms.Controls;
 using CEETimerCSharpWinForms.Modules;
 using System;
+using System.Windows.Forms;
 
 namespace CEETimerCSharpWinForms.Dialogs
 {
@@ -31,8 +32,9 @@ namespace CEETimerCSharpWinForms.Dialogs
 
         protected override void AdjustUI()
         {
-            AdjustPanel();
             SetLabelAutoWrap(LabelInfo, PanelMain);
+            EnablePanelAutoSize(AutoSizeMode.GrowOnly);
+            AdjustPanel();
             AlignControlsL(ButtonReset, ButtonA, LabelP3);
             AlignControlsX(TextBoxP1, LabelP1);
             AlignControlsX(TextBoxP2, LabelP2);

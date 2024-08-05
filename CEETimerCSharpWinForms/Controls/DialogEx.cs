@@ -108,6 +108,12 @@ namespace CEETimerCSharpWinForms.Controls
             }
         }
 
+        protected void EnablePanelAutoSize(AutoSizeMode Mode)
+        {
+            PanelMain.AutoSize = true;
+            PanelMain.AutoSizeMode = Mode;
+        }
+
         protected void UserChanged()
         {
             Execute(() =>
@@ -123,12 +129,6 @@ namespace CEETimerCSharpWinForms.Controls
         private void KeepProperties()
         {
             AutoScaleDimensions = new(96F, 96F);
-        }
-
-        protected void EnablePanelAutoSize(AutoSizeMode Mode)
-        {
-            PanelMain.AutoSize = true;
-            PanelMain.AutoSizeMode = Mode;
         }
     }
 }
