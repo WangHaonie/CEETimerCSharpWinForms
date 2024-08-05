@@ -18,7 +18,7 @@ namespace CEETimerCSharpWinForms.Dialogs
         private bool IsEditMode;
         private IEnumerable<ListViewItem> GetAllItems() => ListViewMain.Items.Cast<ListViewItem>();
 
-        public RulesManager() : base(true, true)
+        public RulesManager() : base(DialogExProp.BindButtons | DialogExProp.KeyPreview)
         {
             InitializeComponent();
         }
@@ -236,13 +236,6 @@ namespace CEETimerCSharpWinForms.Dialogs
             }
         }
 
-        private void SuspendListView(Action Operation)
-        {
-            ListViewMain.BeginUpdate();
-            Operation();
-            ListViewMain.EndUpdate();
-        }
-
         private void RemoveDuplicates()
         {
             var Uniques = new HashSet<string>();
@@ -308,6 +301,13 @@ namespace CEETimerCSharpWinForms.Dialogs
         private void DeleteAllItems()
         {
             ListViewMain.Items.Clear();
+        }
+
+        private void SuspendListView(Action Operation)
+        {
+            ListViewMain.BeginUpdate();
+            Operation();
+            ListViewMain.EndUpdate();
         }
     }
 }

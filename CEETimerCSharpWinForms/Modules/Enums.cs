@@ -1,4 +1,6 @@
-﻿namespace CEETimerCSharpWinForms.Modules
+﻿using System;
+
+namespace CEETimerCSharpWinForms.Modules
 {
     public enum CountdownState
     {
@@ -42,6 +44,13 @@
         UserShutdownOrRestart = 2,
         InvalidExeName = 3,
         AnotherInstanceIsRunning = 4
+    }
+
+    [Flags]
+    public enum DialogExProp
+    {
+        BindButtons = 0B00100001,
+        KeyPreview = 0B001000_10
     }
 
     public enum DWM_WINDOW_CORNER_PREFERENCE

@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using CEETimerCSharpWinForms.Modules;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace CEETimerCSharpWinForms.Controls
@@ -16,18 +17,9 @@ namespace CEETimerCSharpWinForms.Controls
             InitializeComponent();
         }
 
-        protected DialogEx(bool BindButtons, bool ReadKeys) : this()
+        protected DialogEx(DialogExProp Prop) : this()
         {
-            if (BindButtons)
-            {
-                AcceptButton = ButtonA;
-                CancelButton = ButtonB;
-            }
-
-            if (ReadKeys)
-            {
-                KeyPreview = true;
-            }
+            SetProperties(Prop);
         }
 
         private void InitializeComponent()
@@ -124,6 +116,20 @@ namespace CEETimerCSharpWinForms.Controls
                     ButtonA.Enabled = true;
                 }
             });
+        }
+
+        private void SetProperties(DialogExProp Prop)
+        {
+            if ((Prop & DialogExProp.BindButtons) != 0)
+            {
+                AcceptButton = ButtonA;
+                CancelButton = ButtonB;
+            }
+
+            if ((Prop & DialogExProp.KeyPreview) != 0)
+            {
+                KeyPreview = true;
+            }
         }
 
         private void KeepProperties()

@@ -13,7 +13,7 @@ namespace CEETimerCSharpWinForms.Dialogs
         private string P2TextRaw;
         private string P3TextRaw;
 
-        public CustomTextDialog() : base(true, false)
+        public CustomTextDialog() : base(DialogExProp.BindButtons)
         {
             InitializeComponent();
         }

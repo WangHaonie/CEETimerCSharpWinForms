@@ -19,7 +19,7 @@ namespace CEETimerCSharpWinForms.Dialogs
         private string LastText;
         private readonly Dictionary<int, string> UserUnsavedText = [];
 
-        public RuleDialog() : base(true, false)
+        public RuleDialog() : base(DialogExProp.BindButtons)
         {
             InitializeComponent();
         }

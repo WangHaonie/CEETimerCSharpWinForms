@@ -14,7 +14,7 @@ namespace CEETimerCSharpWinForms.Dialogs
         private readonly SystemSound DialogSound;
         private readonly bool AutoCloseRequired;
 
-        public MessageBoxEx(SystemSound Sound, MessageBoxExButtons Buttons, bool AutoClose) : base(false, true)
+        public MessageBoxEx(SystemSound Sound, MessageBoxExButtons Buttons, bool AutoClose) : base(DialogExProp.KeyPreview)
         {
             InitializeComponent();
             DialogSound = Sound;
