@@ -26,7 +26,7 @@ namespace CEETimerCSharpWinForms.Dialogs
 
         protected override void OnDialogLoad()
         {
-            LabelCustomInfo.Text = $"用占位符表示变量: {Placeholders.PH_PHINFO}";
+            LabelCustomInfo.Text = $"可用的占位符: {Placeholders.PH_PHINFO}";
 
             BindComboData(ComboBoxRuleType, [new(Placeholders.PH_START, 0), new(Placeholders.PH_LEFT, 1), new(Placeholders.PH_PAST, 2)]);
             ComboBoxRuleType.SelectedIndex = RuleType;
@@ -56,8 +56,9 @@ namespace CEETimerCSharpWinForms.Dialogs
 
         protected override void AdjustUI()
         {
-            AdjustPanel();
             SetLabelAutoWrap(LabelCustomInfo, PanelMain);
+            EnablePanelAutoSize(AutoSizeMode.GrowAndShrink);
+            AdjustPanel();
             AlignControlsX(ComboBoxRuleType, LabelChars01);
             AlignControlsR(LabelPreviewColor, LinkReset);
 

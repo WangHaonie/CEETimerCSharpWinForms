@@ -46,7 +46,6 @@
             this.TextBoxCustomText = new System.Windows.Forms.TextBox();
             this.LabelCustomText = new System.Windows.Forms.Label();
             this.LabelCustomInfo = new System.Windows.Forms.Label();
-            this.PanelMain = new System.Windows.Forms.Panel();
             this.LinkReset = new System.Windows.Forms.LinkLabel();
             ((System.ComponentModel.ISupportInitialize)(this.NudSeconds)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NudMinutes)).BeginInit();

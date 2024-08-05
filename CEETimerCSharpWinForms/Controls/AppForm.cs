@@ -10,14 +10,14 @@ namespace CEETimerCSharpWinForms.Controls
     public abstract class AppForm : Form
     {
         /// <summary>
-        /// 获取或设置一个值，该值指示窗体是否启用 WS_EX_COMPOSITED 样式以减少闪烁。
-        /// </summary>
-        protected bool CompositedStyle { get; set; }
-
-        /// <summary>
         /// 获取或设置一个值，该值指示窗体是否应在加载之前就先开始调整 UI。
         /// </summary>
         protected bool AdjustBeforeLoad { get; set; }
+
+        /// <summary>
+        /// 获取或设置一个值，该值指示窗体是否启用 WS_EX_COMPOSITED 样式以减少闪烁。
+        /// </summary>
+        protected bool CompositedStyle { get; set; }
 
         private bool IsLoading = true;
 

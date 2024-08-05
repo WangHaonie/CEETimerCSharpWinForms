@@ -5,9 +5,9 @@ namespace CEETimerCSharpWinForms.Controls
 {
     public abstract class DialogEx : AppForm
     {
-        protected Panel PanelMain { get; set; }
-        protected Button ButtonB { get; set; }
-        protected Button ButtonA { get; set; }
+        protected Panel PanelMain { get; private set; }
+        protected Button ButtonB { get; private set; }
+        protected Button ButtonA { get; private set; }
 
         private bool IsUserChanged;
 
@@ -120,9 +120,15 @@ namespace CEETimerCSharpWinForms.Controls
             });
         }
 
-        private void KeepProperties() // .NET 貌似会在初始化子类的时候重置基类的某些属性，故该方法可以在重置之后再次应用相关属性
+        private void KeepProperties()
         {
             AutoScaleDimensions = new(96F, 96F);
+        }
+
+        protected void EnablePanelAutoSize(AutoSizeMode Mode)
+        {
+            PanelMain.AutoSize = true;
+            PanelMain.AutoSizeMode = Mode;
         }
     }
 }

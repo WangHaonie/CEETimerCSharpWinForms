@@ -49,7 +49,6 @@ namespace CEETimerCSharpWinForms.Dialogs
 
         protected override void AdjustUI()
         {
-            Controls.Remove(PanelMain);
             AlignControlsR(ButtonA, ButtonB, ListViewMain);
             CompactControlsY(ButtonA, ListViewMain, 3);
             CompactControlsY(ButtonB, ListViewMain, 3);
