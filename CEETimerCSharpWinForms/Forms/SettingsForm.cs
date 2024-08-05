@@ -76,7 +76,7 @@ namespace CEETimerCSharpWinForms.Forms
 
             SetTextBoxMax(TextBoxExamName, ConfigPolicy.MaxExamNameLength);
             BindComboData(ComboBoxShowXOnly, [new("天", 0), new("时", 1), new("分", 2), new("秒", 3)]);
-            BindComboData(ComboBoxPosition, [new("左上角", 0), new("左部中央", 1), new("左下角", 2), new("上部中央", 3), new("中央", 4), new("下部中央", 5), new("右上角", 6), new("右部中央", 7), new("右下角", 8)]);
+            BindComboData(ComboBoxPosition, [new("左上角", 0), new("左侧中央", 1), new("左下角", 2), new("上侧中央", 3), new("中央", 4), new("下侧中央", 5), new("右上角", 6), new("右侧中央", 7), new("右下角", 8)]);
 
             List<TupleEx<string, int>> Monitors = [new("<请选择>", 0)];
             Screen[] CurrentScreens = Screen.AllScreens;
