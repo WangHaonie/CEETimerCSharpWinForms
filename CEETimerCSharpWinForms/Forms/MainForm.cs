@@ -51,7 +51,7 @@ namespace CEETimerCSharpWinForms.Forms
         private Rectangle SelectedScreen;
         private SettingsForm FormSettings;
         private AboutForm FormAbout;
-        private readonly ConfigManager configManager = new();
+        private readonly ConfigManager Config = new();
         private readonly FontConverter fontConverter = new();
 
         public MainForm()
@@ -87,35 +87,35 @@ namespace CEETimerCSharpWinForms.Forms
 
         private async void RefreshSettings(object sender, EventArgs e)
         {
-            configManager.MountConfig(true);
+            Config.MountConfig(true);
 
-            ExamName = configManager.ReadConfig(ConfigItems.KExamName);
-            CustomText = CustomRuleHelper.GetCustomTextFormRaw(configManager.ReadConfig(ConfigItems.KCustomTextP1), configManager.ReadConfig(ConfigItems.KCustomTextP2), configManager.ReadConfig(ConfigItems.KCustomTextP3));
-            ExamStartTime = DateTime.TryParseExact(configManager.ReadConfig(ConfigItems.KStartTime), "yyyyMMddHHmmss", null, DateTimeStyles.None, out DateTime tmpw) ? tmpw : DateTime.Now;
-            ExamEndTime = DateTime.TryParseExact(configManager.ReadConfig(ConfigItems.KEndTime), "yyyyMMddHHmmss", null, DateTimeStyles.None, out DateTime tmpx) ? tmpx : DateTime.Now;
-            IsMemoryOptimizationEnabled = bool.TryParse(configManager.ReadConfig(ConfigItems.KMemOpti), out bool tmpc) && tmpc;
-            TopMost = !bool.TryParse(configManager.ReadConfig(ConfigItems.KTopMost), out bool tmpa) || tmpa;
-            IsShowXOnly = bool.TryParse(configManager.ReadConfig(ConfigItems.KShowXOnly), out bool tmpd) && tmpd;
-            IsRounding = bool.TryParse(configManager.ReadConfig(ConfigItems.KRounding), out bool tmpe) && tmpe;
-            IsShowPast = bool.TryParse(configManager.ReadConfig(ConfigItems.KShowPast), out bool tmpg) && tmpg;
-            IsShowEnd = bool.TryParse(configManager.ReadConfig(ConfigItems.KShowEnd), out bool tmpf) && tmpf;
-            IsDraggable = bool.TryParse(configManager.ReadConfig(ConfigItems.KDraggable), out bool tmph) && tmph;
-            UniTopMost = bool.TryParse(configManager.ReadConfig(ConfigItems.KUniTopMost), out bool tmpi) && tmpi;
-            IsPPTService = bool.TryParse(configManager.ReadConfig(ConfigItems.KSeewoPptSvc), out bool tmpj) && tmpj;
-            IsCustomText = bool.TryParse(configManager.ReadConfig(ConfigItems.KIsCustomText), out bool tmpo) && tmpo;
-            ScreenIndex = int.TryParse(configManager.ReadConfig(ConfigItems.KScreen), out int tmpk) ? tmpk : 0;
-            PositionIndex = int.TryParse(configManager.ReadConfig(ConfigItems.KPosition), out int tmpu) ? tmpu : 0;
-            ShowXOnlyIndex = int.TryParse(configManager.ReadConfig(ConfigItems.KShowValue), out int tmpl) ? tmpl : 0;
-            try { CustomRules = CustomRuleHelper.GetObject(configManager.ReadConfigEx(ConfigItems.KCustomRules)); } catch { CustomRules = []; }
-            ColorDialogEx.CustomColorCollection = ColorHelper.GetArgbArray(configManager.ReadConfig(ConfigItems.KCustomColors));
-            int.TryParse(configManager.ReadConfig(ConfigItems.KPosX), out int x);
-            int.TryParse(configManager.ReadConfig(ConfigItems.KPosY), out int y);
+            ExamName = Config.ReadConfig(ConfigItems.KExamName);
+            CustomText = CustomRuleHelper.GetCustomTextFormRaw(Config.ReadConfig(ConfigItems.KCustomTextP1), Config.ReadConfig(ConfigItems.KCustomTextP2), Config.ReadConfig(ConfigItems.KCustomTextP3));
+            ExamStartTime = DateTime.TryParseExact(Config.ReadConfig(ConfigItems.KStartTime), "yyyyMMddHHmmss", null, DateTimeStyles.None, out DateTime tmpw) ? tmpw : DateTime.Now;
+            ExamEndTime = DateTime.TryParseExact(Config.ReadConfig(ConfigItems.KEndTime), "yyyyMMddHHmmss", null, DateTimeStyles.None, out DateTime tmpx) ? tmpx : DateTime.Now;
+            IsMemoryOptimizationEnabled = bool.TryParse(Config.ReadConfig(ConfigItems.KMemOpti), out bool tmpc) && tmpc;
+            TopMost = !bool.TryParse(Config.ReadConfig(ConfigItems.KTopMost), out bool tmpa) || tmpa;
+            IsShowXOnly = bool.TryParse(Config.ReadConfig(ConfigItems.KShowXOnly), out bool tmpd) && tmpd;
+            IsRounding = bool.TryParse(Config.ReadConfig(ConfigItems.KRounding), out bool tmpe) && tmpe;
+            IsShowPast = bool.TryParse(Config.ReadConfig(ConfigItems.KShowPast), out bool tmpg) && tmpg;
+            IsShowEnd = bool.TryParse(Config.ReadConfig(ConfigItems.KShowEnd), out bool tmpf) && tmpf;
+            IsDraggable = bool.TryParse(Config.ReadConfig(ConfigItems.KDraggable), out bool tmph) && tmph;
+            UniTopMost = bool.TryParse(Config.ReadConfig(ConfigItems.KUniTopMost), out bool tmpi) && tmpi;
+            IsPPTService = bool.TryParse(Config.ReadConfig(ConfigItems.KSeewoPptSvc), out bool tmpj) && tmpj;
+            IsCustomText = bool.TryParse(Config.ReadConfig(ConfigItems.KIsCustomText), out bool tmpo) && tmpo;
+            ScreenIndex = int.TryParse(Config.ReadConfig(ConfigItems.KScreen), out int tmpk) ? tmpk : 0;
+            PositionIndex = int.TryParse(Config.ReadConfig(ConfigItems.KPosition), out int tmpu) ? tmpu : 0;
+            ShowXOnlyIndex = int.TryParse(Config.ReadConfig(ConfigItems.KShowValue), out int tmpl) ? tmpl : 0;
+            try { CustomRules = CustomRuleHelper.GetObject(Config.ReadConfigEx(ConfigItems.KCustomRules)); } catch { CustomRules = []; }
+            ColorDialogEx.CustomColorCollection = ColorHelper.GetArgbArray(Config.ReadConfig(ConfigItems.KCustomColors));
+            int.TryParse(Config.ReadConfig(ConfigItems.KPosX), out int x);
+            int.TryParse(Config.ReadConfig(ConfigItems.KPosY), out int y);
             CountdownColors = [];
 
             for (int i = 0; i < 4; i++)
             {
-                var Fore = ColorHelper.TryParseRGB(configManager.ReadConfig($"Fore{i + 1}"), out Color tmpfore) ? tmpfore : DefaultColors[i].Item1;
-                var Back = ColorHelper.TryParseRGB(configManager.ReadConfig($"Back{i + 1}"), out Color tmpback) ? tmpback : DefaultColors[i].Item2;
+                var Fore = ColorHelper.TryParseRGB(Config.ReadConfig($"Fore{i + 1}"), out Color tmpfore) ? tmpfore : DefaultColors[i].Item1;
+                var Back = ColorHelper.TryParseRGB(Config.ReadConfig($"Back{i + 1}"), out Color tmpback) ? tmpback : DefaultColors[i].Item2;
 
                 if (!ColorHelper.IsNiceContrast(Fore, Back))
                 {
@@ -139,7 +139,7 @@ namespace CEETimerCSharpWinForms.Forms
             if (PositionIndex is < 0 or > 8) PositionIndex = 0;
             if (ShowXOnlyIndex > 3) ShowXOnlyIndex = 0;
             if (ExamName.Length is > ConfigPolicy.MaxExamNameLength or < ConfigPolicy.MinExamNameLength) ExamName = "";
-            IsCountdownReady = !string.IsNullOrWhiteSpace(ExamName) && configManager.IsValidData(tmpw) && configManager.IsValidData(tmpx) && (tmpx > tmpw || !IsShowEnd);
+            IsCountdownReady = !string.IsNullOrWhiteSpace(ExamName) && Config.IsValidData(tmpw) && Config.IsValidData(tmpx) && (tmpx > tmpw || !IsShowEnd);
             IsPPTService = IsPPTService && ((TopMost && ShowXOnlyIndex == 0) || IsDraggable);
 
             SelectedState = CountdownState.Normal;
@@ -157,8 +157,8 @@ namespace CEETimerCSharpWinForms.Forms
 
             try
             {
-                SelectedFont = (Font)fontConverter.ConvertFromString(configManager.ReadConfig(ConfigItems.KFont));
-                SelectedFontStyle = (FontStyle)Enum.Parse(typeof(FontStyle), configManager.ReadConfig(ConfigItems.KFontStyle));
+                SelectedFont = (Font)fontConverter.ConvertFromString(Config.ReadConfig(ConfigItems.KFont));
+                SelectedFontStyle = (FontStyle)Enum.Parse(typeof(FontStyle), Config.ReadConfig(ConfigItems.KFontStyle));
 
                 if (SelectedFont.Size is > ConfigPolicy.MaxFontSize or < ConfigPolicy.MinFontSize)
                 {
@@ -192,14 +192,14 @@ namespace CEETimerCSharpWinForms.Forms
             ApplyLocation();
             CompatibleWithPPTService();
 
-            foreach (var _Form in FormManager.OpenForms)
+            foreach (var f in FormManager.OpenForms)
             {
-                if (_Form == this)
+                if (f == this)
                 {
                     continue;
                 }
 
-                _Form.TopMost = UniTopMost;
+                f.TopMost = UniTopMost;
             }
 
             MemoryOptimizer?.Dispose();
@@ -208,7 +208,7 @@ namespace CEETimerCSharpWinForms.Forms
                 MemoryOptimizer = new(OptimizeMemory, null, TimeSpan.Zero, TimeSpan.FromMinutes(5));
             }
 
-            configManager.MountConfig(false);
+            Config.MountConfig(false);
             SetLabelCountdownAutoWrap();
 
             await StartCountdown();
@@ -488,7 +488,7 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void SaveLocation()
         {
-            configManager.WriteConfig(new()
+            Config.WriteConfig(new()
             {
                 { ConfigItems.KPosX, $"{Location.X}" },
                 { ConfigItems.KPosY, $"{Location.Y}" }
