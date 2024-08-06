@@ -349,7 +349,7 @@
             this.LabelPptsvc.Name = "LabelPptsvc";
             this.LabelPptsvc.Size = new System.Drawing.Size(603, 15);
             this.LabelPptsvc.TabIndex = 0;
-            this.LabelPptsvc.Text = "用于解决内置白板打开后底部工具栏会消失的问题。(或者你也可以开启拖动功能，将倒计时窗口拖动到其他位置)";
+            this.LabelPptsvc.Text = "用于解决个别机型在内置白板打开后底部工具栏消失的情况。(仅倒计时恰好在左上角且顶置才会出现)";
             // 
             // GBoxContent
             // 
