@@ -18,8 +18,8 @@ namespace CEETimerCSharpWinForms.Modules
 
         public const string AppName = "高考倒计时 by WangHaonie";
         public const string AppNameEng = "CEETimerCSharpWinForms";
-        public const string AppVersion = "3.0.7";
-        public const string AppBuildDate = "2024/07/13";
+        public const string AppVersion = "3.0.8";
+        public const string AppBuildDate = "2024/08/06";
         public const string CopyrightInfo = "Copyright © 2023-2024 WangHaonie";
         public const string OriginalFileName = $"{AppNameEng}.exe";
         public const string InfoMsg = "提示 - 高考倒计时";

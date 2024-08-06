@@ -43,7 +43,7 @@ launch:
 
 !include "MUI2.nsh"
 !define PRODUCT_NAME "¸ß¿¼µ¹¼ÆÊ±"
-!define SETUP_FILENAME_NO_V "3.0.7"
+!define SETUP_FILENAME_NO_V "3.0.8"
 !define PRODUCT_VERSION "${SETUP_FILENAME_NO_V}"
 !define PRODUCT_TITLE "${PRODUCT_NAME} by ${PRODUCT_PUBLISHER}"
 !define PRODUCT_PUBLISHER "WangHaonie"

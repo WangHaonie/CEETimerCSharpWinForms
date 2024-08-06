@@ -28,7 +28,7 @@ CEETimerCSharpWinForms，适用于 Windows 系统的高考倒计时，支持自�
 + ✅ 检查更新功能，用户确认后可自动下载并安装；
 + ✅ 同步网络时钟，确保系统时间准确无误 (因涉及到修改系统设置，使用此功能可能会弹出 UAC 对话框，请手动点击允许)；
 ## 运行截图
-> v3.0.7，Windows 11，1920x1080，125% 缩放
+> v3.0.8，Windows 11，1920x1080，125% 缩放
 
 ![主窗口](./Screenshot.png)
 ## 食用方法
@@ -79,7 +79,7 @@ CEETimerCSharpWinForms，适用于 Windows 系统的高考倒计时，支持自�
 + **/ac**：检测当前用户是否具有管理员权限
 + **/fr <版本号>**: 强制下载并安装指定的版本，留空则当前版本，推荐在特殊情况下使用，不支持老版本
 ## 开发环境
-Windows 11 Pro x64 (22635.3930)，Visual Studio 2022 (17.10.4)，C# (12.0)，WinForms，.NET Framework 4.7.2
+Windows 11 Pro x64 (22635.4005)，Visual Studio 2022 (17.10.5)，C# (12.0)，WinForms，.NET Framework 4.7.2
 ## 开源许可证
 CEETimerCSharpWinForms is licensed under the GNU General Public License v3.0 (GPL-3.0)
 ## 致用户
