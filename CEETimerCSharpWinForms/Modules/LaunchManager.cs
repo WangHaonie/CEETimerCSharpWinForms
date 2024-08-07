@@ -41,8 +41,8 @@ namespace CEETimerCSharpWinForms.Modules
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
-            Application.ThreadException += Application_ThreadException;
-            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+            Application.ThreadException += (sender, e) => HandleException(e.Exception);
+            AppDomain.CurrentDomain.UnhandledException += (sender, e) => HandleException((Exception)e.ExceptionObject);
 
             using var MutexMain = new Mutex(true, $"{AppNameEng}_MUTEX_61c0097d-3682-421c-84e6-70ca37dc31dd_[A3F8B92E6D14]", out bool IsNewProcess);
 
@@ -141,16 +141,6 @@ namespace CEETimerCSharpWinForms.Modules
                 PipeClient.Connect(1000);
             }
             catch { }
-        }
-
-        private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
-        {
-            HandleException(e.Exception);
-        }
-
-        private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
-        {
-            HandleException((Exception)e.ExceptionObject);
         }
 
         private static void HandleException(Exception ex)
