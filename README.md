@@ -87,6 +87,8 @@ CEETimerCSharpWinForms is licensed under the GNU General Public License v3.0 (GP
 + 软件目前所有功能均按照个人和老师及同学的要求开发，可能存在一些不足和瑕疵，还请各位用户多多谅解；
 + 本项目是我第一次 C# 实践，我会尽可能在不影响用户体验下把我所学的全部知识都应用在这个项目中，所以可能会有一些屎山或冗余代码，欢迎各位对源代码进行批评和指点；
 + 当然也欢迎各位用户在 GitHub [Issues](https://github.com/WangHaonie/CEETimerCSharpWinForms/issues/new/choose)/[Discussions](https://github.com/WangHaonie/CEETimerCSharpWinForms/discussions) 里分享您的观点和想法，虽然能力和时间有限，但我也会尽量去完成每一个用户提出的问题，感谢您的理解和支持！
+## 开发动态
+可以实时查看本开发者的在线状态，以及下一个版本的计划等 [点此进入](./.dev/DevelopmentJournal.md)
 ## 其他链接
 [CSDN 博客](https://blog.csdn.net/WHNdeCSDN/article/details/139425056)
 ## 打赏作者
