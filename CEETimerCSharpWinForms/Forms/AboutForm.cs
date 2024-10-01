@@ -18,8 +18,8 @@ namespace CEETimerCSharpWinForms.Forms
 
         protected override void OnTrackableFormLoad()
         {
-            LabelInfo.Text = $"{LaunchManager.AppName}\n版本 v{LaunchManager.AppVersion} x64 ({LaunchManager.AppBuildDate})";
-            LabelLicense.Text = $"Licensed under the GNU GPL, v3.\n{LaunchManager.CopyrightInfo}";
+            LabelInfo.Text = $"{AppLauncher.AppName}\n版本 v{AppLauncher.AppVersion} x64 ({AppLauncher.AppBuildDate})";
+            LabelLicense.Text = $"Licensed under the GNU GPL, v3.\n{AppLauncher.CopyrightInfo}";
         }
 
         private async void PicBoxLogo_MouseClick(object sender, MouseEventArgs e)
@@ -32,7 +32,7 @@ namespace CEETimerCSharpWinForms.Forms
                 try
                 {
                     var OriginalVersionString = LabelInfo.Text;
-                    LabelInfo.Text = $"{LaunchManager.AppName}\n正在检查更新，请稍候...";
+                    LabelInfo.Text = $"{AppLauncher.AppName}\n正在检查更新，请稍候...";
                     await Task.Run(() => UpdateChecker.CheckUpdate(false, this));
                     LabelInfo.Text = OriginalVersionString;
                 }

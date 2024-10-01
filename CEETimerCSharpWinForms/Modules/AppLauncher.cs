@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace CEETimerCSharpWinForms.Modules
 {
-    public static class LaunchManager
+    public static class AppLauncher
     {
         public static string CurrentExecutableDir => AppDomain.CurrentDomain.BaseDirectory;
         public static string CurrentExecutablePath => Application.ExecutablePath;

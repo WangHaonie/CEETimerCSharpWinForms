@@ -69,8 +69,8 @@ namespace CEETimerCSharpWinForms.Forms
             LabelPreviewColor1.Text = $"{Placeholders.PH_JULI}...{Placeholders.PH_START}...";
             LabelPreviewColor2.Text = $"{Placeholders.PH_JULI}...{Placeholders.PH_LEFT}...";
             LabelPreviewColor3.Text = $"{Placeholders.PH_JULI}...{Placeholders.PH_PAST}...";
-            DtpExamStart.CustomFormat = LaunchManager.DateTimeFormat;
-            DtpExamEnd.CustomFormat = LaunchManager.DateTimeFormat;
+            DtpExamStart.CustomFormat = AppLauncher.DateTimeFormat;
+            DtpExamEnd.CustomFormat = AppLauncher.DateTimeFormat;
             LabelExamNameCounter.Text = $"0/{ConfigPolicy.MaxExamNameLength}";
             LabelExamNameCounter.ForeColor = Color.Red;
 
@@ -126,7 +126,7 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void RefreshSettings()
         {
-            CheckBoxStartup.Checked = (Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true)?.GetValue(LaunchManager.AppNameEng) is string regvalue) && regvalue.Equals($"\"{LaunchManager.CurrentExecutablePath}\"", StringComparison.OrdinalIgnoreCase);
+            CheckBoxStartup.Checked = (Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true)?.GetValue(AppLauncher.AppNameEng) is string regvalue) && regvalue.Equals($"\"{AppLauncher.CurrentExecutablePath}\"", StringComparison.OrdinalIgnoreCase);
             CheckBoxTopMost.Checked = IsTopMost;
             TextBoxExamName.Text = ExamName;
             DtpExamStart.Value = ExamStartTime;
@@ -356,7 +356,7 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void ButtonRestart_Click(object sender, EventArgs e)
         {
-            LaunchManager.Shutdown(!IsFunny);
+            AppLauncher.Shutdown(!IsFunny);
         }
 
         private async void ButtonSyncTime_Click(object sender, EventArgs e)
@@ -584,7 +584,7 @@ namespace CEETimerCSharpWinForms.Forms
         {
             try
             {
-                if (!LaunchManager.IsAdmin) MessageX.Popup("检测到当前用户不具有管理员权限，运行该操作会发生错误。\n\n程序将在此消息框关闭后尝试弹出 UAC 提示框，前提要把系统的 UAC 设置为 \"仅当应用尝试更改我的计算机时通知我\" 或及以上，否则将无法进行授权。\n\n稍后若没有看见提示框，请更改 UAC 设置: 开始菜单搜索 uac", MessageLevel.Warning, this);
+                if (!AppLauncher.IsAdmin) MessageX.Popup("检测到当前用户不具有管理员权限，运行该操作会发生错误。\n\n程序将在此消息框关闭后尝试弹出 UAC 提示框，前提要把系统的 UAC 设置为 \"仅当应用尝试更改我的计算机时通知我\" 或及以上，否则将无法进行授权。\n\n稍后若没有看见提示框，请更改 UAC 设置: 开始菜单搜索 uac", MessageLevel.Warning, this);
 
                 Process SyncTimeProcess = ProcessHelper.RunProcess("cmd.exe", "/c net stop w32time & sc config w32time start= auto & net start w32time && w32tm /config /manualpeerlist:ntp1.aliyun.com /syncfromflags:manual /reliable:YES /update && w32tm /resync && w32tm /resync", AdminRequired: true);
 
@@ -693,9 +693,9 @@ namespace CEETimerCSharpWinForms.Forms
                 using var reg = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
 
                 if (CheckBoxStartup.Checked)
-                    reg.SetValue(LaunchManager.AppNameEng, $"\"{LaunchManager.CurrentExecutablePath}\"");
+                    reg.SetValue(AppLauncher.AppNameEng, $"\"{AppLauncher.CurrentExecutablePath}\"");
                 else
-                    reg.DeleteValue(LaunchManager.AppNameEng, false);
+                    reg.DeleteValue(AppLauncher.AppNameEng, false);
 
                 new ConfigManager().WriteConfig(new()
                 {

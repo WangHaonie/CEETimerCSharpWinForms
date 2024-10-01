@@ -12,7 +12,7 @@ namespace CEETimerCSharpWinForms.Forms
 {
     public partial class DownloaderForm : TrackableForm
     {
-        public static string ManualVersion { get; set; } = LaunchManager.AppVersion;
+        public static string ManualVersion { get; set; } = AppLauncher.AppVersion;
 
         private bool IsCancelled;
         private CancellationTokenSource cts;
@@ -38,10 +38,10 @@ namespace CEETimerCSharpWinForms.Forms
 
             if (string.IsNullOrWhiteSpace(LatestVersion))
             {
-                LatestVersion = SelectedVersion.IsVersionNumber() ? SelectedVersion : LaunchManager.AppVersion;
+                LatestVersion = SelectedVersion.IsVersionNumber() ? SelectedVersion : AppLauncher.AppVersion;
             }
 
-            DownloadUrl = string.Format(LaunchManager.UpdateURL, LatestVersion);
+            DownloadUrl = string.Format(AppLauncher.UpdateURL, LatestVersion);
             DownloadPath = Path.Combine(Path.GetTempPath(), Path.GetFileName(new Uri(DownloadUrl).AbsolutePath));
 
             await DownloadUpdate();
@@ -53,7 +53,7 @@ namespace CEETimerCSharpWinForms.Forms
 
             using var httpClient = new HttpClient();
             cts = new();
-            httpClient.DefaultRequestHeaders.UserAgent.ParseAdd(LaunchManager.RequestUA);
+            httpClient.DefaultRequestHeaders.UserAgent.ParseAdd(AppLauncher.RequestUA);
 
             try
             {
@@ -98,7 +98,7 @@ namespace CEETimerCSharpWinForms.Forms
                     await Task.Delay(1800);
                     ProcessHelper.RunProcess("cmd.exe", $"/c start \"\" \"{DownloadPath}\" /S");
                     Close();
-                    LaunchManager.Exit(ExitReason.AppUpdating);
+                    AppLauncher.Exit(ExitReason.AppUpdating);
                 }
             }
             catch (Exception ex)

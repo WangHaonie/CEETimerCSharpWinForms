@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace CEETimerCSharpWinForms.Modules
+namespace CEETimerCSharpWinForms.Interop
 {
     public static class NativeInterop
     {

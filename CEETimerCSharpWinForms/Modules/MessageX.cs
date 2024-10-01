@@ -1,4 +1,5 @@
 ﻿using CEETimerCSharpWinForms.Dialogs;
+using CEETimerCSharpWinForms.Interop;
 using System;
 using System.Drawing;
 using System.Media;
@@ -93,9 +94,9 @@ namespace CEETimerCSharpWinForms.Modules
 
             */
 
-            MessageLevel.Warning => (LaunchManager.WarnMsg, WarningIcon, SystemSounds.Exclamation),
-            MessageLevel.Error => (LaunchManager.ErrMsg, ErrorIcon, SystemSounds.Hand),
-            _ => (LaunchManager.InfoMsg, InfoIcon, SystemSounds.Asterisk)
+            MessageLevel.Warning => (AppLauncher.WarnMsg, WarningIcon, SystemSounds.Exclamation),
+            MessageLevel.Error => (AppLauncher.ErrMsg, ErrorIcon, SystemSounds.Hand),
+            _ => (AppLauncher.InfoMsg, InfoIcon, SystemSounds.Asterisk)
 
             #endregion
         };

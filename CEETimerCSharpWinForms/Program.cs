@@ -8,7 +8,7 @@ namespace CEETimerCSharpWinForms
         [STAThread]
         private static void Main(string[] args)
         {
-            LaunchManager.StartProgram(args);
+            AppLauncher.StartProgram(args);
         }
     }
 }
