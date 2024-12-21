@@ -697,6 +697,11 @@ namespace CEETimerCSharpWinForms.Forms
                 else
                     reg.DeleteValue(AppLauncher.AppNameEng, false);
 
+                // 将保存的考试开始时间与结束时间中的时分秒修改为00:00:00
+                // see https://github.com/WangHaonie/CEETimerCSharpWinForms/issues/4
+                DtpExamStart.Value = new DateTime(DtpExamStart.Value.Year, DtpExamStart.Value.Month, DtpExamStart.Value.Day);
+                DtpExamEnd.Value = new DateTime(DtpExamEnd.Value.Year, DtpExamEnd.Value.Month, DtpExamEnd.Value.Day);
+
                 new ConfigManager().WriteConfig(new()
                 {
                     { ConfigItems.KExamName, ExamName },
