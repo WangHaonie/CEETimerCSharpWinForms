@@ -65,7 +65,7 @@ namespace CEETimerCSharpWinForms.Forms
             SizeChanged += MainForm_SizeChanged;
             DefaultColors = [new(Color.Red, Color.White), new(Color.Green, Color.White), new(Color.Black, Color.White), new(Color.Black, Color.White)];
             SystemEvents.DisplaySettingsChanged += SystemEvents_DisplaySettingsChanged;
-            RefreshSettings(null, null);
+            RefreshSettings();
 
             LocationWatcher = new() { Interval = 1000 };
             LocationWatcher.Tick += LocationWatcher_Tick;
@@ -86,7 +86,7 @@ namespace CEETimerCSharpWinForms.Forms
             }
         }
 
-        private async void RefreshSettings(object sender, EventArgs e)
+        private async void RefreshSettings()
         {
             Config.MountConfig(true);
 
@@ -294,7 +294,7 @@ namespace CEETimerCSharpWinForms.Forms
                     UserCustomRules = CustomRules
                 };
 
-                FormSettings.ConfigChanged += RefreshSettings;
+                FormSettings.ConfigChanged += (sender,e) => RefreshSettings();
             }
 
             FormSettings.ReActivate();
