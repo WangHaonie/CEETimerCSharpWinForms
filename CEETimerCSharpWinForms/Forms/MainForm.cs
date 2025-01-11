@@ -294,7 +294,7 @@ namespace CEETimerCSharpWinForms.Forms
                     UserCustomRules = CustomRules
                 };
 
-                FormSettings.ConfigChanged += (sender,e) => RefreshSettings();
+                FormSettings.ConfigChanged += (sender, e) => RefreshSettings();
             }
 
             FormSettings.ReActivate();

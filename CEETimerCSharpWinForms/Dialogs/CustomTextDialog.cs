@@ -61,9 +61,9 @@ namespace CEETimerCSharpWinForms.Dialogs
             P3TextRaw = RemoveInvalid(TextBoxP3.Text);
             string[] tmp = [P1TextRaw, P2TextRaw, P3TextRaw];
 
-            if (!(bool)CustomRuleHelper.CheckCustomText(tmp, out string Error) && !string.IsNullOrWhiteSpace(Error))
+            if (!(bool)CustomRuleHelper.CheckCustomText(tmp, out string ErrorMsg) && !string.IsNullOrWhiteSpace(ErrorMsg))
             {
-                MessageX.Popup(Error, MessageLevel.Error);
+                MessageX.Error(ErrorMsg);
                 return;
             }
 

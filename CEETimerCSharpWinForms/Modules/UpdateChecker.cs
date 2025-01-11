@@ -39,7 +39,7 @@ namespace CEETimerCSharpWinForms.Modules
                 {
                     OwnerForm.Invoke(() =>
                     {
-                        if (MessageX.Popup($"检测到新版本，是否下载并安装？\n\n当前版本: v{AppLauncher.AppVersion}\n最新版本: v{CurrentLatest}\n发布日期: {PublishTime}\n\nv{CurrentLatest}更新日志: {UpdateLog}", MessageLevel.Info, OwnerForm, Buttons: MessageBoxExButtons.YesNo, Position: IsProgramStart ? FormStartPosition.CenterScreen : FormStartPosition.CenterParent) == DialogResult.Yes)
+                        if (MessageX.Info($"检测到新版本，是否下载并安装？\n\n当前版本: v{AppLauncher.AppVersion}\n最新版本: v{CurrentLatest}\n发布日期: {PublishTime}\n\nv{CurrentLatest}更新日志: {UpdateLog}", OwnerForm, Buttons: MessageBoxExButtons.YesNo, Position: IsProgramStart ? FormStartPosition.CenterScreen : FormStartPosition.CenterParent) == DialogResult.Yes)
                         {
                             if (FormDownloader == null || FormDownloader.IsDisposed)
                             {
@@ -52,14 +52,14 @@ namespace CEETimerCSharpWinForms.Modules
                 }
                 else if (!IsProgramStart)
                 {
-                    MessageX.Popup($"当前 v{AppLauncher.AppVersion} 已是最新版本。\n\n获取到的版本: v{CurrentLatest}\n发布日期: {PublishTime}\n\n当前版本更新日志: {UpdateLog}", MessageLevel.Info, OwnerForm);
+                    MessageX.Info($"当前 v{AppLauncher.AppVersion} 已是最新版本。\n\n获取到的版本: v{CurrentLatest}\n发布日期: {PublishTime}\n\n当前版本更新日志: {UpdateLog}", OwnerForm);
                 }
             }
             catch (Exception ex)
             {
                 if (!IsProgramStart)
                 {
-                    MessageX.Popup($"检查更新时发生错误! {ex.ToMessage()}", MessageLevel.Error, OwnerForm);
+                    MessageX.Error($"检查更新时发生错误! {ex.ToMessage()}", OwnerForm);
                 }
             }
         }

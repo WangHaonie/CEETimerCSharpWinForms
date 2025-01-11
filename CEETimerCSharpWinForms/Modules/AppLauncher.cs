@@ -52,7 +52,7 @@ namespace CEETimerCSharpWinForms.Modules
 
                 if (!CurrentExecutableName.Equals(OriginalFileName, StringComparison.OrdinalIgnoreCase))
                 {
-                    MessageX.Popup($"为了您的使用体验，请不要更改程序文件名! 程序将在该消息框自动关闭后尝试自动恢复到原文件名，若自动恢复失败请手动改回。\n\n当前文件名: {CurrentExecutableName}\n原始文件名: {OriginalFileName}", MessageLevel.Error, Position: FormStartPosition.CenterScreen, AutoClose: true);
+                    MessageX.Error($"为了您的使用体验，请不要更改程序文件名! 程序将在该消息框自动关闭后尝试自动恢复到原文件名，若自动恢复失败请手动改回。\n\n当前文件名: {CurrentExecutableName}\n原始文件名: {OriginalFileName}", Position: FormStartPosition.CenterScreen, AutoClose: true);
                     ProcessHelper.RunProcess("cmd.exe", $"/c ren \"{CurrentExecutablePath}\" {OriginalFileName} & start \"\" \"{CurrentExecutableDir}{OriginalFileName}\" {AllArgs}");
                     Exit(ExitReason.InvalidExeName);
                 }
@@ -69,18 +69,18 @@ namespace CEETimerCSharpWinForms.Modules
                         {
                             case "/?":
                             case "/h":
-                                MessageX.Popup("可用的命令行参数: \n\n/h    显示此帮助信息；\n/ac  检测当前用户是否具有管理员权限；\n/fr <版本号>\n        强制下载并安装指定的版本，留空则当前版本，\n        推荐在特殊情况下使用，不支持老版本。", MessageLevel.Info);
+                                MessageX.Info("可用的命令行参数: \n\n/h    显示此帮助信息；\n/ac  检测当前用户是否具有管理员权限；\n/fr <版本号>\n        强制下载并安装指定的版本，留空则当前版本，\n        推荐在特殊情况下使用，不支持老版本。");
                                 break;
                             case "/ac":
                                 CheckAdmin(out string UserName, true);
-                                MessageX.Popup($"当前用户 {UserName} {(IsAdmin ? "" : "不")}具有管理员权限。", MessageLevel.Info);
+                                MessageX.Info($"当前用户 {UserName} {(IsAdmin ? "" : "不")}具有管理员权限。");
                                 break;
                             case "/fr":
                                 if (Args.Length > 1) DownloaderForm.ManualVersion = Args[1];
                                 Application.Run(new DownloaderForm());
                                 break;
                             default:
-                                MessageX.Popup($"无法解析的命令行参数: \n{AllArgs}", MessageLevel.Error, AutoClose: true);
+                                MessageX.Error($"无法解析的命令行参数: \n{AllArgs}", AutoClose: true);
                                 break;
                         }
                     }
@@ -92,7 +92,7 @@ namespace CEETimerCSharpWinForms.Modules
             {
                 if (Args.Length != 0)
                 {
-                    MessageX.Popup("请先关闭已打开的实例再使用命令行功能。", MessageLevel.Error, AutoClose: true);
+                    MessageX.Error("请先关闭已打开的实例再使用命令行功能。", AutoClose: true);
                 }
 
                 StartPipeClient();
@@ -152,7 +152,7 @@ namespace CEETimerCSharpWinForms.Modules
             Clipboard.SetText(ExOutput);
             File.AppendAllText(ExFilePath, ExOutput);
 
-            var _DialogResult = MessageX.Popup($"程序出现意外错误，无法继续运行，非常抱歉给您带来不便，相关错误信息已写入到安装文件夹中的 {ExFileName} 文件和系统剪切板，建议您将相关信息并发送给软件开发者以便我们更好的定位并解决问题。或者您也可以点击 \"是\" 来重启应用程序，\"否\" 关闭应用程序{ex.ToMessage()}", MessageLevel.Error, FormManager.OpenForms.LastOrDefault(), Buttons: MessageBoxExButtons.YesNo);
+            var _DialogResult = MessageX.Error($"程序出现意外错误，无法继续运行，非常抱歉给您带来不便，相关错误信息已写入到安装文件夹中的 {ExFileName} 文件和系统剪切板，建议您将相关信息并发送给软件开发者以便我们更好的定位并解决问题。或者您也可以点击 \"是\" 来重启应用程序，\"否\" 关闭应用程序{ex.ToMessage()}", FormManager.OpenForms.LastOrDefault(), Buttons: MessageBoxExButtons.YesNo);
 
             OpenInstallDir();
             Shutdown(Restart: _DialogResult == DialogResult.Yes);

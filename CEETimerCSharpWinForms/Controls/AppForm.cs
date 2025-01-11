@@ -129,7 +129,7 @@ namespace CEETimerCSharpWinForms.Controls
         /// <param name="IgnoreChanges">执行 忽略更改 的代码</param>
         protected void ShowUnsavedWarning(string WarningMsg, FormClosingEventArgs e, Action SaveChanges, Action IgnoreChanges)
         {
-            switch (MessageX.Popup(WarningMsg, MessageLevel.Warning, Buttons: MessageBoxExButtons.YesNo))
+            switch (MessageX.Warn(WarningMsg, Buttons: MessageBoxExButtons.YesNo))
             {
                 case DialogResult.Yes:
                     e.Cancel = true;

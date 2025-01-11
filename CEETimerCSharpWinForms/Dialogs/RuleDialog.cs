@@ -95,19 +95,19 @@ namespace CEETimerCSharpWinForms.Dialogs
 
             if (!ColorHelper.IsNiceContrast(_Fore, _Back))
             {
-                MessageX.Popup("选择的颜色相似或对比度较低，将无法看清文字。\n\n请尝试更换其它背景颜色或文字颜色！", MessageLevel.Error);
+                MessageX.Error("选择的颜色相似或对比度较低，将无法看清文字。\n\n请尝试更换其它背景颜色或文字颜色！");
                 return;
             }
 
             if (NudDays.Value == 0 && NudHours.Value == 0 && NudMinutes.Value == 0 && NudSeconds.Value == 0)
             {
-                MessageX.Popup("时刻不能为0，请重新设置！", MessageLevel.Error);
+                MessageX.Error("时刻不能为0，请重新设置！");
                 return;
             }
 
-            if (!(bool)CustomRuleHelper.CheckCustomText([TextBoxCustomText.Text], out string Error, ToBoolean: true) && !string.IsNullOrWhiteSpace(Error))
+            if (!(bool)CustomRuleHelper.CheckCustomText([TextBoxCustomText.Text], out string ErrorMsg, ToBoolean: true) && !string.IsNullOrWhiteSpace(ErrorMsg))
             {
-                MessageX.Popup(Error, MessageLevel.Error);
+                MessageX.Error(ErrorMsg);
                 return;
             }
 

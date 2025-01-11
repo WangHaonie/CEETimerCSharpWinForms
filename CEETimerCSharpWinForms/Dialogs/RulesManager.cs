@@ -87,7 +87,7 @@ namespace CEETimerCSharpWinForms.Dialogs
 
         private void ContextDelete_Click(object sender, EventArgs e)
         {
-            if (MessageX.Popup("确认删除所选规则吗？此操作将不可撤销！", MessageLevel.Warning, Buttons: MessageBoxExButtons.YesNo) == DialogResult.Yes)
+            if (MessageX.Warn("确认删除所选规则吗？此操作将不可撤销！", Buttons: MessageBoxExButtons.YesNo) == DialogResult.Yes)
             {
                 foreach (ListViewItem Item in ListViewMain.SelectedItems)
                 {
@@ -150,7 +150,7 @@ namespace CEETimerCSharpWinForms.Dialogs
                 {
                     Execute(() =>
                     {
-                        if (MessageX.Popup("检测到即将添加的规则与现有的重复，是否覆盖？", MessageLevel.Warning, Buttons: MessageBoxExButtons.YesNo) == DialogResult.Yes)
+                        if (MessageX.Warn("检测到即将添加的规则与现有的重复，是否覆盖？", Buttons: MessageBoxExButtons.YesNo) == DialogResult.Yes)
                         {
                             ModifyOrOverrideItem(Duplicate);
                             return;

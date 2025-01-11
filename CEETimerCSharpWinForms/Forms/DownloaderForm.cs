@@ -107,7 +107,7 @@ namespace CEETimerCSharpWinForms.Forms
 
                 if (ex is not TaskCanceledException)
                 {
-                    MessageX.Popup($"无法下载更新文件！{ex.ToMessage()}", MessageLevel.Error);
+                    MessageX.Error($"无法下载更新文件！{ex.ToMessage()}");
                     LabelDownloading.Text = "下载失败，你可以点击 重试 来重新启动下载。";
                     LabelSize.Text = "已下载/总共: N/A";
                     LabelSpeed.Text = "下载速度: N/A";
@@ -141,7 +141,7 @@ namespace CEETimerCSharpWinForms.Forms
                 cts?.Cancel();
                 LabelDownloading.Text = "用户已取消下载。";
                 IsCancelled = true;
-                MessageX.Popup("你已取消下载！\n\n稍后可以在 关于 窗口点击图标来再次检查更新。", MessageLevel.Warning);
+                MessageX.Warn("你已取消下载！\n\n稍后可以在 关于 窗口点击图标来再次检查更新。");
             }
 
             Close();
