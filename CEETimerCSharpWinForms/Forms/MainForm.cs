@@ -35,6 +35,7 @@ namespace CEETimerCSharpWinForms.Forms
         private List<TupleEx<Color, Color>> CountdownColors;
         private List<TupleEx<Color, Color>> DefaultColors;
         private List<TupleEx<int, TimeSpan, TupleEx<Color, Color, string>>> CustomRules;
+        private string WindowTitle = "高考倒计时";
         private string ExamName;
         private string[] CustomText;
 
@@ -52,6 +53,7 @@ namespace CEETimerCSharpWinForms.Forms
         private Rectangle SelectedScreen;
         private SettingsForm FormSettings;
         private AboutForm FormAbout;
+        private NotifyIcon TrayIcon;
         private readonly ConfigManager Config = new();
         private readonly FontConverter fontConverter = new();
 
@@ -64,6 +66,7 @@ namespace CEETimerCSharpWinForms.Forms
         {
             SizeChanged += MainForm_SizeChanged;
             DefaultColors = [new(Color.Red, Color.White), new(Color.Green, Color.White), new(Color.Black, Color.White), new(Color.Black, Color.White)];
+            InitializeContextMenu();
             SystemEvents.DisplaySettingsChanged += SystemEvents_DisplaySettingsChanged;
             RefreshSettings();
 
@@ -84,6 +87,40 @@ namespace CEETimerCSharpWinForms.Forms
                 var _BorderRadius = BorderRadius.WithDpi(this);
                 Region = Region.FromHrgn(NativeInterop.CreateRoundRectRgn(0, 0, Width, Height, _BorderRadius, _BorderRadius));
             }
+        }
+
+        private void InitializeContextMenu()
+        {
+            #region 来自网络
+            /*
+            
+            克隆 (重用) 现有 ContextMenuStrip 实例 参考：
+
+            .net - C# - Duplicate ContextMenuStrip Items into another - Stack Overflow
+            https://stackoverflow.com/questions/37884815/c-sharp-duplicate-contextmenustrip-items-into-another
+
+            */
+            ContextMenuStrip BaseContextMenu() => new ContextMenuStrip()
+                .AddContextMenuItem("设置(&S)", ContextSettings_Click)
+                .AddContextMenuItem("关于(&A)", ContextAbout_Click)
+                .AddContextSeparator()
+                .AddContextMenuItem("安装目录(&D)", (sender, e) => AppLauncher.OpenInstallDir());
+            #endregion
+
+            var ContextMenuMain = BaseContextMenu();
+            ContextMenuStrip = ContextMenuMain;
+            LabelCountdown.ContextMenuStrip = ContextMenuMain;
+
+            TrayIcon = new()
+            {
+                Visible = true,
+                Text = Text,
+                Icon = Icon.FromHandle(Properties.Resources.AppIcon100px.GetHicon()),
+                ContextMenuStrip = BaseContextMenu()
+                    .AddContextSeparator()
+                    .AddContextMenuItem("显示(&S)", (sender, e) => this.ReActivate())
+                    .AddContextMenuItem("退出(&E)", (sender, e) => AppLauncher.Shutdown())
+            };
         }
 
         private async void RefreshSettings()
@@ -310,11 +347,6 @@ namespace CEETimerCSharpWinForms.Forms
             FormAbout.ReActivate();
         }
 
-        private void ContextInstallDir_Click(object sender, EventArgs e)
-        {
-            AppLauncher.OpenInstallDir();
-        }
-
         protected override void OnTrackableFormClosing(FormClosingEventArgs e)
         {
             e.Cancel = e.CloseReason != CloseReason.WindowsShutDown;
@@ -362,6 +394,7 @@ namespace CEETimerCSharpWinForms.Forms
 
             IsCountdownRunning = false;
             UpdateCountdown("欢迎使用高考倒计时", CountdownColors[3].Item1, CountdownColors[3].Item2);
+            UpdateTrayIconText(WindowTitle);
         }
 
         private void ApplyColorRule(int Phase, TimeSpan Span, string Name, string Hint)
@@ -450,7 +483,23 @@ namespace CEETimerCSharpWinForms.Forms
                 LabelCountdown.Text = CountdownText;
                 LabelCountdown.ForeColor = Fore;
                 BackColor = Back;
+                UpdateTrayIconText(CountdownText, false);
             });
+        }
+
+        private void UpdateTrayIconText(string cText, bool cInvokeRequired = true)
+        {
+            if (cInvokeRequired)
+            {
+                BeginInvoke(() =>
+                {
+                    TrayIcon.Text = cText;
+                });
+            }
+            else
+            {
+                TrayIcon.Text = cText;
+            }
         }
 
         private void CompatibleWithPPTService()
