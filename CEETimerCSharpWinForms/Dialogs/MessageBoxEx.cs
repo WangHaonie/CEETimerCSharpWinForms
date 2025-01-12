@@ -1,4 +1,5 @@
 ﻿using CEETimerCSharpWinForms.Controls;
+using CEETimerCSharpWinForms.Forms;
 using CEETimerCSharpWinForms.Modules;
 using System.Drawing;
 using System.Media;
@@ -27,7 +28,7 @@ namespace CEETimerCSharpWinForms.Dialogs
             LabelMessage.Text = Message;
             Text = Title;
             PicBoxIcon.Image = MessageBoxExIcon.ToBitmap();
-            StartPosition = (OwnerForm == null && !UIHelper.IsNormalStart(FormManager.OpenForms)) ? FormStartPosition.CenterScreen : Position;
+            StartPosition = (OwnerForm == null && !MainForm.IsNormalStart) ? FormStartPosition.CenterScreen : Position;
             ShowDialog(OwnerForm);
             return Result;
         }

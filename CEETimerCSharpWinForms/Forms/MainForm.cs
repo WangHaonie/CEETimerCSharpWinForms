@@ -16,6 +16,7 @@ namespace CEETimerCSharpWinForms.Forms
     public partial class MainForm : TrackableForm
     {
         public static bool UniTopMost { get; private set; } = true;
+        public static bool IsNormalStart { get; set; } = false;
 
         private bool IsMemoryOptimizationEnabled;
         private bool IsShowXOnly;
@@ -78,6 +79,7 @@ namespace CEETimerCSharpWinForms.Forms
             BackColor = CountdownColors[3].Item2;
             Task.Run(() => UpdateChecker.CheckUpdate(true, this));
             _ = 1.WithDpi(this);
+            IsNormalStart = true;
         }
 
         private void MainForm_SizeChanged(object sender, EventArgs e)
