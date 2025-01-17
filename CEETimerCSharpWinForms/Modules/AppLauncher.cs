@@ -130,7 +130,7 @@ namespace CEETimerCSharpWinForms.Modules
                 {
                     using var PipeServer = new NamedPipeServerStream(PipeName, PipeDirection.InOut);
                     PipeServer.WaitForConnection();
-                    FormManager.ShowLastForm();
+                    OnTrayMenuShowAllClicked();
                 }
             }
             catch { }
