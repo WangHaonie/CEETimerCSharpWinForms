@@ -123,6 +123,8 @@ namespace CEETimerCSharpWinForms.Forms
                     .AddContextMenuItem("显示界面(&S)", (sender, e) => AppLauncher.OnTrayMenuShowAllClicked())
                     .AddContextMenuItem("退出(&Q)", (sender, e) => AppLauncher.Shutdown())
             };
+
+            TrayIcon.MouseClick += TrayIcon_MouseClick;
         }
 
         private async void RefreshSettings()
@@ -347,6 +349,11 @@ namespace CEETimerCSharpWinForms.Forms
             }
 
             FormAbout.ReActivate();
+        }
+
+        private void TrayIcon_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left) AppLauncher.OnTrayMenuShowAllClicked();
         }
 
         protected override void OnTrackableFormClosing(FormClosingEventArgs e)
