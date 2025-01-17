@@ -1,10 +1,22 @@
-﻿using CEETimerCSharpWinForms.Modules;
+﻿using CEETimerCSharpWinForms.Forms;
+using CEETimerCSharpWinForms.Modules;
+using System;
 using System.Windows.Forms;
 
 namespace CEETimerCSharpWinForms.Controls
 {
     public abstract class TrackableForm : AppForm
     {
+        protected TrackableForm()
+        {
+            AppLauncher.TrayMenuShowAllClicked += AppLauncher_TrayMenuShowAllClicked;
+        }
+
+        private void AppLauncher_TrayMenuShowAllClicked(object sender, EventArgs e)
+        {
+            ValidExecute(this.ReActivate);
+        }
+
         protected sealed override void OnAppFormLoad()
         {
             OnTrackableFormLoad();
@@ -32,6 +44,14 @@ namespace CEETimerCSharpWinForms.Controls
         protected virtual void OnTrackableFormClosed()
         {
             FormManager.Remove(this);
+        }
+
+        private void ValidExecute(Action Method)
+        {
+            if (!IsDisposed)
+            {
+                Method();
+            }
         }
     }
 }

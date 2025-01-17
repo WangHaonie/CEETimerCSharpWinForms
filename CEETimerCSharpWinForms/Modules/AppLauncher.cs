@@ -33,6 +33,9 @@ namespace CEETimerCSharpWinForms.Modules
         private static readonly string PipeName = $"{AppNameEng}_[34c14833-98da-49f7-a2ab-369e88e73b95]";
         private static readonly string CurrentExecutableName = Path.GetFileName(CurrentExecutablePath);
 
+        public static event EventHandler TrayMenuShowAllClicked;
+        public static void OnTrayMenuShowAllClicked() => TrayMenuShowAllClicked?.Invoke(null, EventArgs.Empty);
+
         public static void StartProgram(string[] args)
         {
             var Args = Array.ConvertAll(args, x => x.ToLower());

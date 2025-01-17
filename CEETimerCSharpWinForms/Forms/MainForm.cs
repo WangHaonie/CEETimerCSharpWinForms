@@ -120,7 +120,7 @@ namespace CEETimerCSharpWinForms.Forms
                 Icon = Icon.FromHandle(Properties.Resources.AppIcon100px.GetHicon()),
                 ContextMenuStrip = BaseContextMenu()
                     .AddContextSeparator()
-                    .AddContextMenuItem("显示(&S)", (sender, e) => this.ReActivate())
+                    .AddContextMenuItem("显示界面(&S)", (sender, e) => AppLauncher.OnTrayMenuShowAllClicked())
                     .AddContextMenuItem("退出(&Q)", (sender, e) => AppLauncher.Shutdown())
             };
         }
