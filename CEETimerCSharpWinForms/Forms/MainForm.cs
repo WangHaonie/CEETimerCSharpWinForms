@@ -121,7 +121,7 @@ namespace CEETimerCSharpWinForms.Forms
                 ContextMenuStrip = BaseContextMenu()
                     .AddContextSeparator()
                     .AddContextMenuItem("显示(&S)", (sender, e) => this.ReActivate())
-                    .AddContextMenuItem("退出(&E)", (sender, e) => AppLauncher.Shutdown())
+                    .AddContextMenuItem("退出(&Q)", (sender, e) => AppLauncher.Shutdown())
             };
         }
 
