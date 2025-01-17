@@ -1,36 +1,10 @@
-﻿using CEETimerCSharpWinForms.Forms;
-using CEETimerCSharpWinForms.Modules;
-using System;
+﻿using CEETimerCSharpWinForms.Modules;
 using System.Windows.Forms;
 
 namespace CEETimerCSharpWinForms.Controls
 {
     public abstract class TrackableForm : AppForm
     {
-        protected TrackableForm()
-        {
-            AppLauncher.TrayMenuShowAllClicked += AppLauncher_TrayMenuShowAllClicked;
-            AppLauncher.UniTopMostStateChanged += AppLauncher_UniTopMostStateChanged;
-        }
-
-        private void AppLauncher_TrayMenuShowAllClicked(object sender, EventArgs e)
-        {
-            ValidExecute(this.ReActivate);
-        }
-
-        private void AppLauncher_UniTopMostStateChanged(object sender, EventArgs e)
-        {
-            ValidExecute(() =>
-            {
-                if (this is MainForm)
-                {
-                    return;
-                }
-
-                TopMost = MainForm.UniTopMost;
-            });
-        }
-
         protected sealed override void OnAppFormLoad()
         {
             OnTrackableFormLoad();
@@ -58,14 +32,6 @@ namespace CEETimerCSharpWinForms.Controls
         protected virtual void OnTrackableFormClosed()
         {
             FormManager.Remove(this);
-        }
-
-        private void ValidExecute(Action Method)
-        {
-            if (!IsDisposed)
-            {
-                Method();
-            }
         }
     }
 }

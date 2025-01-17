@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CEETimerCSharpWinForms.Controls;
+using System;
 using System.Drawing;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -58,7 +59,7 @@ namespace CEETimerCSharpWinForms.Modules
             return pxScaled;
         }
 
-        public static void ReActivate(this Form form)
+        public static void ReActivate(this AppForm form)
         {
             form.WindowState = FormWindowState.Normal;
             form.Show();

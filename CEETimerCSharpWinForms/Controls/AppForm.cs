@@ -24,6 +24,8 @@ namespace CEETimerCSharpWinForms.Controls
         protected AppForm()
         {
             TopMost = MainForm.UniTopMost;
+            AppLauncher.TrayMenuShowAllClicked += AppLauncher_TrayMenuShowAllClicked;
+            AppLauncher.UniTopMostStateChanged += AppLauncher_UniTopMostStateChanged;
         }
 
         protected sealed override void OnLoad(EventArgs e)
@@ -62,6 +64,24 @@ namespace CEETimerCSharpWinForms.Controls
             base.OnClosed(e);
         }
 
+        private void AppLauncher_TrayMenuShowAllClicked(object sender, EventArgs e)
+        {
+            ValidExecute(this.ReActivate);
+        }
+
+        private void AppLauncher_UniTopMostStateChanged(object sender, EventArgs e)
+        {
+            ValidExecute(() =>
+            {
+                if (this is MainForm)
+                {
+                    return;
+                }
+
+                TopMost = MainForm.UniTopMost;
+            });
+        }
+
         #region
         /*
         
@@ -97,6 +117,14 @@ namespace CEETimerCSharpWinForms.Controls
         protected abstract void OnAppFormClosing(FormClosingEventArgs e);
 
         protected virtual void OnAppFormClosed() { }
+
+        private void ValidExecute(Action Method)
+        {
+            if (!IsDisposed)
+            {
+                Method();
+            }
+        }
 
         /// <summary>
         /// 仅当窗体加载完成再执行指定的代码。
