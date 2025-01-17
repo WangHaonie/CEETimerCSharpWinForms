@@ -1,15 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using CEETimerCSharpWinForms.Controls;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace CEETimerCSharpWinForms.Modules
 {
     public static class FormManager
     {
-        public static List<Form> OpenForms => ShownForms;
+        public static List<TrackableForm> OpenForms => ShownForms;
 
-        private static readonly List<Form> ShownForms = [];
+        private static readonly List<TrackableForm> ShownForms = [];
 
-        public static void Add(Form form)
+        public static void Add(TrackableForm form)
         {
             lock (ShownForms)
             {
@@ -17,7 +18,7 @@ namespace CEETimerCSharpWinForms.Modules
             }
         }
 
-        public static void Remove(Form form)
+        public static void Remove(TrackableForm form)
         {
             lock (ShownForms)
             {

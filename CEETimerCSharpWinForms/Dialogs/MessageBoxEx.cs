@@ -23,7 +23,7 @@ namespace CEETimerCSharpWinForms.Dialogs
             AutoCloseRequired = AutoClose;
         }
 
-        public DialogResult ShowCore(Form OwnerForm, string Message, string Title, Icon MessageBoxExIcon, FormStartPosition Position)
+        public DialogResult ShowCore(TrackableForm OwnerForm, string Message, string Title, Icon MessageBoxExIcon, FormStartPosition Position)
         {
             LabelMessage.Text = Message;
             Text = Title;

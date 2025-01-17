@@ -1,4 +1,5 @@
-﻿using CEETimerCSharpWinForms.Dialogs;
+﻿using CEETimerCSharpWinForms.Controls;
+using CEETimerCSharpWinForms.Dialogs;
 using CEETimerCSharpWinForms.Interop;
 using System;
 using System.Drawing;
@@ -20,13 +21,13 @@ namespace CEETimerCSharpWinForms.Modules
             ErrorIcon = GetIcon(93);
         }
 
-        public static DialogResult Info(string Message, Form OwnerForm = null, TabControl ParentTabControl = null, TabPage ParentTabPage = null, MessageBoxExButtons Buttons = MessageBoxExButtons.OK, FormStartPosition Position = FormStartPosition.CenterParent, bool AutoClose = false) => Popup(Message, MessageLevel.Info, OwnerForm, ParentTabControl, ParentTabPage, Buttons, Position, AutoClose);
+        public static DialogResult Info(string Message, TrackableForm OwnerForm = null, TabControl ParentTabControl = null, TabPage ParentTabPage = null, MessageBoxExButtons Buttons = MessageBoxExButtons.OK, FormStartPosition Position = FormStartPosition.CenterParent, bool AutoClose = false) => Popup(Message, MessageLevel.Info, OwnerForm, ParentTabControl, ParentTabPage, Buttons, Position, AutoClose);
 
-        public static DialogResult Warn(string Message, Form OwnerForm = null, TabControl ParentTabControl = null, TabPage ParentTabPage = null, MessageBoxExButtons Buttons = MessageBoxExButtons.OK, FormStartPosition Position = FormStartPosition.CenterParent, bool AutoClose = false) => Popup(Message, MessageLevel.Warning, OwnerForm, ParentTabControl, ParentTabPage, Buttons, Position, AutoClose);
+        public static DialogResult Warn(string Message, TrackableForm OwnerForm = null, TabControl ParentTabControl = null, TabPage ParentTabPage = null, MessageBoxExButtons Buttons = MessageBoxExButtons.OK, FormStartPosition Position = FormStartPosition.CenterParent, bool AutoClose = false) => Popup(Message, MessageLevel.Warning, OwnerForm, ParentTabControl, ParentTabPage, Buttons, Position, AutoClose);
 
-        public static DialogResult Error(string Message, Form OwnerForm = null, TabControl ParentTabControl = null, TabPage ParentTabPage = null, MessageBoxExButtons Buttons = MessageBoxExButtons.OK, FormStartPosition Position = FormStartPosition.CenterParent, bool AutoClose = false) => Popup(Message, MessageLevel.Error, OwnerForm, ParentTabControl, ParentTabPage, Buttons, Position, AutoClose);
+        public static DialogResult Error(string Message, TrackableForm OwnerForm = null, TabControl ParentTabControl = null, TabPage ParentTabPage = null, MessageBoxExButtons Buttons = MessageBoxExButtons.OK, FormStartPosition Position = FormStartPosition.CenterParent, bool AutoClose = false) => Popup(Message, MessageLevel.Error, OwnerForm, ParentTabControl, ParentTabPage, Buttons, Position, AutoClose);
 
-        private static DialogResult Popup(string Message, MessageLevel Level, Form OwnerForm, TabControl ParentTabControl, TabPage ParentTabPage, MessageBoxExButtons Buttons, FormStartPosition Position, bool AutoClose)
+        private static DialogResult Popup(string Message, MessageLevel Level, TrackableForm OwnerForm, TabControl ParentTabControl, TabPage ParentTabPage, MessageBoxExButtons Buttons, FormStartPosition Position, bool AutoClose)
         {
             var (Title, MessageBoxExIcon, Sound) = GetStuff(Level);
             using var _MessageBoxEx = new MessageBoxEx(Sound, Buttons, AutoClose);

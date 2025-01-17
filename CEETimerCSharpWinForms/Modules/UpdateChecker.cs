@@ -1,4 +1,5 @@
-﻿using CEETimerCSharpWinForms.Forms;
+﻿using CEETimerCSharpWinForms.Controls;
+using CEETimerCSharpWinForms.Forms;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Net.Http;
@@ -8,7 +9,7 @@ namespace CEETimerCSharpWinForms.Modules
 {
     public static class UpdateChecker
     {
-        public static void CheckUpdate(bool IsProgramStart, Form OwnerForm)
+        public static void CheckUpdate(bool IsProgramStart, TrackableForm OwnerForm)
         {
             new Updater().CheckUpdate(IsProgramStart, OwnerForm);
         }
@@ -21,7 +22,7 @@ namespace CEETimerCSharpWinForms.Modules
 
         private DownloaderForm FormDownloader;
 
-        public void CheckUpdate(bool IsProgramStart, Form OwnerForm)
+        public void CheckUpdate(bool IsProgramStart, TrackableForm OwnerForm)
         {
             using var _HttpClient = new HttpClient();
             _HttpClient.DefaultRequestHeaders.UserAgent.ParseAdd(AppLauncher.RequestUA);
