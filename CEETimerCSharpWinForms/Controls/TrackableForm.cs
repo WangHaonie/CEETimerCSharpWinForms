@@ -10,11 +10,25 @@ namespace CEETimerCSharpWinForms.Controls
         protected TrackableForm()
         {
             AppLauncher.TrayMenuShowAllClicked += AppLauncher_TrayMenuShowAllClicked;
+            AppLauncher.UniTopMostStateChanged += AppLauncher_UniTopMostStateChanged;
         }
 
         private void AppLauncher_TrayMenuShowAllClicked(object sender, EventArgs e)
         {
             ValidExecute(this.ReActivate);
+        }
+
+        private void AppLauncher_UniTopMostStateChanged(object sender, EventArgs e)
+        {
+            ValidExecute(() =>
+            {
+                if (this is MainForm)
+                {
+                    return;
+                }
+
+                TopMost = MainForm.UniTopMost;
+            });
         }
 
         protected sealed override void OnAppFormLoad()

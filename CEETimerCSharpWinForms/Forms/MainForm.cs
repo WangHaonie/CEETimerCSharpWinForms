@@ -234,15 +234,7 @@ namespace CEETimerCSharpWinForms.Forms
             ApplyLocation();
             CompatibleWithPPTService();
 
-            foreach (var f in FormManager.OpenForms)
-            {
-                if (f == this)
-                {
-                    continue;
-                }
-
-                f.TopMost = UniTopMost;
-            }
+            AppLauncher.OnUniTopMostStateChanged();
 
             MemoryOptimizer?.Dispose();
             if (IsMemoryOptimizationEnabled)

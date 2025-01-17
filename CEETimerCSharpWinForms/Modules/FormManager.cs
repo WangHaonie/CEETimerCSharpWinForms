@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Forms;
 
 namespace CEETimerCSharpWinForms.Modules
@@ -23,18 +22,6 @@ namespace CEETimerCSharpWinForms.Modules
             lock (ShownForms)
             {
                 ShownForms.Remove(form);
-            }
-        }
-
-        /// <summary>
-        /// 向用户显示最后一个打开的窗体。
-        /// </summary>
-        public static void ShowLastForm()
-        {
-            lock (ShownForms)
-            {
-                var lastForm = ShownForms.LastOrDefault();
-                lastForm?.BeginInvoke(lastForm.ReActivate);
             }
         }
     }

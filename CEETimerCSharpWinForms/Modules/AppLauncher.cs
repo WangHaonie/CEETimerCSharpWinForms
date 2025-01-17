@@ -36,6 +36,9 @@ namespace CEETimerCSharpWinForms.Modules
         public static event EventHandler TrayMenuShowAllClicked;
         public static void OnTrayMenuShowAllClicked() => TrayMenuShowAllClicked?.Invoke(null, EventArgs.Empty);
 
+        public static event EventHandler UniTopMostStateChanged;
+        public static void OnUniTopMostStateChanged() => UniTopMostStateChanged?.Invoke(null, EventArgs.Empty);
+
         public static void StartProgram(string[] args)
         {
             var Args = Array.ConvertAll(args, x => x.ToLower());
