@@ -65,18 +65,18 @@ namespace CEETimerCSharpWinForms.Forms
 
         protected override void OnTrackableFormLoad()
         {
-            SizeChanged += MainForm_SizeChanged;
             DefaultColors = [new(Color.Red, Color.White), new(Color.Green, Color.White), new(Color.Black, Color.White), new(Color.Black, Color.White)];
-            InitializeContextMenu();
+
+            SizeChanged += MainForm_SizeChanged;
             SystemEvents.DisplaySettingsChanged += SystemEvents_DisplaySettingsChanged;
+
+            InitializeContextMenuAndTrayIcon();
             RefreshSettings();
 
             LocationWatcher = new() { Interval = 1000 };
             LocationWatcher.Tick += LocationWatcher_Tick;
             LocationWatcher.Start();
 
-            LabelCountdown.ForeColor = CountdownColors[3].Item1;
-            BackColor = CountdownColors[3].Item2;
             Task.Run(() => UpdateChecker.CheckUpdate(true, this));
             _ = 1.WithDpi(this);
             IsNormalStart = true;
@@ -91,7 +91,7 @@ namespace CEETimerCSharpWinForms.Forms
             }
         }
 
-        private void InitializeContextMenu()
+        private void InitializeContextMenuAndTrayIcon()
         {
             #region 来自网络
             /*
@@ -453,19 +453,17 @@ namespace CEETimerCSharpWinForms.Forms
             UpdateCountdown(IsCustomText ? GetCountdownWithCustomText(Span, Name, Custom) : GetCountdown(Span, Name, Hint), Fore, Back);
         }
 
-        private string GetCountdownWithCustomText(TimeSpan Span, string Name, string Custom)
-        {
-            return Custom
-                .Replace(Placeholders.PH_EXAMNAME, Name)
-                .Replace(Placeholders.PH_DAYS, $"{Span.Days}")
-                .Replace(Placeholders.PH_HOURS, $"{Span.Hours:00}")
-                .Replace(Placeholders.PH_MINUTES, $"{Span.Minutes:00}")
-                .Replace(Placeholders.PH_SECONDS, $"{Span.Seconds:00}")
-                .Replace(Placeholders.PH_ROUNDEDDAYS, $"{Span.Days + 1}")
-                .Replace(Placeholders.PH_TOTALHOURS, $"{Span.TotalHours:0}")
-                .Replace(Placeholders.PH_TOTALMINUTES, $"{Span.TotalMinutes:0}")
-                .Replace(Placeholders.PH_TOTALSECONDS, $"{Span.TotalSeconds:0}");
-        }
+        private string GetCountdownWithCustomText(TimeSpan Span, string Name, string Custom) => Custom
+            .Replace(Placeholders.PH_EXAMNAME, Name)
+            .Replace(Placeholders.PH_DAYS, $"{Span.Days}")
+            .Replace(Placeholders.PH_HOURS, $"{Span.Hours:00}")
+            .Replace(Placeholders.PH_MINUTES, $"{Span.Minutes:00}")
+            .Replace(Placeholders.PH_SECONDS, $"{Span.Seconds:00}")
+            .Replace(Placeholders.PH_ROUNDEDDAYS, $"{Span.Days + 1}")
+            .Replace(Placeholders.PH_TOTALHOURS, $"{Span.TotalHours:0}")
+            .Replace(Placeholders.PH_TOTALMINUTES, $"{Span.TotalMinutes:0}")
+            .Replace(Placeholders.PH_TOTALSECONDS, $"{Span.TotalSeconds:0}");
+
 
         private string GetCountdown(TimeSpan Span, string Name, string Hint) => SelectedState switch
         {
