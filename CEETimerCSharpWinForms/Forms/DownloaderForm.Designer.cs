@@ -34,7 +34,7 @@
             this.ProgressBarMain = new System.Windows.Forms.ProgressBar();
             this.ButtonRetry = new System.Windows.Forms.Button();
             this.ButtonCancel = new System.Windows.Forms.Button();
-            this.LinkBroswer = new System.Windows.Forms.LinkLabel();
+            this.LinkBrowser = new System.Windows.Forms.LinkLabel();
             this.SuspendLayout();
             // 
             // LabelDownloading
@@ -99,16 +99,16 @@
             this.ButtonCancel.UseVisualStyleBackColor = true;
             this.ButtonCancel.Click += new System.EventHandler(this.ButtonCancel_Click);
             // 
-            // LinkBroswer
+            // LinkBrowser
             // 
-            this.LinkBroswer.AutoSize = true;
-            this.LinkBroswer.Location = new System.Drawing.Point(280, 3);
-            this.LinkBroswer.Name = "LinkBroswer";
-            this.LinkBroswer.Size = new System.Drawing.Size(72, 15);
-            this.LinkBroswer.TabIndex = 9;
-            this.LinkBroswer.TabStop = true;
-            this.LinkBroswer.Text = "浏览器下载";
-            this.LinkBroswer.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkBroswer_LinkClicked);
+            this.LinkBrowser.AutoSize = true;
+            this.LinkBrowser.Location = new System.Drawing.Point(280, 3);
+            this.LinkBrowser.Name = "LinkBrowser";
+            this.LinkBrowser.Size = new System.Drawing.Size(72, 15);
+            this.LinkBrowser.TabIndex = 9;
+            this.LinkBrowser.TabStop = true;
+            this.LinkBrowser.Text = "浏览器下载";
+            this.LinkBrowser.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkBrowser_LinkClicked);
             // 
             // DownloaderForm
             // 
@@ -116,7 +116,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(354, 76);
-            this.Controls.Add(this.LinkBroswer);
+            this.Controls.Add(this.LinkBrowser);
             this.Controls.Add(this.ButtonCancel);
             this.Controls.Add(this.ButtonRetry);
             this.Controls.Add(this.ProgressBarMain);
@@ -143,6 +143,6 @@
         private System.Windows.Forms.ProgressBar ProgressBarMain;
         private System.Windows.Forms.Button ButtonRetry;
         private System.Windows.Forms.Button ButtonCancel;
-        private System.Windows.Forms.LinkLabel LinkBroswer;
+        private System.Windows.Forms.LinkLabel LinkBrowser;
     }
 }

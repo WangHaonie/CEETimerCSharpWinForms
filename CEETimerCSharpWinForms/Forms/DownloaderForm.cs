@@ -27,7 +27,7 @@ namespace CEETimerCSharpWinForms.Forms
 
         protected override void AdjustUI()
         {
-            AlignControlsR(LinkBroswer, ProgressBarMain);
+            AlignControlsR(LinkBrowser, ProgressBarMain);
             AlignControlsREx(ButtonRetry, ButtonCancel, ProgressBarMain);
         }
 
@@ -92,7 +92,7 @@ namespace CEETimerCSharpWinForms.Forms
                 {
                     ButtonCancel.Enabled = false;
                     ButtonRetry.Enabled = false;
-                    LinkBroswer.Enabled = false;
+                    LinkBrowser.Enabled = false;
                     ProgressBarMain.Value = 100;
 
                     await Task.Delay(1800);
@@ -147,12 +147,12 @@ namespace CEETimerCSharpWinForms.Forms
             Close();
         }
 
-        private async void LinkBroswer_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private async void LinkBrowser_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            LinkBroswer.Enabled = false;
+            LinkBrowser.Enabled = false;
             Process.Start(DownloadUrl);
             await Task.Delay(3000);
-            LinkBroswer.Enabled = true;
+            LinkBrowser.Enabled = true;
         }
 
         private void UpdateUI(long Downloaded, long Total, double Speed, int Progress)
