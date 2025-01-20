@@ -31,18 +31,6 @@ namespace CEETimerCSharpWinForms.Modules
             => new(s.Trim().Replace(" ", "").Where(c => char.IsLetterOrDigit(c) || (c >= ' ' && c <= byte.MaxValue)).Where(x => !ConfigPolicy.CharsNotAllowed.Contains(x)).ToArray());
         #endregion
 
-        public static ContextMenuStrip AddContextMenuItem(this ContextMenuStrip ContextMenu, string Text, EventHandler OnClickHandler)
-        {
-            ContextMenu.Items.Add(Text, null, OnClickHandler);
-            return ContextMenu;
-        }
-
-        public static ContextMenuStrip AddContextSeparator(this ContextMenuStrip ContextMenu)
-        {
-            ContextMenu.Items.Add(new ToolStripSeparator());
-            return ContextMenu;
-        }
-
         public static int WithDpi(this int px, Control control)
         {
             Graphics g = null;

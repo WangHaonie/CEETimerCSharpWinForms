@@ -103,10 +103,10 @@ namespace CEETimerCSharpWinForms.Forms
 
             */
             ContextMenuStrip BaseContextMenu() => new ContextMenuStrip()
-                .AddContextMenuItem("设置(&S)", ContextSettings_Click)
-                .AddContextMenuItem("关于(&A)", ContextAbout_Click)
-                .AddContextSeparator()
-                .AddContextMenuItem("安装目录(&D)", (sender, e) => AppLauncher.OpenInstallDir());
+                .AddItem("设置(&S)", ContextSettings_Click)
+                .AddItem("关于(&A)", ContextAbout_Click)
+                .AddSeparator()
+                .AddItem("安装目录(&D)", (sender, e) => AppLauncher.OpenInstallDir());
             #endregion
 
             var ContextMenuMain = BaseContextMenu();
@@ -119,9 +119,11 @@ namespace CEETimerCSharpWinForms.Forms
                 Text = Text,
                 Icon = Icon.FromHandle(Properties.Resources.AppIcon100px.GetHicon()),
                 ContextMenuStrip = BaseContextMenu()
-                    .AddContextSeparator()
-                    .AddContextMenuItem("显示界面(&S)", (sender, e) => AppLauncher.OnTrayMenuShowAllClicked())
-                    .AddContextMenuItem("退出(&Q)", (sender, e) => AppLauncher.Shutdown())
+                    .AddSeparator()
+                    .AddItem("显示界面(&S)", (sender, e) => AppLauncher.OnTrayMenuShowAllClicked())
+                    .AddSubMenu("关闭(&C)", SubMenu => SubMenu
+                        .AddItem("重新启动(&R)", (sender, e) => AppLauncher.Shutdown(true))
+                        .AddItem("完全退出(&Q)", (sender, e) => AppLauncher.Shutdown()))
             };
 
             TrayIcon.MouseClick += TrayIcon_MouseClick;
