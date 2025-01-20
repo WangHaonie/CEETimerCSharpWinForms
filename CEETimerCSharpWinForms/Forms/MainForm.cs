@@ -87,7 +87,9 @@ namespace CEETimerCSharpWinForms.Forms
             if (IsWin10BelowRounded)
             {
                 var _BorderRadius = BorderRadius.WithDpi(this);
-                Region = Region.FromHrgn(NativeInterop.CreateRoundRectRgn(0, 0, Width, Height, _BorderRadius, _BorderRadius));
+                var HRgn = NativeInterop.CreateRoundRectRgn(0, 0, Width, Height, _BorderRadius, _BorderRadius);
+                Region = Region.FromHrgn(HRgn);
+                NativeInterop.DeleteObject(HRgn);
             }
         }
 
