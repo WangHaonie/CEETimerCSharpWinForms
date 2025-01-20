@@ -10,9 +10,9 @@ namespace CEETimerCSharpWinForms.Modules
 {
     public static class MessageX
     {
-        private static readonly Icon InfoIcon;
-        private static readonly Icon WarningIcon;
-        private static readonly Icon ErrorIcon;
+        private static readonly Bitmap InfoIcon;
+        private static readonly Bitmap WarningIcon;
+        private static readonly Bitmap ErrorIcon;
 
         static MessageX()
         {
@@ -71,7 +71,7 @@ namespace CEETimerCSharpWinForms.Modules
             }
         }
 
-        private static (string, Icon, SystemSound) GetStuff(MessageLevel Level) => Level switch
+        private static (string, Bitmap, SystemSound) GetStuff(MessageLevel Level) => Level switch
         {
             #region 来自网络
             /*
@@ -96,10 +96,10 @@ namespace CEETimerCSharpWinForms.Modules
             #endregion
         };
 
-        private static Icon GetIcon(int Index)
+        private static Bitmap GetIcon(int Index)
         {
             NativeInterop.ExtractIconEx("imageres.dll", Index, out IntPtr hIcon, out _, 1);
-            return Icon.FromHandle(hIcon);
+            return Icon.FromHandle(hIcon).ToBitmap();
         }
     }
 }

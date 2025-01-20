@@ -23,11 +23,11 @@ namespace CEETimerCSharpWinForms.Dialogs
             AutoCloseRequired = AutoClose;
         }
 
-        public DialogResult ShowCore(TrackableForm OwnerForm, string Message, string Title, Icon MessageBoxExIcon, FormStartPosition Position)
+        public DialogResult ShowCore(TrackableForm OwnerForm, string Message, string Title, Bitmap MessageBoxExIcon, FormStartPosition Position)
         {
             LabelMessage.Text = Message;
             Text = Title;
-            PicBoxIcon.Image = MessageBoxExIcon.ToBitmap();
+            PicBoxIcon.Image = MessageBoxExIcon;
             StartPosition = (OwnerForm == null && !MainForm.IsNormalStart) ? FormStartPosition.CenterScreen : Position;
             ShowDialog(OwnerForm);
             return Result;
