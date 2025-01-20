@@ -1,4 +1,6 @@
-﻿namespace CEETimerCSharpWinForms.Forms
+﻿using CEETimerCSharpWinForms.Modules;
+
+namespace CEETimerCSharpWinForms.Forms
 {
     partial class AboutForm
     {
@@ -112,7 +114,7 @@
             // PicBoxLogo
             // 
             this.PicBoxLogo.Cursor = System.Windows.Forms.Cursors.Help;
-            this.PicBoxLogo.Image = global::CEETimerCSharpWinForms.Properties.Resources.AppIcon100px;
+            this.PicBoxLogo.Image = AppLauncher.AppIcon.ToBitmap();
             this.PicBoxLogo.Location = new System.Drawing.Point(6, 3);
             this.PicBoxLogo.Name = "PicBoxLogo";
             this.PicBoxLogo.Size = new System.Drawing.Size(31, 31);

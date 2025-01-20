@@ -1,6 +1,7 @@
 ﻿using CEETimerCSharpWinForms.Forms;
 using System;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.IO.Pipes;
 using System.Linq;
@@ -15,6 +16,7 @@ namespace CEETimerCSharpWinForms.Modules
         public static string CurrentExecutableDir => AppDomain.CurrentDomain.BaseDirectory;
         public static string CurrentExecutablePath => Application.ExecutablePath;
         public static bool IsAdmin { get; private set; }
+        public static Icon AppIcon { get; private set; }
 
         public const string AppName = "高考倒计时 by WangHaonie";
         public const string AppNameEng = "CEETimerCSharpWinForms";
@@ -41,6 +43,8 @@ namespace CEETimerCSharpWinForms.Modules
 
         public static void StartProgram(string[] args)
         {
+            AppIcon = Icon.ExtractAssociatedIcon(CurrentExecutablePath);
+
             var Args = Array.ConvertAll(args, x => x.ToLower());
             var AllArgs = string.Join(" ", args);
 

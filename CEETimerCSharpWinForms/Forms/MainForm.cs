@@ -117,7 +117,7 @@ namespace CEETimerCSharpWinForms.Forms
             {
                 Visible = true,
                 Text = Text,
-                Icon = Icon.FromHandle(Properties.Resources.AppIcon100px.GetHicon()),
+                Icon = AppLauncher.AppIcon,
                 ContextMenuStrip = BaseContextMenu()
                     .AddSeparator()
                     .AddItem("显示界面(&S)", (sender, e) => AppLauncher.OnTrayMenuShowAllClicked())
