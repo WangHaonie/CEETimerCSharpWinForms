@@ -204,6 +204,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Interop\Enums.cs" />
+    <Compile Include="Modules\ConfigObject.cs" />
     <Compile Include="Modules\ContextMenuExtensions.cs" />
     <Compile Include="Modules\ColorHelper.cs" />
     <Compile Include="Modules\CustomRuleHelper.cs" />
