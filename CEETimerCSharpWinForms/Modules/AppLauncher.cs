@@ -15,6 +15,7 @@ namespace CEETimerCSharpWinForms.Modules
     {
         public static string CurrentExecutableDir => AppDomain.CurrentDomain.BaseDirectory;
         public static string CurrentExecutablePath => Application.ExecutablePath;
+        public static string ConfigFilePath => $"{CurrentExecutableDir}{AppNameEng}.config";
         public static bool IsAdmin { get; private set; }
         public static Icon AppIcon { get; private set; }
 

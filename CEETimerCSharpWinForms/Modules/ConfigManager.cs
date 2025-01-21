@@ -23,7 +23,7 @@ namespace CEETimerCSharpWinForms.Modules
         private Dictionary<string, object> JsonConfig;
         private JObject ConfigObject;
         private static readonly List<string> AllowedKeys;
-        private readonly string ConfigFile = $"{AppLauncher.CurrentExecutableDir}{AppLauncher.AppNameEng}.config";
+        private readonly string ConfigFile = AppLauncher.ConfigFilePath;
 
         static ConfigManager()
         {

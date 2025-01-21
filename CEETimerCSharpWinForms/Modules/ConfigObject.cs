@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using System;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 
 namespace CEETimerCSharpWinForms.Modules
 {
@@ -45,7 +44,10 @@ namespace CEETimerCSharpWinForms.Modules
     public sealed class AppearanceObject
     {
         public Font TextFont { get; set; }
+
+        [JsonConverter(typeof(StringEnumConverter))]
         public FontStyle TextFontStyle { get; set; }
+
         public ColorSetObject[] Colors { get; set; }
     }
 
@@ -73,5 +75,27 @@ namespace CEETimerCSharpWinForms.Modules
     {
         public Color Fore { get; set; }
         public Color Back { get; set; }
+    }
+
+    public class ConfigHandler
+    {
+        private readonly JsonSerializerSettings Settings;
+
+        public ConfigHandler()
+        {
+            Settings = new JsonSerializerSettings()
+            {
+                Formatting = Formatting.None,
+                TypeNameHandling = TypeNameHandling.Auto,
+                NullValueHandling = NullValueHandling.Ignore
+            };
+        }
+
+        public void Save(ConfigObject Config)
+        {
+            File.WriteAllText(AppLauncher.ConfigFilePath, JsonConvert.SerializeObject(Config, Settings));
+        }
+
+        public ConfigObject Read() => JsonConvert.DeserializeObject<ConfigObject>(File.ReadAllText(AppLauncher.ConfigFilePath));
     }
 }

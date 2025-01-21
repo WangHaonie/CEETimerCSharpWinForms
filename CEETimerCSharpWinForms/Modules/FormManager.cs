@@ -1,6 +1,5 @@
 ﻿using CEETimerCSharpWinForms.Controls;
 using System.Collections.Generic;
-using System.Windows.Forms;
 
 namespace CEETimerCSharpWinForms.Modules
 {

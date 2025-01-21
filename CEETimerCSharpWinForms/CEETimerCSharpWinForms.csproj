@@ -210,6 +210,8 @@
     <Compile Include="Modules\CustomRuleHelper.cs" />
     <Compile Include="Modules\Enums.cs" />
     <Compile Include="Modules\FormManager.cs" />
+    <Compile Include="Modules\JsonConverters\DateTimeFormatConverter.cs" />
+    <Compile Include="Modules\JsonConverters\TimeSpanFormatConverter.cs" />
     <Compile Include="Modules\ListViewItemComparer.cs" />
     <Compile Include="Modules\TupleEx.cs" />
     <Compile Include="Modules\Placeholders.cs" />
