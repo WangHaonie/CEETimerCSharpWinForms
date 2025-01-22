@@ -2,11 +2,10 @@
 using Newtonsoft.Json;
 using System;
 using System.Drawing;
-using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace CEETimerCSharpWinForms.Modules
+namespace CEETimerCSharpWinForms.Modules.Configuration
 {
     public sealed class ConfigObject
     {
@@ -145,39 +144,5 @@ namespace CEETimerCSharpWinForms.Modules
         public Color Fore { get; set; } = fore;
 
         public Color Back { get; set; } = back;
-    }
-
-    public class ConfigHandler
-    {
-        private readonly JsonSerializerSettings Settings;
-
-        public ConfigHandler()
-        {
-            Settings = new JsonSerializerSettings()
-            {
-                Formatting = Formatting.None,
-                TypeNameHandling = TypeNameHandling.Auto,
-                NullValueHandling = NullValueHandling.Ignore,
-                DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate
-            };
-        }
-
-        public void Save(ConfigObject Config)
-            => File.WriteAllText(AppLauncher.ConfigFilePath, JsonConvert.SerializeObject(Config, Settings));
-
-        public ConfigObject Read()
-            => JsonConvert.DeserializeObject<ConfigObject>(File.ReadAllText(AppLauncher.ConfigFilePath));
-
-        public void Test()
-        {
-            Save(new()
-            {
-                General = new()
-                {
-                    ExamName = "11111"
-                }
-            });
-            Console.WriteLine(Read().General.ExamName);
-        }
     }
 }
