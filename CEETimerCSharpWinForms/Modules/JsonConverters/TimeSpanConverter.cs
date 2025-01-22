@@ -3,7 +3,7 @@ using System;
 
 namespace CEETimerCSharpWinForms.Modules.JsonConverters
 {
-    internal class TimeSpanFormatConverter : JsonConverter<TimeSpan>
+    public class TimeSpanConverter : JsonConverter<TimeSpan>
     {
         public override TimeSpan ReadJson(JsonReader reader, Type objectType, TimeSpan existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
@@ -18,7 +18,7 @@ namespace CEETimerCSharpWinForms.Modules.JsonConverters
                     int.Parse(TimeSpanParts[3]));
             }
 
-            throw new Exception("Invalid Config Format");
+            throw new JsonSerializationException("Invalid TimeSpan Format");
         }
 
         public override void WriteJson(JsonWriter writer, TimeSpan value, JsonSerializer serializer)

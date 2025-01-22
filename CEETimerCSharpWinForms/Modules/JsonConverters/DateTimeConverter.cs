@@ -2,9 +2,9 @@
 
 namespace CEETimerCSharpWinForms.Modules.JsonConverters
 {
-    public class DateTimeFormatConverter : IsoDateTimeConverter
+    public class DateTimeConverter : IsoDateTimeConverter
     {
-        public DateTimeFormatConverter()
+        public DateTimeConverter()
         {
             DateTimeFormat = "yyyyMMddHHmmss";
         }

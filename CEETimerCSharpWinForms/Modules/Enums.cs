@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using System;
 
 namespace CEETimerCSharpWinForms.Modules
 {
@@ -51,5 +53,12 @@ namespace CEETimerCSharpWinForms.Modules
     {
         BindButtons = 0B00100001,
         KeyPreview = 0B001000_10
+    }
+
+    public enum CountdownPhase
+    {
+        P1,
+        P2,
+        P3
     }
 }
