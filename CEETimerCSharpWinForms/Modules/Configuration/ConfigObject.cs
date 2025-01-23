@@ -98,19 +98,7 @@ namespace CEETimerCSharpWinForms.Modules.Configuration
             }
         }
 
-        public int Position
-        {
-            get => field;
-            set
-            {
-                if (value is < 0 or > 8)
-                {
-                    throw new ArgumentOutOfRangeException("value");
-                }
-
-                field = value;
-            }
-        }
+        public CountdownPosition Position { get; set; }
 
         public bool Draggable { get; set; }
 
@@ -139,6 +127,11 @@ namespace CEETimerCSharpWinForms.Modules.Configuration
             get => field;
             set
             {
+                if (value.Length > 4)
+                {
+                    throw new ArgumentException("value");
+                }
+
                 for (int i = 0; i < 4; i++)
                 {
                     if (!ColorHelper.IsNiceContrast(value[i].Fore, value[i].Back))
@@ -164,9 +157,9 @@ namespace CEETimerCSharpWinForms.Modules.Configuration
         [JsonConverter(typeof(TimeSpanConverter))]
         public TimeSpan Tick { get; set; }
 
-        public ColorSetObject Color { get; set; }
-
         public string Text { get; set; }
+
+        public ColorSetObject Color { get; set; }
     }
 
     [JsonConverter(typeof(ColorSetConverter))]

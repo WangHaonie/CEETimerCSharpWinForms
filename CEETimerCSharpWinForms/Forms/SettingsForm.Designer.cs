@@ -38,7 +38,7 @@
             this.TabControlMain = new System.Windows.Forms.TabControl();
             this.TabPageGeneral = new System.Windows.Forms.TabPage();
             this.GBoxOthers = new System.Windows.Forms.GroupBox();
-            this.CheckBoxMemOpti = new System.Windows.Forms.CheckBox();
+            this.CheckBoxMemClean = new System.Windows.Forms.CheckBox();
             this.CheckBoxUniTopMost = new System.Windows.Forms.CheckBox();
             this.CheckBoxTopMost = new System.Windows.Forms.CheckBox();
             this.CheckBoxStartup = new System.Windows.Forms.CheckBox();
@@ -214,7 +214,7 @@
             // 
             // GBoxOthers
             // 
-            this.GBoxOthers.Controls.Add(this.CheckBoxMemOpti);
+            this.GBoxOthers.Controls.Add(this.CheckBoxMemClean);
             this.GBoxOthers.Controls.Add(this.CheckBoxUniTopMost);
             this.GBoxOthers.Controls.Add(this.CheckBoxTopMost);
             this.GBoxOthers.Controls.Add(this.CheckBoxStartup);
@@ -225,16 +225,16 @@
             this.GBoxOthers.TabStop = false;
             this.GBoxOthers.Text = "其它";
             // 
-            // CheckBoxMemOpti
+            // CheckBoxMemClean
             // 
-            this.CheckBoxMemOpti.AutoSize = true;
-            this.CheckBoxMemOpti.Location = new System.Drawing.Point(173, 22);
-            this.CheckBoxMemOpti.Name = "CheckBoxMemOpti";
-            this.CheckBoxMemOpti.Size = new System.Drawing.Size(175, 19);
-            this.CheckBoxMemOpti.TabIndex = 2;
-            this.CheckBoxMemOpti.Text = "在需要时自动清理内存(&M)";
-            this.CheckBoxMemOpti.UseVisualStyleBackColor = true;
-            this.CheckBoxMemOpti.CheckedChanged += new System.EventHandler(this.SettingsChanged);
+            this.CheckBoxMemClean.AutoSize = true;
+            this.CheckBoxMemClean.Location = new System.Drawing.Point(173, 22);
+            this.CheckBoxMemClean.Name = "CheckBoxMemClean";
+            this.CheckBoxMemClean.Size = new System.Drawing.Size(175, 19);
+            this.CheckBoxMemClean.TabIndex = 2;
+            this.CheckBoxMemClean.Text = "在需要时自动清理内存(&M)";
+            this.CheckBoxMemClean.UseVisualStyleBackColor = true;
+            this.CheckBoxMemClean.CheckedChanged += new System.EventHandler(this.SettingsChanged);
             // 
             // CheckBoxUniTopMost
             // 
@@ -899,7 +899,7 @@
         private System.Windows.Forms.CheckBox CheckBoxTopMost;
         private System.Windows.Forms.Label LabelRestart;
         private System.Windows.Forms.Label LabelSyncTime;
-        private System.Windows.Forms.CheckBox CheckBoxMemOpti;
+        private System.Windows.Forms.CheckBox CheckBoxMemClean;
         private System.Windows.Forms.TabPage TabPageDisplay;
         private System.Windows.Forms.GroupBox GBoxFont;
         private System.Windows.Forms.Label LabelFont;

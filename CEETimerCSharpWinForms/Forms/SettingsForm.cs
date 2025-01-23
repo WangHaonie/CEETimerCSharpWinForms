@@ -1,6 +1,7 @@
 ﻿using CEETimerCSharpWinForms.Controls;
 using CEETimerCSharpWinForms.Dialogs;
 using CEETimerCSharpWinForms.Modules;
+using CEETimerCSharpWinForms.Modules.Configuration;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -14,27 +15,27 @@ namespace CEETimerCSharpWinForms.Forms
 {
     public partial class SettingsForm : TrackableForm
     {
-        public bool IsMemoryOptimizationEnabled { get; set; }
-        public bool IsShowXOnly { get; set; }
-        public bool IsDraggable { get; set; }
-        public bool IsShowEnd { get; set; }
-        public bool IsShowPast { get; set; }
-        public bool IsRounding { get; set; }
-        public bool IsPPTService { get; set; }
-        public bool IsTopMost { get; set; }
-        public bool IsUserCustom { get; set; }
-        public DateTime ExamStartTime { get; set; }
-        public DateTime ExamEndTime { get; set; }
-        public Font CountdownFont { get; set; }
-        public FontStyle CountdownFontStyle { get; set; }
-        public int ScreenIndex { get; set; }
-        public int ShowXOnlyIndex { get; set; }
-        public int PositionIndex { get; set; }
-        public List<TupleEx<Color, Color>> CountdownColors { get; set; }
-        public List<TupleEx<Color, Color>> DefaultColors { get; set; }
-        public List<TupleEx<int, TimeSpan, TupleEx<Color, Color, string>>> UserCustomRules { get; set; }
-        public string ExamName { get; set; }
-        public string[] CustomTextRaw { get; set; }
+        //public bool IsMemoryOptimizationEnabled { get; set; }
+        //public bool IsShowXOnly { get; set; }
+        //public bool IsDraggable { get; set; }
+        //public bool IsShowEnd { get; set; }
+        //public bool IsShowPast { get; set; }
+        //public bool IsRounding { get; set; }
+        //public bool IsPPTService { get; set; }
+        //public bool IsTopMost { get; set; }
+        //public bool IsUserCustom { get; set; }
+        //public DateTime ExamStartTime { get; set; }
+        //public DateTime ExamEndTime { get; set; }
+        //public Font CountdownFont { get; set; }
+        //public FontStyle CountdownFontStyle { get; set; }
+        //public int ScreenIndex { get; set; }
+        //public int ShowXOnlyIndex { get; set; }
+        //public int PositionIndex { get; set; }
+        //public List<TupleEx<Color, Color>> CountdownColors { get; set; }
+        //public List<TupleEx<Color, Color>> DefaultColors { get; set; }
+        //public List<TupleEx<int, TimeSpan, TupleEx<Color, Color, string>>> UserCustomRules { get; set; }
+        //public string ExamName { get; set; }
+        //public string[] CustomTextRaw { get; set; }
         public event EventHandler ConfigChanged;
 
         private bool IsColorLabelsDragging;
@@ -45,8 +46,9 @@ namespace CEETimerCSharpWinForms.Forms
         private bool IsFunnyClick;
         private bool ChangingCheckBox;
         private List<Label> ColorLabels;
-        private List<TupleEx<Color, Color>> SelectedColors;
+        private List<ColorSetObject> SelectedColors;
         private readonly FontConverter fontConverter = new();
+        private readonly ConfigObject AppConfig = MainForm.AppConfigPub;
 
         public SettingsForm()
         {
@@ -60,7 +62,7 @@ namespace CEETimerCSharpWinForms.Forms
             RefreshSettings();
             ChangeWorkingStyle(WorkingArea.LastColor);
             ChangeWorkingStyle(WorkingArea.Funny, false);
-            ChangeWorkingStyle(WorkingArea.ShowLeftPast, IsShowEnd);
+            ChangeWorkingStyle(WorkingArea.ShowLeftPast, AppConfig.Display.ShowEnd);
         }
 
         private void InitializeExtra()
@@ -127,25 +129,25 @@ namespace CEETimerCSharpWinForms.Forms
         private void RefreshSettings()
         {
             CheckBoxStartup.Checked = (Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true)?.GetValue(AppLauncher.AppNameEng) is string regvalue) && regvalue.Equals($"\"{AppLauncher.CurrentExecutablePath}\"", StringComparison.OrdinalIgnoreCase);
-            CheckBoxTopMost.Checked = IsTopMost;
-            TextBoxExamName.Text = ExamName;
-            DtpExamStart.Value = ExamStartTime;
-            DtpExamEnd.Value = ExamEndTime;
-            CheckBoxMemOpti.Checked = IsMemoryOptimizationEnabled;
-            CheckBoxDraggable.Checked = IsDraggable;
-            CheckBoxShowXOnly.Checked = IsShowXOnly;
-            CheckBoxCustomText.Checked = IsUserCustom;
-            CheckBoxRounding.Checked = IsRounding;
-            CheckBoxShowEnd.Checked = DtpExamEnd.Enabled = IsShowEnd;
-            CheckBoxShowPast.Checked = IsShowPast;
-            CheckBoxPptSvc.Checked = IsPPTService;
-            CheckBoxUniTopMost.Checked = TopMost;
-            ComboBoxScreens.SelectedValue = ScreenIndex;
-            ComboBoxPosition.SelectedValue = PositionIndex;
-            ComboBoxShowXOnly.SelectedValue = ShowXOnlyIndex;
-            ChangeWorkingStyle(WorkingArea.ChangeFont, NewFont: new(CountdownFont, CountdownFontStyle));
+            CheckBoxTopMost.Checked = AppConfig.General.TopMost;
+            TextBoxExamName.Text = AppConfig.General.ExamName;
+            DtpExamStart.Value = AppConfig.General.ExamStartTime;
+            DtpExamEnd.Value = AppConfig.General.ExamEndTime;
+            CheckBoxMemClean.Checked = AppConfig.General.MemClean;
+            CheckBoxDraggable.Checked = AppConfig.Display.Draggable;
+            CheckBoxShowXOnly.Checked = AppConfig.Display.ShowXOnly;
+            CheckBoxCustomText.Checked = AppConfig.Display.CustomText;
+            CheckBoxRounding.Checked = AppConfig.Display.Rounding;
+            CheckBoxShowEnd.Checked = DtpExamEnd.Enabled = AppConfig.Display.ShowEnd;
+            CheckBoxShowPast.Checked = AppConfig.Display.ShowPast;
+            CheckBoxPptSvc.Checked = AppConfig.Display.SeewoPptsvc;
+            CheckBoxUniTopMost.Checked = MainForm.UniTopMost;
+            ComboBoxScreens.SelectedIndex = AppConfig.Display.ScreenIndex;
+            ComboBoxPosition.SelectedIndex = (int)AppConfig.Display.Position;
+            ComboBoxShowXOnly.SelectedIndex = AppConfig.Display.X;
+            ChangeWorkingStyle(WorkingArea.ChangeFont, NewFont: AppConfig.Appearance.Font);
             ChangePptsvcStyle(null, EventArgs.Empty);
-            ComboBoxShowXOnly.SelectedIndex = IsShowXOnly ? ShowXOnlyIndex : 0;
+            ComboBoxShowXOnly.SelectedIndex = AppConfig.Display.ShowXOnly ? AppConfig.Display.X : 0;
         }
 
         private void SettingsChanged(object sender, EventArgs e)
@@ -169,7 +171,7 @@ namespace CEETimerCSharpWinForms.Forms
         {
             SettingsChanged(sender, e);
             CheckBoxRounding.Enabled = ComboBoxShowXOnly.Enabled = CheckBoxShowXOnly.Checked;
-            ComboBoxShowXOnly.SelectedIndex = CheckBoxShowXOnly.Checked ? ShowXOnlyIndex : 0;
+            ComboBoxShowXOnly.SelectedIndex = CheckBoxShowXOnly.Checked ? AppConfig.Display.X : 0;
             ChangeCustomTextStyle(sender);
 
             if (CheckBoxRounding.Checked && !CheckBoxShowXOnly.Checked)
@@ -221,14 +223,15 @@ namespace CEETimerCSharpWinForms.Forms
             ChangeCustomTextStyle(sender);
         }
 
+        private string[] ChangedCustomTexts;
         private void ButtonCustomText_Click(object sender, EventArgs e)
         {
-            CustomTextDialog _CustomTextDialog = new() { CustomText = CustomTextRaw };
+            CustomTextDialog _CustomTextDialog = new() { CustomText = AppConfig.Display.CustomTexts };
 
             if (_CustomTextDialog.ShowDialog() == DialogResult.OK)
             {
                 SettingsChanged(sender, e);
-                CustomTextRaw = _CustomTextDialog.CustomText;
+                ChangedCustomTexts = _CustomTextDialog.CustomText;
             }
 
             _CustomTextDialog.Dispose();
@@ -240,7 +243,7 @@ namespace CEETimerCSharpWinForms.Forms
             {
                 AllowScriptChange = true,
                 AllowVerticalFonts = false,
-                Font = CountdownFont,
+                Font = AppConfig.Appearance.Font,
                 FontMustExist = true,
                 MinSize = ConfigPolicy.MinFontSize,
                 MaxSize = ConfigPolicy.MaxFontSize,
@@ -322,19 +325,20 @@ namespace CEETimerCSharpWinForms.Forms
             ChangeWorkingStyle(WorkingArea.DefaultColor);
         }
 
+        private List<RulesManagerObject> EditedCustomRules;
         private void ButtonRulesMan_Click(object sender, EventArgs e)
         {
             RulesManager Manager = new()
             {
-                CustomRules = UserCustomRules,
-                Preferences = CheckBoxCustomText.Checked ? CustomTextRaw : [null, null, null],
+                CustomRules = AppConfig.CustomRules,
+                Preferences = CheckBoxCustomText.Checked ? AppConfig.Display.CustomTexts : [null, null, null],
                 ShowWarning = !CheckBoxCustomText.Checked
             };
 
             if (Manager.ShowDialog() == DialogResult.OK)
             {
                 SettingsChanged(sender, e);
-                UserCustomRules = Manager.CustomRules;
+                EditedCustomRules = Manager.CustomRules;
             }
         }
 
@@ -379,8 +383,8 @@ namespace CEETimerCSharpWinForms.Forms
         private void CheckBoxDraggable_CheckedChanged(object sender, EventArgs e)
         {
             ChangePptsvcStyle(sender, e);
-            ComboBoxScreens.SelectedValue = CheckBoxDraggable.Checked ? 0 : ScreenIndex;
-            ComboBoxPosition.SelectedValue = CheckBoxDraggable.Checked ? 0 : PositionIndex;
+            ComboBoxScreens.SelectedValue = CheckBoxDraggable.Checked ? 0 : AppConfig.Display.ScreenIndex;
+            ComboBoxPosition.SelectedValue = CheckBoxDraggable.Checked ? 0 : (int)AppConfig.Display.Position;
             LabelScreens.Enabled = LabelChar1.Enabled = ComboBoxScreens.Enabled = !CheckBoxDraggable.Checked;
         }
 
@@ -415,7 +419,7 @@ namespace CEETimerCSharpWinForms.Forms
         {
             SettingsChanged(sender, e);
             CheckBoxRounding.Visible = ComboBoxShowXOnly.SelectedIndex == 0;
-            CheckBoxRounding.Checked = ComboBoxShowXOnly.SelectedIndex == 0 && IsRounding;
+            CheckBoxRounding.Checked = ComboBoxShowXOnly.SelectedIndex == 0 && AppConfig.Display.Rounding;
         }
 
         private void ComboBoxScreens_SelectedIndexChanged(object sender, EventArgs e)
@@ -423,7 +427,7 @@ namespace CEETimerCSharpWinForms.Forms
             SettingsChanged(sender, e);
 
             ComboBoxPosition.Enabled = !CheckBoxDraggable.Checked && ComboBoxScreens.SelectedIndex != 0;
-            ComboBoxPosition.SelectedIndex = ComboBoxPosition.Enabled ? PositionIndex : 0;
+            ComboBoxPosition.SelectedIndex = ComboBoxPosition.Enabled ? (int)AppConfig.Display.Position : 0;
         }
 
         private void ButtonCancel_Click(object sender, EventArgs e)
@@ -508,7 +512,7 @@ namespace CEETimerCSharpWinForms.Forms
 
         private bool IsSettingsFormatValid()
         {
-            ExamName = TextBoxExamName.Text.RemoveIllegalChars();
+            var ExamName = TextBoxExamName.Text.RemoveIllegalChars();
             TimeSpan ExamTimeSpan = DtpExamEnd.Value - DtpExamStart.Value;
             string UniMsg = "";
             string TimeMsg = "";
@@ -560,7 +564,7 @@ namespace CEETimerCSharpWinForms.Forms
 
             for (int i = 0; i < 4; i++)
             {
-                if (!ColorHelper.IsNiceContrast(SelectedColors[i].Item1, SelectedColors[i].Item2))
+                if (!ColorHelper.IsNiceContrast(SelectedColors[i].Fore, SelectedColors[i].Back))
                 {
                     ColorCheckMsg = i + 1;
                     break;
@@ -612,7 +616,7 @@ namespace CEETimerCSharpWinForms.Forms
             }
         }
 
-        private List<TupleEx<Color, Color>> GetSelectedColors()
+        private List<ColorSetObject> GetSelectedColors()
         {
             return [new(LabelColor11.BackColor, LabelColor12.BackColor),
                     new(LabelColor21.BackColor, LabelColor22.BackColor),
@@ -620,6 +624,7 @@ namespace CEETimerCSharpWinForms.Forms
                     new(LabelColor41.BackColor, LabelColor42.BackColor)];
         }
 
+        private Font SelectedFont;
         private void ChangeWorkingStyle(WorkingArea Where, bool IsWorking = true, int SubCase = 0, Font NewFont = null)
         {
             switch (Where)
@@ -639,23 +644,24 @@ namespace CEETimerCSharpWinForms.Forms
                     break;
                 case WorkingArea.SetPPTService:
                     CheckBoxPptSvc.Enabled = IsWorking;
-                    CheckBoxPptSvc.Checked = IsWorking && IsPPTService;
+                    CheckBoxPptSvc.Checked = IsWorking && AppConfig.Display.SeewoPptsvc;
                     CheckBoxPptSvc.Text = IsWorking ? "启用此功能(&X)" : $"此项暂不可用，因为倒计时没有{(SubCase == 0 ? "顶置" : "在左上角")}。";
                     break;
                 case WorkingArea.ChangeFont:
-                    CountdownFont = NewFont;
-                    CountdownFontStyle = NewFont.Style;
+                    SelectedFont = NewFont;
                     LabelFont.Text = $"当前字体: {NewFont.Name}, {NewFont.Style}, {NewFont.Size}pt";
                     break;
                 case WorkingArea.LastColor:
-                    LabelPreviewColor1.ForeColor = LabelColor11.BackColor = CountdownColors[0].Item1;
-                    LabelPreviewColor2.ForeColor = LabelColor21.BackColor = CountdownColors[1].Item1;
-                    LabelPreviewColor3.ForeColor = LabelColor31.BackColor = CountdownColors[2].Item1;
-                    LabelPreviewColor4.ForeColor = LabelColor41.BackColor = CountdownColors[3].Item1;
-                    LabelPreviewColor1.BackColor = LabelColor12.BackColor = CountdownColors[0].Item2;
-                    LabelPreviewColor2.BackColor = LabelColor22.BackColor = CountdownColors[1].Item2;
-                    LabelPreviewColor3.BackColor = LabelColor32.BackColor = CountdownColors[2].Item2;
-                    LabelPreviewColor4.BackColor = LabelColor42.BackColor = CountdownColors[3].Item2;
+                    var CountdownColors = AppConfig.Appearance.Colors;
+
+                    LabelPreviewColor1.ForeColor = LabelColor11.BackColor = CountdownColors[0].Fore;
+                    LabelPreviewColor2.ForeColor = LabelColor21.BackColor = CountdownColors[1].Fore;
+                    LabelPreviewColor3.ForeColor = LabelColor31.BackColor = CountdownColors[2].Fore;
+                    LabelPreviewColor4.ForeColor = LabelColor41.BackColor = CountdownColors[3].Fore;
+                    LabelPreviewColor1.BackColor = LabelColor12.BackColor = CountdownColors[0].Back;
+                    LabelPreviewColor2.BackColor = LabelColor22.BackColor = CountdownColors[1].Back;
+                    LabelPreviewColor3.BackColor = LabelColor32.BackColor = CountdownColors[2].Back;
+                    LabelPreviewColor4.BackColor = LabelColor42.BackColor = CountdownColors[3].Back;
                     break;
                 case WorkingArea.SelectedColor:
                     LabelPreviewColor1.BackColor = LabelColor12.BackColor;
@@ -668,14 +674,16 @@ namespace CEETimerCSharpWinForms.Forms
                     LabelPreviewColor4.ForeColor = LabelColor41.BackColor;
                     break;
                 case WorkingArea.DefaultColor:
-                    LabelPreviewColor1.ForeColor = LabelColor11.BackColor = DefaultColors[0].Item1;
-                    LabelPreviewColor2.ForeColor = LabelColor21.BackColor = DefaultColors[1].Item1;
-                    LabelPreviewColor3.ForeColor = LabelColor31.BackColor = DefaultColors[2].Item1;
-                    LabelPreviewColor4.ForeColor = LabelColor41.BackColor = DefaultColors[3].Item1;
-                    LabelPreviewColor1.BackColor = LabelColor12.BackColor = DefaultColors[0].Item2;
-                    LabelPreviewColor2.BackColor = LabelColor22.BackColor = DefaultColors[1].Item2;
-                    LabelPreviewColor3.BackColor = LabelColor32.BackColor = DefaultColors[2].Item2;
-                    LabelPreviewColor4.BackColor = LabelColor42.BackColor = DefaultColors[3].Item2;
+                    var DefaultColors = new ConfigObject().Appearance.Colors;
+
+                    LabelPreviewColor1.ForeColor = LabelColor11.BackColor = DefaultColors[0].Fore;
+                    LabelPreviewColor2.ForeColor = LabelColor21.BackColor = DefaultColors[1].Fore;
+                    LabelPreviewColor3.ForeColor = LabelColor31.BackColor = DefaultColors[2].Fore;
+                    LabelPreviewColor4.ForeColor = LabelColor41.BackColor = DefaultColors[3].Fore;
+                    LabelPreviewColor1.BackColor = LabelColor12.BackColor = DefaultColors[0].Back;
+                    LabelPreviewColor2.BackColor = LabelColor22.BackColor = DefaultColors[1].Back;
+                    LabelPreviewColor3.BackColor = LabelColor32.BackColor = DefaultColors[2].Back;
+                    LabelPreviewColor4.BackColor = LabelColor42.BackColor = DefaultColors[3].Back;
                     break;
                 case WorkingArea.ShowLeftPast:
                     GBoxExamEnd.Visible = IsWorking;
@@ -697,39 +705,47 @@ namespace CEETimerCSharpWinForms.Forms
                 else
                     reg.DeleteValue(AppLauncher.AppNameEng, false);
 
-                new ConfigManager().WriteConfig(new()
+                ConfigObject NewAppConfig = new()
                 {
-                    { ConfigItems.KExamName, ExamName },
-                    { ConfigItems.KIsCustomText, $"{CheckBoxCustomText.Checked}" },
-                    { ConfigItems.KCustomTextP1, CustomTextRaw[0] },
-                    { ConfigItems.KCustomTextP2, CustomTextRaw[1] },
-                    { ConfigItems.KCustomTextP3, CustomTextRaw[2] },
-                    { ConfigItems.KStartTime, $"{DtpExamStart.Value:yyyyMMddHHmmss}" },
-                    { ConfigItems.KEndTime, $"{DtpExamEnd.Value:yyyyMMddHHmmss}" },
-                    { ConfigItems.KMemOpti, $"{CheckBoxMemOpti.Checked}" },
-                    { ConfigItems.KTopMost, $"{CheckBoxTopMost.Checked}" },
-                    { ConfigItems.KShowXOnly, $"{CheckBoxShowXOnly.Checked}" },
-                    { ConfigItems.KShowValue, $"{ComboBoxShowXOnly.SelectedValue}" },
-                    { ConfigItems.KRounding, $"{CheckBoxRounding.Checked}" },
-                    { ConfigItems.KShowEnd, $"{CheckBoxShowEnd.Checked}" },
-                    { ConfigItems.KShowPast, $"{CheckBoxShowPast.Checked}" },
-                    { ConfigItems.KUniTopMost, $"{CheckBoxUniTopMost.Checked}" },
-                    { ConfigItems.KScreen, $"{ComboBoxScreens.SelectedValue}" },
-                    { ConfigItems.KPosition, $"{ComboBoxPosition.SelectedValue}" },
-                    { ConfigItems.KDraggable, $"{CheckBoxDraggable.Checked}" },
-                    { ConfigItems.KSeewoPptSvc, $"{CheckBoxPptSvc.Checked}" },
-                    { ConfigItems.KFont, $"{CountdownFont.Name}, {CountdownFont.Size}pt" },
-                    { ConfigItems.KFontStyle, $"{CountdownFontStyle}" },
-                    { ConfigItems.KFore1, LabelColor11.BackColor.ToRgb() },
-                    { ConfigItems.KBack1, LabelColor12.BackColor.ToRgb() },
-                    { ConfigItems.KFore2, LabelColor21.BackColor.ToRgb() },
-                    { ConfigItems.KBack2, LabelColor22.BackColor.ToRgb() },
-                    { ConfigItems.KFore3, LabelColor31.BackColor.ToRgb() },
-                    { ConfigItems.KBack3, LabelColor32.BackColor.ToRgb() },
-                    { ConfigItems.KFore4, LabelColor41.BackColor.ToRgb() },
-                    { ConfigItems.KBack4, LabelColor42.BackColor.ToRgb() },
-                    { ConfigItems.KCustomRules, CustomRuleHelper.GetConfig(UserCustomRules)}
-                });
+                    General = new()
+                    {
+                        ExamName = TextBoxExamName.Text,
+                        ExamStartTime = DtpExamStart.Value,
+                        ExamEndTime = DtpExamEnd.Value,
+                        MemClean = CheckBoxMemClean.Checked,
+                        TopMost = CheckBoxTopMost.Checked,
+                        UniTopMost = CheckBoxUniTopMost.Checked
+                    },
+
+                    Display = new()
+                    {
+                        ShowXOnly = CheckBoxShowXOnly.Checked,
+                        X = ComboBoxShowXOnly.SelectedIndex,
+                        Rounding = CheckBoxRounding.Checked,
+                        ShowEnd = CheckBoxShowEnd.Checked,
+                        ShowPast = CheckBoxShowPast.Checked,
+                        CustomText = CheckBoxCustomText.Checked,
+                        CustomTexts = ChangedCustomTexts,
+                        ScreenIndex = ComboBoxScreens.SelectedIndex,
+                        Position = (CountdownPosition)ComboBoxPosition.SelectedIndex,
+                        Draggable = CheckBoxDraggable.Checked,
+                        SeewoPptsvc = CheckBoxPptSvc.Checked,
+                    },
+
+                    Appearance = new()
+                    {
+                        Font = SelectedFont,
+                        Colors = [new(LabelColor11.BackColor,LabelColor12.BackColor),
+                            new(LabelColor21.BackColor,LabelColor22.BackColor),
+                            new(LabelColor31.BackColor,LabelColor32.BackColor),
+                            new(LabelColor41.BackColor,LabelColor42.BackColor)],
+                    },
+
+                    CustomRules = EditedCustomRules,
+                    CustomColors = AppConfig.CustomColors
+                };
+
+                MainForm.AppConfigPub = NewAppConfig;
             }
             catch { }
         }

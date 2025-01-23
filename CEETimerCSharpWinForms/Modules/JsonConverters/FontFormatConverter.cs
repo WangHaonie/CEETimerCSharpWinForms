@@ -10,7 +10,7 @@ namespace CEETimerCSharpWinForms.Modules.JsonConverters
         {
             string[] FontParts = reader.Value.ToString().Split(',');
 
-            var FontPart1 = (Font)new FontConverter().ConvertFromString($"{FontParts[0]}, {FontParts[1]}pt");
+            var FontPart1 = (Font)new FontConverter().ConvertFromString($"{FontParts[0]}, {FontParts[1]}");
             var FontPart2 = (FontStyle)Enum.Parse(typeof(FontStyle), FontParts[2]);
 
             if (FontPart1.Size is >= ConfigPolicy.MinFontSize or <= ConfigPolicy.MaxFontSize)
@@ -23,7 +23,7 @@ namespace CEETimerCSharpWinForms.Modules.JsonConverters
 
         public override void WriteJson(JsonWriter writer, Font value, JsonSerializer serializer)
         {
-            writer.WriteValue($"{value.Name},{value.Size},{value.Style}");
+            writer.WriteValue($"{value.Name}, {value.Size}pt, {value.Style}");
         }
     }
 }

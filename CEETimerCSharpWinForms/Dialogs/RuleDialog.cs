@@ -9,7 +9,7 @@ namespace CEETimerCSharpWinForms.Dialogs
 {
     public partial class RuleDialog : DialogEx
     {
-        public int RuleType { get; set; }
+        public CountdownPhase RuleType { get; set; }
         public string ExamTick { get; set; } = "";
         public Color Fore { get; set; } = Color.Black;
         public Color Back { get; set; } = Color.White;
@@ -29,7 +29,7 @@ namespace CEETimerCSharpWinForms.Dialogs
             LabelCustomInfo.Text = $"可用的占位符: {Placeholders.PH_PHINFO}";
 
             BindComboData(ComboBoxRuleType, [new(Placeholders.PH_START, 0), new(Placeholders.PH_LEFT, 1), new(Placeholders.PH_PAST, 2)]);
-            ComboBoxRuleType.SelectedIndex = RuleType;
+            ComboBoxRuleType.SelectedIndex = (int)RuleType;
             var Ticks = ExamTick.Split(CustomRuleHelper.TsSeparator);
 
             if (Ticks.Length > 1)
@@ -111,7 +111,7 @@ namespace CEETimerCSharpWinForms.Dialogs
                 return;
             }
 
-            RuleType = ComboBoxRuleType.SelectedIndex;
+            RuleType = (CountdownPhase)ComboBoxRuleType.SelectedIndex;
             ExamTick = $"{NudDays.Value}天{NudHours.Value}时{NudMinutes.Value}分{NudSeconds.Value}秒";
             Fore = _Fore;
             Back = _Back;

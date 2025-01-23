@@ -1,4 +1,4 @@
-﻿using CEETimerCSharpWinForms.Modules;
+﻿using CEETimerCSharpWinForms.Forms;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -37,10 +37,9 @@ namespace CEETimerCSharpWinForms.Controls
         {
             if (CustomColorCollection != null && PreviousCustomColors != null && !CustomColorCollection.SequenceEqual(PreviousCustomColors))
             {
-                new ConfigManager().WriteConfig(new()
-                {
-                    { ConfigItems.KCustomColors, ColorHelper.GetStringFromArgbArray(CustomColorCollection) }
-                });
+                var ExistingConfig = MainForm.AppConfigPub;
+                ExistingConfig.CustomColors = CustomColorCollection;
+                MainForm.AppConfigPub = ExistingConfig;
             }
         }
     }

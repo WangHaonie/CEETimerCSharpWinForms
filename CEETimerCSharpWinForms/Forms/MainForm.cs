@@ -10,14 +10,24 @@ using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static CEETimerCSharpWinForms.Modules.CustomRuleHelper;
 
 namespace CEETimerCSharpWinForms.Forms
 {
     public partial class MainForm : TrackableForm
     {
         public static bool UniTopMost { get; private set; } = true;
-        public static bool IsNormalStart { get; set; } = false;
+        public static bool IsNormalStart { get; set; }
+
+        public static ConfigObject AppConfigPub
+        {
+            get => AppConfig;
+            set
+            {
+                AppConfig = value;
+                AppLauncher.OnAppConfigChanged();
+
+            }
+        }
 
         private bool MemClean;
         private bool IsShowXOnly;
@@ -28,7 +38,7 @@ namespace CEETimerCSharpWinForms.Forms
         private bool IsPPTService;
         private bool IsCustomText;
         private int ScreenIndex;
-        private int PositionIndex;
+        private CountdownPosition CountdownPos;
         private int ShowXOnlyIndex;
         private DateTime ExamEndTime;
         private DateTime ExamStartTime;
@@ -55,7 +65,7 @@ namespace CEETimerCSharpWinForms.Forms
         private NotifyIcon TrayIcon;
 
         private ConfigHandler Config;
-        private ConfigObject AppConfig;
+        private static ConfigObject AppConfig;
 
         public MainForm()
         {
@@ -66,6 +76,12 @@ namespace CEETimerCSharpWinForms.Forms
         {
             Config = new ConfigHandler(this);
             AppConfig = Config.Read();
+            AppLauncher.AppConfigChanged += (sender, e) =>
+            {
+                RefreshSettings();
+                Config.Save(AppConfig);
+            };
+
             DefaultColors = [new(Color.Red, Color.White), new(Color.Green, Color.White), new(Color.Black, Color.White), new(Color.Black, Color.White)];
 
             SizeChanged += MainForm_SizeChanged;
@@ -154,7 +170,7 @@ namespace CEETimerCSharpWinForms.Forms
             IsPPTService = AppConfig.Display.SeewoPptsvc;
             IsCustomText = AppConfig.Display.CustomText;
             ScreenIndex = AppConfig.Display.ScreenIndex;
-            PositionIndex = AppConfig.Display.Position;
+            CountdownPos = AppConfig.Display.Position;
             ShowXOnlyIndex = AppConfig.Display.X;
             CustomRules = AppConfig.CustomRules;
             ColorDialogEx.CustomColorCollection = AppConfig.CustomColors;
@@ -268,31 +284,7 @@ namespace CEETimerCSharpWinForms.Forms
         {
             if (FormSettings == null || FormSettings.IsDisposed)
             {
-                FormSettings = new()
-                {
-                    IsMemoryOptimizationEnabled = MemClean,
-                    IsTopMost = TopMost,
-                    ExamStartTime = ExamStartTime,
-                    ExamEndTime = ExamEndTime,
-                    CountdownFont = LabelCountdown.Font,
-                    CountdownFontStyle = LabelCountdown.Font.Style,
-                    ExamName = ExamName,
-                    CustomTextRaw = CustomText,
-                    IsUserCustom = IsCustomText,
-                    IsShowXOnly = IsShowXOnly,
-                    ShowXOnlyIndex = ShowXOnlyIndex,
-                    IsShowEnd = IsShowEnd,
-                    IsShowPast = IsShowPast,
-                    IsRounding = IsRounding,
-                    IsDraggable = IsDraggable,
-                    IsPPTService = IsPPTService,
-                    ScreenIndex = ScreenIndex,
-                    PositionIndex = PositionIndex,
-                    DefaultColors = DefaultColors,
-                    //CountdownColors = CountdownColors,
-                    //UserCustomRules = CustomRules
-                };
-
+                FormSettings = new();
                 FormSettings.ConfigChanged += (sender, e) => RefreshSettings();
             }
 
@@ -391,17 +383,26 @@ namespace CEETimerCSharpWinForms.Forms
         {
             if (!IsDraggable)
             {
-                Location = PositionIndex switch
+                Location = CountdownPos switch
                 {
-                    1 => new(SelectedScreen.Left, SelectedScreen.Top + SelectedScreen.Height / 2 - Height / 2),
-                    2 => new(SelectedScreen.Left, SelectedScreen.Bottom - Height),
-                    3 => new(SelectedScreen.Left + SelectedScreen.Width / 2 - Width / 2, SelectedScreen.Top),
-                    4 => new(SelectedScreen.Left + SelectedScreen.Width / 2 - Width / 2, SelectedScreen.Top + SelectedScreen.Height / 2 - Height / 2),
-                    5 => new(SelectedScreen.Left + SelectedScreen.Width / 2 - Width / 2, SelectedScreen.Bottom - Height),
-                    6 => new(SelectedScreen.Right - Width, SelectedScreen.Top),
-                    7 => new(SelectedScreen.Right - Width, SelectedScreen.Top + SelectedScreen.Height / 2 - Height / 2),
-                    8 => new(SelectedScreen.Right - Width, SelectedScreen.Bottom - Height),
-                    _ => IsPPTService ? new(SelectedScreen.Location.X + PptsvcThreshold, SelectedScreen.Location.Y) : SelectedScreen.Location
+                    CountdownPosition.LeftCenter
+                        => new(SelectedScreen.Left, SelectedScreen.Top + SelectedScreen.Height / 2 - Height / 2),
+                    CountdownPosition.BottomLeft
+                        => new(SelectedScreen.Left, SelectedScreen.Bottom - Height),
+                    CountdownPosition.TopCenter
+                        => new(SelectedScreen.Left + SelectedScreen.Width / 2 - Width / 2, SelectedScreen.Top),
+                    CountdownPosition.Center
+                        => new(SelectedScreen.Left + SelectedScreen.Width / 2 - Width / 2, SelectedScreen.Top + SelectedScreen.Height / 2 - Height / 2),
+                    CountdownPosition.BottomCenter
+                        => new(SelectedScreen.Left + SelectedScreen.Width / 2 - Width / 2, SelectedScreen.Bottom - Height),
+                    CountdownPosition.TopRight
+                        => new(SelectedScreen.Right - Width, SelectedScreen.Top),
+                    CountdownPosition.RightCenter
+                        => new(SelectedScreen.Right - Width, SelectedScreen.Top + SelectedScreen.Height / 2 - Height / 2),
+                    CountdownPosition.BottomRight
+                        => new(SelectedScreen.Right - Width, SelectedScreen.Bottom - Height),
+                    _
+                        => IsPPTService ? new(SelectedScreen.Location.X + PptsvcThreshold, SelectedScreen.Location.Y) : SelectedScreen.Location
                 };
             }
         }
@@ -497,7 +498,7 @@ namespace CEETimerCSharpWinForms.Forms
         private void SaveLocation()
         {
             AppConfig.Pos = Location;
-            Config.Save(AppConfig);
+            AppLauncher.OnAppConfigChanged();
         }
 
         private void OptimizeMemory(object state)

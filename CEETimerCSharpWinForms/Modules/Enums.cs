@@ -59,4 +59,17 @@ namespace CEETimerCSharpWinForms.Modules
         P2,
         P3
     }
+
+    public enum CountdownPosition
+    {
+        TopLeft,
+        LeftCenter,
+        BottomLeft,
+        TopCenter,
+        Center,
+        BottomCenter,
+        TopRight,
+        RightCenter,
+        BottomRight
+    }
 }

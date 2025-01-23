@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -8,43 +6,24 @@ namespace CEETimerCSharpWinForms.Modules
 {
     public static class CustomRuleHelper
     {
-        public class Config(string typeIndex, string tick, string fore, string back, string custom)
-        {
-            public string Type { get; set; } = typeIndex;
-            public string Tick { get; set; } = tick;
-            public string Fore { get; set; } = fore;
-            public string Back { get; set; } = back;
-            public string Text { get; set; } = custom;
-        }
-
         private static readonly string[] AllPHs = [Placeholders.PH_EXAMNAME, Placeholders.PH_DAYS, Placeholders.PH_HOURS, Placeholders.PH_MINUTES, Placeholders.PH_SECONDS, Placeholders.PH_ROUNDEDDAYS, Placeholders.PH_TOTALHOURS, Placeholders.PH_TOTALMINUTES, Placeholders.PH_TOTALSECONDS];
 
         public static char[] TsSeparator => ['天', '时', '分', '秒'];
         public static TimeSpan GetExamTick(string str) => GetExamTickCore(str, TsSeparator);
-        public static TimeSpan GetExamTickFormRaw(string str) => GetExamTickCore(str, [',']);
         public static string GetExamTickText(TimeSpan timeSpan)
             => $"{timeSpan.Days}{TsSeparator[0]}{timeSpan.Hours}{TsSeparator[1]}{timeSpan.Minutes}{TsSeparator[2]}{timeSpan.Seconds}{TsSeparator[3]}";
-        public static string GetExamTickConfig(TimeSpan timeSpan)
-            => $"{timeSpan.Days},{timeSpan.Hours},{timeSpan.Minutes},{timeSpan.Seconds}";
 
-        public static int GetRuleTypeIndex(string s) => s switch
+        public static CountdownPhase GetPhase(string s) => s switch
         {
-            Placeholders.PH_LEFT => 1,
-            Placeholders.PH_PAST => 2,
+            Placeholders.PH_LEFT => CountdownPhase.P2,
+            Placeholders.PH_PAST => CountdownPhase.P3,
             _ => 0
         };
 
-        public static int GetRuleTypeIndexFromRaw(string s) => s switch
+        public static string GetRuleTypeText(CountdownPhase i) => i switch
         {
-            "1" => 1,
-            "2" => 2,
-            _ => 0
-        };
-
-        public static string GetRuleTypeText(int i) => i switch
-        {
-            1 => Placeholders.PH_LEFT,
-            2 => Placeholders.PH_PAST,
+            CountdownPhase.P2 => Placeholders.PH_LEFT,
+            CountdownPhase.P3 => Placeholders.PH_PAST,
             _ => Placeholders.PH_START
         };
 
@@ -54,18 +33,6 @@ namespace CEETimerCSharpWinForms.Modules
             2 => Pref[2] ?? Placeholders.PH_P3,
             _ => Pref[0] ?? Placeholders.PH_P1
         };
-
-        public static string[] GetCustomTextFormRaw(string p1, string p2, string p3)
-        {
-            string[] tmp = [p1, p2, p3];
-
-            if ((bool)CheckCustomText(tmp, out _))
-            {
-                return tmp;
-            }
-
-            return [Placeholders.PH_P1, Placeholders.PH_P2, Placeholders.PH_P3];
-        }
 
         /// <summary>
         /// 检查用户输入的自定义文本是否有效并输出错误信息。
@@ -113,63 +80,6 @@ namespace CEETimerCSharpWinForms.Modules
 
             msg = Error;
             return Result;
-        }
-
-        public static List<Config> GetConfig(List<TupleEx<int, TimeSpan, TupleEx<Color, Color, string>>> Rules)
-        {
-            var tmp = new List<Config>();
-
-            foreach (var Rule in Rules)
-            {
-                var Part2 = Rule.Item3;
-                tmp.Add(new($"{Rule.Item1}", GetExamTickConfig(Rule.Item2), Part2.Item1.ToRgb(), Part2.Item2.ToRgb(), Part2.Item3));
-            }
-
-            return tmp;
-        }
-
-        public static List<TupleEx<int, TimeSpan, TupleEx<Color, Color, string>>> GetObject(IEnumerable<Config> cfg)
-        {
-            #region LINQ 版，慢 1ms
-            /*
-            return (
-                from r in cfg
-                let fore = ColorHelper.GetColor(r.Fore)
-                let back = ColorHelper.GetColor(r.Back)
-                let item1 = GetRuleTypeIndexFromRaw(r.Type)
-                where IsValidColor(fore, back)
-                select new TupleEx<int, TimeSpan, TupleEx<Color, Color, string>>(item1, GetExamTickFormRaw(r.Tick), new(fore, back, (string)CheckCustomText([r.Text.RemoveIllegalChars()], out _, item1)))
-            ).ToList();
-
-            static bool IsValidColor(Color fore, Color back)
-            {
-                if (!ColorHelper.IsNiceContrast(fore, back))
-                {
-                    ConfigPolicy.NotAllowed<Color>();
-                }
-
-                return true;
-            }
-            */
-            #endregion
-
-            var tmp = new List<TupleEx<int, TimeSpan, TupleEx<Color, Color, string>>>();
-
-            foreach (var Rule in cfg)
-            {
-                var fore = ColorHelper.GetColor(Rule.Fore);
-                var back = ColorHelper.GetColor(Rule.Back);
-
-                if (!ColorHelper.IsNiceContrast(fore, back))
-                {
-                    ConfigPolicy.NotAllowed<Color>();
-                }
-
-                var item1 = GetRuleTypeIndexFromRaw(Rule.Type);
-                tmp.Add(new(item1, GetExamTickFormRaw(Rule.Tick), new(fore, back, (string)CheckCustomText([Rule.Text.RemoveIllegalChars()], out _, item1))));
-            }
-
-            return tmp;
         }
 
         private static TimeSpan GetExamTickCore(string str, char[] Separator)

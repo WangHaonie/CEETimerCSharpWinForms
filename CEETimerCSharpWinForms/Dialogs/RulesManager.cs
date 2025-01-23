@@ -1,5 +1,6 @@
 ﻿using CEETimerCSharpWinForms.Controls;
 using CEETimerCSharpWinForms.Modules;
+using CEETimerCSharpWinForms.Modules.Configuration;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,7 +12,7 @@ namespace CEETimerCSharpWinForms.Dialogs
 {
     public partial class RulesManager : DialogEx
     {
-        public List<TupleEx<int, TimeSpan, TupleEx<Color, Color, string>>> CustomRules { get; set; }
+        public List<RulesManagerObject> CustomRules { get; set; }
         public string[] Preferences { get; set; }
         public bool ShowWarning { get; set; }
 
@@ -39,8 +40,7 @@ namespace CEETimerCSharpWinForms.Dialogs
                     {
                         foreach (var Rule in CustomRules)
                         {
-                            var Part2 = Rule.Item3;
-                            AddItem(Rule.Item1, CustomRuleHelper.GetExamTickText(Rule.Item2), Part2.Item1, Part2.Item2, Part2.Item3);
+                            AddItem(Rule.Phase, CustomRuleHelper.GetExamTickText(Rule.Tick), Rule.Color, Rule.Text);
                         }
                     });
                 }
@@ -62,7 +62,7 @@ namespace CEETimerCSharpWinForms.Dialogs
 
             if (ShowRuleDialog(RuleDialogMain) == DialogResult.OK)
             {
-                AddItem(RuleDialogMain.RuleType, RuleDialogMain.ExamTick, RuleDialogMain.Fore, RuleDialogMain.Back, RuleDialogMain.CustomText);
+                AddItem(RuleDialogMain.RuleType, RuleDialogMain.ExamTick, new(RuleDialogMain.Fore, RuleDialogMain.Back), RuleDialogMain.CustomText);
             }
         }
 
@@ -120,27 +120,24 @@ namespace CEETimerCSharpWinForms.Dialogs
 
         protected override void OnButtonAClicked()
         {
-            CustomRules = GetAllItems().Select(Item => new TupleEx<int, TimeSpan, TupleEx<Color, Color, string>>
-            (
-                CustomRuleHelper.GetRuleTypeIndex(Item.SubItems[0].Text),
-                CustomRuleHelper.GetExamTick(Item.SubItems[1].Text),
-                new(
-                    ColorHelper.GetColor(Item.SubItems[2].Text),
-                    ColorHelper.GetColor(Item.SubItems[3].Text),
-                    Item.SubItems[4].Text
-                   )
-            )).ToList();
+            CustomRules = GetAllItems().Select(Item => new RulesManagerObject()
+            {
+                Phase = CustomRuleHelper.GetPhase(Item.SubItems[0].Text),
+                Tick = CustomRuleHelper.GetExamTick(Item.SubItems[1].Text),
+                Text = Item.SubItems[4].Text,
+                Color = new(ColorHelper.GetColor(Item.SubItems[2].Text), ColorHelper.GetColor(Item.SubItems[3].Text))
+            }).ToList();
 
             base.OnButtonAClicked();
         }
 
-        private void AddItem(int RuleTypeIndex, string ExamTick, Color Fore, Color Back, string CustomText, ListViewItem Item = null)
+        private void AddItem(CountdownPhase RuleTypeIndex, string ExamTick, ColorSetObject Colors, string CustomText, ListViewItem Item = null)
         {
             UserChanged();
 
             var RuleTypeText = CustomRuleHelper.GetRuleTypeText(RuleTypeIndex);
-            var _Fore = Fore.ToRgb();
-            var _Back = Back.ToRgb();
+            var _Fore = Colors.Fore.ToRgb();
+            var _Back = Colors.Back.ToRgb();
 
             if (!IsEditMode)
             {
@@ -206,7 +203,7 @@ namespace CEETimerCSharpWinForms.Dialogs
 
             RuleDialog RuleDialogMain = new()
             {
-                RuleType = CustomRuleHelper.GetRuleTypeIndex(Item.SubItems[0].Text),
+                RuleType = CustomRuleHelper.GetPhase(Item.SubItems[0].Text),
                 ExamTick = Item.SubItems[1].Text,
                 Fore = ColorHelper.TryParseRGB(Item.SubItems[2].Text, out Color color1) ? color1 : Color.White,
                 Back = ColorHelper.TryParseRGB(Item.SubItems[3].Text, out Color color2) ? color2 : Color.White,
@@ -215,7 +212,7 @@ namespace CEETimerCSharpWinForms.Dialogs
 
             if (ShowRuleDialog(RuleDialogMain) == DialogResult.OK)
             {
-                AddItem(RuleDialogMain.RuleType, RuleDialogMain.ExamTick, RuleDialogMain.Fore, RuleDialogMain.Back, RuleDialogMain.CustomText, Item);
+                AddItem(RuleDialogMain.RuleType, RuleDialogMain.ExamTick, new(RuleDialogMain.Fore, RuleDialogMain.Back), RuleDialogMain.CustomText, Item);
                 RemoveDuplicates();
             }
 

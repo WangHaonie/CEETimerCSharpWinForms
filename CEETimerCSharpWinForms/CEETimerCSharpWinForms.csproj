@@ -204,6 +204,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Interop\Enums.cs" />
+    <Compile Include="Modules\ConfigPolicy.cs" />
     <Compile Include="Modules\Configuration\ConfigObject.cs" />
     <Compile Include="Modules\Configuration\ConfigHandler.cs" />
     <Compile Include="Modules\ContextMenuExtensions.cs" />
@@ -222,7 +223,6 @@
     <Compile Include="Modules\ProcessHelper.cs" />
     <Compile Include="Modules\UIHelper.cs" />
     <Compile Include="Modules\UpdateChecker.cs" />
-    <Compile Include="Modules\ConfigManager.cs" />
     <Compile Include="Modules\Extensions.cs" />
     <Compile Include="Modules\AppLauncher.cs" />
     <Compile Include="Modules\MessageX.cs" />
