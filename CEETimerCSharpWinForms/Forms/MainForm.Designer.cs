@@ -1,4 +1,6 @@
-﻿namespace CEETimerCSharpWinForms.Forms
+﻿using CEETimerCSharpWinForms.Modules;
+
+namespace CEETimerCSharpWinForms.Forms
 {
     partial class MainForm
     {
@@ -61,7 +63,7 @@
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
-            this.Text = WindowTitle;
+            this.Text = AppLauncher.AppName;
             this.TopMost = true;
             this.ResumeLayout(false);
             this.PerformLayout();

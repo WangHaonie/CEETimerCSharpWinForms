@@ -1,6 +1,7 @@
 ﻿using CEETimerCSharpWinForms.Modules.JsonConverters;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -17,7 +18,7 @@ namespace CEETimerCSharpWinForms.Modules.Configuration
 
         public ToolsObject Tools { get; set; } = new();
 
-        public RulesManagerObject CustomRules { get; set; } = new();
+        public List<RulesManagerObject> CustomRules { get; set; } = [];
 
         public int[] CustomColors { get; set; } = [.. Enumerable.Repeat(16777215, 16)];
 
@@ -27,7 +28,19 @@ namespace CEETimerCSharpWinForms.Modules.Configuration
 
     public sealed class GeneralObject
     {
-        public string ExamName { get; set; } = "";
+        public string ExamName
+        {
+            get => field;
+            set
+            {
+                if (value.Length is > ConfigPolicy.MaxExamNameLength or < ConfigPolicy.MinExamNameLength)
+                {
+                    throw new ArgumentException("value");
+                }
+
+                field = value;
+            }
+        } = "";
 
         [JsonConverter(typeof(DateTimeConverter))]
         public DateTime ExamStartTime { get; set; } = DateTime.Now;
@@ -35,7 +48,7 @@ namespace CEETimerCSharpWinForms.Modules.Configuration
         [JsonConverter(typeof(DateTimeConverter))]
         public DateTime ExamEndTime { get; set; } = DateTime.Now;
 
-        public bool RAMCleaner { get; set; }
+        public bool MemClean { get; set; }
 
         public bool TopMost { get; set; } = true;
 
@@ -58,7 +71,7 @@ namespace CEETimerCSharpWinForms.Modules.Configuration
 
                 field = value;
             }
-        } = 0;
+        }
 
         public bool Rounding { get; set; }
 
@@ -68,7 +81,8 @@ namespace CEETimerCSharpWinForms.Modules.Configuration
 
         public bool CustomText { get; set; }
 
-        public CustomTextObject CustomTexts { get; set; } = new();
+        public string[] CustomTexts { get; set; }
+            = [Placeholders.PH_P1, Placeholders.PH_P2, Placeholders.PH_P3];
 
         public int ScreenIndex
         {
@@ -82,7 +96,7 @@ namespace CEETimerCSharpWinForms.Modules.Configuration
 
                 field = value;
             }
-        } = 0;
+        }
 
         public int Position
         {
@@ -96,7 +110,7 @@ namespace CEETimerCSharpWinForms.Modules.Configuration
 
                 field = value;
             }
-        } = 0;
+        }
 
         public bool Draggable { get; set; }
 
@@ -106,10 +120,36 @@ namespace CEETimerCSharpWinForms.Modules.Configuration
     public sealed class AppearanceObject
     {
         [JsonConverter(typeof(FontFormatConverter))]
-        public Font TextFont { get; set; }
+        public Font Font
+        {
+            get => field;
+            set
+            {
+                if (value.Size is > ConfigPolicy.MaxFontSize or < ConfigPolicy.MinFontSize)
+                {
+                    throw new ArgumentException("value");
+                }
 
-        public ColorSetObject[] Colors { get; set; }
-            = [new(Color.Red, Color.White), new(Color.Green, Color.White), new(Color.Black, Color.White), new(Color.Black, Color.White)];
+                field = value;
+            }
+        } = new((Font)new FontConverter().ConvertFromString(ConfigPolicy.DefaultFont), FontStyle.Bold);
+
+        public ColorSetObject[] Colors
+        {
+            get => field;
+            set
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    if (!ColorHelper.IsNiceContrast(value[i].Fore, value[i].Back))
+                    {
+                        throw new ArgumentException("value");
+                    }
+                }
+
+                field = value;
+            }
+        } = [new(Color.Red, Color.White), new(Color.Green, Color.White), new(Color.Black, Color.White), new(Color.Black, Color.White)];
     }
 
     public sealed class ToolsObject
@@ -127,15 +167,6 @@ namespace CEETimerCSharpWinForms.Modules.Configuration
         public ColorSetObject Color { get; set; }
 
         public string Text { get; set; }
-    }
-
-    public sealed class CustomTextObject
-    {
-        public string P1 { get; set; } = Placeholders.PH_P1;
-
-        public string P2 { get; set; } = Placeholders.PH_P2;
-
-        public string P3 { get; set; } = Placeholders.PH_P3;
     }
 
     [JsonConverter(typeof(ColorSetConverter))]

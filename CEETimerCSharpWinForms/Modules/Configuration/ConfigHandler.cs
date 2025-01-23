@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using CEETimerCSharpWinForms.Controls;
+using Newtonsoft.Json;
 using System;
 using System.IO;
 
@@ -6,12 +7,10 @@ namespace CEETimerCSharpWinForms.Modules.Configuration
 {
     public class ConfigHandler
     {
-        public event EventHandler<ConfigLoadedEventArgs> ConfigLoaded;
-
         private readonly JsonSerializerSettings Settings;
-        private ConfigObject Config;
+        private TrackableForm ParentForm;
 
-        public ConfigHandler()
+        public ConfigHandler(TrackableForm Owner)
         {
             Settings = new JsonSerializerSettings()
             {
@@ -20,46 +19,31 @@ namespace CEETimerCSharpWinForms.Modules.Configuration
                 NullValueHandling = NullValueHandling.Ignore,
                 TypeNameHandling = TypeNameHandling.Auto
             };
+
+            ParentForm = Owner;
         }
 
         public void Save(ConfigObject Config)
-            => IgnoreExceptions(() => File.WriteAllText(AppLauncher.ConfigFilePath, JsonConvert.SerializeObject(Config, Settings)));
-
-        public void Read()
-        {
-            UnnamedMethod(
-                () => Config = JsonConvert.DeserializeObject<ConfigObject>(File.ReadAllText(AppLauncher.ConfigFilePath)),
-                () => Config = new(),
-                OnConfigLoaded);
-        }
-
-        protected virtual void OnConfigLoaded()
-        {
-            ConfigLoaded?.Invoke(this, new(Config));
-        }
-
-        private void IgnoreExceptions(Action Method)
         {
             try
             {
-                Method();
+                File.WriteAllText(AppLauncher.ConfigFilePath, JsonConvert.SerializeObject(Config, Settings));
             }
-            catch { }
+            catch (Exception ex)
+            {
+                MessageX.Error($"保存设置时出现错误！{ex.ToMessage()}", ParentForm);
+            }
         }
 
-        private void UnnamedMethod(Action Try, Action Catch, Action Finally)
+        public ConfigObject Read()
         {
             try
             {
-                Try();
+                return JsonConvert.DeserializeObject<ConfigObject>(File.ReadAllText(AppLauncher.ConfigFilePath));
             }
             catch
             {
-                Catch();
-            }
-            finally
-            {
-                Finally();
+                return new();
             }
         }
     }

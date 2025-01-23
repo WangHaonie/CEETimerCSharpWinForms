@@ -131,16 +131,6 @@ namespace CEETimerCSharpWinForms.Modules
             }
         }
 
-        public bool IsValidData(DateTime ExamTime)
-        {
-            if (ExamTime < new DateTime(1753, 1, 1, 0, 0, 0) || ExamTime > new DateTime(9998, 12, 31, 23, 59, 59))
-            {
-                return false;
-            }
-
-            return true;
-        }
-
         private string CleanKeys(JObject o)
         {
             List<string> KeysToClean = [];

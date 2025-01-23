@@ -206,7 +206,6 @@
     <Compile Include="Interop\Enums.cs" />
     <Compile Include="Modules\Configuration\ConfigObject.cs" />
     <Compile Include="Modules\Configuration\ConfigHandler.cs" />
-    <Compile Include="Modules\Configuration\ConfigLoadedEventArgs.cs" />
     <Compile Include="Modules\ContextMenuExtensions.cs" />
     <Compile Include="Modules\ColorHelper.cs" />
     <Compile Include="Modules\CustomRuleHelper.cs" />

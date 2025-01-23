@@ -1,15 +1,16 @@
 ﻿using CEETimerCSharpWinForms.Controls;
 using CEETimerCSharpWinForms.Interop;
 using CEETimerCSharpWinForms.Modules;
+using CEETimerCSharpWinForms.Modules.Configuration;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static CEETimerCSharpWinForms.Modules.CustomRuleHelper;
 
 namespace CEETimerCSharpWinForms.Forms
 {
@@ -18,7 +19,7 @@ namespace CEETimerCSharpWinForms.Forms
         public static bool UniTopMost { get; private set; } = true;
         public static bool IsNormalStart { get; set; } = false;
 
-        private bool IsMemoryOptimizationEnabled;
+        private bool MemClean;
         private bool IsShowXOnly;
         private bool IsDraggable;
         private bool IsShowEnd;
@@ -31,12 +32,9 @@ namespace CEETimerCSharpWinForms.Forms
         private int ShowXOnlyIndex;
         private DateTime ExamEndTime;
         private DateTime ExamStartTime;
-        private Font SelectedFont;
-        private FontStyle SelectedFontStyle;
-        private List<TupleEx<Color, Color>> CountdownColors;
+        private ColorSetObject[] CountdownColors;
         private List<TupleEx<Color, Color>> DefaultColors;
-        private List<TupleEx<int, TimeSpan, TupleEx<Color, Color, string>>> CustomRules;
-        private string WindowTitle = "高考倒计时";
+        private List<RulesManagerObject> CustomRules;
         private string ExamName;
         private string[] CustomText;
 
@@ -55,8 +53,9 @@ namespace CEETimerCSharpWinForms.Forms
         private SettingsForm FormSettings;
         private AboutForm FormAbout;
         private NotifyIcon TrayIcon;
-        private readonly ConfigManager Config = new();
-        private readonly FontConverter fontConverter = new();
+
+        private ConfigHandler Config;
+        private ConfigObject AppConfig;
 
         public MainForm()
         {
@@ -65,6 +64,8 @@ namespace CEETimerCSharpWinForms.Forms
 
         protected override void OnTrackableFormLoad()
         {
+            Config = new ConfigHandler(this);
+            AppConfig = Config.Read();
             DefaultColors = [new(Color.Red, Color.White), new(Color.Green, Color.White), new(Color.Black, Color.White), new(Color.Black, Color.White)];
 
             SizeChanged += MainForm_SizeChanged;
@@ -133,60 +134,38 @@ namespace CEETimerCSharpWinForms.Forms
 
         private async void RefreshSettings()
         {
-            Config.MountConfig(true);
+            AppConfig.Display.ShowPast = AppConfig.Display.ShowPast && AppConfig.Display.ShowEnd;
+            AppConfig.Display.Rounding = AppConfig.Display.Rounding && AppConfig.Display.ShowXOnly && AppConfig.Display.X == 0;
+            AppConfig.Display.CustomText = AppConfig.Display.CustomText && !AppConfig.Display.ShowXOnly;
+            AppConfig.Display.SeewoPptsvc = AppConfig.Display.SeewoPptsvc && ((AppConfig.General.TopMost && AppConfig.Display.X == 0) || AppConfig.Display.Draggable);
 
-            ExamName = Config.ReadConfig(ConfigItems.KExamName);
-            CustomText = CustomRuleHelper.GetCustomTextFormRaw(Config.ReadConfig(ConfigItems.KCustomTextP1), Config.ReadConfig(ConfigItems.KCustomTextP2), Config.ReadConfig(ConfigItems.KCustomTextP3));
-            ExamStartTime = DateTime.TryParseExact(Config.ReadConfig(ConfigItems.KStartTime), "yyyyMMddHHmmss", null, DateTimeStyles.None, out DateTime tmpw) ? tmpw : DateTime.Now;
-            ExamEndTime = DateTime.TryParseExact(Config.ReadConfig(ConfigItems.KEndTime), "yyyyMMddHHmmss", null, DateTimeStyles.None, out DateTime tmpx) ? tmpx : DateTime.Now;
-            IsMemoryOptimizationEnabled = bool.TryParse(Config.ReadConfig(ConfigItems.KMemOpti), out bool tmpc) && tmpc;
-            TopMost = !bool.TryParse(Config.ReadConfig(ConfigItems.KTopMost), out bool tmpa) || tmpa;
-            IsShowXOnly = bool.TryParse(Config.ReadConfig(ConfigItems.KShowXOnly), out bool tmpd) && tmpd;
-            IsRounding = bool.TryParse(Config.ReadConfig(ConfigItems.KRounding), out bool tmpe) && tmpe;
-            IsShowPast = bool.TryParse(Config.ReadConfig(ConfigItems.KShowPast), out bool tmpg) && tmpg;
-            IsShowEnd = bool.TryParse(Config.ReadConfig(ConfigItems.KShowEnd), out bool tmpf) && tmpf;
-            IsDraggable = bool.TryParse(Config.ReadConfig(ConfigItems.KDraggable), out bool tmph) && tmph;
-            UniTopMost = bool.TryParse(Config.ReadConfig(ConfigItems.KUniTopMost), out bool tmpi) && tmpi;
-            IsPPTService = bool.TryParse(Config.ReadConfig(ConfigItems.KSeewoPptSvc), out bool tmpj) && tmpj;
-            IsCustomText = bool.TryParse(Config.ReadConfig(ConfigItems.KIsCustomText), out bool tmpo) && tmpo;
-            ScreenIndex = int.TryParse(Config.ReadConfig(ConfigItems.KScreen), out int tmpk) ? tmpk : 0;
-            PositionIndex = int.TryParse(Config.ReadConfig(ConfigItems.KPosition), out int tmpu) ? tmpu : 0;
-            ShowXOnlyIndex = int.TryParse(Config.ReadConfig(ConfigItems.KShowValue), out int tmpl) ? tmpl : 0;
-            try { CustomRules = CustomRuleHelper.GetObject(Config.ReadConfigEx(ConfigItems.KCustomRules)); } catch { CustomRules = []; }
-            ColorDialogEx.CustomColorCollection = ColorHelper.GetArgbArray(Config.ReadConfig(ConfigItems.KCustomColors));
-            int.TryParse(Config.ReadConfig(ConfigItems.KPosX), out int x);
-            int.TryParse(Config.ReadConfig(ConfigItems.KPosY), out int y);
-            CountdownColors = [];
-
-            for (int i = 0; i < 4; i++)
-            {
-                var Fore = ColorHelper.TryParseRGB(Config.ReadConfig($"Fore{i + 1}"), out Color tmpfore) ? tmpfore : DefaultColors[i].Item1;
-                var Back = ColorHelper.TryParseRGB(Config.ReadConfig($"Back{i + 1}"), out Color tmpback) ? tmpback : DefaultColors[i].Item2;
-
-                if (!ColorHelper.IsNiceContrast(Fore, Back))
-                {
-                    Fore = DefaultColors[i].Item1;
-                    Back = DefaultColors[i].Item2;
-                }
-
-                CountdownColors.Add(new(Fore, Back));
-            }
+            ExamName = AppConfig.General.ExamName;
+            CustomText = AppConfig.Display.CustomTexts;
+            ExamStartTime = AppConfig.General.ExamStartTime;
+            ExamEndTime = AppConfig.General.ExamEndTime;
+            MemClean = AppConfig.General.MemClean;
+            TopMost = AppConfig.General.TopMost;
+            IsShowXOnly = AppConfig.Display.ShowXOnly;
+            IsRounding = AppConfig.Display.Rounding;
+            IsShowPast = AppConfig.Display.ShowPast;
+            IsShowEnd = AppConfig.Display.ShowEnd;
+            IsDraggable = AppConfig.Display.Draggable;
+            UniTopMost = AppConfig.General.UniTopMost;
+            IsPPTService = AppConfig.Display.SeewoPptsvc;
+            IsCustomText = AppConfig.Display.CustomText;
+            ScreenIndex = AppConfig.Display.ScreenIndex;
+            PositionIndex = AppConfig.Display.Position;
+            ShowXOnlyIndex = AppConfig.Display.X;
+            CustomRules = AppConfig.CustomRules;
+            ColorDialogEx.CustomColorCollection = AppConfig.CustomColors;
+            CountdownColors = AppConfig.Appearance.Colors;
 
 #if DEBUG
             Console.WriteLine("##########################");
 #endif
 
             ShowInTaskbar = !TopMost;
-            IsShowPast = IsShowPast && IsShowEnd;
-            IsRounding = IsRounding && IsShowXOnly && ShowXOnlyIndex == 0;
-            IsCustomText = IsCustomText && !IsShowXOnly;
-            UniTopMost = UniTopMost && TopMost;
-            if (ScreenIndex < 0 || ScreenIndex > Screen.AllScreens.Length) ScreenIndex = 0;
-            if (PositionIndex is < 0 or > 8) PositionIndex = 0;
-            if (ShowXOnlyIndex > 3) ShowXOnlyIndex = 0;
-            if (ExamName.Length is > ConfigPolicy.MaxExamNameLength or < ConfigPolicy.MinExamNameLength) ExamName = "";
-            IsCountdownReady = !string.IsNullOrWhiteSpace(ExamName) && Config.IsValidData(tmpw) && Config.IsValidData(tmpx) && (tmpx > tmpw || !IsShowEnd);
-            IsPPTService = IsPPTService && ((TopMost && ShowXOnlyIndex == 0) || IsDraggable);
+            IsCountdownReady = !string.IsNullOrWhiteSpace(ExamName) && ExamStartTime.IsValid() && ExamEndTime.IsValid() && (ExamEndTime > ExamStartTime || !IsShowEnd);
 
             SelectedState = CountdownState.Normal;
 
@@ -201,23 +180,7 @@ namespace CEETimerCSharpWinForms.Forms
                 };
             }
 
-            try
-            {
-                SelectedFont = (Font)fontConverter.ConvertFromString(Config.ReadConfig(ConfigItems.KFont));
-                SelectedFontStyle = (FontStyle)Enum.Parse(typeof(FontStyle), Config.ReadConfig(ConfigItems.KFontStyle));
-
-                if (SelectedFont.Size is > ConfigPolicy.MaxFontSize or < ConfigPolicy.MinFontSize)
-                {
-                    ConfigPolicy.NotAllowed<Font>();
-                }
-            }
-            catch
-            {
-                SelectedFont = (Font)fontConverter.ConvertFromString(ConfigPolicy.DefaultFont);
-                SelectedFontStyle = FontStyle.Bold;
-            }
-
-            LabelCountdown.Font = new(SelectedFont, SelectedFontStyle);
+            LabelCountdown.Font = AppConfig.Appearance.Font;
 
             LabelCountdown.MouseDown -= LabelCountdown_MouseDown;
             LabelCountdown.MouseMove -= LabelCountdown_MouseMove;
@@ -228,7 +191,7 @@ namespace CEETimerCSharpWinForms.Forms
                 LabelCountdown.MouseDown += LabelCountdown_MouseDown;
                 LabelCountdown.MouseMove += LabelCountdown_MouseMove;
                 LabelCountdown.MouseUp += LabelCountdown_MouseUp;
-                Location = new(x, y);
+                Location = AppConfig.Pos;
             }
             else
             {
@@ -241,12 +204,11 @@ namespace CEETimerCSharpWinForms.Forms
             AppLauncher.OnUniTopMostStateChanged();
 
             MemoryOptimizer?.Dispose();
-            if (IsMemoryOptimizationEnabled)
+            if (MemClean)
             {
                 MemoryOptimizer = new(OptimizeMemory, null, TimeSpan.Zero, TimeSpan.FromMinutes(5));
             }
 
-            Config.MountConfig(false);
             SetLabelCountdownAutoWrap();
 
             await StartCountdown();
@@ -308,7 +270,7 @@ namespace CEETimerCSharpWinForms.Forms
             {
                 FormSettings = new()
                 {
-                    IsMemoryOptimizationEnabled = IsMemoryOptimizationEnabled,
+                    IsMemoryOptimizationEnabled = MemClean,
                     IsTopMost = TopMost,
                     ExamStartTime = ExamStartTime,
                     ExamEndTime = ExamEndTime,
@@ -327,8 +289,8 @@ namespace CEETimerCSharpWinForms.Forms
                     ScreenIndex = ScreenIndex,
                     PositionIndex = PositionIndex,
                     DefaultColors = DefaultColors,
-                    CountdownColors = CountdownColors,
-                    UserCustomRules = CustomRules
+                    //CountdownColors = CountdownColors,
+                    //UserCustomRules = CustomRules
                 };
 
                 FormSettings.ConfigChanged += (sender, e) => RefreshSettings();
@@ -398,22 +360,15 @@ namespace CEETimerCSharpWinForms.Forms
             }
 
             IsCountdownRunning = false;
-            UpdateCountdown("欢迎使用高考倒计时", CountdownColors[3].Item1, CountdownColors[3].Item2);
-            UpdateTrayIconText(WindowTitle);
+            UpdateCountdown("欢迎使用高考倒计时", CountdownColors[3]);
+            UpdateTrayIconText(AppLauncher.AppName);
         }
 
         private void ApplyColorRule(int Phase, TimeSpan Span, string Name, string Hint)
         {
             if (IsCustomText)
             {
-                var r = CustomRules.Where(i => i.Item1 == Phase).Select(x => new
-                {
-                    Tick = x.Item2,
-                    Fore = x.Item3.Item1,
-                    Back = x.Item3.Item2,
-                    Custom = x.Item3.Item3
-                });
-
+                var r = CustomRules.Where(x => (int)x.Phase == Phase).Select(x => new { x.Tick, x.Text, x.Color });
                 var Rules = (Phase == 2 ? r.OrderByDescending(x => x.Tick) : r.OrderBy(x => x.Tick)).ToList();
 
                 if (Rules.Count > 0)
@@ -422,14 +377,14 @@ namespace CEETimerCSharpWinForms.Forms
                     {
                         if (Phase == 2 ? (Span >= Rule.Tick) : (Span <= Rule.Tick + new TimeSpan(0, 0, 0, 1)))
                         {
-                            SetCountdown(Span, Name, Hint, Rule.Fore, Rule.Back, Rule.Custom);
+                            SetCountdown(Span, Name, Hint, Rule.Color, Rule.Text);
                             return;
                         }
                     }
                 }
             }
 
-            SetCountdown(Span, Name, Hint, CountdownColors[Phase].Item1, CountdownColors[Phase].Item2, CustomText[Phase]);
+            SetCountdown(Span, Name, Hint, CountdownColors[Phase], CustomText[Phase]);
         }
 
         private void ApplyLocation()
@@ -451,9 +406,9 @@ namespace CEETimerCSharpWinForms.Forms
             }
         }
 
-        private void SetCountdown(TimeSpan Span, string Name, string Hint, Color Fore, Color Back, string Custom)
+        private void SetCountdown(TimeSpan Span, string Name, string Hint, ColorSetObject ColorSet, string Custom)
         {
-            UpdateCountdown(IsCustomText ? GetCountdownWithCustomText(Span, Name, Custom) : GetCountdown(Span, Name, Hint), Fore, Back);
+            UpdateCountdown(IsCustomText ? GetCountdownWithCustomText(Span, Name, Custom) : GetCountdown(Span, Name, Hint), ColorSet);
         }
 
         private string GetCountdownWithCustomText(TimeSpan Span, string Name, string Custom) => Custom
@@ -479,13 +434,13 @@ namespace CEETimerCSharpWinForms.Forms
         };
 
 
-        private void UpdateCountdown(string CountdownText, Color Fore, Color Back)
+        private void UpdateCountdown(string CountdownText, ColorSetObject ColorSet)
         {
             BeginInvoke(() =>
             {
                 LabelCountdown.Text = CountdownText;
-                LabelCountdown.ForeColor = Fore;
-                BackColor = Back;
+                LabelCountdown.ForeColor = ColorSet.Fore;
+                BackColor = ColorSet.Back;
                 UpdateTrayIconText(CountdownText, false);
             });
         }
@@ -541,11 +496,8 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void SaveLocation()
         {
-            Config.WriteConfig(new()
-            {
-                { ConfigItems.KPosX, $"{Location.X}" },
-                { ConfigItems.KPosY, $"{Location.Y}" }
-            });
+            AppConfig.Pos = Location;
+            Config.Save(AppConfig);
         }
 
         private void OptimizeMemory(object state)
