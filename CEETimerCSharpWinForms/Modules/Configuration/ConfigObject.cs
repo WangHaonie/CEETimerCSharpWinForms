@@ -1,4 +1,5 @@
-﻿using CEETimerCSharpWinForms.Modules.JsonConverters;
+﻿using CEETimerCSharpWinForms.Forms;
+using CEETimerCSharpWinForms.Modules.JsonConverters;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -23,7 +24,7 @@ namespace CEETimerCSharpWinForms.Modules.Configuration
         public int[] CustomColors { get; set; } = [.. Enumerable.Repeat(16777215, 16)];
 
         [JsonConverter(typeof(PointFormatConverter))]
-        public Point Pos { get; set; } = new(0, 0);
+        public Point Pos { get; set; }
     }
 
     public sealed class GeneralObject
@@ -33,7 +34,7 @@ namespace CEETimerCSharpWinForms.Modules.Configuration
             get => field;
             set
             {
-                if (value.Length is > ConfigPolicy.MaxExamNameLength or < ConfigPolicy.MinExamNameLength)
+                if (MainForm.ValidateNeeded && !value.Length.IsValid())
                 {
                     throw new ArgumentException("value");
                 }
@@ -64,7 +65,7 @@ namespace CEETimerCSharpWinForms.Modules.Configuration
             get => field;
             set
             {
-                if (value is < 0 or > 3)
+                if (MainForm.ValidateNeeded && value is < 0 or > 3)
                 {
                     throw new ArgumentOutOfRangeException("value");
                 }
@@ -89,7 +90,7 @@ namespace CEETimerCSharpWinForms.Modules.Configuration
             get => field;
             set
             {
-                if (value < 0 || value > Screen.AllScreens.Length)
+                if (MainForm.ValidateNeeded && value < 0 || value > Screen.AllScreens.Length)
                 {
                     throw new ArgumentOutOfRangeException("value");
                 }
@@ -108,35 +109,26 @@ namespace CEETimerCSharpWinForms.Modules.Configuration
     public sealed class AppearanceObject
     {
         [JsonConverter(typeof(FontFormatConverter))]
-        public Font Font
-        {
-            get => field;
-            set
-            {
-                if (value.Size is > ConfigPolicy.MaxFontSize or < ConfigPolicy.MinFontSize)
-                {
-                    throw new ArgumentException("value");
-                }
-
-                field = value;
-            }
-        } = new((Font)new FontConverter().ConvertFromString(ConfigPolicy.DefaultFont), FontStyle.Bold);
+        public Font Font { get; set; } = new((Font)new FontConverter().ConvertFromString(ConfigPolicy.DefaultFont), FontStyle.Bold);
 
         public ColorSetObject[] Colors
         {
             get => field;
             set
             {
-                if (value.Length > 4)
+                if (MainForm.ValidateNeeded)
                 {
-                    throw new ArgumentException("value");
-                }
-
-                for (int i = 0; i < 4; i++)
-                {
-                    if (!ColorHelper.IsNiceContrast(value[i].Fore, value[i].Back))
+                    if (value.Length > 4)
                     {
                         throw new ArgumentException("value");
+                    }
+
+                    for (int i = 0; i < 4; i++)
+                    {
+                        if (!ColorHelper.IsNiceContrast(value[i].Fore, value[i].Back))
+                        {
+                            throw new ArgumentException("value");
+                        }
                     }
                 }
 

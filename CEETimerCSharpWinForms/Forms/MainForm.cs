@@ -17,6 +17,7 @@ namespace CEETimerCSharpWinForms.Forms
     {
         public static bool UniTopMost { get; private set; } = true;
         public static bool IsNormalStart { get; set; }
+        public static bool ValidateNeeded { get; private set; } = true;
 
         public static ConfigObject AppConfigPub
         {
@@ -25,7 +26,6 @@ namespace CEETimerCSharpWinForms.Forms
             {
                 AppConfig = value;
                 AppLauncher.OnAppConfigChanged();
-
             }
         }
 
@@ -43,7 +43,6 @@ namespace CEETimerCSharpWinForms.Forms
         private DateTime ExamEndTime;
         private DateTime ExamStartTime;
         private ColorSetObject[] CountdownColors;
-        private List<TupleEx<Color, Color>> DefaultColors;
         private List<RulesManagerObject> CustomRules;
         private string ExamName;
         private string[] CustomText;
@@ -81,8 +80,6 @@ namespace CEETimerCSharpWinForms.Forms
                 RefreshSettings();
                 Config.Save(AppConfig);
             };
-
-            DefaultColors = [new(Color.Red, Color.White), new(Color.Green, Color.White), new(Color.Black, Color.White), new(Color.Black, Color.White)];
 
             SizeChanged += MainForm_SizeChanged;
             SystemEvents.DisplaySettingsChanged += SystemEvents_DisplaySettingsChanged;
@@ -150,10 +147,13 @@ namespace CEETimerCSharpWinForms.Forms
 
         private async void RefreshSettings()
         {
-            AppConfig.Display.ShowPast = AppConfig.Display.ShowPast && AppConfig.Display.ShowEnd;
-            AppConfig.Display.Rounding = AppConfig.Display.Rounding && AppConfig.Display.ShowXOnly && AppConfig.Display.X == 0;
-            AppConfig.Display.CustomText = AppConfig.Display.CustomText && !AppConfig.Display.ShowXOnly;
-            AppConfig.Display.SeewoPptsvc = AppConfig.Display.SeewoPptsvc && ((AppConfig.General.TopMost && AppConfig.Display.X == 0) || AppConfig.Display.Draggable);
+            if (ValidateNeeded)
+            {
+                AppConfig.Display.ShowPast = AppConfig.Display.ShowPast && AppConfig.Display.ShowEnd;
+                AppConfig.Display.Rounding = AppConfig.Display.Rounding && AppConfig.Display.ShowXOnly && AppConfig.Display.X == 0;
+                AppConfig.Display.CustomText = AppConfig.Display.CustomText && !AppConfig.Display.ShowXOnly;
+                AppConfig.Display.SeewoPptsvc = AppConfig.Display.SeewoPptsvc && ((AppConfig.General.TopMost && AppConfig.Display.X == 0) || AppConfig.Display.Draggable);
+            }
 
             ExamName = AppConfig.General.ExamName;
             CustomText = AppConfig.Display.CustomTexts;
@@ -226,7 +226,7 @@ namespace CEETimerCSharpWinForms.Forms
             }
 
             SetLabelCountdownAutoWrap();
-
+            ValidateNeeded = false;
             await StartCountdown();
         }
 
@@ -285,7 +285,6 @@ namespace CEETimerCSharpWinForms.Forms
             if (FormSettings == null || FormSettings.IsDisposed)
             {
                 FormSettings = new();
-                FormSettings.ConfigChanged += (sender, e) => RefreshSettings();
             }
 
             FormSettings.ReActivate();
@@ -498,7 +497,7 @@ namespace CEETimerCSharpWinForms.Forms
         private void SaveLocation()
         {
             AppConfig.Pos = Location;
-            AppLauncher.OnAppConfigChanged();
+            Config.Save(AppConfig);
         }
 
         private void OptimizeMemory(object state)

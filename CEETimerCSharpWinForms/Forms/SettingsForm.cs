@@ -15,28 +15,9 @@ namespace CEETimerCSharpWinForms.Forms
 {
     public partial class SettingsForm : TrackableForm
     {
-        //public bool IsMemoryOptimizationEnabled { get; set; }
-        //public bool IsShowXOnly { get; set; }
-        //public bool IsDraggable { get; set; }
-        //public bool IsShowEnd { get; set; }
-        //public bool IsShowPast { get; set; }
-        //public bool IsRounding { get; set; }
-        //public bool IsPPTService { get; set; }
-        //public bool IsTopMost { get; set; }
-        //public bool IsUserCustom { get; set; }
-        //public DateTime ExamStartTime { get; set; }
-        //public DateTime ExamEndTime { get; set; }
-        //public Font CountdownFont { get; set; }
-        //public FontStyle CountdownFontStyle { get; set; }
-        //public int ScreenIndex { get; set; }
-        //public int ShowXOnlyIndex { get; set; }
-        //public int PositionIndex { get; set; }
-        //public List<TupleEx<Color, Color>> CountdownColors { get; set; }
-        //public List<TupleEx<Color, Color>> DefaultColors { get; set; }
-        //public List<TupleEx<int, TimeSpan, TupleEx<Color, Color, string>>> UserCustomRules { get; set; }
-        //public string ExamName { get; set; }
-        //public string[] CustomTextRaw { get; set; }
-        public event EventHandler ConfigChanged;
+        private Font SelectedFont;
+        private List<RulesManagerObject> EditedCustomRules;
+        private string[] ChangedCustomTexts;
 
         private bool IsColorLabelsDragging;
         private bool IsSyncingTime;
@@ -164,7 +145,7 @@ namespace CEETimerCSharpWinForms.Forms
             SettingsChanged(sender, e);
             int CharCount = TextBoxExamName.Text.RemoveIllegalChars().Length;
             LabelExamNameCounter.Text = $"{CharCount}/{ConfigPolicy.MaxExamNameLength}";
-            LabelExamNameCounter.ForeColor = (CharCount > ConfigPolicy.MaxExamNameLength || CharCount < ConfigPolicy.MinExamNameLength) ? Color.Red : Color.Black;
+            LabelExamNameCounter.ForeColor = (CharCount.IsValid()) ? Color.Black : Color.Red;
         }
 
         private void CheckBoxShowXOnly_CheckedChanged(object sender, EventArgs e)
@@ -223,7 +204,6 @@ namespace CEETimerCSharpWinForms.Forms
             ChangeCustomTextStyle(sender);
         }
 
-        private string[] ChangedCustomTexts;
         private void ButtonCustomText_Click(object sender, EventArgs e)
         {
             CustomTextDialog _CustomTextDialog = new() { CustomText = AppConfig.Display.CustomTexts };
@@ -325,7 +305,6 @@ namespace CEETimerCSharpWinForms.Forms
             ChangeWorkingStyle(WorkingArea.DefaultColor);
         }
 
-        private List<RulesManagerObject> EditedCustomRules;
         private void ButtonRulesMan_Click(object sender, EventArgs e)
         {
             RulesManager Manager = new()
@@ -456,7 +435,6 @@ namespace CEETimerCSharpWinForms.Forms
             if (InvokeChangeRequired)
             {
                 SaveSettings();
-                ConfigChanged?.Invoke(this, EventArgs.Empty);
             }
 
             ChangeWorkingStyle(WorkingArea.Funny, false);
@@ -517,7 +495,7 @@ namespace CEETimerCSharpWinForms.Forms
             string UniMsg = "";
             string TimeMsg = "";
 
-            if (string.IsNullOrWhiteSpace(ExamName) || (ExamName.Length is < ConfigPolicy.MinExamNameLength or > ConfigPolicy.MaxExamNameLength))
+            if (string.IsNullOrWhiteSpace(ExamName) || !ExamName.Length.IsValid())
             {
                 MessageX.Error("输入的考试名称有误！\n\n请检查输入的考试名称是否太长或太短！", this, TabControlMain, TabPageGeneral);
                 return false;
@@ -624,7 +602,6 @@ namespace CEETimerCSharpWinForms.Forms
                     new(LabelColor41.BackColor, LabelColor42.BackColor)];
         }
 
-        private Font SelectedFont;
         private void ChangeWorkingStyle(WorkingArea Where, bool IsWorking = true, int SubCase = 0, Font NewFont = null)
         {
             switch (Where)
@@ -705,47 +682,43 @@ namespace CEETimerCSharpWinForms.Forms
                 else
                     reg.DeleteValue(AppLauncher.AppNameEng, false);
 
-                ConfigObject NewAppConfig = new()
+                AppConfig.General = new()
                 {
-                    General = new()
-                    {
-                        ExamName = TextBoxExamName.Text,
-                        ExamStartTime = DtpExamStart.Value,
-                        ExamEndTime = DtpExamEnd.Value,
-                        MemClean = CheckBoxMemClean.Checked,
-                        TopMost = CheckBoxTopMost.Checked,
-                        UniTopMost = CheckBoxUniTopMost.Checked
-                    },
+                    ExamName = TextBoxExamName.Text,
+                    ExamStartTime = DtpExamStart.Value,
+                    ExamEndTime = DtpExamEnd.Value,
+                    MemClean = CheckBoxMemClean.Checked,
+                    TopMost = CheckBoxTopMost.Checked,
+                    UniTopMost = CheckBoxUniTopMost.Checked
+                };
 
-                    Display = new()
-                    {
-                        ShowXOnly = CheckBoxShowXOnly.Checked,
-                        X = ComboBoxShowXOnly.SelectedIndex,
-                        Rounding = CheckBoxRounding.Checked,
-                        ShowEnd = CheckBoxShowEnd.Checked,
-                        ShowPast = CheckBoxShowPast.Checked,
-                        CustomText = CheckBoxCustomText.Checked,
-                        CustomTexts = ChangedCustomTexts,
-                        ScreenIndex = ComboBoxScreens.SelectedIndex,
-                        Position = (CountdownPosition)ComboBoxPosition.SelectedIndex,
-                        Draggable = CheckBoxDraggable.Checked,
-                        SeewoPptsvc = CheckBoxPptSvc.Checked,
-                    },
+                AppConfig.Display = new()
+                {
+                    ShowXOnly = CheckBoxShowXOnly.Checked,
+                    X = ComboBoxShowXOnly.SelectedIndex,
+                    Rounding = CheckBoxRounding.Checked,
+                    ShowEnd = CheckBoxShowEnd.Checked,
+                    ShowPast = CheckBoxShowPast.Checked,
+                    CustomText = CheckBoxCustomText.Checked,
+                    CustomTexts = ChangedCustomTexts,
+                    ScreenIndex = ComboBoxScreens.SelectedIndex,
+                    Position = (CountdownPosition)ComboBoxPosition.SelectedIndex,
+                    Draggable = CheckBoxDraggable.Checked,
+                    SeewoPptsvc = CheckBoxPptSvc.Checked,
+                };
 
-                    Appearance = new()
-                    {
-                        Font = SelectedFont,
-                        Colors = [new(LabelColor11.BackColor,LabelColor12.BackColor),
+                AppConfig.Appearance = new()
+                {
+                    Font = SelectedFont,
+                    Colors = [new(LabelColor11.BackColor,LabelColor12.BackColor),
                             new(LabelColor21.BackColor,LabelColor22.BackColor),
                             new(LabelColor31.BackColor,LabelColor32.BackColor),
                             new(LabelColor41.BackColor,LabelColor42.BackColor)],
-                    },
-
-                    CustomRules = EditedCustomRules,
-                    CustomColors = AppConfig.CustomColors
                 };
 
-                MainForm.AppConfigPub = NewAppConfig;
+                AppConfig.CustomRules = EditedCustomRules;
+
+                MainForm.AppConfigPub = AppConfig;
             }
             catch { }
         }

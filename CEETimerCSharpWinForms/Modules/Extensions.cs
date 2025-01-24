@@ -12,7 +12,6 @@ namespace CEETimerCSharpWinForms.Modules
         public static double DpiRatio { get; private set; } = 0;
         public static bool IsRGB(this int i) => i >= 0 && i <= 255;
         public static bool IsVersionNumber(this string v) => Regex.IsMatch(v, @"^\d+(\.\d+){1,3}$");
-        public static bool IsValid(this DateTime dateTime) => dateTime >= new DateTime(1753, 1, 1, 0, 0, 0) || dateTime <= new DateTime(9998, 12, 31, 23, 59, 59);
         public static double ToLuminance(this Color color) => color.R * 0.299 + color.G * 0.587 + color.B * 0.114;
         public static string ToRgb(this Color color) => $"{color.R},{color.G},{color.B}";
         public static string ToMessage(this Exception ex) => $"\n\n错误信息: \n{ex.Message}\n\n错误详情: \n{ex}";
@@ -54,5 +53,12 @@ namespace CEETimerCSharpWinForms.Modules
             form.Show();
             form.Activate();
         }
+
+
+        public static bool IsValid(this DateTime dateTime)
+            => dateTime >= new DateTime(1753, 1, 1, 0, 0, 0) || dateTime <= new DateTime(9998, 12, 31, 23, 59, 59);
+
+        public static bool IsValid(this int ExamLength)
+            => ExamLength <= ConfigPolicy.MaxExamNameLength && ExamLength >= ConfigPolicy.MinExamNameLength;
     }
 }

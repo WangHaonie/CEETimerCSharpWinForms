@@ -1,4 +1,6 @@
 ﻿using CEETimerCSharpWinForms.Forms;
+using CEETimerCSharpWinForms.Modules;
+using CEETimerCSharpWinForms.Modules.Configuration;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -39,7 +41,7 @@ namespace CEETimerCSharpWinForms.Controls
             {
                 var ExistingConfig = MainForm.AppConfigPub;
                 ExistingConfig.CustomColors = CustomColorCollection;
-                MainForm.AppConfigPub = ExistingConfig;
+                new ConfigHandler(FormManager.GetFirst()).Save(ExistingConfig);
             }
         }
     }

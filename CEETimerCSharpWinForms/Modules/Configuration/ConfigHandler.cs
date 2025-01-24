@@ -8,7 +8,7 @@ namespace CEETimerCSharpWinForms.Modules.Configuration
     public class ConfigHandler
     {
         private readonly JsonSerializerSettings Settings;
-        private TrackableForm ParentForm;
+        private readonly TrackableForm ParentForm;
 
         public ConfigHandler(TrackableForm Owner)
         {
