@@ -19,7 +19,11 @@ namespace CEETimerCSharpWinForms.Modules.Configuration
 
         public ToolsObject Tools { get; set; } = new();
 
-        public List<RulesManagerObject> CustomRules { get; set; } = [];
+        public List<RulesManagerObject> CustomRules
+        {
+            get => field ?? [];
+            set => field = value ?? [];
+        }
 
         public int[] CustomColors { get; set; } = [.. Enumerable.Repeat(16777215, 16)];
 

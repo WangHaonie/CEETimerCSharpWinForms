@@ -17,7 +17,7 @@ namespace CEETimerCSharpWinForms.Forms
     {
         private Font SelectedFont;
         private List<RulesManagerObject> EditedCustomRules;
-        private string[] ChangedCustomTexts;
+        private string[] EditedCustomTexts;
 
         private bool IsColorLabelsDragging;
         private bool IsSyncingTime;
@@ -129,6 +129,7 @@ namespace CEETimerCSharpWinForms.Forms
             ChangeWorkingStyle(WorkingArea.ChangeFont, NewFont: AppConfig.Appearance.Font);
             ChangePptsvcStyle(null, EventArgs.Empty);
             ComboBoxShowXOnly.SelectedIndex = AppConfig.Display.ShowXOnly ? AppConfig.Display.X : 0;
+            EditedCustomTexts = AppConfig.Display.CustomTexts;
         }
 
         private void SettingsChanged(object sender, EventArgs e)
@@ -206,12 +207,12 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void ButtonCustomText_Click(object sender, EventArgs e)
         {
-            CustomTextDialog _CustomTextDialog = new() { CustomText = AppConfig.Display.CustomTexts };
+            CustomTextDialog _CustomTextDialog = new() { CustomText = EditedCustomTexts };
 
             if (_CustomTextDialog.ShowDialog() == DialogResult.OK)
             {
                 SettingsChanged(sender, e);
-                ChangedCustomTexts = _CustomTextDialog.CustomText;
+                EditedCustomTexts = _CustomTextDialog.CustomText;
             }
 
             _CustomTextDialog.Dispose();
@@ -700,7 +701,7 @@ namespace CEETimerCSharpWinForms.Forms
                     ShowEnd = CheckBoxShowEnd.Checked,
                     ShowPast = CheckBoxShowPast.Checked,
                     CustomText = CheckBoxCustomText.Checked,
-                    CustomTexts = ChangedCustomTexts,
+                    CustomTexts = EditedCustomTexts,
                     ScreenIndex = ComboBoxScreens.SelectedIndex,
                     Position = (CountdownPosition)ComboBoxPosition.SelectedIndex,
                     Draggable = CheckBoxDraggable.Checked,
