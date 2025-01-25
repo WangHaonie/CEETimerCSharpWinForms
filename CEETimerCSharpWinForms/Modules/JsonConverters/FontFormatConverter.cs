@@ -8,7 +8,7 @@ namespace CEETimerCSharpWinForms.Modules.JsonConverters
     {
         public override Font ReadJson(JsonReader reader, Type objectType, Font existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
-            string[] FontParts = reader.Value.ToString().Split(',');
+            string[] FontParts = reader.Value.ToString().Split(ConfigPolicy.ValueSeperator);
 
             var FontPart1 = (Font)new FontConverter().ConvertFromString($"{FontParts[0]}, {FontParts[1]}");
             var FontPart2 = (FontStyle)Enum.Parse(typeof(FontStyle), FontParts[2]);
@@ -18,7 +18,7 @@ namespace CEETimerCSharpWinForms.Modules.JsonConverters
                 return new Font(FontPart1, FontPart2);
             }
 
-            throw new JsonSerializationException("Invalid Font Format");
+            throw new Exception();
         }
 
         public override void WriteJson(JsonWriter writer, Font value, JsonSerializer serializer)

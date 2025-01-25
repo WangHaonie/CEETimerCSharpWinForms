@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json;
-using CEETimerCSharpWinForms.Modules.Configuration;
-using System;
+﻿using CEETimerCSharpWinForms.Modules.Configuration;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
 
 namespace CEETimerCSharpWinForms.Modules.JsonConverters
 {
@@ -10,7 +10,7 @@ namespace CEETimerCSharpWinForms.Modules.JsonConverters
         public override RulesManagerObject ReadJson(JsonReader reader, Type objectType, RulesManagerObject existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
             var Json = serializer.Deserialize<JObject>(reader);
-            var PhaseValue = Convert.ToInt32(Json["Phase"]);
+            var PhaseValue = Convert.ToInt32(Json[nameof(existingValue.Phase)]);
 
             if (!Enum.IsDefined(typeof(CountdownPhase), PhaseValue))
             {
@@ -19,24 +19,22 @@ namespace CEETimerCSharpWinForms.Modules.JsonConverters
 
             var Phase = (CountdownPhase)PhaseValue;
 
-            var TimeSpanParts = Json["Tick"].ToString().Split(',');
+            var TimeSpanParts = Json[nameof(existingValue.Tick)].ToString().Split(ConfigPolicy.ValueSeperator);
             var Tick = new TimeSpan(
                     int.Parse(TimeSpanParts[0]),
                     int.Parse(TimeSpanParts[1]),
                     int.Parse(TimeSpanParts[2]),
                     int.Parse(TimeSpanParts[3]));
 
-            var Fore = ColorHelper.GetColor(Json["Fore"].ToString());
-            var Back = ColorHelper.GetColor(Json["Back"].ToString());
+            var Fore = ColorHelper.GetColor(Json[nameof(existingValue.Fore)].ToString());
+            var Back = ColorHelper.GetColor(Json[nameof(existingValue.Back)].ToString());
 
             if (!ColorHelper.IsNiceContrast(Fore, Back))
             {
                 throw new Exception();
             }
 
-            var Text = Json["Text"].ToString().RemoveIllegalChars();
-
-            Console.WriteLine($"{Phase}{Tick}{Text}{Fore}{Back}");
+            var Text = Json[nameof(existingValue.Text)].ToString().RemoveIllegalChars();
 
             return new()
             {
@@ -50,19 +48,13 @@ namespace CEETimerCSharpWinForms.Modules.JsonConverters
 
         public override void WriteJson(JsonWriter writer, RulesManagerObject value, JsonSerializer serializer)
         {
-            var Phase = (int)value.Phase;
-            var Tick = value.Tick.ToStr();
-            var Text = value.Text;
-            var Fore = value.Fore.ToRgb();
-            var Back = value.Back.ToRgb();
-
             new JObject()
             {
-                { nameof(Phase), Phase },
-                { nameof(Tick), Tick },
-                { nameof(Text), Text },
-                { nameof(Fore), Fore },
-                { nameof(Back), Back }
+                { nameof(value.Phase), (int)value.Phase },
+                { nameof(value.Tick), value.Tick.ToStr() },
+                { nameof(value.Text), value.Text },
+                { nameof(value.Fore), value.Fore.ToRgb() },
+                { nameof(value.Back), value.Back.ToRgb() }
             }.WriteTo(writer);
         }
     }

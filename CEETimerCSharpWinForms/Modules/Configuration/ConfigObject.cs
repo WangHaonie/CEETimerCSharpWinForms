@@ -2,7 +2,6 @@
 using CEETimerCSharpWinForms.Modules.JsonConverters;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -40,7 +39,7 @@ namespace CEETimerCSharpWinForms.Modules.Configuration
             {
                 if (MainForm.ValidateNeeded && !value.Length.IsValid())
                 {
-                    throw new ArgumentException("value");
+                    throw new Exception();
                 }
 
                 field = value;
@@ -71,7 +70,7 @@ namespace CEETimerCSharpWinForms.Modules.Configuration
             {
                 if (MainForm.ValidateNeeded && value is < 0 or > 3)
                 {
-                    throw new ArgumentOutOfRangeException("value");
+                    throw new Exception();
                 }
 
                 field = value;
@@ -96,7 +95,7 @@ namespace CEETimerCSharpWinForms.Modules.Configuration
             {
                 if (MainForm.ValidateNeeded && value < 0 || value > Screen.AllScreens.Length)
                 {
-                    throw new ArgumentOutOfRangeException("value");
+                    throw new Exception();
                 }
 
                 field = value;
@@ -124,14 +123,14 @@ namespace CEETimerCSharpWinForms.Modules.Configuration
                 {
                     if (value.Length > 4)
                     {
-                        throw new ArgumentException("value");
+                        throw new Exception();
                     }
 
                     for (int i = 0; i < 4; i++)
                     {
                         if (!ColorHelper.IsNiceContrast(value[i].Fore, value[i].Back))
                         {
-                            throw new ArgumentException("value");
+                            throw new Exception();
                         }
                     }
                 }

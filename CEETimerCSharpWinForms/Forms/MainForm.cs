@@ -4,13 +4,11 @@ using CEETimerCSharpWinForms.Modules;
 using CEETimerCSharpWinForms.Modules.Configuration;
 using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrackBar;
 
 namespace CEETimerCSharpWinForms.Forms
 {
@@ -174,7 +172,6 @@ namespace CEETimerCSharpWinForms.Forms
             CountdownPos = AppConfig.Display.Position;
             ShowXOnlyIndex = AppConfig.Display.X;
             CustomRules = AppConfig.CustomRules;
-            Console.WriteLine($"{CustomRules[0].Phase}{CustomRules[0].Tick}{CustomRules[0].Text}{CustomRules[0].Fore}{CustomRules[0].Back}");
             ColorDialogEx.CustomColorCollection = AppConfig.CustomColors;
             CountdownColors = AppConfig.Appearance.Colors;
 

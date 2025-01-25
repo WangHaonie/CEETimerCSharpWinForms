@@ -8,7 +8,7 @@ namespace CEETimerCSharpWinForms.Modules.JsonConverters
     {
         public override Point ReadJson(JsonReader reader, Type objectType, Point existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
-            string[] PointParts = reader.Value.ToString().Split(',');
+            string[] PointParts = reader.Value.ToString().Split(ConfigPolicy.ValueSeperator);
 
             if (PointParts.Length == 2)
             {
@@ -17,7 +17,7 @@ namespace CEETimerCSharpWinForms.Modules.JsonConverters
                     int.Parse(PointParts[1]));
             }
 
-            throw new JsonSerializationException("Invalid Point Format");
+            throw new Exception();
         }
 
         public override void WriteJson(JsonWriter writer, Point value, JsonSerializer serializer)

@@ -10,10 +10,15 @@ namespace CEETimerCSharpWinForms.Modules.JsonConverters
         public override ColorSetObject ReadJson(JsonReader reader, Type objectType, ColorSetObject existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
             var jsonObject = JObject.Load(reader);
+            var Fore = ColorHelper.GetColor(jsonObject[nameof(existingValue.Fore)].ToString());
+            var Back = ColorHelper.GetColor(jsonObject[nameof(existingValue.Back)].ToString());
 
-            return new ColorSetObject(
-                ColorHelper.GetColor(jsonObject["Fore"].ToString()),
-                ColorHelper.GetColor(jsonObject["Back"].ToString()));
+            if (!ColorHelper.IsNiceContrast(Fore, Back))
+            {
+                throw new Exception();
+            }
+
+            return new ColorSetObject(Fore, Back);
         }
 
         public override void WriteJson(JsonWriter writer, ColorSetObject value, JsonSerializer serializer)
@@ -22,10 +27,10 @@ namespace CEETimerCSharpWinForms.Modules.JsonConverters
             var Back = value.Back;
 
             writer.WriteStartObject();
-            writer.WritePropertyName("Fore");
-            writer.WriteValue($"{Fore.R},{Fore.G},{Fore.B}");
-            writer.WritePropertyName("Back");
-            writer.WriteValue($"{Back.R},{Back.G},{Back.B}");
+            writer.WritePropertyName(nameof(value.Fore));
+            writer.WriteValue(Fore.ToRgb());
+            writer.WritePropertyName(nameof(value.Back));
+            writer.WriteValue(Back.ToRgb());
             writer.WriteEndObject();
         }
     }
