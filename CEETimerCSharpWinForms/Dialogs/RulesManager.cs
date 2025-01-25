@@ -12,7 +12,7 @@ namespace CEETimerCSharpWinForms.Dialogs
 {
     public partial class RulesManager : DialogEx
     {
-        public List<RulesManagerObject> CustomRules { get; set; }
+        public RulesManagerObject[] CustomRules { get; set; }
         public string[] Preferences { get; set; }
         public bool ShowWarning { get; set; }
 
@@ -28,7 +28,7 @@ namespace CEETimerCSharpWinForms.Dialogs
         {
             if (CustomRules != null)
             {
-                if (CustomRules.Count == 0)
+                if (CustomRules.Count() == 0)
                 {
                     AddItem("文本测试", "65535天23时59分59秒", "255,255,255", "255,255,255", Placeholders.PH_P1);
                     AdjustColumnWidth();
@@ -40,7 +40,7 @@ namespace CEETimerCSharpWinForms.Dialogs
                     {
                         foreach (var Rule in CustomRules)
                         {
-                            AddItem(Rule.Phase, CustomRuleHelper.GetExamTickText(Rule.Tick), Rule.Color, Rule.Text);
+                            AddItem(Rule.Phase, CustomRuleHelper.GetExamTickText(Rule.Tick), Rule.Fore, Rule.Back, Rule.Text);
                         }
                     });
                 }
@@ -62,7 +62,7 @@ namespace CEETimerCSharpWinForms.Dialogs
 
             if (ShowRuleDialog(RuleDialogMain) == DialogResult.OK)
             {
-                AddItem(RuleDialogMain.RuleType, RuleDialogMain.ExamTick, new(RuleDialogMain.Fore, RuleDialogMain.Back), RuleDialogMain.CustomText);
+                AddItem(RuleDialogMain.RuleType, RuleDialogMain.ExamTick, RuleDialogMain.Fore, RuleDialogMain.Back, RuleDialogMain.CustomText);
             }
         }
 
@@ -125,19 +125,20 @@ namespace CEETimerCSharpWinForms.Dialogs
                 Phase = CustomRuleHelper.GetPhase(Item.SubItems[0].Text),
                 Tick = CustomRuleHelper.GetExamTick(Item.SubItems[1].Text),
                 Text = Item.SubItems[4].Text,
-                Color = new(ColorHelper.GetColor(Item.SubItems[2].Text), ColorHelper.GetColor(Item.SubItems[3].Text))
-            }).ToList();
+                Fore = ColorHelper.GetColor(Item.SubItems[2].Text),
+                Back = ColorHelper.GetColor(Item.SubItems[3].Text)
+            }).ToArray();
 
             base.OnButtonAClicked();
         }
 
-        private void AddItem(CountdownPhase RuleTypeIndex, string ExamTick, ColorSetObject Colors, string CustomText, ListViewItem Item = null)
+        private void AddItem(CountdownPhase RuleTypeIndex, string ExamTick, Color Fore, Color Back, string CustomText, ListViewItem Item = null)
         {
             UserChanged();
 
             var RuleTypeText = CustomRuleHelper.GetRuleTypeText(RuleTypeIndex);
-            var _Fore = Colors.Fore.ToRgb();
-            var _Back = Colors.Back.ToRgb();
+            var _Fore = Fore.ToRgb();
+            var _Back = Back.ToRgb();
 
             if (!IsEditMode)
             {
@@ -212,7 +213,7 @@ namespace CEETimerCSharpWinForms.Dialogs
 
             if (ShowRuleDialog(RuleDialogMain) == DialogResult.OK)
             {
-                AddItem(RuleDialogMain.RuleType, RuleDialogMain.ExamTick, new(RuleDialogMain.Fore, RuleDialogMain.Back), RuleDialogMain.CustomText, Item);
+                AddItem(RuleDialogMain.RuleType, RuleDialogMain.ExamTick, RuleDialogMain.Fore, RuleDialogMain.Back, RuleDialogMain.CustomText, Item);
                 RemoveDuplicates();
             }
 

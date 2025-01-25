@@ -10,6 +10,7 @@ using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrackBar;
 
 namespace CEETimerCSharpWinForms.Forms
 {
@@ -43,7 +44,7 @@ namespace CEETimerCSharpWinForms.Forms
         private DateTime ExamEndTime;
         private DateTime ExamStartTime;
         private ColorSetObject[] CountdownColors;
-        private List<RulesManagerObject> CustomRules;
+        private RulesManagerObject[] CustomRules;
         private string ExamName;
         private string[] CustomText;
 
@@ -173,6 +174,7 @@ namespace CEETimerCSharpWinForms.Forms
             CountdownPos = AppConfig.Display.Position;
             ShowXOnlyIndex = AppConfig.Display.X;
             CustomRules = AppConfig.CustomRules;
+            Console.WriteLine($"{CustomRules[0].Phase}{CustomRules[0].Tick}{CustomRules[0].Text}{CustomRules[0].Fore}{CustomRules[0].Back}");
             ColorDialogEx.CustomColorCollection = AppConfig.CustomColors;
             CountdownColors = AppConfig.Appearance.Colors;
 
@@ -351,7 +353,7 @@ namespace CEETimerCSharpWinForms.Forms
             }
 
             IsCountdownRunning = false;
-            UpdateCountdown("欢迎使用高考倒计时", CountdownColors[3]);
+            UpdateCountdown("欢迎使用高考倒计时", CountdownColors[3].Fore, CountdownColors[3].Back);
             UpdateTrayIconText(AppLauncher.AppName);
         }
 
@@ -359,7 +361,7 @@ namespace CEETimerCSharpWinForms.Forms
         {
             if (IsCustomText)
             {
-                var r = CustomRules.Where(x => (int)x.Phase == Phase).Select(x => new { x.Tick, x.Text, x.Color });
+                var r = CustomRules.Where(x => (int)x.Phase == Phase).Select(x => new { x.Tick, x.Text, x.Fore, x.Back });
                 var Rules = (Phase == 2 ? r.OrderByDescending(x => x.Tick) : r.OrderBy(x => x.Tick)).ToList();
 
                 if (Rules.Count > 0)
@@ -368,14 +370,14 @@ namespace CEETimerCSharpWinForms.Forms
                     {
                         if (Phase == 2 ? (Span >= Rule.Tick) : (Span <= Rule.Tick + new TimeSpan(0, 0, 0, 1)))
                         {
-                            SetCountdown(Span, Name, Hint, Rule.Color, Rule.Text);
+                            SetCountdown(Span, Name, Hint, Rule.Fore, Rule.Back, Rule.Text);
                             return;
                         }
                     }
                 }
             }
 
-            SetCountdown(Span, Name, Hint, CountdownColors[Phase], CustomText[Phase]);
+            SetCountdown(Span, Name, Hint, CountdownColors[Phase].Fore, CountdownColors[Phase].Back, CustomText[Phase]);
         }
 
         private void ApplyLocation()
@@ -406,9 +408,9 @@ namespace CEETimerCSharpWinForms.Forms
             }
         }
 
-        private void SetCountdown(TimeSpan Span, string Name, string Hint, ColorSetObject ColorSet, string Custom)
+        private void SetCountdown(TimeSpan Span, string Name, string Hint, Color Fore, Color Back, string Custom)
         {
-            UpdateCountdown(IsCustomText ? GetCountdownWithCustomText(Span, Name, Custom) : GetCountdown(Span, Name, Hint), ColorSet);
+            UpdateCountdown(IsCustomText ? GetCountdownWithCustomText(Span, Name, Custom) : GetCountdown(Span, Name, Hint), Fore, Back);
         }
 
         private string GetCountdownWithCustomText(TimeSpan Span, string Name, string Custom) => Custom
@@ -434,13 +436,13 @@ namespace CEETimerCSharpWinForms.Forms
         };
 
 
-        private void UpdateCountdown(string CountdownText, ColorSetObject ColorSet)
+        private void UpdateCountdown(string CountdownText, Color Fore, Color Back)
         {
             BeginInvoke(() =>
             {
                 LabelCountdown.Text = CountdownText;
-                LabelCountdown.ForeColor = ColorSet.Fore;
-                BackColor = ColorSet.Back;
+                LabelCountdown.ForeColor = Fore;
+                BackColor = Back;
                 UpdateTrayIconText(CountdownText, false);
             });
         }

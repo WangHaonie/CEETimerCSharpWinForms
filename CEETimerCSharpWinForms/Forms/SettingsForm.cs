@@ -16,7 +16,7 @@ namespace CEETimerCSharpWinForms.Forms
     public partial class SettingsForm : TrackableForm
     {
         private Font SelectedFont;
-        private List<RulesManagerObject> EditedCustomRules;
+        private RulesManagerObject[] EditedCustomRules;
         private string[] EditedCustomTexts;
 
         private bool IsColorLabelsDragging;
@@ -130,6 +130,7 @@ namespace CEETimerCSharpWinForms.Forms
             ChangePptsvcStyle(null, EventArgs.Empty);
             ComboBoxShowXOnly.SelectedIndex = AppConfig.Display.ShowXOnly ? AppConfig.Display.X : 0;
             EditedCustomTexts = AppConfig.Display.CustomTexts;
+            EditedCustomRules = AppConfig.CustomRules;
         }
 
         private void SettingsChanged(object sender, EventArgs e)
@@ -310,7 +311,7 @@ namespace CEETimerCSharpWinForms.Forms
         {
             RulesManager Manager = new()
             {
-                CustomRules = AppConfig.CustomRules,
+                CustomRules = EditedCustomRules,
                 Preferences = CheckBoxCustomText.Checked ? AppConfig.Display.CustomTexts : [null, null, null],
                 ShowWarning = !CheckBoxCustomText.Checked
             };

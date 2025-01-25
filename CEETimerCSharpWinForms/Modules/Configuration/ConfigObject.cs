@@ -19,7 +19,7 @@ namespace CEETimerCSharpWinForms.Modules.Configuration
 
         public ToolsObject Tools { get; set; } = new();
 
-        public List<RulesManagerObject> CustomRules
+        public RulesManagerObject[] CustomRules
         {
             get => field ?? [];
             set => field = value ?? [];
@@ -146,16 +146,18 @@ namespace CEETimerCSharpWinForms.Modules.Configuration
 
     }
 
+    [JsonConverter(typeof(CustomRulesConverter))]
     public sealed class RulesManagerObject
     {
         public CountdownPhase Phase { get; set; }
 
-        [JsonConverter(typeof(TimeSpanConverter))]
         public TimeSpan Tick { get; set; }
 
         public string Text { get; set; }
 
-        public ColorSetObject Color { get; set; }
+        public Color Fore { get; set; }
+
+        public Color Back { get; set; }
     }
 
     [JsonConverter(typeof(ColorSetConverter))]
