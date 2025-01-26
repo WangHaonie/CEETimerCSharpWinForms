@@ -62,6 +62,7 @@ namespace CEETimerCSharpWinForms.Controls
         {
             OnAppFormClosed();
             base.OnClosed(e);
+            Dispose(true);
         }
 
         private void AppLauncher_TrayMenuShowAllClicked(object sender, EventArgs e)
