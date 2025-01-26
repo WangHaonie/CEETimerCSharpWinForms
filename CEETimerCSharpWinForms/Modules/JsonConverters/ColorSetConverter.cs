@@ -13,25 +13,21 @@ namespace CEETimerCSharpWinForms.Modules.JsonConverters
             var Fore = ColorHelper.GetColor(jsonObject[nameof(existingValue.Fore)].ToString());
             var Back = ColorHelper.GetColor(jsonObject[nameof(existingValue.Back)].ToString());
 
-            if (!ColorHelper.IsNiceContrast(Fore, Back))
+            if (ColorHelper.IsNiceContrast(Fore, Back))
             {
-                throw new Exception();
+                return new ColorSetObject(Fore, Back);
             }
 
-            return new ColorSetObject(Fore, Back);
+            throw new Exception();
         }
 
         public override void WriteJson(JsonWriter writer, ColorSetObject value, JsonSerializer serializer)
         {
-            var Fore = value.Fore;
-            var Back = value.Back;
-
-            writer.WriteStartObject();
-            writer.WritePropertyName(nameof(value.Fore));
-            writer.WriteValue(Fore.ToRgb());
-            writer.WritePropertyName(nameof(value.Back));
-            writer.WriteValue(Back.ToRgb());
-            writer.WriteEndObject();
+            new JObject()
+            {
+                { nameof(value.Fore), value.Fore.ToRgb() },
+                { nameof(value.Back), value.Back.ToRgb() }
+            }.WriteTo(writer);
         }
     }
 }

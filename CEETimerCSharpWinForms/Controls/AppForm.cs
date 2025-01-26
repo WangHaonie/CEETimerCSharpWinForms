@@ -178,11 +178,11 @@ namespace CEETimerCSharpWinForms.Controls
         /// </summary>
         /// <param name="Target">目标 ComboBox 控件</param>
         /// <param name="Data">DataSource</param>
-        protected void BindComboData(ComboBox Target, List<TupleEx<string, int>> Data)
+        protected void BindComboData(ComboBox Target, List<ComboData> Data)
         {
             Target.DataSource = Data;
-            Target.DisplayMember = "Item1";
-            Target.ValueMember = "Item2";
+            Target.DisplayMember = "Display";
+            Target.ValueMember = "Value";
         }
 
         /// <summary>

@@ -218,7 +218,7 @@
     <Compile Include="Modules\JsonConverters\FontFormatConverter.cs" />
     <Compile Include="Modules\JsonConverters\PointFormatConverter.cs" />
     <Compile Include="Modules\ListViewItemComparer.cs" />
-    <Compile Include="Modules\TupleEx.cs" />
+    <Compile Include="Modules\ComboData.cs" />
     <Compile Include="Modules\Placeholders.cs" />
     <Compile Include="Modules\ProcessHelper.cs" />
     <Compile Include="Modules\UIHelper.cs" />
