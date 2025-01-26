@@ -50,8 +50,8 @@ namespace CEETimerCSharpWinForms.Dialogs
 
         protected override void AdjustUI()
         {
-            SetLabelAutoWrap(LabelMessage);
             AdjustPanel();
+            SetLabelAutoWrap(LabelMessage);
         }
 
         protected override void OnDialogShown()
