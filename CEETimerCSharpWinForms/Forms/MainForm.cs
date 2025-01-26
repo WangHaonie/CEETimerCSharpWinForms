@@ -123,7 +123,8 @@ namespace CEETimerCSharpWinForms.Forms
             ExamStartTime = AppConfig.General.ExamStartTime;
             ExamEndTime = AppConfig.General.ExamEndTime;
             MemClean = AppConfig.General.MemClean;
-            TopMost = AppConfig.General.TopMost;
+            var TopMostTmp = AppConfig.General.TopMost;
+            TopMost = TopMostTmp;
             IsShowXOnly = AppConfig.Display.ShowXOnly;
             IsRounding = AppConfig.Display.Rounding;
             IsShowEnd = ConfigHandler.ValidateEndPast(AppConfig.Display.EndIndex);
@@ -193,6 +194,7 @@ namespace CEETimerCSharpWinForms.Forms
 
             SetLabelCountdownAutoWrap();
             ValidateNeeded = false;
+            TopMost = TopMostTmp;
             await StartCountdown();
         }
 
