@@ -104,6 +104,7 @@ namespace CEETimerCSharpWinForms.Forms
         protected override void AdjustUI()
         {
             AlignControlsR(ButtonSave, ButtonCancel, TabControlMain);
+            AlignControlsX(ComboBoxNtpServers, ButtonSyncTime, 3);
             SetLabelAutoWrap(LabelPptsvc, GBoxPptsvc);
             SetLabelAutoWrap(LabelSyncTime, GBoxSyncTime);
             SetLabelAutoWrap(LabelLine01, GBoxColors);
