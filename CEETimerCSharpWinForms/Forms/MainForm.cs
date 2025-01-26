@@ -148,7 +148,6 @@ namespace CEETimerCSharpWinForms.Forms
         {
             if (ValidateNeeded)
             {
-                AppConfig.Display.ShowPast = AppConfig.Display.ShowPast && AppConfig.Display.ShowEnd;
                 AppConfig.Display.Rounding = AppConfig.Display.Rounding && AppConfig.Display.ShowXOnly && AppConfig.Display.X == 0;
                 AppConfig.Display.CustomText = AppConfig.Display.CustomText && !AppConfig.Display.ShowXOnly;
                 AppConfig.Display.SeewoPptsvc = AppConfig.Display.SeewoPptsvc && ((AppConfig.General.TopMost && AppConfig.Display.X == 0) || AppConfig.Display.Draggable);
@@ -162,8 +161,8 @@ namespace CEETimerCSharpWinForms.Forms
             TopMost = AppConfig.General.TopMost;
             IsShowXOnly = AppConfig.Display.ShowXOnly;
             IsRounding = AppConfig.Display.Rounding;
-            IsShowPast = AppConfig.Display.ShowPast;
-            IsShowEnd = AppConfig.Display.ShowEnd;
+            IsShowEnd = ConfigHandler.ValidateEndPast(AppConfig.Display.EndIndex);
+            IsShowPast = AppConfig.Display.EndIndex == 2;
             IsDraggable = AppConfig.Display.Draggable;
             UniTopMost = AppConfig.General.UniTopMost;
             IsPPTService = AppConfig.Display.SeewoPptsvc;

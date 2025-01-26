@@ -55,5 +55,7 @@ namespace CEETimerCSharpWinForms.Modules.Configuration
                 Method();
             }
         }
+
+        public static bool ValidateEndPast(int SelectedIndex) => SelectedIndex is 1 or 2;
     }
 }

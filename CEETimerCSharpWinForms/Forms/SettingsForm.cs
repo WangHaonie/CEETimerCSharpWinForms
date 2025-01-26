@@ -43,7 +43,7 @@ namespace CEETimerCSharpWinForms.Forms
             RefreshSettings();
             ChangeWorkingStyle(WorkingArea.LastColor);
             ChangeWorkingStyle(WorkingArea.Funny, false);
-            ChangeWorkingStyle(WorkingArea.ShowLeftPast, AppConfig.Display.ShowEnd);
+            ChangeWorkingStyle(WorkingArea.ShowLeftPast, ConfigHandler.ValidateEndPast(AppConfig.Display.EndIndex));
         }
 
         private void InitializeExtra()
@@ -56,19 +56,18 @@ namespace CEETimerCSharpWinForms.Forms
             DtpExamEnd.CustomFormat = AppLauncher.DateTimeFormat;
             LabelExamNameCounter.Text = $"0/{ConfigPolicy.MaxExamNameLength}";
             LabelExamNameCounter.ForeColor = Color.Red;
-
             SetTextBoxMax(TextBoxExamName, ConfigPolicy.MaxExamNameLength);
-            BindComboData(ComboBoxNtpServers, [
-                new("time.windows.com", 0),
-                new("ntp.aliyun.com", 1),
-                new("ntp.tencent.com", 2),
-                new("time.cloudflare.com", 3)
-                ]);
+
             BindComboData(ComboBoxShowXOnly, [
                 new("天", 0),
                 new("时", 1),
                 new("分", 2),
                 new("秒", 3)
+                ]);
+            BindComboData(ComboBoxCountdownEnd, [
+                new("<不执行任何操作>", 0),
+                new("考试还有多久结束", 1),
+                new("考试还有多久结束 和 已过去了多久", 2)
                 ]);
             BindComboData(ComboBoxPosition, [
                 new("左上角", 0),
@@ -80,6 +79,12 @@ namespace CEETimerCSharpWinForms.Forms
                 new("右上角", 6),
                 new("右侧中央", 7),
                 new("右下角", 8)
+                ]);
+            BindComboData(ComboBoxNtpServers, [
+                new("time.windows.com", 0),
+                new("ntp.aliyun.com", 1),
+                new("ntp.tencent.com", 2),
+                new("time.cloudflare.com", 3)
                 ]);
 
             List<ComboData> Monitors = [new("<请选择>", 0)];
@@ -123,7 +128,7 @@ namespace CEETimerCSharpWinForms.Forms
                 AlignControlsX(ComboBoxScreens, LabelScreens);
                 AlignControlsX(ComboBoxPosition, LabelChar1);
                 AlignControlsX(LabelExamNameCounter, TextBoxExamName);
-                AlignControlsX(CheckBoxCustomText, CheckBoxShowPast);
+                AlignControlsX(ComboBoxCountdownEnd, LabelCountdownEnd, 3);
                 AlignControlsX(ButtonCustomText, CheckBoxCustomText);
                 AlignControlsX(ComboBoxNtpServers, ButtonSyncTime, 3);
             });
@@ -141,8 +146,8 @@ namespace CEETimerCSharpWinForms.Forms
             CheckBoxShowXOnly.Checked = AppConfig.Display.ShowXOnly;
             CheckBoxCustomText.Checked = AppConfig.Display.CustomText;
             CheckBoxRounding.Checked = AppConfig.Display.Rounding;
-            CheckBoxShowEnd.Checked = DtpExamEnd.Enabled = AppConfig.Display.ShowEnd;
-            CheckBoxShowPast.Checked = AppConfig.Display.ShowPast;
+            ComboBoxCountdownEnd.SelectedIndex = AppConfig.Display.EndIndex;
+            DtpExamEnd.Enabled = ConfigHandler.ValidateEndPast(AppConfig.Display.EndIndex);
             CheckBoxPptSvc.Checked = AppConfig.Display.SeewoPptsvc;
             CheckBoxUniTopMost.Checked = MainForm.UniTopMost;
             ComboBoxScreens.SelectedIndex = AppConfig.Display.ScreenIndex;
@@ -199,28 +204,22 @@ namespace CEETimerCSharpWinForms.Forms
             }
         }
 
-        private void CheckBoxShowEnd_CheckedChanged(object sender, EventArgs e)
+        private void ComboBoxCountdownEnd_SelectedIndexChanged(object sender, EventArgs e)
         {
             SettingsChanged(sender, e);
-            ChangeWorkingStyle(WorkingArea.ShowLeftPast, CheckBoxShowEnd.Checked);
-            DtpExamEnd.Enabled = CheckBoxShowEnd.Checked;
+            var Condition = ConfigHandler.ValidateEndPast(ComboBoxCountdownEnd.SelectedIndex);
+            ChangeWorkingStyle(WorkingArea.ShowLeftPast, Condition);
+            DtpExamEnd.Enabled = Condition;
 
             Execute(() =>
             {
-                if (CheckBoxShowEnd.Checked)
+                if (Condition)
                 {
                     MessageX.Info("由于已开启显示考试结束倒计时，请设置考试结束日期和时间。");
                     TabControlMain.SelectedTab = TabPageGeneral;
                     DtpExamEnd.Focus();
                 }
             });
-        }
-
-        private void CheckBoxShowPast_CheckedChanged(object sender, EventArgs e)
-        {
-            SettingsChanged(sender, e);
-            CheckBoxShowEnd.Checked = CheckBoxShowPast.Checked;
-            CheckBoxShowEnd.Enabled = !CheckBoxShowPast.Checked;
         }
 
         private void CheckBoxCustomText_CheckedChanged(object sender, EventArgs e)
@@ -730,8 +729,7 @@ namespace CEETimerCSharpWinForms.Forms
                     ShowXOnly = CheckBoxShowXOnly.Checked,
                     X = ComboBoxShowXOnly.SelectedIndex,
                     Rounding = CheckBoxRounding.Checked,
-                    ShowEnd = CheckBoxShowEnd.Checked,
-                    ShowPast = CheckBoxShowPast.Checked,
+                    EndIndex = ComboBoxCountdownEnd.SelectedIndex,
                     CustomText = CheckBoxCustomText.Checked,
                     CustomTexts = EditedCustomTexts,
                     ScreenIndex = ComboBoxScreens.SelectedIndex,

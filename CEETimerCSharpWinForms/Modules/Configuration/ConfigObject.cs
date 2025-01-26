@@ -84,9 +84,22 @@ namespace CEETimerCSharpWinForms.Modules.Configuration
 
         public bool Rounding { get; set; }
 
-        public bool ShowEnd { get; set; }
+        public int EndIndex
+        {
+            get => field;
+            set
+            {
+                ConfigHandler.Validate(() =>
+                {
+                    if (value is < 0 or > 2)
+                    {
+                        throw new Exception();
+                    }
+                });
 
-        public bool ShowPast { get; set; }
+                field = value;
+            }
+        }
 
         public bool CustomText { get; set; }
 

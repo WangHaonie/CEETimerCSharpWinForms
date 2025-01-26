@@ -51,11 +51,11 @@
             this.CheckBoxPptSvc = new System.Windows.Forms.CheckBox();
             this.LabelPptsvc = new System.Windows.Forms.Label();
             this.GBoxContent = new System.Windows.Forms.GroupBox();
+            this.LabelCountdownEnd = new System.Windows.Forms.Label();
+            this.ComboBoxCountdownEnd = new System.Windows.Forms.ComboBox();
             this.CheckBoxCustomText = new System.Windows.Forms.CheckBox();
             this.ButtonCustomText = new System.Windows.Forms.Button();
             this.ComboBoxShowXOnly = new System.Windows.Forms.ComboBox();
-            this.CheckBoxShowPast = new System.Windows.Forms.CheckBox();
-            this.CheckBoxShowEnd = new System.Windows.Forms.CheckBox();
             this.CheckBoxRounding = new System.Windows.Forms.CheckBox();
             this.CheckBoxShowXOnly = new System.Windows.Forms.CheckBox();
             this.GBoxDraggable = new System.Windows.Forms.GroupBox();
@@ -354,11 +354,11 @@
             // 
             // GBoxContent
             // 
+            this.GBoxContent.Controls.Add(this.LabelCountdownEnd);
+            this.GBoxContent.Controls.Add(this.ComboBoxCountdownEnd);
             this.GBoxContent.Controls.Add(this.CheckBoxCustomText);
             this.GBoxContent.Controls.Add(this.ButtonCustomText);
             this.GBoxContent.Controls.Add(this.ComboBoxShowXOnly);
-            this.GBoxContent.Controls.Add(this.CheckBoxShowPast);
-            this.GBoxContent.Controls.Add(this.CheckBoxShowEnd);
             this.GBoxContent.Controls.Add(this.CheckBoxRounding);
             this.GBoxContent.Controls.Add(this.CheckBoxShowXOnly);
             this.GBoxContent.Location = new System.Drawing.Point(7, 6);
@@ -368,10 +368,31 @@
             this.GBoxContent.TabStop = false;
             this.GBoxContent.Text = "倒计时内容";
             // 
+            // LabelCountdownEnd
+            // 
+            this.LabelCountdownEnd.AutoSize = true;
+            this.LabelCountdownEnd.Location = new System.Drawing.Point(6, 47);
+            this.LabelCountdownEnd.Name = "LabelCountdownEnd";
+            this.LabelCountdownEnd.Size = new System.Drawing.Size(130, 15);
+            this.LabelCountdownEnd.TabIndex = 45;
+            this.LabelCountdownEnd.Text = "当倒计时结束时, 显示";
+            // 
+            // ComboBoxCountdownEnd
+            // 
+            this.ComboBoxCountdownEnd.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ComboBoxCountdownEnd.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.ComboBoxCountdownEnd.Location = new System.Drawing.Point(137, 43);
+            this.ComboBoxCountdownEnd.MaxDropDownItems = 1;
+            this.ComboBoxCountdownEnd.Name = "ComboBoxCountdownEnd";
+            this.ComboBoxCountdownEnd.Size = new System.Drawing.Size(195, 23);
+            this.ComboBoxCountdownEnd.TabIndex = 44;
+            this.ComboBoxCountdownEnd.DropDown += new System.EventHandler(this.ComboBoxes_DropDown);
+            this.ComboBoxCountdownEnd.SelectedIndexChanged += new System.EventHandler(this.ComboBoxCountdownEnd_SelectedIndexChanged);
+            // 
             // CheckBoxCustomText
             // 
             this.CheckBoxCustomText.AutoSize = true;
-            this.CheckBoxCustomText.Location = new System.Drawing.Point(229, 74);
+            this.CheckBoxCustomText.Location = new System.Drawing.Point(9, 74);
             this.CheckBoxCustomText.Name = "CheckBoxCustomText";
             this.CheckBoxCustomText.Size = new System.Drawing.Size(15, 14);
             this.CheckBoxCustomText.TabIndex = 42;
@@ -383,7 +404,7 @@
             this.ButtonCustomText.AutoSize = true;
             this.ButtonCustomText.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ButtonCustomText.Enabled = false;
-            this.ButtonCustomText.Location = new System.Drawing.Point(245, 68);
+            this.ButtonCustomText.Location = new System.Drawing.Point(25, 68);
             this.ButtonCustomText.Name = "ButtonCustomText";
             this.ButtonCustomText.Size = new System.Drawing.Size(101, 25);
             this.ButtonCustomText.TabIndex = 41;
@@ -403,28 +424,6 @@
             this.ComboBoxShowXOnly.TabIndex = 5;
             this.ComboBoxShowXOnly.DropDown += new System.EventHandler(this.ComboBoxes_DropDown);
             this.ComboBoxShowXOnly.SelectedIndexChanged += new System.EventHandler(this.ComboBoxShowXOnly_SelectedIndexChanged);
-            // 
-            // CheckBoxShowPast
-            // 
-            this.CheckBoxShowPast.AutoSize = true;
-            this.CheckBoxShowPast.Location = new System.Drawing.Point(9, 72);
-            this.CheckBoxShowPast.Name = "CheckBoxShowPast";
-            this.CheckBoxShowPast.Size = new System.Drawing.Size(184, 19);
-            this.CheckBoxShowPast.TabIndex = 3;
-            this.CheckBoxShowPast.Text = "显示 \"考试已过去了多久\"(&P)";
-            this.CheckBoxShowPast.UseVisualStyleBackColor = true;
-            this.CheckBoxShowPast.CheckedChanged += new System.EventHandler(this.CheckBoxShowPast_CheckedChanged);
-            // 
-            // CheckBoxShowEnd
-            // 
-            this.CheckBoxShowEnd.AutoSize = true;
-            this.CheckBoxShowEnd.Location = new System.Drawing.Point(9, 47);
-            this.CheckBoxShowEnd.Name = "CheckBoxShowEnd";
-            this.CheckBoxShowEnd.Size = new System.Drawing.Size(183, 19);
-            this.CheckBoxShowEnd.TabIndex = 2;
-            this.CheckBoxShowEnd.Text = "显示 \"考试还有多久结束\"(&E)";
-            this.CheckBoxShowEnd.UseVisualStyleBackColor = true;
-            this.CheckBoxShowEnd.CheckedChanged += new System.EventHandler(this.CheckBoxShowEnd_CheckedChanged);
             // 
             // CheckBoxRounding
             // 
@@ -921,8 +920,6 @@
         private System.Windows.Forms.Button ButtonDefaultFont;
         private System.Windows.Forms.GroupBox GBoxContent;
         private System.Windows.Forms.CheckBox CheckBoxShowXOnly;
-        private System.Windows.Forms.CheckBox CheckBoxShowPast;
-        private System.Windows.Forms.CheckBox CheckBoxShowEnd;
         private System.Windows.Forms.CheckBox CheckBoxRounding;
         private System.Windows.Forms.GroupBox GBoxDraggable;
         private System.Windows.Forms.CheckBox CheckBoxDraggable;
@@ -959,5 +956,7 @@
         private System.Windows.Forms.CheckBox CheckBoxCustomText;
         private System.Windows.Forms.Button ButtonRulesMan;
         private System.Windows.Forms.ComboBox ComboBoxNtpServers;
+        private System.Windows.Forms.ComboBox ComboBoxCountdownEnd;
+        private System.Windows.Forms.Label LabelCountdownEnd;
     }
 }
