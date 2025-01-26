@@ -1,4 +1,5 @@
 ﻿using CEETimerCSharpWinForms.Controls;
+using CEETimerCSharpWinForms.Forms;
 using Newtonsoft.Json;
 using System;
 using System.IO;
@@ -44,6 +45,14 @@ namespace CEETimerCSharpWinForms.Modules.Configuration
             catch
             {
                 return new();
+            }
+        }
+
+        public static void Validate(Action Method)
+        {
+            if (MainForm.ValidateNeeded)
+            {
+                Method();
             }
         }
     }

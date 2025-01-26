@@ -1,5 +1,4 @@
-﻿using CEETimerCSharpWinForms.Forms;
-using CEETimerCSharpWinForms.Modules.JsonConverters;
+﻿using CEETimerCSharpWinForms.Modules.JsonConverters;
 using Newtonsoft.Json;
 using System;
 using System.Drawing;
@@ -37,10 +36,13 @@ namespace CEETimerCSharpWinForms.Modules.Configuration
             get => field;
             set
             {
-                if (MainForm.ValidateNeeded && !value.Length.IsValid())
+                ConfigHandler.Validate(() =>
                 {
-                    throw new Exception();
-                }
+                    if (!value.Length.IsValid())
+                    {
+                        throw new Exception();
+                    }
+                });
 
                 field = value;
             }
@@ -68,10 +70,13 @@ namespace CEETimerCSharpWinForms.Modules.Configuration
             get => field;
             set
             {
-                if (MainForm.ValidateNeeded && value is < 0 or > 3)
+                ConfigHandler.Validate(() =>
                 {
-                    throw new Exception();
-                }
+                    if (value is < 0 or > 3)
+                    {
+                        throw new Exception();
+                    }
+                });
 
                 field = value;
             }
@@ -93,10 +98,13 @@ namespace CEETimerCSharpWinForms.Modules.Configuration
             get => field;
             set
             {
-                if (MainForm.ValidateNeeded && value < 0 || value > Screen.AllScreens.Length)
+                ConfigHandler.Validate(() =>
                 {
-                    throw new Exception();
-                }
+                    if (value < 0 || value > Screen.AllScreens.Length)
+                    {
+                        throw new Exception();
+                    }
+                });
 
                 field = value;
             }
@@ -119,7 +127,7 @@ namespace CEETimerCSharpWinForms.Modules.Configuration
             get => field;
             set
             {
-                if (MainForm.ValidateNeeded)
+                ConfigHandler.Validate(() =>
                 {
                     if (value.Length > 4)
                     {
@@ -133,7 +141,7 @@ namespace CEETimerCSharpWinForms.Modules.Configuration
                             throw new Exception();
                         }
                     }
-                }
+                });
 
                 field = value;
             }
@@ -147,13 +155,13 @@ namespace CEETimerCSharpWinForms.Modules.Configuration
             get => field;
             set
             {
-                if (MainForm.ValidateNeeded)
+                ConfigHandler.Validate(() =>
                 {
                     if (value is < 0 or > 3)
                     {
                         throw new Exception();
                     }
-                }
+                });
 
                 field = value;
             }
