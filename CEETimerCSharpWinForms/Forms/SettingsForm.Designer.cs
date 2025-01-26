@@ -120,7 +120,7 @@
             // ButtonCancel
             // 
             this.ButtonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.ButtonCancel.Location = new System.Drawing.Point(306, 313);
+            this.ButtonCancel.Location = new System.Drawing.Point(276, 313);
             this.ButtonCancel.Name = "ButtonCancel";
             this.ButtonCancel.Size = new System.Drawing.Size(75, 25);
             this.ButtonCancel.TabIndex = 17;
@@ -144,7 +144,7 @@
             // 
             this.TextBoxExamName.Location = new System.Drawing.Point(9, 22);
             this.TextBoxExamName.Name = "TextBoxExamName";
-            this.TextBoxExamName.Size = new System.Drawing.Size(305, 23);
+            this.TextBoxExamName.Size = new System.Drawing.Size(275, 23);
             this.TextBoxExamName.TabIndex = 34;
             this.TextBoxExamName.TextChanged += new System.EventHandler(this.TextBoxExamName_TextChanged);
             // 
@@ -166,7 +166,7 @@
             this.DtpExamStart.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.DtpExamStart.Location = new System.Drawing.Point(9, 22);
             this.DtpExamStart.Name = "DtpExamStart";
-            this.DtpExamStart.Size = new System.Drawing.Size(305, 23);
+            this.DtpExamStart.Size = new System.Drawing.Size(275, 23);
             this.DtpExamStart.TabIndex = 38;
             this.DtpExamStart.ValueChanged += new System.EventHandler(this.SettingsChanged);
             // 
@@ -176,14 +176,14 @@
             this.DtpExamEnd.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.DtpExamEnd.Location = new System.Drawing.Point(9, 22);
             this.DtpExamEnd.Name = "DtpExamEnd";
-            this.DtpExamEnd.Size = new System.Drawing.Size(305, 23);
+            this.DtpExamEnd.Size = new System.Drawing.Size(275, 23);
             this.DtpExamEnd.TabIndex = 39;
             this.DtpExamEnd.ValueChanged += new System.EventHandler(this.SettingsChanged);
             // 
             // ButtonSave
             // 
             this.ButtonSave.Enabled = false;
-            this.ButtonSave.Location = new System.Drawing.Point(225, 313);
+            this.ButtonSave.Location = new System.Drawing.Point(195, 313);
             this.ButtonSave.Name = "ButtonSave";
             this.ButtonSave.Size = new System.Drawing.Size(75, 25);
             this.ButtonSave.TabIndex = 16;
@@ -200,7 +200,7 @@
             this.TabControlMain.Location = new System.Drawing.Point(5, 4);
             this.TabControlMain.Name = "TabControlMain";
             this.TabControlMain.SelectedIndex = 0;
-            this.TabControlMain.Size = new System.Drawing.Size(377, 306);
+            this.TabControlMain.Size = new System.Drawing.Size(347, 306);
             this.TabControlMain.TabIndex = 40;
             // 
             // TabPageGeneral
@@ -212,7 +212,7 @@
             this.TabPageGeneral.Location = new System.Drawing.Point(4, 24);
             this.TabPageGeneral.Name = "TabPageGeneral";
             this.TabPageGeneral.Padding = new System.Windows.Forms.Padding(3);
-            this.TabPageGeneral.Size = new System.Drawing.Size(369, 278);
+            this.TabPageGeneral.Size = new System.Drawing.Size(339, 278);
             this.TabPageGeneral.TabIndex = 0;
             this.TabPageGeneral.Text = "基本";
             this.TabPageGeneral.UseVisualStyleBackColor = true;
@@ -225,7 +225,7 @@
             this.GBoxOthers.Controls.Add(this.CheckBoxStartup);
             this.GBoxOthers.Location = new System.Drawing.Point(7, 198);
             this.GBoxOthers.Name = "GBoxOthers";
-            this.GBoxOthers.Size = new System.Drawing.Size(353, 73);
+            this.GBoxOthers.Size = new System.Drawing.Size(323, 73);
             this.GBoxOthers.TabIndex = 44;
             this.GBoxOthers.TabStop = false;
             this.GBoxOthers.Text = "其它";
@@ -233,22 +233,22 @@
             // CheckBoxMemClean
             // 
             this.CheckBoxMemClean.AutoSize = true;
-            this.CheckBoxMemClean.Location = new System.Drawing.Point(173, 22);
+            this.CheckBoxMemClean.Location = new System.Drawing.Point(157, 22);
             this.CheckBoxMemClean.Name = "CheckBoxMemClean";
-            this.CheckBoxMemClean.Size = new System.Drawing.Size(175, 19);
+            this.CheckBoxMemClean.Size = new System.Drawing.Size(149, 19);
             this.CheckBoxMemClean.TabIndex = 2;
-            this.CheckBoxMemClean.Text = "在需要时自动清理内存(&M)";
+            this.CheckBoxMemClean.Text = "自动清理程序内存(&M)";
             this.CheckBoxMemClean.UseVisualStyleBackColor = true;
             this.CheckBoxMemClean.CheckedChanged += new System.EventHandler(this.SettingsChanged);
             // 
             // CheckBoxUniTopMost
             // 
             this.CheckBoxUniTopMost.AutoSize = true;
-            this.CheckBoxUniTopMost.Location = new System.Drawing.Point(173, 47);
+            this.CheckBoxUniTopMost.Location = new System.Drawing.Point(157, 47);
             this.CheckBoxUniTopMost.Name = "CheckBoxUniTopMost";
-            this.CheckBoxUniTopMost.Size = new System.Drawing.Size(172, 19);
+            this.CheckBoxUniTopMost.Size = new System.Drawing.Size(120, 19);
             this.CheckBoxUniTopMost.TabIndex = 4;
-            this.CheckBoxUniTopMost.Text = "顶置本程序的其他窗口(&U)";
+            this.CheckBoxUniTopMost.Text = "顶置所有窗口(&U)";
             this.CheckBoxUniTopMost.UseVisualStyleBackColor = true;
             this.CheckBoxUniTopMost.CheckedChanged += new System.EventHandler(this.SettingsChanged);
             // 
@@ -270,9 +270,9 @@
             this.CheckBoxStartup.AutoSize = true;
             this.CheckBoxStartup.Location = new System.Drawing.Point(9, 22);
             this.CheckBoxStartup.Name = "CheckBoxStartup";
-            this.CheckBoxStartup.Size = new System.Drawing.Size(158, 19);
+            this.CheckBoxStartup.Size = new System.Drawing.Size(119, 19);
             this.CheckBoxStartup.TabIndex = 18;
-            this.CheckBoxStartup.Text = "开机自动启动倒计时(&B)";
+            this.CheckBoxStartup.Text = "开机自动启动(&B)";
             this.CheckBoxStartup.UseVisualStyleBackColor = true;
             this.CheckBoxStartup.CheckedChanged += new System.EventHandler(this.SettingsChanged);
             // 
@@ -281,7 +281,7 @@
             this.GBoxExamEnd.Controls.Add(this.DtpExamEnd);
             this.GBoxExamEnd.Location = new System.Drawing.Point(7, 134);
             this.GBoxExamEnd.Name = "GBoxExamEnd";
-            this.GBoxExamEnd.Size = new System.Drawing.Size(353, 58);
+            this.GBoxExamEnd.Size = new System.Drawing.Size(323, 58);
             this.GBoxExamEnd.TabIndex = 42;
             this.GBoxExamEnd.TabStop = false;
             this.GBoxExamEnd.Text = "考试结束日期和时间";
@@ -291,7 +291,7 @@
             this.GBoxExamStart.Controls.Add(this.DtpExamStart);
             this.GBoxExamStart.Location = new System.Drawing.Point(7, 70);
             this.GBoxExamStart.Name = "GBoxExamStart";
-            this.GBoxExamStart.Size = new System.Drawing.Size(353, 58);
+            this.GBoxExamStart.Size = new System.Drawing.Size(323, 58);
             this.GBoxExamStart.TabIndex = 41;
             this.GBoxExamStart.TabStop = false;
             this.GBoxExamStart.Text = "考试开始日期和时间";
@@ -302,14 +302,14 @@
             this.GBoxExamName.Controls.Add(this.TextBoxExamName);
             this.GBoxExamName.Location = new System.Drawing.Point(7, 6);
             this.GBoxExamName.Name = "GBoxExamName";
-            this.GBoxExamName.Size = new System.Drawing.Size(353, 58);
+            this.GBoxExamName.Size = new System.Drawing.Size(323, 58);
             this.GBoxExamName.TabIndex = 40;
             this.GBoxExamName.TabStop = false;
             // 
             // LabelExamNameCounter
             // 
             this.LabelExamNameCounter.AutoSize = true;
-            this.LabelExamNameCounter.Location = new System.Drawing.Point(314, 25);
+            this.LabelExamNameCounter.Location = new System.Drawing.Point(284, 25);
             this.LabelExamNameCounter.Name = "LabelExamNameCounter";
             this.LabelExamNameCounter.Size = new System.Drawing.Size(0, 15);
             this.LabelExamNameCounter.TabIndex = 35;
@@ -321,7 +321,7 @@
             this.TabPageDisplay.Controls.Add(this.GBoxDraggable);
             this.TabPageDisplay.Location = new System.Drawing.Point(4, 24);
             this.TabPageDisplay.Name = "TabPageDisplay";
-            this.TabPageDisplay.Size = new System.Drawing.Size(369, 278);
+            this.TabPageDisplay.Size = new System.Drawing.Size(339, 278);
             this.TabPageDisplay.TabIndex = 3;
             this.TabPageDisplay.Text = "显示";
             this.TabPageDisplay.UseVisualStyleBackColor = true;
@@ -332,7 +332,7 @@
             this.GBoxPptsvc.Controls.Add(this.LabelPptsvc);
             this.GBoxPptsvc.Location = new System.Drawing.Point(7, 187);
             this.GBoxPptsvc.Name = "GBoxPptsvc";
-            this.GBoxPptsvc.Size = new System.Drawing.Size(353, 78);
+            this.GBoxPptsvc.Size = new System.Drawing.Size(323, 78);
             this.GBoxPptsvc.TabIndex = 0;
             this.GBoxPptsvc.TabStop = false;
             this.GBoxPptsvc.Text = "兼容希沃PPT小工具";
@@ -367,7 +367,7 @@
             this.GBoxContent.Controls.Add(this.CheckBoxShowXOnly);
             this.GBoxContent.Location = new System.Drawing.Point(7, 6);
             this.GBoxContent.Name = "GBoxContent";
-            this.GBoxContent.Size = new System.Drawing.Size(353, 98);
+            this.GBoxContent.Size = new System.Drawing.Size(323, 98);
             this.GBoxContent.TabIndex = 1;
             this.GBoxContent.TabStop = false;
             this.GBoxContent.Text = "倒计时内容";
@@ -385,10 +385,10 @@
             // 
             this.ComboBoxCountdownEnd.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ComboBoxCountdownEnd.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.ComboBoxCountdownEnd.Location = new System.Drawing.Point(137, 43);
+            this.ComboBoxCountdownEnd.Location = new System.Drawing.Point(138, 43);
             this.ComboBoxCountdownEnd.MaxDropDownItems = 1;
             this.ComboBoxCountdownEnd.Name = "ComboBoxCountdownEnd";
-            this.ComboBoxCountdownEnd.Size = new System.Drawing.Size(195, 23);
+            this.ComboBoxCountdownEnd.Size = new System.Drawing.Size(178, 23);
             this.ComboBoxCountdownEnd.TabIndex = 44;
             this.ComboBoxCountdownEnd.DropDown += new System.EventHandler(this.ComboBoxes_DropDown);
             this.ComboBoxCountdownEnd.SelectedIndexChanged += new System.EventHandler(this.ComboBoxCountdownEnd_SelectedIndexChanged);
@@ -461,7 +461,7 @@
             this.GBoxDraggable.Controls.Add(this.ComboBoxScreens);
             this.GBoxDraggable.Location = new System.Drawing.Point(7, 110);
             this.GBoxDraggable.Name = "GBoxDraggable";
-            this.GBoxDraggable.Size = new System.Drawing.Size(353, 71);
+            this.GBoxDraggable.Size = new System.Drawing.Size(323, 71);
             this.GBoxDraggable.TabIndex = 4;
             this.GBoxDraggable.TabStop = false;
             this.GBoxDraggable.Text = "多显示器与拖动";
@@ -471,7 +471,7 @@
             this.ComboBoxPosition.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ComboBoxPosition.Enabled = false;
             this.ComboBoxPosition.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.ComboBoxPosition.Location = new System.Drawing.Point(256, 17);
+            this.ComboBoxPosition.Location = new System.Drawing.Point(204, 17);
             this.ComboBoxPosition.Name = "ComboBoxPosition";
             this.ComboBoxPosition.Size = new System.Drawing.Size(76, 23);
             this.ComboBoxPosition.TabIndex = 7;
@@ -492,7 +492,7 @@
             // LabelChar1
             // 
             this.LabelChar1.AutoSize = true;
-            this.LabelChar1.Location = new System.Drawing.Point(234, 21);
+            this.LabelChar1.Location = new System.Drawing.Point(182, 21);
             this.LabelChar1.Name = "LabelChar1";
             this.LabelChar1.Size = new System.Drawing.Size(20, 15);
             this.LabelChar1.TabIndex = 6;
@@ -503,15 +503,15 @@
             this.LabelScreens.AutoSize = true;
             this.LabelScreens.Location = new System.Drawing.Point(6, 21);
             this.LabelScreens.Name = "LabelScreens";
-            this.LabelScreens.Size = new System.Drawing.Size(124, 15);
+            this.LabelScreens.Size = new System.Drawing.Size(72, 15);
             this.LabelScreens.TabIndex = 5;
-            this.LabelScreens.Text = "将倒计时显示在屏幕";
+            this.LabelScreens.Text = "显示在屏幕";
             // 
             // ComboBoxScreens
             // 
             this.ComboBoxScreens.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ComboBoxScreens.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.ComboBoxScreens.Location = new System.Drawing.Point(132, 17);
+            this.ComboBoxScreens.Location = new System.Drawing.Point(80, 17);
             this.ComboBoxScreens.MaxDropDownItems = 1;
             this.ComboBoxScreens.Name = "ComboBoxScreens";
             this.ComboBoxScreens.Size = new System.Drawing.Size(100, 23);
@@ -526,7 +526,7 @@
             this.TabPageAppearance.Location = new System.Drawing.Point(4, 24);
             this.TabPageAppearance.Name = "TabPageAppearance";
             this.TabPageAppearance.Padding = new System.Windows.Forms.Padding(3);
-            this.TabPageAppearance.Size = new System.Drawing.Size(369, 278);
+            this.TabPageAppearance.Size = new System.Drawing.Size(339, 278);
             this.TabPageAppearance.TabIndex = 4;
             this.TabPageAppearance.Text = "外观";
             this.TabPageAppearance.UseVisualStyleBackColor = true;
@@ -553,7 +553,7 @@
             this.GBoxColors.Controls.Add(this.LabelLine02);
             this.GBoxColors.Location = new System.Drawing.Point(7, 80);
             this.GBoxColors.Name = "GBoxColors";
-            this.GBoxColors.Size = new System.Drawing.Size(353, 168);
+            this.GBoxColors.Size = new System.Drawing.Size(323, 168);
             this.GBoxColors.TabIndex = 0;
             this.GBoxColors.TabStop = false;
             this.GBoxColors.Text = "字体颜色";
@@ -563,9 +563,9 @@
             this.LabelPreviewColor4.AutoSize = true;
             this.LabelPreviewColor4.Location = new System.Drawing.Point(200, 118);
             this.LabelPreviewColor4.Name = "LabelPreviewColor4";
-            this.LabelPreviewColor4.Size = new System.Drawing.Size(124, 15);
+            this.LabelPreviewColor4.Size = new System.Drawing.Size(59, 15);
             this.LabelPreviewColor4.TabIndex = 19;
-            this.LabelPreviewColor4.Text = "欢迎使用高考倒计时";
+            this.LabelPreviewColor4.Text = "欢迎使用";
             // 
             // LabelColor41
             // 
@@ -734,7 +734,7 @@
             this.GBoxFont.Controls.Add(this.LabelFont);
             this.GBoxFont.Location = new System.Drawing.Point(7, 6);
             this.GBoxFont.Name = "GBoxFont";
-            this.GBoxFont.Size = new System.Drawing.Size(353, 68);
+            this.GBoxFont.Size = new System.Drawing.Size(323, 68);
             this.GBoxFont.TabIndex = 0;
             this.GBoxFont.TabStop = false;
             this.GBoxFont.Text = "字体和大小";
@@ -777,7 +777,7 @@
             this.TabPageTools.Location = new System.Drawing.Point(4, 24);
             this.TabPageTools.Name = "TabPageTools";
             this.TabPageTools.Padding = new System.Windows.Forms.Padding(3);
-            this.TabPageTools.Size = new System.Drawing.Size(369, 278);
+            this.TabPageTools.Size = new System.Drawing.Size(339, 278);
             this.TabPageTools.TabIndex = 1;
             this.TabPageTools.Text = "工具";
             this.TabPageTools.UseVisualStyleBackColor = true;
@@ -788,7 +788,7 @@
             this.GBoxRestart.Controls.Add(this.ButtonRestart);
             this.GBoxRestart.Location = new System.Drawing.Point(7, 174);
             this.GBoxRestart.Name = "GBoxRestart";
-            this.GBoxRestart.Size = new System.Drawing.Size(353, 83);
+            this.GBoxRestart.Size = new System.Drawing.Size(323, 83);
             this.GBoxRestart.TabIndex = 45;
             this.GBoxRestart.TabStop = false;
             // 
@@ -806,7 +806,7 @@
             this.GBoxTrayIcon.Controls.Add(this.CheckBoxTrayIcon);
             this.GBoxTrayIcon.Location = new System.Drawing.Point(7, 6);
             this.GBoxTrayIcon.Name = "GBoxTrayIcon";
-            this.GBoxTrayIcon.Size = new System.Drawing.Size(353, 73);
+            this.GBoxTrayIcon.Size = new System.Drawing.Size(323, 73);
             this.GBoxTrayIcon.TabIndex = 46;
             this.GBoxTrayIcon.TabStop = false;
             this.GBoxTrayIcon.Text = "托盘图标";
@@ -841,7 +841,7 @@
             this.GBoxSyncTime.Controls.Add(this.ButtonSyncTime);
             this.GBoxSyncTime.Location = new System.Drawing.Point(7, 85);
             this.GBoxSyncTime.Name = "GBoxSyncTime";
-            this.GBoxSyncTime.Size = new System.Drawing.Size(353, 83);
+            this.GBoxSyncTime.Size = new System.Drawing.Size(323, 83);
             this.GBoxSyncTime.TabIndex = 44;
             this.GBoxSyncTime.TabStop = false;
             this.GBoxSyncTime.Text = "同步网络时钟";
@@ -886,7 +886,7 @@
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.CancelButton = this.ButtonCancel;
-            this.ClientSize = new System.Drawing.Size(389, 344);
+            this.ClientSize = new System.Drawing.Size(359, 344);
             this.Controls.Add(this.TabControlMain);
             this.Controls.Add(this.ButtonRulesMan);
             this.Controls.Add(this.ButtonSave);
