@@ -225,7 +225,7 @@
     <Compile Include="Modules\UpdateChecker.cs" />
     <Compile Include="Modules\Extensions.cs" />
     <Compile Include="Modules\AppLauncher.cs" />
-    <Compile Include="Modules\MessageX.cs" />
+    <Compile Include="Modules\MessageBoxHelper.cs" />
     <Compile Include="Interop\NativeInterop.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

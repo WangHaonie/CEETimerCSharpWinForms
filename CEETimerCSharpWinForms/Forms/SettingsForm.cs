@@ -104,7 +104,6 @@ namespace CEETimerCSharpWinForms.Forms
         protected override void AdjustUI()
         {
             AlignControlsR(ButtonSave, ButtonCancel, TabControlMain);
-            AlignControlsX(ComboBoxNtpServers, ButtonSyncTime, 3);
             SetLabelAutoWrap(LabelPptsvc, GBoxPptsvc);
             SetLabelAutoWrap(LabelSyncTime, GBoxSyncTime);
             SetLabelAutoWrap(LabelLine01, GBoxColors);
@@ -126,6 +125,7 @@ namespace CEETimerCSharpWinForms.Forms
                 AlignControlsX(LabelExamNameCounter, TextBoxExamName);
                 AlignControlsX(CheckBoxCustomText, CheckBoxShowPast);
                 AlignControlsX(ButtonCustomText, CheckBoxCustomText);
+                AlignControlsX(ComboBoxNtpServers, ButtonSyncTime, 3);
             });
         }
 
@@ -529,7 +529,7 @@ namespace CEETimerCSharpWinForms.Forms
 
             if (string.IsNullOrWhiteSpace(ExamName) || !ExamName.Length.IsValid())
             {
-                MessageX.Error("输入的考试名称有误！\n\n请检查输入的考试名称是否太长或太短！", this, TabControlMain, TabPageGeneral);
+                MessageX.Error("输入的考试名称有误！\n\n请检查输入的考试名称是否太长或太短！", TabControlMain, TabPageGeneral);
                 return false;
             }
 
@@ -537,7 +537,7 @@ namespace CEETimerCSharpWinForms.Forms
             {
                 if (DtpExamEnd.Value <= DtpExamStart.Value)
                 {
-                    MessageX.Error("考试结束时间必须在开始时间之后！", this, TabControlMain, TabPageGeneral);
+                    MessageX.Error("考试结束时间必须在开始时间之后！", TabControlMain, TabPageGeneral);
                     return false;
                 }
                 else if (ExamTimeSpan.TotalDays > 4)
@@ -560,7 +560,7 @@ namespace CEETimerCSharpWinForms.Forms
 
                 if (!string.IsNullOrEmpty(UniMsg))
                 {
-                    var _DialogResult = MessageX.Warn(UniMsg, this, TabControlMain, TabPageGeneral, Buttons: MessageBoxExButtons.YesNo);
+                    var _DialogResult = MessageX.Warn(UniMsg, TabControlMain, TabPageGeneral, Buttons: MessageBoxExButtons.YesNo);
 
                     if (_DialogResult is DialogResult.No or DialogResult.None)
                     {
@@ -587,7 +587,7 @@ namespace CEETimerCSharpWinForms.Forms
 
             if (ColorCheckMsg != 0)
             {
-                MessageX.Error($"第{ColorCheckMsg}组的颜色相似或对比度较低，将无法看清文字。\n\n请尝试更换其它背景颜色或文字颜色！", this, TabControlMain, TabPageAppearance);
+                MessageX.Error($"第{ColorCheckMsg}组的颜色相似或对比度较低，将无法看清文字。\n\n请尝试更换其它背景颜色或文字颜色！", TabControlMain, TabPageAppearance);
                 return false;
             }
 
@@ -598,13 +598,13 @@ namespace CEETimerCSharpWinForms.Forms
         {
             try
             {
-                if (!AppLauncher.IsAdmin) MessageX.Warn("检测到当前用户不具有管理员权限，运行该操作会发生错误。\n\n程序将在此消息框关闭后尝试弹出 UAC 提示框，前提要把系统的 UAC 设置为 \"仅当应用尝试更改我的计算机时通知我\" 或及以上，否则将无法进行授权。\n\n稍后若没有看见提示框，请更改 UAC 设置: 开始菜单搜索 uac", this);
+                if (!AppLauncher.IsAdmin) MessageX.Warn("检测到当前用户不具有管理员权限，运行该操作会发生错误。\n\n程序将在此消息框关闭后尝试弹出 UAC 提示框，前提要把系统的 UAC 设置为 \"仅当应用尝试更改我的计算机时通知我\" 或及以上，否则将无法进行授权。\n\n稍后若没有看见提示框，请更改 UAC 设置: 开始菜单搜索 uac");
 
                 Process SyncTimeProcess = ProcessHelper.RunProcess("cmd.exe", $"/c net stop w32time & sc config w32time start= auto & net start w32time && w32tm /config /manualpeerlist:{Server} /syncfromflags:manual /reliable:YES /update && w32tm /resync && w32tm /resync", AdminRequired: true);
 
                 SyncTimeProcess.WaitForExit();
                 var ExitCode = SyncTimeProcess.ExitCode;
-                MessageX.Info($"命令执行完成！\n\n返回值为 {ExitCode} (0x{ExitCode:X})\n(0 代表成功，其他值为失败)", this, TabControlMain, TabPageTools);
+                MessageX.Info($"命令执行完成！\n\n返回值为 {ExitCode} (0x{ExitCode:X})\n(0 代表成功，其他值为失败)", TabControlMain, TabPageTools);
             }
             #region 来自网络
             /*
@@ -617,12 +617,12 @@ namespace CEETimerCSharpWinForms.Forms
             */
             catch (Win32Exception ex) when (ex.NativeErrorCode == 1223)
             {
-                MessageX.Error($"授权失败，请在 UAC 对话框弹出时点击 \"是\"。{ex.ToMessage()}", this, TabControlMain, TabPageTools);
+                MessageX.Error($"授权失败，请在 UAC 对话框弹出时点击 \"是\"。{ex.ToMessage()}", TabControlMain, TabPageTools);
             }
             #endregion
             catch (Exception ex)
             {
-                MessageX.Error($"命令执行时发生了错误。{ex.ToMessage()}", this, TabControlMain, TabPageTools);
+                MessageX.Error($"命令执行时发生了错误。{ex.ToMessage()}", TabControlMain, TabPageTools);
             }
         }
 

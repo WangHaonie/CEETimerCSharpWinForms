@@ -1,4 +1,5 @@
-﻿using CEETimerCSharpWinForms.Forms;
+﻿using CEETimerCSharpWinForms.Dialogs;
+using CEETimerCSharpWinForms.Forms;
 using CEETimerCSharpWinForms.Modules;
 using System;
 using System.Collections.Generic;
@@ -19,10 +20,17 @@ namespace CEETimerCSharpWinForms.Controls
         /// </summary>
         protected bool CompositedStyle { get; set; }
 
+        protected MessageBoxHelper MessageX { get; private set; }
+
         private bool IsLoading = true;
 
         protected AppForm()
         {
+            if (this is not MessageBoxEx)
+            {
+                MessageX = new(this);
+            }
+
             TopMost = MainForm.UniTopMost;
             AppLauncher.TrayMenuShowAllClicked += AppLauncher_TrayMenuShowAllClicked;
             AppLauncher.UniTopMostStateChanged += AppLauncher_UniTopMostStateChanged;

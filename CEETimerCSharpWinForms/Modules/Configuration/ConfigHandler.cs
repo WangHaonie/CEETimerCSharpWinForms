@@ -8,7 +8,7 @@ namespace CEETimerCSharpWinForms.Modules.Configuration
     public class ConfigHandler
     {
         private readonly JsonSerializerSettings Settings;
-        private readonly TrackableForm ParentForm;
+        private readonly MessageBoxHelper MessageX;
 
         public ConfigHandler(TrackableForm Owner)
         {
@@ -20,7 +20,7 @@ namespace CEETimerCSharpWinForms.Modules.Configuration
                 TypeNameHandling = TypeNameHandling.Auto
             };
 
-            ParentForm = Owner;
+            MessageX = new(Owner);
         }
 
         public void Save(ConfigObject Config)
@@ -31,7 +31,7 @@ namespace CEETimerCSharpWinForms.Modules.Configuration
             }
             catch (Exception ex)
             {
-                MessageX.Error($"保存设置时出现错误！{ex.ToMessage()}", ParentForm);
+                MessageX.Error($"保存设置时出现错误！{ex.ToMessage()}");
             }
         }
 

@@ -35,6 +35,7 @@ namespace CEETimerCSharpWinForms.Modules
 
         private static readonly string PipeName = $"{AppNameEng}_[34c14833-98da-49f7-a2ab-369e88e73b95]";
         private static readonly string CurrentExecutableName = Path.GetFileName(CurrentExecutablePath);
+        private static readonly MessageBoxHelper MessageX = new(FormManager.OpenForms.LastOrDefault());
 
         public static event EventHandler TrayMenuShowAllClicked;
         public static void OnTrayMenuShowAllClicked() => TrayMenuShowAllClicked?.Invoke(null, EventArgs.Empty);
@@ -166,7 +167,7 @@ namespace CEETimerCSharpWinForms.Modules
             Clipboard.SetText(ExOutput);
             File.AppendAllText(ExFilePath, ExOutput);
 
-            var _DialogResult = MessageX.Error($"程序出现意外错误，无法继续运行，非常抱歉给您带来不便，相关错误信息已写入到安装文件夹中的 {ExFileName} 文件和系统剪切板，建议您将相关信息并发送给软件开发者以便我们更好的定位并解决问题。或者您也可以点击 \"是\" 来重启应用程序，\"否\" 关闭应用程序{ex.ToMessage()}", FormManager.OpenForms.LastOrDefault(), Buttons: MessageBoxExButtons.YesNo);
+            var _DialogResult = MessageX.Error($"程序出现意外错误，无法继续运行，非常抱歉给您带来不便，相关错误信息已写入到安装文件夹中的 {ExFileName} 文件和系统剪切板，建议您将相关信息并发送给软件开发者以便我们更好的定位并解决问题。或者您也可以点击 \"是\" 来重启应用程序，\"否\" 关闭应用程序{ex.ToMessage()}", Buttons: MessageBoxExButtons.YesNo);
 
             OpenInstallDir();
             Shutdown(Restart: _DialogResult == DialogResult.Yes);

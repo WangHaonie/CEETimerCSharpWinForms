@@ -11,7 +11,7 @@ namespace CEETimerCSharpWinForms.Modules
     {
         public static void CheckUpdate(bool IsProgramStart, TrackableForm OwnerForm)
         {
-            new Updater().CheckUpdate(IsProgramStart, OwnerForm);
+            new Updater().CheckUpdate(IsProgramStart, new(OwnerForm));
         }
     }
 
@@ -22,7 +22,7 @@ namespace CEETimerCSharpWinForms.Modules
 
         private DownloaderForm FormDownloader;
 
-        public void CheckUpdate(bool IsProgramStart, TrackableForm OwnerForm)
+        public void CheckUpdate(bool IsProgramStart, MessageBoxHelper MessageX)
         {
             using var _HttpClient = new HttpClient();
             _HttpClient.DefaultRequestHeaders.UserAgent.ParseAdd(AppLauncher.RequestUA);
@@ -38,29 +38,26 @@ namespace CEETimerCSharpWinForms.Modules
 
                 if (Version.Parse(CurrentLatest) > Version.Parse(AppLauncher.AppVersion))
                 {
-                    OwnerForm.Invoke(() =>
+                    if (MessageX.Info($"检测到新版本，是否下载并安装？\n\n当前版本: v{AppLauncher.AppVersion}\n最新版本: v{CurrentLatest}\n发布日期: {PublishTime}\n\nv{CurrentLatest}更新日志: {UpdateLog}", Buttons: MessageBoxExButtons.YesNo, Position: IsProgramStart ? FormStartPosition.CenterScreen : FormStartPosition.CenterParent) == DialogResult.Yes)
                     {
-                        if (MessageX.Info($"检测到新版本，是否下载并安装？\n\n当前版本: v{AppLauncher.AppVersion}\n最新版本: v{CurrentLatest}\n发布日期: {PublishTime}\n\nv{CurrentLatest}更新日志: {UpdateLog}", OwnerForm, Buttons: MessageBoxExButtons.YesNo, Position: IsProgramStart ? FormStartPosition.CenterScreen : FormStartPosition.CenterParent) == DialogResult.Yes)
+                        if (FormDownloader == null || FormDownloader.IsDisposed)
                         {
-                            if (FormDownloader == null || FormDownloader.IsDisposed)
-                            {
-                                FormDownloader = new();
-                            }
-
-                            FormDownloader.ReActivate();
+                            FormDownloader = new();
                         }
-                    });
+
+                        FormDownloader.ReActivate();
+                    }
                 }
                 else if (!IsProgramStart)
                 {
-                    MessageX.Info($"当前 v{AppLauncher.AppVersion} 已是最新版本。\n\n获取到的版本: v{CurrentLatest}\n发布日期: {PublishTime}\n\n当前版本更新日志: {UpdateLog}", OwnerForm);
+                    MessageX.Info($"当前 v{AppLauncher.AppVersion} 已是最新版本。\n\n获取到的版本: v{CurrentLatest}\n发布日期: {PublishTime}\n\n当前版本更新日志: {UpdateLog}");
                 }
             }
             catch (Exception ex)
             {
                 if (!IsProgramStart)
                 {
-                    MessageX.Error($"检查更新时发生错误! {ex.ToMessage()}", OwnerForm);
+                    MessageX.Error($"检查更新时发生错误! {ex.ToMessage()}");
                 }
             }
         }
