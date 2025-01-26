@@ -142,7 +142,22 @@ namespace CEETimerCSharpWinForms.Modules.Configuration
 
     public sealed class ToolsObject
     {
+        public int NtpServer
+        {
+            get => field;
+            set
+            {
+                if (MainForm.ValidateNeeded)
+                {
+                    if (value is < 0 or > 3)
+                    {
+                        throw new Exception();
+                    }
+                }
 
+                field = value;
+            }
+        }
     }
 
     [JsonConverter(typeof(CustomRulesConverter))]

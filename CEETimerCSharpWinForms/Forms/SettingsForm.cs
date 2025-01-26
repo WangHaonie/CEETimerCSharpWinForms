@@ -58,8 +58,29 @@ namespace CEETimerCSharpWinForms.Forms
             LabelExamNameCounter.ForeColor = Color.Red;
 
             SetTextBoxMax(TextBoxExamName, ConfigPolicy.MaxExamNameLength);
-            BindComboData(ComboBoxShowXOnly, [new("天", 0), new("时", 1), new("分", 2), new("秒", 3)]);
-            BindComboData(ComboBoxPosition, [new("左上角", 0), new("左侧中央", 1), new("左下角", 2), new("上侧中央", 3), new("中央", 4), new("下侧中央", 5), new("右上角", 6), new("右侧中央", 7), new("右下角", 8)]);
+            BindComboData(ComboBoxNtpServers, [
+                new("time.windows.com", 0),
+                new("ntp.aliyun.com", 1),
+                new("ntp.tencent.com", 2),
+                new("time.cloudflare.com", 3)
+                ]);
+            BindComboData(ComboBoxShowXOnly, [
+                new("天", 0),
+                new("时", 1),
+                new("分", 2),
+                new("秒", 3)
+                ]);
+            BindComboData(ComboBoxPosition, [
+                new("左上角", 0),
+                new("左侧中央", 1),
+                new("左下角", 2),
+                new("上侧中央", 3),
+                new("中央", 4),
+                new("下侧中央", 5),
+                new("右上角", 6),
+                new("右侧中央", 7),
+                new("右下角", 8)
+                ]);
 
             List<ComboData> Monitors = [new("<请选择>", 0)];
             Screen[] CurrentScreens = Screen.AllScreens;
@@ -129,6 +150,7 @@ namespace CEETimerCSharpWinForms.Forms
             ChangeWorkingStyle(WorkingArea.ChangeFont, NewFont: AppConfig.Appearance.Font);
             ChangePptsvcStyle(null, EventArgs.Empty);
             ComboBoxShowXOnly.SelectedIndex = AppConfig.Display.ShowXOnly ? AppConfig.Display.X : 0;
+            ComboBoxNtpServers.SelectedIndex = AppConfig.Tools.NtpServer;
             EditedCustomTexts = AppConfig.Display.CustomTexts;
             EditedCustomRules = AppConfig.CustomRules;
         }
@@ -346,13 +368,20 @@ namespace CEETimerCSharpWinForms.Forms
 
         private async void ButtonSyncTime_Click(object sender, EventArgs e)
         {
+            var server = ((ComboData)ComboBoxNtpServers.SelectedItem).Display;
             ChangeWorkingStyle(WorkingArea.SyncTime);
-            await Task.Run(StartSyncTime);
+            await Task.Run(() => StartSyncTime(server));
             ChangeWorkingStyle(WorkingArea.SyncTime, false);
         }
 
         private void ButtonSave_Click(object sender, EventArgs e)
         {
+            if (IsSyncingTime)
+            {
+                MessageX.Warn("无法执行此操作，请等待同步网络时钟完成！");
+                return;
+            }
+
             if (IsSettingsFormatValid())
             {
                 InvokeChangeRequired = true;
@@ -564,13 +593,13 @@ namespace CEETimerCSharpWinForms.Forms
             return true;
         }
 
-        private void StartSyncTime()
+        private void StartSyncTime(string Server)
         {
             try
             {
                 if (!AppLauncher.IsAdmin) MessageX.Warn("检测到当前用户不具有管理员权限，运行该操作会发生错误。\n\n程序将在此消息框关闭后尝试弹出 UAC 提示框，前提要把系统的 UAC 设置为 \"仅当应用尝试更改我的计算机时通知我\" 或及以上，否则将无法进行授权。\n\n稍后若没有看见提示框，请更改 UAC 设置: 开始菜单搜索 uac", this);
 
-                Process SyncTimeProcess = ProcessHelper.RunProcess("cmd.exe", "/c net stop w32time & sc config w32time start= auto & net start w32time && w32tm /config /manualpeerlist:ntp1.aliyun.com /syncfromflags:manual /reliable:YES /update && w32tm /resync && w32tm /resync", AdminRequired: true);
+                Process SyncTimeProcess = ProcessHelper.RunProcess("cmd.exe", $"/c net stop w32time & sc config w32time start= auto & net start w32time && w32tm /config /manualpeerlist:{Server} /syncfromflags:manual /reliable:YES /update && w32tm /resync && w32tm /resync", AdminRequired: true);
 
                 SyncTimeProcess.WaitForExit();
                 var ExitCode = SyncTimeProcess.ExitCode;
@@ -611,6 +640,7 @@ namespace CEETimerCSharpWinForms.Forms
                 case WorkingArea.SyncTime:
                     IsSyncingTime = IsWorking;
                     ButtonSyncTime.Enabled = !IsWorking;
+                    ComboBoxNtpServers.Enabled = !IsWorking;
                     ButtonRestart.Enabled = !IsWorking;
                     ButtonSave.Enabled = !IsWorking && HasSettingsChanged;
                     ButtonCancel.Enabled = !IsWorking;
@@ -716,6 +746,11 @@ namespace CEETimerCSharpWinForms.Forms
                             new(LabelColor21.BackColor,LabelColor22.BackColor),
                             new(LabelColor31.BackColor,LabelColor32.BackColor),
                             new(LabelColor41.BackColor,LabelColor42.BackColor)],
+                };
+
+                AppConfig.Tools = new()
+                {
+                    NtpServer = ComboBoxNtpServers.SelectedIndex
                 };
 
                 AppConfig.CustomRules = EditedCustomRules;

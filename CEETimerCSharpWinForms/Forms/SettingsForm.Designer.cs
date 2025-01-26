@@ -92,6 +92,7 @@
             this.GBoxRestart = new System.Windows.Forms.GroupBox();
             this.LabelRestart = new System.Windows.Forms.Label();
             this.GBoxSyncTime = new System.Windows.Forms.GroupBox();
+            this.ComboBoxNtpServers = new System.Windows.Forms.ComboBox();
             this.LabelSyncTime = new System.Windows.Forms.Label();
             this.ButtonRulesMan = new System.Windows.Forms.Button();
             this.TabControlMain.SuspendLayout();
@@ -127,7 +128,7 @@
             // 
             this.ButtonSyncTime.AutoSize = true;
             this.ButtonSyncTime.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ButtonSyncTime.Location = new System.Drawing.Point(9, 69);
+            this.ButtonSyncTime.Location = new System.Drawing.Point(142, 54);
             this.ButtonSyncTime.Name = "ButtonSyncTime";
             this.ButtonSyncTime.Size = new System.Drawing.Size(84, 25);
             this.ButtonSyncTime.TabIndex = 19;
@@ -347,7 +348,7 @@
             this.LabelPptsvc.AutoSize = true;
             this.LabelPptsvc.Location = new System.Drawing.Point(6, 19);
             this.LabelPptsvc.Name = "LabelPptsvc";
-            this.LabelPptsvc.Size = new System.Drawing.Size(603, 15);
+            this.LabelPptsvc.Size = new System.Drawing.Size(543, 15);
             this.LabelPptsvc.TabIndex = 0;
             this.LabelPptsvc.Text = "用于解决个别机型在内置白板打开后底部工具栏消失的情况。(仅倒计时恰好在左上角且顶置才会出现)";
             // 
@@ -781,7 +782,7 @@
             // 
             this.GBoxRestart.Controls.Add(this.LabelRestart);
             this.GBoxRestart.Controls.Add(this.ButtonRestart);
-            this.GBoxRestart.Location = new System.Drawing.Point(7, 111);
+            this.GBoxRestart.Location = new System.Drawing.Point(7, 95);
             this.GBoxRestart.Name = "GBoxRestart";
             this.GBoxRestart.Size = new System.Drawing.Size(353, 85);
             this.GBoxRestart.TabIndex = 45;
@@ -797,23 +798,36 @@
             // 
             // GBoxSyncTime
             // 
+            this.GBoxSyncTime.Controls.Add(this.ComboBoxNtpServers);
             this.GBoxSyncTime.Controls.Add(this.LabelSyncTime);
             this.GBoxSyncTime.Controls.Add(this.ButtonSyncTime);
             this.GBoxSyncTime.Location = new System.Drawing.Point(7, 6);
             this.GBoxSyncTime.Name = "GBoxSyncTime";
-            this.GBoxSyncTime.Size = new System.Drawing.Size(353, 99);
+            this.GBoxSyncTime.Size = new System.Drawing.Size(353, 83);
             this.GBoxSyncTime.TabIndex = 44;
             this.GBoxSyncTime.TabStop = false;
             this.GBoxSyncTime.Text = "同步网络时钟";
+            // 
+            // ComboBoxNtpServers
+            // 
+            this.ComboBoxNtpServers.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ComboBoxNtpServers.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.ComboBoxNtpServers.Location = new System.Drawing.Point(9, 54);
+            this.ComboBoxNtpServers.MaxDropDownItems = 1;
+            this.ComboBoxNtpServers.Name = "ComboBoxNtpServers";
+            this.ComboBoxNtpServers.Size = new System.Drawing.Size(127, 23);
+            this.ComboBoxNtpServers.TabIndex = 21;
+            this.ComboBoxNtpServers.DropDown += new System.EventHandler(this.ComboBoxes_DropDown);
+            this.ComboBoxNtpServers.SelectedIndexChanged += new System.EventHandler(this.SettingsChanged);
             // 
             // LabelSyncTime
             // 
             this.LabelSyncTime.AutoSize = true;
             this.LabelSyncTime.Location = new System.Drawing.Point(6, 19);
             this.LabelSyncTime.Name = "LabelSyncTime";
-            this.LabelSyncTime.Size = new System.Drawing.Size(740, 15);
+            this.LabelSyncTime.Size = new System.Drawing.Size(515, 15);
             this.LabelSyncTime.TabIndex = 20;
-            this.LabelSyncTime.Text = "使当前系统时间与网络同步。此项还会将系统的 NTP 服务器设置为 ntp1.aliyun.com, 并自动启动 Windows Time 服务, 请谨慎操作。";
+            this.LabelSyncTime.Text = "设置默认 NTP 服务器并同步系统时间。此项将自动启动 Windows Time 服务, 请谨慎操作。";
             // 
             // ButtonRulesMan
             // 
@@ -944,5 +958,6 @@
         private System.Windows.Forms.Button ButtonCustomText;
         private System.Windows.Forms.CheckBox CheckBoxCustomText;
         private System.Windows.Forms.Button ButtonRulesMan;
+        private System.Windows.Forms.ComboBox ComboBoxNtpServers;
     }
 }
