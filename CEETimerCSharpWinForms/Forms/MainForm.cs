@@ -50,6 +50,8 @@ namespace CEETimerCSharpWinForms.Forms
         private bool IsCountdownReady;
         private bool IsCountdownRunning;
         private bool IsWin10BelowRounded;
+        private bool ShowTrayIcon;
+        private bool ShowTrayText;
         private readonly int PptsvcThreshold = 1;
         private readonly int BorderRadius = 13;
         private CountdownState SelectedState;
@@ -64,6 +66,7 @@ namespace CEETimerCSharpWinForms.Forms
 
         private ConfigHandler Config;
         private static ConfigObject AppConfig;
+        private bool TrayIconReopen;
 
         public MainForm()
         {
@@ -76,14 +79,13 @@ namespace CEETimerCSharpWinForms.Forms
             AppConfig = Config.Read();
             AppLauncher.AppConfigChanged += (sender, e) =>
             {
-                RefreshSettings();
                 Config.Save(AppConfig);
+                RefreshSettings();
             };
 
             SizeChanged += MainForm_SizeChanged;
             SystemEvents.DisplaySettingsChanged += SystemEvents_DisplaySettingsChanged;
 
-            InitializeContextMenuAndTrayIcon();
             RefreshSettings();
 
             LocationWatcher = new() { Interval = 1000 };
@@ -106,44 +108,6 @@ namespace CEETimerCSharpWinForms.Forms
             }
         }
 
-        private void InitializeContextMenuAndTrayIcon()
-        {
-            #region 来自网络
-            /*
-            
-            克隆 (重用) 现有 ContextMenuStrip 实例 参考：
-
-            .net - C# - Duplicate ContextMenuStrip Items into another - Stack Overflow
-            https://stackoverflow.com/questions/37884815/c-sharp-duplicate-contextmenustrip-items-into-another
-
-            */
-            ContextMenuStrip BaseContextMenu() => new ContextMenuStrip()
-                .AddItem("设置(&S)", ContextSettings_Click)
-                .AddItem("关于(&A)", ContextAbout_Click)
-                .AddSeparator()
-                .AddItem("安装目录(&D)", (sender, e) => AppLauncher.OpenInstallDir());
-            #endregion
-
-            var ContextMenuMain = BaseContextMenu();
-            ContextMenuStrip = ContextMenuMain;
-            LabelCountdown.ContextMenuStrip = ContextMenuMain;
-
-            TrayIcon = new()
-            {
-                Visible = true,
-                Text = Text,
-                Icon = AppLauncher.AppIcon,
-                ContextMenuStrip = BaseContextMenu()
-                    .AddSeparator()
-                    .AddItem("显示界面(&S)", (sender, e) => AppLauncher.OnTrayMenuShowAllClicked())
-                    .AddSubMenu("关闭(&C)", SubMenu => SubMenu
-                        .AddItem("重新启动(&R)", (sender, e) => AppLauncher.Shutdown(true))
-                        .AddItem("完全退出(&Q)", (sender, e) => AppLauncher.Shutdown()))
-            };
-
-            TrayIcon.MouseClick += TrayIcon_MouseClick;
-        }
-
         private async void RefreshSettings()
         {
             if (ValidateNeeded)
@@ -151,6 +115,7 @@ namespace CEETimerCSharpWinForms.Forms
                 AppConfig.Display.Rounding = AppConfig.Display.Rounding && AppConfig.Display.ShowXOnly && AppConfig.Display.X == 0;
                 AppConfig.Display.CustomText = AppConfig.Display.CustomText && !AppConfig.Display.ShowXOnly;
                 AppConfig.Display.SeewoPptsvc = AppConfig.Display.SeewoPptsvc && ((AppConfig.General.TopMost && AppConfig.Display.X == 0) || AppConfig.Display.Draggable);
+                AppConfig.Tools.TrayText = AppConfig.Tools.TrayText && AppConfig.Tools.TrayIcon;
             }
 
             ExamName = AppConfig.General.ExamName;
@@ -170,6 +135,8 @@ namespace CEETimerCSharpWinForms.Forms
             ScreenIndex = AppConfig.Display.ScreenIndex;
             CountdownPos = AppConfig.Display.Position;
             ShowXOnlyIndex = AppConfig.Display.X;
+            ShowTrayIcon = AppConfig.Tools.TrayIcon;
+            ShowTrayText = AppConfig.Tools.TrayText;
             CustomRules = AppConfig.CustomRules;
             ColorDialogEx.CustomColorCollection = AppConfig.CustomColors;
             CountdownColors = AppConfig.Appearance.Colors;
@@ -214,6 +181,7 @@ namespace CEETimerCSharpWinForms.Forms
 
             ApplyLocation();
             CompatibleWithPPTService();
+            InitializeContextMenuAndTrayIcon();
 
             AppLauncher.OnUniTopMostStateChanged();
 
@@ -227,6 +195,83 @@ namespace CEETimerCSharpWinForms.Forms
             ValidateNeeded = false;
             await StartCountdown();
         }
+
+        private void InitializeContextMenuAndTrayIcon()
+        {
+            #region 来自网络
+            /*
+            
+            克隆 (重用) 现有 ContextMenuStrip 实例 参考：
+
+            .net - C# - Duplicate ContextMenuStrip Items into another - Stack Overflow
+            https://stackoverflow.com/questions/37884815/c-sharp-duplicate-contextmenustrip-items-into-another
+
+            */
+            ContextMenuStrip BaseContextMenu() => new ContextMenuStrip()
+                .AddItem("设置(&S)", ContextSettings_Click)
+                .AddItem("关于(&A)", ContextAbout_Click)
+                .AddSeparator()
+                .AddItem("安装目录(&D)", (sender, e) => AppLauncher.OpenInstallDir());
+            #endregion
+
+            var ContextMenuMain = BaseContextMenu();
+            ContextMenuStrip = ContextMenuMain;
+            LabelCountdown.ContextMenuStrip = ContextMenuMain;
+
+            if (TrayIcon == null)
+            {
+                if (ShowTrayIcon)
+                {
+                    if (TrayIconReopen)
+                    {
+                        if (MessageX.Warn("由于系统限制，重新开关托盘图标需要重启应用程序后方可正常显示。\n\n是否立即重启？", Buttons: MessageBoxExButtons.YesNo) == DialogResult.Yes)
+                        {
+                            AppLauncher.Shutdown(true);
+                        }
+                        else
+                        {
+                            return;
+                        }
+                    }
+
+                    TrayIcon = new()
+                    {
+                        Visible = true,
+                        Text = Text,
+                        Icon = AppLauncher.AppIcon,
+                        ContextMenuStrip = BaseContextMenu()
+                        .AddSeparator()
+                        .AddItem("显示界面(&S)", (sender, e) => AppLauncher.OnTrayMenuShowAllClicked())
+                        .AddSubMenu("关闭(&C)", SubMenu => SubMenu
+                            .AddItem("重新启动(&R)", (sender, e) => AppLauncher.Shutdown(true))
+                            .AddItem("完全退出(&Q)", (sender, e) => AppLauncher.Shutdown()))
+                    };
+                    TrayIcon.MouseClick += TrayIcon_MouseClick;
+
+                    if (!ShowTrayText)
+                    {
+                        UpdateTrayIconText(AppLauncher.AppName, false);
+                    }
+                }
+            }
+            else
+            {
+                if (!ShowTrayIcon)
+                {
+                    TrayIcon.Dispose();
+                    TrayIcon = null;
+                    TrayIconReopen = true;
+                }
+                else
+                {
+                    if (!ShowTrayText)
+                    {
+                        UpdateTrayIconText(AppLauncher.AppName, false);
+                    }
+                }
+            }
+        }
+
 
         private void SystemEvents_DisplaySettingsChanged(object sender, EventArgs e)
         {
@@ -439,22 +484,29 @@ namespace CEETimerCSharpWinForms.Forms
                 LabelCountdown.Text = CountdownText;
                 LabelCountdown.ForeColor = Fore;
                 BackColor = Back;
-                UpdateTrayIconText(CountdownText, false);
+
+                if (ShowTrayText)
+                {
+                    UpdateTrayIconText(CountdownText, false);
+                }
             });
         }
 
         private void UpdateTrayIconText(string cText, bool cInvokeRequired = true)
         {
-            if (cInvokeRequired)
+            if (TrayIcon != null)
             {
-                BeginInvoke(() =>
+                if (cInvokeRequired)
+                {
+                    BeginInvoke(() =>
+                    {
+                        TrayIcon.Text = cText;
+                    });
+                }
+                else
                 {
                     TrayIcon.Text = cText;
-                });
-            }
-            else
-            {
-                TrayIcon.Text = cText;
+                }
             }
         }
 

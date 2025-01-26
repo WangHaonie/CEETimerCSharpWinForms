@@ -91,6 +91,9 @@
             this.TabPageTools = new System.Windows.Forms.TabPage();
             this.GBoxRestart = new System.Windows.Forms.GroupBox();
             this.LabelRestart = new System.Windows.Forms.Label();
+            this.GBoxTrayIcon = new System.Windows.Forms.GroupBox();
+            this.CheckBoxTrayText = new System.Windows.Forms.CheckBox();
+            this.CheckBoxTrayIcon = new System.Windows.Forms.CheckBox();
             this.GBoxSyncTime = new System.Windows.Forms.GroupBox();
             this.ComboBoxNtpServers = new System.Windows.Forms.ComboBox();
             this.LabelSyncTime = new System.Windows.Forms.Label();
@@ -110,6 +113,7 @@
             this.GBoxFont.SuspendLayout();
             this.TabPageTools.SuspendLayout();
             this.GBoxRestart.SuspendLayout();
+            this.GBoxTrayIcon.SuspendLayout();
             this.GBoxSyncTime.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -128,7 +132,7 @@
             // 
             this.ButtonSyncTime.AutoSize = true;
             this.ButtonSyncTime.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ButtonSyncTime.Location = new System.Drawing.Point(142, 54);
+            this.ButtonSyncTime.Location = new System.Drawing.Point(145, 54);
             this.ButtonSyncTime.Name = "ButtonSyncTime";
             this.ButtonSyncTime.Size = new System.Drawing.Size(84, 25);
             this.ButtonSyncTime.TabIndex = 19;
@@ -768,6 +772,7 @@
             // TabPageTools
             // 
             this.TabPageTools.Controls.Add(this.GBoxRestart);
+            this.TabPageTools.Controls.Add(this.GBoxTrayIcon);
             this.TabPageTools.Controls.Add(this.GBoxSyncTime);
             this.TabPageTools.Location = new System.Drawing.Point(4, 24);
             this.TabPageTools.Name = "TabPageTools";
@@ -781,9 +786,9 @@
             // 
             this.GBoxRestart.Controls.Add(this.LabelRestart);
             this.GBoxRestart.Controls.Add(this.ButtonRestart);
-            this.GBoxRestart.Location = new System.Drawing.Point(7, 95);
+            this.GBoxRestart.Location = new System.Drawing.Point(7, 174);
             this.GBoxRestart.Name = "GBoxRestart";
-            this.GBoxRestart.Size = new System.Drawing.Size(353, 85);
+            this.GBoxRestart.Size = new System.Drawing.Size(353, 83);
             this.GBoxRestart.TabIndex = 45;
             this.GBoxRestart.TabStop = false;
             // 
@@ -795,12 +800,46 @@
             this.LabelRestart.Size = new System.Drawing.Size(0, 15);
             this.LabelRestart.TabIndex = 37;
             // 
+            // GBoxTrayIcon
+            // 
+            this.GBoxTrayIcon.Controls.Add(this.CheckBoxTrayText);
+            this.GBoxTrayIcon.Controls.Add(this.CheckBoxTrayIcon);
+            this.GBoxTrayIcon.Location = new System.Drawing.Point(7, 6);
+            this.GBoxTrayIcon.Name = "GBoxTrayIcon";
+            this.GBoxTrayIcon.Size = new System.Drawing.Size(353, 73);
+            this.GBoxTrayIcon.TabIndex = 46;
+            this.GBoxTrayIcon.TabStop = false;
+            this.GBoxTrayIcon.Text = "托盘图标";
+            // 
+            // CheckBoxTrayText
+            // 
+            this.CheckBoxTrayText.AutoSize = true;
+            this.CheckBoxTrayText.Enabled = false;
+            this.CheckBoxTrayText.Location = new System.Drawing.Point(9, 47);
+            this.CheckBoxTrayText.Name = "CheckBoxTrayText";
+            this.CheckBoxTrayText.Size = new System.Drawing.Size(248, 19);
+            this.CheckBoxTrayText.TabIndex = 1;
+            this.CheckBoxTrayText.Text = "鼠标悬停在图标上时显示倒计时内容(&T)";
+            this.CheckBoxTrayText.UseVisualStyleBackColor = true;
+            this.CheckBoxTrayText.CheckedChanged += new System.EventHandler(this.SettingsChanged);
+            // 
+            // CheckBoxTrayIcon
+            // 
+            this.CheckBoxTrayIcon.AutoSize = true;
+            this.CheckBoxTrayIcon.Location = new System.Drawing.Point(9, 22);
+            this.CheckBoxTrayIcon.Name = "CheckBoxTrayIcon";
+            this.CheckBoxTrayIcon.Size = new System.Drawing.Size(180, 19);
+            this.CheckBoxTrayIcon.TabIndex = 0;
+            this.CheckBoxTrayIcon.Text = "在托盘区域显示通知图标(&I)";
+            this.CheckBoxTrayIcon.UseVisualStyleBackColor = true;
+            this.CheckBoxTrayIcon.CheckedChanged += new System.EventHandler(this.CheckBoxTrayIcon_CheckedChanged);
+            // 
             // GBoxSyncTime
             // 
             this.GBoxSyncTime.Controls.Add(this.ComboBoxNtpServers);
             this.GBoxSyncTime.Controls.Add(this.LabelSyncTime);
             this.GBoxSyncTime.Controls.Add(this.ButtonSyncTime);
-            this.GBoxSyncTime.Location = new System.Drawing.Point(7, 6);
+            this.GBoxSyncTime.Location = new System.Drawing.Point(7, 85);
             this.GBoxSyncTime.Name = "GBoxSyncTime";
             this.GBoxSyncTime.Size = new System.Drawing.Size(353, 83);
             this.GBoxSyncTime.TabIndex = 44;
@@ -811,10 +850,10 @@
             // 
             this.ComboBoxNtpServers.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ComboBoxNtpServers.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.ComboBoxNtpServers.Location = new System.Drawing.Point(9, 54);
+            this.ComboBoxNtpServers.Location = new System.Drawing.Point(9, 53);
             this.ComboBoxNtpServers.MaxDropDownItems = 1;
             this.ComboBoxNtpServers.Name = "ComboBoxNtpServers";
-            this.ComboBoxNtpServers.Size = new System.Drawing.Size(127, 23);
+            this.ComboBoxNtpServers.Size = new System.Drawing.Size(130, 23);
             this.ComboBoxNtpServers.TabIndex = 21;
             this.ComboBoxNtpServers.DropDown += new System.EventHandler(this.ComboBoxes_DropDown);
             this.ComboBoxNtpServers.SelectedIndexChanged += new System.EventHandler(this.SettingsChanged);
@@ -883,6 +922,8 @@
             this.TabPageTools.ResumeLayout(false);
             this.GBoxRestart.ResumeLayout(false);
             this.GBoxRestart.PerformLayout();
+            this.GBoxTrayIcon.ResumeLayout(false);
+            this.GBoxTrayIcon.PerformLayout();
             this.GBoxSyncTime.ResumeLayout(false);
             this.GBoxSyncTime.PerformLayout();
             this.ResumeLayout(false);
@@ -958,5 +999,8 @@
         private System.Windows.Forms.ComboBox ComboBoxNtpServers;
         private System.Windows.Forms.ComboBox ComboBoxCountdownEnd;
         private System.Windows.Forms.Label LabelCountdownEnd;
+        private System.Windows.Forms.GroupBox GBoxTrayIcon;
+        private System.Windows.Forms.CheckBox CheckBoxTrayText;
+        private System.Windows.Forms.CheckBox CheckBoxTrayIcon;
     }
 }

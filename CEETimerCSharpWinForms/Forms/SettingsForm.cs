@@ -118,6 +118,8 @@ namespace CEETimerCSharpWinForms.Forms
             CompactControlsX(ComboBoxScreens, LabelScreens);
             CompactControlsX(LabelChar1, ComboBoxScreens);
             CompactControlsX(ComboBoxPosition, LabelChar1);
+            CompactControlsX(ComboBoxCountdownEnd, LabelCountdownEnd);
+            CompactControlsX(ButtonSyncTime, ComboBoxNtpServers, 3);
             CompactControlsY(ButtonSyncTime, LabelSyncTime, 3);
             CompactControlsY(ButtonRestart, LabelRestart, 3);
 
@@ -128,9 +130,9 @@ namespace CEETimerCSharpWinForms.Forms
                 AlignControlsX(ComboBoxScreens, LabelScreens);
                 AlignControlsX(ComboBoxPosition, LabelChar1);
                 AlignControlsX(LabelExamNameCounter, TextBoxExamName);
-                AlignControlsX(ComboBoxCountdownEnd, LabelCountdownEnd, 3);
+                AlignControlsX(ComboBoxCountdownEnd, LabelCountdownEnd);
                 AlignControlsX(ButtonCustomText, CheckBoxCustomText);
-                AlignControlsX(ComboBoxNtpServers, ButtonSyncTime, 3);
+                AlignControlsX(ComboBoxNtpServers, ButtonSyncTime);
             });
         }
 
@@ -159,6 +161,8 @@ namespace CEETimerCSharpWinForms.Forms
             ComboBoxNtpServers.SelectedIndex = AppConfig.Tools.NtpServer;
             EditedCustomTexts = AppConfig.Display.CustomTexts;
             EditedCustomRules = AppConfig.CustomRules;
+            CheckBoxTrayText.Enabled = CheckBoxTrayIcon.Checked = AppConfig.Tools.TrayIcon;
+            CheckBoxTrayText.Checked = AppConfig.Tools.TrayText;
         }
 
         private void SettingsChanged(object sender, EventArgs e)
@@ -435,9 +439,15 @@ namespace CEETimerCSharpWinForms.Forms
         private void ComboBoxScreens_SelectedIndexChanged(object sender, EventArgs e)
         {
             SettingsChanged(sender, e);
-
             ComboBoxPosition.Enabled = !CheckBoxDraggable.Checked && ComboBoxScreens.SelectedIndex != 0;
             ComboBoxPosition.SelectedIndex = ComboBoxPosition.Enabled ? (int)AppConfig.Display.Position : 0;
+        }
+
+        private void CheckBoxTrayIcon_CheckedChanged(object sender, EventArgs e)
+        {
+            SettingsChanged(sender, e);
+            CheckBoxTrayText.Enabled = CheckBoxTrayIcon.Checked;
+            CheckBoxTrayText.Checked = CheckBoxTrayIcon.Checked && AppConfig.Tools.TrayText;
         }
 
         private void ButtonCancel_Click(object sender, EventArgs e)
@@ -749,7 +759,9 @@ namespace CEETimerCSharpWinForms.Forms
 
                 AppConfig.Tools = new()
                 {
-                    NtpServer = ComboBoxNtpServers.SelectedIndex
+                    NtpServer = ComboBoxNtpServers.SelectedIndex,
+                    TrayIcon = CheckBoxTrayIcon.Checked,
+                    TrayText = CheckBoxTrayText.Checked,
                 };
 
                 AppConfig.CustomRules = EditedCustomRules;
