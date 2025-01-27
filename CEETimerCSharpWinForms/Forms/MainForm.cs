@@ -118,10 +118,11 @@ namespace CEETimerCSharpWinForms.Forms
                 AppConfig.Tools.TrayText = AppConfig.Tools.TrayText && AppConfig.Tools.TrayIcon;
             }
 
-            ExamName = AppConfig.General.ExamName;
+            var CurrentExam = AppConfig.General.ExamInfo[AppConfig.General.ExamIndex];
+            ExamName = CurrentExam.ExamName;
             CustomText = AppConfig.Display.CustomTexts;
-            ExamStartTime = AppConfig.General.ExamStartTime;
-            ExamEndTime = AppConfig.General.ExamEndTime;
+            ExamStartTime = CurrentExam.ExamStartTime;
+            ExamEndTime = CurrentExam.ExamEndTime;
             MemClean = AppConfig.General.MemClean;
             var TopMostTmp = AppConfig.General.TopMost;
             TopMost = TopMostTmp;
@@ -329,7 +330,12 @@ namespace CEETimerCSharpWinForms.Forms
         {
             if (FormSettings == null || FormSettings.IsDisposed)
             {
-                FormSettings = new();
+                FormSettings = new()
+                {
+                    ExamName = ExamName,
+                    ExamStartTime = ExamStartTime,
+                    ExamEndTime = ExamEndTime
+                };
             }
 
             FormSettings.ReActivate();

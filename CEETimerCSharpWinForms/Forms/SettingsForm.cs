@@ -18,7 +18,6 @@ namespace CEETimerCSharpWinForms.Forms
         private Font SelectedFont;
         private RulesManagerObject[] EditedCustomRules;
         private string[] EditedCustomTexts;
-
         private bool IsColorLabelsDragging;
         private bool IsSyncingTime;
         private bool HasSettingsChanged;
@@ -30,6 +29,10 @@ namespace CEETimerCSharpWinForms.Forms
         private List<ColorSetObject> SelectedColors;
         private readonly FontConverter fontConverter = new();
         private readonly ConfigObject AppConfig = MainForm.AppConfigPub;
+
+        public string ExamName { get; set; }
+        public DateTime ExamStartTime { get; set; }
+        public DateTime ExamEndTime { get; set; }
 
         public SettingsForm()
         {
@@ -140,9 +143,9 @@ namespace CEETimerCSharpWinForms.Forms
         {
             CheckBoxStartup.Checked = (Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true)?.GetValue(AppLauncher.AppNameEng) is string regvalue) && regvalue.Equals($"\"{AppLauncher.CurrentExecutablePath}\"", StringComparison.OrdinalIgnoreCase);
             CheckBoxTopMost.Checked = AppConfig.General.TopMost;
-            TextBoxExamName.Text = AppConfig.General.ExamName;
-            DtpExamStart.Value = AppConfig.General.ExamStartTime;
-            DtpExamEnd.Value = AppConfig.General.ExamEndTime;
+            TextBoxExamName.Text = ExamName;
+            DtpExamStart.Value = ExamStartTime;
+            DtpExamEnd.Value = ExamEndTime;
             CheckBoxMemClean.Checked = AppConfig.General.MemClean;
             CheckBoxDraggable.Checked = AppConfig.Display.Draggable;
             CheckBoxShowXOnly.Checked = AppConfig.Display.ShowXOnly;
@@ -724,11 +727,16 @@ namespace CEETimerCSharpWinForms.Forms
                 else
                     reg.DeleteValue(AppLauncher.AppNameEng, false);
 
+                var Index = AppConfig.General.ExamIndex;
+                var Exams = AppConfig.General.ExamInfo;
+                Exams[Index].ExamName = TextBoxExamName.Text;
+                Exams[Index].ExamStartTime = DtpExamStart.Value;
+                Exams[Index].ExamEndTime = DtpExamEnd.Value;
+
                 AppConfig.General = new()
                 {
-                    ExamName = TextBoxExamName.Text,
-                    ExamStartTime = DtpExamStart.Value,
-                    ExamEndTime = DtpExamEnd.Value,
+                    ExamInfo = Exams,
+                    ExamIndex = Index,
                     MemClean = CheckBoxMemClean.Checked,
                     TopMost = CheckBoxTopMost.Checked,
                     UniTopMost = CheckBoxUniTopMost.Checked

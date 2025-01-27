@@ -31,28 +31,9 @@ namespace CEETimerCSharpWinForms.Modules.Configuration
 
     public sealed class GeneralObject
     {
-        public string ExamName
-        {
-            get => field;
-            set
-            {
-                ConfigHandler.Validate(() =>
-                {
-                    if (!value.Length.IsValid())
-                    {
-                        throw new Exception();
-                    }
-                });
+        public ExamInfoObject[] ExamInfo { get; set; }
 
-                field = value;
-            }
-        } = "";
-
-        [JsonConverter(typeof(DateTimeConverter))]
-        public DateTime ExamStartTime { get; set; } = DateTime.Now;
-
-        [JsonConverter(typeof(DateTimeConverter))]
-        public DateTime ExamEndTime { get; set; } = DateTime.Now;
+        public int ExamIndex { get; set; }
 
         public bool MemClean { get; set; }
 
@@ -183,6 +164,32 @@ namespace CEETimerCSharpWinForms.Modules.Configuration
         public bool TrayIcon { get; set; }
 
         public bool TrayText { get; set; }
+    }
+
+    public sealed class ExamInfoObject
+    {
+        public string ExamName
+        {
+            get => field;
+            set
+            {
+                ConfigHandler.Validate(() =>
+                {
+                    if (!value.Length.IsValid())
+                    {
+                        throw new Exception();
+                    }
+                });
+
+                field = value;
+            }
+        } = "";
+
+        [JsonConverter(typeof(DateTimeConverter))]
+        public DateTime ExamStartTime { get; set; } = DateTime.Now;
+
+        [JsonConverter(typeof(DateTimeConverter))]
+        public DateTime ExamEndTime { get; set; } = DateTime.Now;
     }
 
     [JsonConverter(typeof(CustomRulesConverter))]
