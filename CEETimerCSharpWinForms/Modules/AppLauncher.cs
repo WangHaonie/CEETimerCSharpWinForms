@@ -1,4 +1,5 @@
-﻿using CEETimerCSharpWinForms.Forms;
+﻿using CEETimerCSharpWinForms.Dialogs;
+using CEETimerCSharpWinForms.Forms;
 using System;
 using System.Diagnostics;
 using System.Drawing;
@@ -76,7 +77,7 @@ namespace CEETimerCSharpWinForms.Modules
                     if (Args.Length == 0)
                     {
                         Task.Run(() => CheckAdmin(out _));
-                        Application.Run(new MainForm());
+                        Application.Run(new ExamInfoManager());
                     }
                     else
                     {

@@ -138,6 +138,7 @@
     <Reference Include="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <Private>False</Private>
     </Reference>
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\AppForm.cs">
@@ -151,6 +152,12 @@
     </Compile>
     <Compile Include="Controls\TrackableForm.cs">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\ExamInfoManager.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\ExamInfoManager.Designer.cs">
+      <DependentUpon>ExamInfoManager.cs</DependentUpon>
     </Compile>
     <Compile Include="Dialogs\RuleDialog.cs">
       <SubType>Form</SubType>
@@ -244,6 +251,14 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Dialogs\ExamInfoManager.resx">
+      <DependentUpon>ExamInfoManager.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
