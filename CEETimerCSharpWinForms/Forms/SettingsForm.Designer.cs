@@ -305,6 +305,7 @@
             this.GBoxExamName.Size = new System.Drawing.Size(323, 58);
             this.GBoxExamName.TabIndex = 40;
             this.GBoxExamName.TabStop = false;
+            this.GBoxExamName.Text = "考试名称";
             // 
             // LabelExamNameCounter
             // 
