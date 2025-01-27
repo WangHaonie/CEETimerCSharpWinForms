@@ -214,7 +214,6 @@
     <Compile Include="Modules\ConfigPolicy.cs" />
     <Compile Include="Modules\Configuration\ConfigObject.cs" />
     <Compile Include="Modules\Configuration\ConfigHandler.cs" />
-    <Compile Include="Modules\ContextMenuExtensions.cs" />
     <Compile Include="Modules\ColorHelper.cs" />
     <Compile Include="Modules\CustomRuleHelper.cs" />
     <Compile Include="Modules\Enums.cs" />

@@ -219,16 +219,18 @@ namespace CEETimerCSharpWinForms.Forms
             https://stackoverflow.com/questions/37884815/c-sharp-duplicate-contextmenustrip-items-into-another
 
             */
-            ContextMenuStrip BaseContextMenu() => new ContextMenuStrip()
-                .AddItem("设置(&S)", ContextSettings_Click)
-                .AddItem("关于(&A)", ContextAbout_Click)
-                .AddSeparator()
-                .AddItem("安装目录(&D)", (sender, e) => AppLauncher.OpenInstallDir());
+            ContextMenu BaseContextMenu() => CreateNew
+            ([
+                AddItem("设置(&S)", ContextSettings_Click),
+                AddItem("关于(&A)", ContextAbout_Click),
+                AddSeparator(),
+                AddItem("安装目录(&D)", (sender, e) => AppLauncher.OpenInstallDir())
+            ]);
             #endregion
 
             var ContextMenuMain = BaseContextMenu();
-            ContextMenuStrip = ContextMenuMain;
-            LabelCountdown.ContextMenuStrip = ContextMenuMain;
+            ContextMenu = ContextMenuMain;
+            LabelCountdown.ContextMenu = ContextMenuMain;
 
             if (TrayIcon == null)
             {
@@ -251,12 +253,16 @@ namespace CEETimerCSharpWinForms.Forms
                         Visible = true,
                         Text = Text,
                         Icon = AppLauncher.AppIcon,
-                        ContextMenuStrip = BaseContextMenu()
-                        .AddSeparator()
-                        .AddItem("显示界面(&S)", (sender, e) => AppLauncher.OnTrayMenuShowAllClicked())
-                        .AddSubMenu("关闭(&C)", SubMenu => SubMenu
-                            .AddItem("重新启动(&R)", (sender, e) => AppLauncher.Shutdown(true))
-                            .AddItem("完全退出(&Q)", (sender, e) => AppLauncher.Shutdown()))
+                        ContextMenu = Combine(BaseContextMenu(), CreateNew
+                        ([
+                            AddSeparator(),
+                            AddItem("显示界面(&S)", (sender, e) => AppLauncher.OnTrayMenuShowAllClicked()),
+                            AddSubMenu("关闭(&C)", 
+                            [
+                                AddItem("重新启动(&R)", (sender, e) => AppLauncher.Shutdown(true)),
+                                AddItem("完全退出(&Q)", (sender, e) => AppLauncher.Shutdown())
+                            ])
+                        ]))
                     };
                     TrayIcon.MouseClick += TrayIcon_MouseClick;
 

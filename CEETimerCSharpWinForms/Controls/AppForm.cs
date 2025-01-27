@@ -315,6 +315,20 @@ namespace CEETimerCSharpWinForms.Controls
             Target.Top = Reference.Top + Reference.Height + Tweak.WithDpi(Target);
         }
 
+        protected ContextMenu CreateNew(MenuItem[] Items) => new(Items);
+
+        protected ContextMenu Combine(ContextMenu Target, ContextMenu Reference)
+        {
+            Target.MergeMenu(Reference);
+            return Target;
+        }
+
+        protected MenuItem AddItem(string Text, EventHandler OnClickHandler) => new(Text, OnClickHandler);
+
+        protected MenuItem AddSeparator() => new("-");
+
+        protected MenuItem AddSubMenu(string Text, MenuItem[] Items) => new(Text, Items);
+
         private void SetLabelAutoWrapCore(Label Target, Size NewSize)
         {
             #region 来自网络
