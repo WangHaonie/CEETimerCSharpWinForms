@@ -67,6 +67,7 @@ namespace CEETimerCSharpWinForms.Forms
         private ConfigHandler Config;
         private static ConfigObject AppConfig;
         private bool TrayIconReopen;
+        private ExamInfoObject CurrentExam;
 
         public MainForm()
         {
@@ -118,7 +119,15 @@ namespace CEETimerCSharpWinForms.Forms
                 AppConfig.Tools.TrayText = AppConfig.Tools.TrayText && AppConfig.Tools.TrayIcon;
             }
 
-            var CurrentExam = AppConfig.General.ExamInfo[AppConfig.General.ExamIndex];
+            try
+            {
+                CurrentExam = AppConfig.General.ExamInfo[AppConfig.General.ExamIndex];
+            }
+            catch
+            {
+                CurrentExam = new();
+            }
+
             ExamName = CurrentExam.ExamName;
             CustomText = AppConfig.Display.CustomTexts;
             ExamStartTime = CurrentExam.ExamStartTime;

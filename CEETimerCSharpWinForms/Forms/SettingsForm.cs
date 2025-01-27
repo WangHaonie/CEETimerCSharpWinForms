@@ -726,11 +726,24 @@ namespace CEETimerCSharpWinForms.Forms
                 else
                     reg.DeleteValue(AppLauncher.AppNameEng, false);
 
-                var Index = AppConfig.General.ExamIndex;
                 var Exams = AppConfig.General.ExamInfo;
-                Exams[Index].ExamName = TextBoxExamName.Text;
-                Exams[Index].ExamStartTime = DtpExamStart.Value;
-                Exams[Index].ExamEndTime = DtpExamEnd.Value;
+                var Index = AppConfig.General.ExamIndex;
+
+                if (Exams.Length == 0)
+                {
+                    Exams = [new()
+                    {
+                        ExamName = TextBoxExamName.Text,
+                        ExamStartTime = DtpExamStart.Value,
+                        ExamEndTime = DtpExamEnd.Value,
+                    }];
+                }
+                else
+                {
+                    Exams[Index].ExamName = TextBoxExamName.Text;
+                    Exams[Index].ExamStartTime = DtpExamStart.Value;
+                    Exams[Index].ExamEndTime = DtpExamEnd.Value;
+                }
 
                 AppConfig.General = new()
                 {
@@ -775,7 +788,10 @@ namespace CEETimerCSharpWinForms.Forms
 
                 MainForm.AppConfigPub = AppConfig;
             }
-            catch { }
+            catch
+            {
+
+            }
         }
     }
 }

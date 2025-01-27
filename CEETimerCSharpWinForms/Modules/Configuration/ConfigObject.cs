@@ -31,9 +31,26 @@ namespace CEETimerCSharpWinForms.Modules.Configuration
 
     public sealed class GeneralObject
     {
-        public ExamInfoObject[] ExamInfo { get; set; }
+        public ExamInfoObject[] ExamInfo
+        {
+            get => field ?? [];
+            set => field = value ?? [];
+        }
 
-        public int ExamIndex { get; set; }
+        public int ExamIndex
+        {
+            get => field;
+            set
+            {
+                ConfigHandler.Validate(() =>
+                {
+                    if (value < 0 || value > ExamInfo.Length)
+                    {
+                        throw new Exception();
+                    }
+                });
+            }
+        }
 
         public bool MemClean { get; set; }
 
