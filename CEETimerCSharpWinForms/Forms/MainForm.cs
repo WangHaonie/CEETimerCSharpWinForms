@@ -73,8 +73,9 @@ namespace CEETimerCSharpWinForms.Forms
         private int ExamIndex;
 
         private ContextMenu ContextMenuMain;
-        private ContextMenu TrayContextMenu;
+        private ContextMenu ContextMenuTray;
         private Menu.MenuItemCollection ExamSwitchMain;
+        private Menu.MenuItemCollection ExamSwitchTray;
 
         public MainForm()
         {
@@ -220,7 +221,17 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void InitializeContextMenuAndTrayIcon()
         {
-            ContextMenuMain = CreateNew
+            #region 来自网络
+            /*
+            
+            克隆 (重用) 现有 ContextMenuStrip 实例 参考：
+
+            .net - C# - Duplicate ContextMenuStrip Items into another - Stack Overflow
+            https://stackoverflow.com/questions/37884815/c-sharp-duplicate-contextmenustrip-items-into-another
+
+            */
+
+            ContextMenu BaseContextMenu() => CreateNew
             ([
                 AddSubMenu("切换(&Q)",
                 [
@@ -234,14 +245,21 @@ namespace CEETimerCSharpWinForms.Forms
                 AddSeparator(),
                 AddItem("安装目录(&D)", (sender, e) => AppLauncher.OpenInstallDir())
             ]);
+            #endregion
+
+            ContextMenuMain = BaseContextMenu();
+            ContextMenuTray = BaseContextMenu();
 
             ExamSwitchMain = ContextMenuMain.MenuItems[0].MenuItems;
+            ExamSwitchTray = ContextMenuTray.MenuItems[0].MenuItems;
+
             ContextMenu = ContextMenuMain;
             LabelCountdown.ContextMenu = ContextMenuMain;
 
             if (Exams.Length != 0)
             {
                 ExamSwitchMain.RemoveAt(0);
+                ExamSwitchTray.RemoveAt(0);
 
                 var ItemIndex = 0;
                 foreach (var Exam in Exams)
@@ -251,15 +269,27 @@ namespace CEETimerCSharpWinForms.Forms
                         Text = Exam.ToString(),
                         Tag = ItemIndex,
                         RadioCheck = true
+                    }; 
+                    
+                    var ItemTray = new MenuItem()
+                    {
+                        Text = Exam.ToString(),
+                        Tag = ItemIndex,
+                        RadioCheck = true
                     };
 
                     ItemMain.Click += ExamItems_Click;
+                    ItemTray.Click += ExamItems_Click;
+
                     ExamSwitchMain.Add(0, ItemMain);
+                    ExamSwitchTray.Add(0, ItemTray);
+
                     ItemIndex++;
                 }
             }
 
             ExamSwitchMain[ExamIndex].Checked = true;
+            ExamSwitchTray[ExamIndex].Checked = true;
 
             if (TrayIcon == null)
             {
@@ -277,23 +307,21 @@ namespace CEETimerCSharpWinForms.Forms
                         }
                     }
 
-                    TrayContextMenu = Merge(ContextMenuMain, CreateNew
-                    ([
-                        AddSeparator(),
-                        AddItem("显示界面(&S)", (sender, e) => AppLauncher.OnTrayMenuShowAllClicked()),
-                        AddSubMenu("关闭(&C)",
-                        [
-                            AddItem("重启(&R)", (sender, e) => AppLauncher.Shutdown(true)),
-                            AddItem("退出(&Q)", (sender, e) => AppLauncher.Shutdown())
-                        ])
-                    ]));
-
                     TrayIcon = new()
                     {
                         Visible = true,
                         Text = Text,
                         Icon = AppLauncher.AppIcon,
-                        ContextMenu = TrayContextMenu
+                        ContextMenu = Merge(ContextMenuTray, CreateNew
+                        ([
+                            AddSeparator(),
+                            AddItem("显示界面(&S)", (sender, e) => AppLauncher.OnTrayMenuShowAllClicked()),
+                            AddSubMenu("关闭(&C)",
+                            [
+                                AddItem("重启(&R)", (sender, e) => AppLauncher.Shutdown(true)),
+                                AddItem("退出(&Q)", (sender, e) => AppLauncher.Shutdown())
+                            ])
+                        ]))
                     };
                     TrayIcon.MouseClick += TrayIcon_MouseClick;
 
