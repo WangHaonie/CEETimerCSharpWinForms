@@ -207,6 +207,8 @@ namespace CEETimerCSharpWinForms.Modules.Configuration
 
         [JsonConverter(typeof(DateTimeConverter))]
         public DateTime ExamEndTime { get; set; } = DateTime.Now;
+
+        public override string ToString() => string.Format("{0} - {1}", ExamName, ExamStartTime.ToString(AppLauncher.DateTimeFormat));
     }
 
     [JsonConverter(typeof(CustomRulesConverter))]

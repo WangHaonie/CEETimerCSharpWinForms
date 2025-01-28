@@ -317,11 +317,13 @@ namespace CEETimerCSharpWinForms.Controls
 
         protected ContextMenu CreateNew(MenuItem[] Items) => new(Items);
 
-        protected ContextMenu Combine(ContextMenu Target, ContextMenu Reference)
+        protected ContextMenu Merge(ContextMenu Target, ContextMenu Reference)
         {
             Target.MergeMenu(Reference);
             return Target;
         }
+
+        protected MenuItem AddItem(string Text) => new(Text);
 
         protected MenuItem AddItem(string Text, EventHandler OnClickHandler) => new(Text, OnClickHandler);
 

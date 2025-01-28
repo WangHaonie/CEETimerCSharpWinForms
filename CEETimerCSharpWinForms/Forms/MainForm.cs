@@ -1,4 +1,5 @@
 ﻿using CEETimerCSharpWinForms.Controls;
+using CEETimerCSharpWinForms.Dialogs;
 using CEETimerCSharpWinForms.Interop;
 using CEETimerCSharpWinForms.Modules;
 using CEETimerCSharpWinForms.Modules.Configuration;
@@ -68,6 +69,12 @@ namespace CEETimerCSharpWinForms.Forms
         private static ConfigObject AppConfig;
         private bool TrayIconReopen;
         private ExamInfoObject CurrentExam;
+        private ExamInfoObject[] Exams;
+        private int ExamIndex;
+
+        private ContextMenu ContextMenuMain;
+        private ContextMenu TrayContextMenu;
+        private Menu.MenuItemCollection ExamSwitchMain;
 
         public MainForm()
         {
@@ -119,9 +126,12 @@ namespace CEETimerCSharpWinForms.Forms
                 AppConfig.Tools.TrayText = AppConfig.Tools.TrayText && AppConfig.Tools.TrayIcon;
             }
 
+            Exams = AppConfig.General.ExamInfo;
+            ExamIndex = AppConfig.General.ExamIndex;
+
             try
             {
-                CurrentExam = AppConfig.General.ExamInfo[AppConfig.General.ExamIndex];
+                CurrentExam = Exams[ExamIndex];
             }
             catch
             {
@@ -210,27 +220,46 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void InitializeContextMenuAndTrayIcon()
         {
-            #region 来自网络
-            /*
-            
-            克隆 (重用) 现有 ContextMenuStrip 实例 参考：
-
-            .net - C# - Duplicate ContextMenuStrip Items into another - Stack Overflow
-            https://stackoverflow.com/questions/37884815/c-sharp-duplicate-contextmenustrip-items-into-another
-
-            */
-            ContextMenu BaseContextMenu() => CreateNew
+            ContextMenuMain = CreateNew
             ([
+                AddSubMenu("切换(&Q)",
+                [
+                    AddItem("暂无考试信息"),
+                    AddSeparator(),
+                    AddItem("管理(&M)", ExamSwitchManage_Click)
+                ]),
+                AddSeparator(),
                 AddItem("设置(&S)", ContextSettings_Click),
                 AddItem("关于(&A)", ContextAbout_Click),
                 AddSeparator(),
                 AddItem("安装目录(&D)", (sender, e) => AppLauncher.OpenInstallDir())
             ]);
-            #endregion
 
-            var ContextMenuMain = BaseContextMenu();
+            ExamSwitchMain = ContextMenuMain.MenuItems[0].MenuItems;
             ContextMenu = ContextMenuMain;
             LabelCountdown.ContextMenu = ContextMenuMain;
+
+            if (Exams.Length != 0)
+            {
+                ExamSwitchMain.RemoveAt(0);
+
+                var ItemIndex = 0;
+                foreach (var Exam in Exams)
+                {
+                    var ItemMain = new MenuItem()
+                    {
+                        Text = Exam.ToString(),
+                        Tag = ItemIndex,
+                        RadioCheck = true
+                    };
+
+                    ItemMain.Click += ExamItems_Click;
+                    ExamSwitchMain.Add(0, ItemMain);
+                    ItemIndex++;
+                }
+            }
+
+            ExamSwitchMain[ExamIndex].Checked = true;
 
             if (TrayIcon == null)
             {
@@ -248,21 +277,23 @@ namespace CEETimerCSharpWinForms.Forms
                         }
                     }
 
+                    TrayContextMenu = Merge(ContextMenuMain, CreateNew
+                    ([
+                        AddSeparator(),
+                        AddItem("显示界面(&S)", (sender, e) => AppLauncher.OnTrayMenuShowAllClicked()),
+                        AddSubMenu("关闭(&C)",
+                        [
+                            AddItem("重启(&R)", (sender, e) => AppLauncher.Shutdown(true)),
+                            AddItem("退出(&Q)", (sender, e) => AppLauncher.Shutdown())
+                        ])
+                    ]));
+
                     TrayIcon = new()
                     {
                         Visible = true,
                         Text = Text,
                         Icon = AppLauncher.AppIcon,
-                        ContextMenu = Combine(BaseContextMenu(), CreateNew
-                        ([
-                            AddSeparator(),
-                            AddItem("显示界面(&S)", (sender, e) => AppLauncher.OnTrayMenuShowAllClicked()),
-                            AddSubMenu("关闭(&C)", 
-                            [
-                                AddItem("重新启动(&R)", (sender, e) => AppLauncher.Shutdown(true)),
-                                AddItem("完全退出(&Q)", (sender, e) => AppLauncher.Shutdown())
-                            ])
-                        ]))
+                        ContextMenu = TrayContextMenu
                     };
                     TrayIcon.MouseClick += TrayIcon_MouseClick;
 
@@ -290,6 +321,22 @@ namespace CEETimerCSharpWinForms.Forms
             }
         }
 
+        private void ExamItems_Click(object sender, EventArgs e)
+        {
+            var Item = (MenuItem)sender;
+
+            if (!Item.Checked)
+            {
+                Item.Checked = true;
+            }
+
+            if (Item.Checked)
+            {
+                ExamIndex = (int)Item.Tag;
+                RefreshSettings();
+                Console.WriteLine(ExamIndex);
+            }
+        }
 
         private void SystemEvents_DisplaySettingsChanged(object sender, EventArgs e)
         {
@@ -340,6 +387,20 @@ namespace CEETimerCSharpWinForms.Forms
             IsReadyToMove = false;
         }
         #endregion
+
+        private void ExamSwitchManage_Click(object sender, EventArgs e)
+        {
+            ExamInfoManager ExamInfoMan = new()
+            {
+                ExamInfo = Exams,
+                PeriodIndex = ExamIndex
+            };
+
+            if (ExamInfoMan.ShowDialog() == DialogResult.OK)
+            {
+
+            }
+        }
 
         private void ContextSettings_Click(object sender, EventArgs e)
         {
