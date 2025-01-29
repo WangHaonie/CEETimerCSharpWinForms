@@ -30,26 +30,26 @@
         {
             this.LabelInfo = new System.Windows.Forms.Label();
             this.PanelMain = new System.Windows.Forms.Panel();
-            this.GroupBoxEdit = new System.Windows.Forms.GroupBox();
-            this.TextBoxName = new System.Windows.Forms.TextBox();
-            this.LabelName = new System.Windows.Forms.Label();
-            this.DTPStart = new System.Windows.Forms.DateTimePicker();
-            this.LabelStart = new System.Windows.Forms.Label();
-            this.LabelEnd = new System.Windows.Forms.Label();
-            this.DTPEnd = new System.Windows.Forms.DateTimePicker();
-            this.ButtonSave = new System.Windows.Forms.Button();
-            this.ButtonCancel = new System.Windows.Forms.Button();
-            this.GroupBoxAutoSwitch = new System.Windows.Forms.GroupBox();
-            this.CheckBoxAutoSwitch = new System.Windows.Forms.CheckBox();
-            this.LabelSwitchPeriod = new System.Windows.Forms.Label();
-            this.ComboBoxSwitchPeriod = new System.Windows.Forms.ComboBox();
-            this.ButtonAdd = new System.Windows.Forms.Button();
-            this.ButtonChange = new System.Windows.Forms.Button();
-            this.ButtonDelete = new System.Windows.Forms.Button();
             this.ListViewMain = new CEETimerCSharpWinForms.Controls.ListViewEx();
             this.ColumnHeadExamName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ColumnHeadStart = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ColumnHeadEnd = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.GroupBoxEdit = new System.Windows.Forms.GroupBox();
+            this.ButtonDelete = new System.Windows.Forms.Button();
+            this.ButtonChange = new System.Windows.Forms.Button();
+            this.ButtonAdd = new System.Windows.Forms.Button();
+            this.LabelEnd = new System.Windows.Forms.Label();
+            this.DTPEnd = new System.Windows.Forms.DateTimePicker();
+            this.LabelStart = new System.Windows.Forms.Label();
+            this.DTPStart = new System.Windows.Forms.DateTimePicker();
+            this.LabelName = new System.Windows.Forms.Label();
+            this.TextBoxName = new System.Windows.Forms.TextBox();
+            this.ButtonSave = new System.Windows.Forms.Button();
+            this.ButtonCancel = new System.Windows.Forms.Button();
+            this.GroupBoxAutoSwitch = new System.Windows.Forms.GroupBox();
+            this.ComboBoxSwitchPeriod = new System.Windows.Forms.ComboBox();
+            this.LabelSwitchPeriod = new System.Windows.Forms.Label();
+            this.CheckBoxAutoSwitch = new System.Windows.Forms.CheckBox();
             this.PanelMain.SuspendLayout();
             this.GroupBoxEdit.SuspendLayout();
             this.GroupBoxAutoSwitch.SuspendLayout();
@@ -72,163 +72,6 @@
             this.PanelMain.Name = "PanelMain";
             this.PanelMain.Size = new System.Drawing.Size(534, 167);
             this.PanelMain.TabIndex = 2;
-            // 
-            // GroupBoxEdit
-            // 
-            this.GroupBoxEdit.Controls.Add(this.ButtonDelete);
-            this.GroupBoxEdit.Controls.Add(this.ButtonChange);
-            this.GroupBoxEdit.Controls.Add(this.ButtonAdd);
-            this.GroupBoxEdit.Controls.Add(this.LabelEnd);
-            this.GroupBoxEdit.Controls.Add(this.DTPEnd);
-            this.GroupBoxEdit.Controls.Add(this.LabelStart);
-            this.GroupBoxEdit.Controls.Add(this.DTPStart);
-            this.GroupBoxEdit.Controls.Add(this.LabelName);
-            this.GroupBoxEdit.Controls.Add(this.TextBoxName);
-            this.GroupBoxEdit.Location = new System.Drawing.Point(9, 172);
-            this.GroupBoxEdit.Name = "GroupBoxEdit";
-            this.GroupBoxEdit.Size = new System.Drawing.Size(361, 132);
-            this.GroupBoxEdit.TabIndex = 3;
-            this.GroupBoxEdit.TabStop = false;
-            this.GroupBoxEdit.Text = "编辑考试信息";
-            // 
-            // TextBoxName
-            // 
-            this.TextBoxName.Location = new System.Drawing.Point(69, 21);
-            this.TextBoxName.Name = "TextBoxName";
-            this.TextBoxName.Size = new System.Drawing.Size(286, 23);
-            this.TextBoxName.TabIndex = 0;
-            // 
-            // LabelName
-            // 
-            this.LabelName.AutoSize = true;
-            this.LabelName.Location = new System.Drawing.Point(3, 25);
-            this.LabelName.Name = "LabelName";
-            this.LabelName.Size = new System.Drawing.Size(65, 15);
-            this.LabelName.TabIndex = 1;
-            this.LabelName.Text = "考试名称: ";
-            // 
-            // DTPStart
-            // 
-            this.DTPStart.CustomFormat = "yyyy-MM-dd dddd HH:mm:ss";
-            this.DTPStart.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.DTPStart.Location = new System.Drawing.Point(109, 50);
-            this.DTPStart.Name = "DTPStart";
-            this.DTPStart.Size = new System.Drawing.Size(246, 23);
-            this.DTPStart.TabIndex = 2;
-            // 
-            // LabelStart
-            // 
-            this.LabelStart.AutoSize = true;
-            this.LabelStart.Location = new System.Drawing.Point(3, 54);
-            this.LabelStart.Name = "LabelStart";
-            this.LabelStart.Size = new System.Drawing.Size(104, 15);
-            this.LabelStart.TabIndex = 3;
-            this.LabelStart.Text = "开始日期和时间: ";
-            // 
-            // LabelEnd
-            // 
-            this.LabelEnd.AutoSize = true;
-            this.LabelEnd.Location = new System.Drawing.Point(3, 81);
-            this.LabelEnd.Name = "LabelEnd";
-            this.LabelEnd.Size = new System.Drawing.Size(104, 15);
-            this.LabelEnd.TabIndex = 5;
-            this.LabelEnd.Text = "结束日期和时间: ";
-            // 
-            // DTPEnd
-            // 
-            this.DTPEnd.CustomFormat = "yyyy-MM-dd dddd HH:mm:ss";
-            this.DTPEnd.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.DTPEnd.Location = new System.Drawing.Point(109, 77);
-            this.DTPEnd.Name = "DTPEnd";
-            this.DTPEnd.Size = new System.Drawing.Size(246, 23);
-            this.DTPEnd.TabIndex = 4;
-            // 
-            // ButtonSave
-            // 
-            this.ButtonSave.Location = new System.Drawing.Point(376, 276);
-            this.ButtonSave.Name = "ButtonSave";
-            this.ButtonSave.Size = new System.Drawing.Size(75, 23);
-            this.ButtonSave.TabIndex = 4;
-            this.ButtonSave.Text = "保存(&S)";
-            this.ButtonSave.UseVisualStyleBackColor = true;
-            // 
-            // ButtonCancel
-            // 
-            this.ButtonCancel.Location = new System.Drawing.Point(457, 276);
-            this.ButtonCancel.Name = "ButtonCancel";
-            this.ButtonCancel.Size = new System.Drawing.Size(75, 23);
-            this.ButtonCancel.TabIndex = 5;
-            this.ButtonCancel.Text = "取消(&C)";
-            this.ButtonCancel.UseVisualStyleBackColor = true;
-            // 
-            // GroupBoxAutoSwitch
-            // 
-            this.GroupBoxAutoSwitch.Controls.Add(this.ComboBoxSwitchPeriod);
-            this.GroupBoxAutoSwitch.Controls.Add(this.LabelSwitchPeriod);
-            this.GroupBoxAutoSwitch.Controls.Add(this.CheckBoxAutoSwitch);
-            this.GroupBoxAutoSwitch.Location = new System.Drawing.Point(376, 172);
-            this.GroupBoxAutoSwitch.Name = "GroupBoxAutoSwitch";
-            this.GroupBoxAutoSwitch.Size = new System.Drawing.Size(156, 80);
-            this.GroupBoxAutoSwitch.TabIndex = 6;
-            this.GroupBoxAutoSwitch.TabStop = false;
-            this.GroupBoxAutoSwitch.Text = "自动切换";
-            // 
-            // CheckBoxAutoSwitch
-            // 
-            this.CheckBoxAutoSwitch.AutoSize = true;
-            this.CheckBoxAutoSwitch.Location = new System.Drawing.Point(6, 24);
-            this.CheckBoxAutoSwitch.Name = "CheckBoxAutoSwitch";
-            this.CheckBoxAutoSwitch.Size = new System.Drawing.Size(104, 19);
-            this.CheckBoxAutoSwitch.TabIndex = 0;
-            this.CheckBoxAutoSwitch.Text = "启用自动切换";
-            this.CheckBoxAutoSwitch.UseVisualStyleBackColor = true;
-            // 
-            // LabelSwitchPeriod
-            // 
-            this.LabelSwitchPeriod.AutoSize = true;
-            this.LabelSwitchPeriod.Location = new System.Drawing.Point(3, 51);
-            this.LabelSwitchPeriod.Name = "LabelSwitchPeriod";
-            this.LabelSwitchPeriod.Size = new System.Drawing.Size(59, 15);
-            this.LabelSwitchPeriod.TabIndex = 1;
-            this.LabelSwitchPeriod.Text = "切换间隔";
-            // 
-            // ComboBoxSwitchPeriod
-            // 
-            this.ComboBoxSwitchPeriod.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.ComboBoxSwitchPeriod.Enabled = false;
-            this.ComboBoxSwitchPeriod.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.ComboBoxSwitchPeriod.Location = new System.Drawing.Point(64, 47);
-            this.ComboBoxSwitchPeriod.Name = "ComboBoxSwitchPeriod";
-            this.ComboBoxSwitchPeriod.Size = new System.Drawing.Size(86, 23);
-            this.ComboBoxSwitchPeriod.TabIndex = 8;
-            // 
-            // ButtonAdd
-            // 
-            this.ButtonAdd.Location = new System.Drawing.Point(118, 104);
-            this.ButtonAdd.Name = "ButtonAdd";
-            this.ButtonAdd.Size = new System.Drawing.Size(75, 23);
-            this.ButtonAdd.TabIndex = 7;
-            this.ButtonAdd.Text = "添加(&A)";
-            this.ButtonAdd.UseVisualStyleBackColor = true;
-            this.ButtonAdd.Click += new System.EventHandler(this.ButtonAdd_Click);
-            // 
-            // ButtonChange
-            // 
-            this.ButtonChange.Location = new System.Drawing.Point(199, 104);
-            this.ButtonChange.Name = "ButtonChange";
-            this.ButtonChange.Size = new System.Drawing.Size(75, 23);
-            this.ButtonChange.TabIndex = 8;
-            this.ButtonChange.Text = "更改(&E)";
-            this.ButtonChange.UseVisualStyleBackColor = true;
-            // 
-            // ButtonDelete
-            // 
-            this.ButtonDelete.Location = new System.Drawing.Point(280, 104);
-            this.ButtonDelete.Name = "ButtonDelete";
-            this.ButtonDelete.Size = new System.Drawing.Size(75, 23);
-            this.ButtonDelete.TabIndex = 7;
-            this.ButtonDelete.Text = "删除(&D)";
-            this.ButtonDelete.UseVisualStyleBackColor = true;
             // 
             // ListViewMain
             // 
@@ -261,6 +104,164 @@
             // 
             this.ColumnHeadEnd.Text = "结束日期和时间";
             this.ColumnHeadEnd.Width = 180;
+            // 
+            // GroupBoxEdit
+            // 
+            this.GroupBoxEdit.Controls.Add(this.ButtonDelete);
+            this.GroupBoxEdit.Controls.Add(this.ButtonChange);
+            this.GroupBoxEdit.Controls.Add(this.ButtonAdd);
+            this.GroupBoxEdit.Controls.Add(this.LabelEnd);
+            this.GroupBoxEdit.Controls.Add(this.DTPEnd);
+            this.GroupBoxEdit.Controls.Add(this.LabelStart);
+            this.GroupBoxEdit.Controls.Add(this.DTPStart);
+            this.GroupBoxEdit.Controls.Add(this.LabelName);
+            this.GroupBoxEdit.Controls.Add(this.TextBoxName);
+            this.GroupBoxEdit.Location = new System.Drawing.Point(9, 172);
+            this.GroupBoxEdit.Name = "GroupBoxEdit";
+            this.GroupBoxEdit.Size = new System.Drawing.Size(361, 132);
+            this.GroupBoxEdit.TabIndex = 3;
+            this.GroupBoxEdit.TabStop = false;
+            this.GroupBoxEdit.Text = "编辑考试信息";
+            // 
+            // ButtonDelete
+            // 
+            this.ButtonDelete.Location = new System.Drawing.Point(280, 104);
+            this.ButtonDelete.Name = "ButtonDelete";
+            this.ButtonDelete.Size = new System.Drawing.Size(75, 23);
+            this.ButtonDelete.TabIndex = 7;
+            this.ButtonDelete.Text = "删除(&D)";
+            this.ButtonDelete.UseVisualStyleBackColor = true;
+            // 
+            // ButtonChange
+            // 
+            this.ButtonChange.Location = new System.Drawing.Point(199, 104);
+            this.ButtonChange.Name = "ButtonChange";
+            this.ButtonChange.Size = new System.Drawing.Size(75, 23);
+            this.ButtonChange.TabIndex = 8;
+            this.ButtonChange.Text = "更改(&E)";
+            this.ButtonChange.UseVisualStyleBackColor = true;
+            // 
+            // ButtonAdd
+            // 
+            this.ButtonAdd.Location = new System.Drawing.Point(118, 104);
+            this.ButtonAdd.Name = "ButtonAdd";
+            this.ButtonAdd.Size = new System.Drawing.Size(75, 23);
+            this.ButtonAdd.TabIndex = 7;
+            this.ButtonAdd.Text = "添加(&A)";
+            this.ButtonAdd.UseVisualStyleBackColor = true;
+            this.ButtonAdd.Click += new System.EventHandler(this.ButtonAdd_Click);
+            // 
+            // LabelEnd
+            // 
+            this.LabelEnd.AutoSize = true;
+            this.LabelEnd.Location = new System.Drawing.Point(3, 81);
+            this.LabelEnd.Name = "LabelEnd";
+            this.LabelEnd.Size = new System.Drawing.Size(104, 15);
+            this.LabelEnd.TabIndex = 5;
+            this.LabelEnd.Text = "结束日期和时间: ";
+            // 
+            // DTPEnd
+            // 
+            this.DTPEnd.CustomFormat = "yyyy-MM-dd dddd HH:mm:ss";
+            this.DTPEnd.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.DTPEnd.Location = new System.Drawing.Point(109, 77);
+            this.DTPEnd.Name = "DTPEnd";
+            this.DTPEnd.Size = new System.Drawing.Size(246, 23);
+            this.DTPEnd.TabIndex = 4;
+            // 
+            // LabelStart
+            // 
+            this.LabelStart.AutoSize = true;
+            this.LabelStart.Location = new System.Drawing.Point(3, 54);
+            this.LabelStart.Name = "LabelStart";
+            this.LabelStart.Size = new System.Drawing.Size(104, 15);
+            this.LabelStart.TabIndex = 3;
+            this.LabelStart.Text = "开始日期和时间: ";
+            // 
+            // DTPStart
+            // 
+            this.DTPStart.CustomFormat = "yyyy-MM-dd dddd HH:mm:ss";
+            this.DTPStart.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.DTPStart.Location = new System.Drawing.Point(109, 50);
+            this.DTPStart.Name = "DTPStart";
+            this.DTPStart.Size = new System.Drawing.Size(246, 23);
+            this.DTPStart.TabIndex = 2;
+            // 
+            // LabelName
+            // 
+            this.LabelName.AutoSize = true;
+            this.LabelName.Location = new System.Drawing.Point(3, 25);
+            this.LabelName.Name = "LabelName";
+            this.LabelName.Size = new System.Drawing.Size(65, 15);
+            this.LabelName.TabIndex = 1;
+            this.LabelName.Text = "考试名称: ";
+            // 
+            // TextBoxName
+            // 
+            this.TextBoxName.Location = new System.Drawing.Point(69, 21);
+            this.TextBoxName.Name = "TextBoxName";
+            this.TextBoxName.Size = new System.Drawing.Size(286, 23);
+            this.TextBoxName.TabIndex = 0;
+            // 
+            // ButtonSave
+            // 
+            this.ButtonSave.Location = new System.Drawing.Point(376, 276);
+            this.ButtonSave.Name = "ButtonSave";
+            this.ButtonSave.Size = new System.Drawing.Size(75, 23);
+            this.ButtonSave.TabIndex = 4;
+            this.ButtonSave.Text = "保存(&S)";
+            this.ButtonSave.UseVisualStyleBackColor = true;
+            // 
+            // ButtonCancel
+            // 
+            this.ButtonCancel.Location = new System.Drawing.Point(457, 276);
+            this.ButtonCancel.Name = "ButtonCancel";
+            this.ButtonCancel.Size = new System.Drawing.Size(75, 23);
+            this.ButtonCancel.TabIndex = 5;
+            this.ButtonCancel.Text = "取消(&C)";
+            this.ButtonCancel.UseVisualStyleBackColor = true;
+            // 
+            // GroupBoxAutoSwitch
+            // 
+            this.GroupBoxAutoSwitch.Controls.Add(this.ComboBoxSwitchPeriod);
+            this.GroupBoxAutoSwitch.Controls.Add(this.LabelSwitchPeriod);
+            this.GroupBoxAutoSwitch.Controls.Add(this.CheckBoxAutoSwitch);
+            this.GroupBoxAutoSwitch.Location = new System.Drawing.Point(376, 172);
+            this.GroupBoxAutoSwitch.Name = "GroupBoxAutoSwitch";
+            this.GroupBoxAutoSwitch.Size = new System.Drawing.Size(156, 80);
+            this.GroupBoxAutoSwitch.TabIndex = 6;
+            this.GroupBoxAutoSwitch.TabStop = false;
+            this.GroupBoxAutoSwitch.Text = "自动切换";
+            // 
+            // ComboBoxSwitchPeriod
+            // 
+            this.ComboBoxSwitchPeriod.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ComboBoxSwitchPeriod.Enabled = false;
+            this.ComboBoxSwitchPeriod.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.ComboBoxSwitchPeriod.Location = new System.Drawing.Point(64, 47);
+            this.ComboBoxSwitchPeriod.Name = "ComboBoxSwitchPeriod";
+            this.ComboBoxSwitchPeriod.Size = new System.Drawing.Size(86, 23);
+            this.ComboBoxSwitchPeriod.TabIndex = 8;
+            // 
+            // LabelSwitchPeriod
+            // 
+            this.LabelSwitchPeriod.AutoSize = true;
+            this.LabelSwitchPeriod.Location = new System.Drawing.Point(3, 51);
+            this.LabelSwitchPeriod.Name = "LabelSwitchPeriod";
+            this.LabelSwitchPeriod.Size = new System.Drawing.Size(59, 15);
+            this.LabelSwitchPeriod.TabIndex = 1;
+            this.LabelSwitchPeriod.Text = "切换间隔";
+            // 
+            // CheckBoxAutoSwitch
+            // 
+            this.CheckBoxAutoSwitch.AutoSize = true;
+            this.CheckBoxAutoSwitch.Location = new System.Drawing.Point(6, 24);
+            this.CheckBoxAutoSwitch.Name = "CheckBoxAutoSwitch";
+            this.CheckBoxAutoSwitch.Size = new System.Drawing.Size(104, 19);
+            this.CheckBoxAutoSwitch.TabIndex = 0;
+            this.CheckBoxAutoSwitch.Text = "启用自动切换";
+            this.CheckBoxAutoSwitch.UseVisualStyleBackColor = true;
+            this.CheckBoxAutoSwitch.CheckedChanged += new System.EventHandler(this.CheckBoxAutoSwitch_CheckedChanged);
             // 
             // ExamInfoManager
             // 

@@ -269,8 +269,8 @@ namespace CEETimerCSharpWinForms.Forms
                         Text = Exam.ToString(),
                         Tag = ItemIndex,
                         RadioCheck = true
-                    }; 
-                    
+                    };
+
                     var ItemTray = new MenuItem()
                     {
                         Text = Exam.ToString(),

@@ -34,7 +34,17 @@ namespace CEETimerCSharpWinForms.Modules.Configuration
         public ExamInfoObject[] ExamInfo
         {
             get => field ?? [];
-            set => field = value ?? [];
+            set
+            {
+                var tmp = value ?? [];
+
+                ConfigHandler.Validate(() =>
+                {
+                    Array.Sort(tmp);
+                });
+
+                field = tmp;
+            }
         }
 
         public int ExamIndex
@@ -183,7 +193,7 @@ namespace CEETimerCSharpWinForms.Modules.Configuration
         public bool TrayText { get; set; }
     }
 
-    public sealed class ExamInfoObject
+    public sealed class ExamInfoObject : IComparable<ExamInfoObject>
     {
         public string ExamName
         {
@@ -208,7 +218,18 @@ namespace CEETimerCSharpWinForms.Modules.Configuration
         [JsonConverter(typeof(DateTimeConverter))]
         public DateTime ExamEndTime { get; set; } = DateTime.Now;
 
-        public override string ToString() => string.Format("{0} - {1}", ExamName, ExamStartTime.ToString(AppLauncher.DateTimeFormat));
+        public override string ToString()
+            => string.Format("{0} - {1}", ExamName, ExamStartTime.ToString(AppLauncher.DateTimeFormat));
+
+        int IComparable<ExamInfoObject>.CompareTo(ExamInfoObject other)
+        {
+            if (other == null)
+            {
+                return 1;
+            }
+
+            return ExamStartTime.CompareTo(other.ExamStartTime);
+        }
     }
 
     [JsonConverter(typeof(CustomRulesConverter))]
