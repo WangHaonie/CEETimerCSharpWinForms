@@ -40,7 +40,7 @@ namespace CEETimerCSharpWinForms.Forms
             CompositedStyle = true;
         }
 
-        protected override void OnTrackableFormLoad()
+        protected override void OnLoad()
         {
             InitializeExtra();
             RefreshSettings();
@@ -340,7 +340,7 @@ namespace CEETimerCSharpWinForms.Forms
             RulesManager Manager = new()
             {
                 CustomRules = EditedCustomRules,
-                Preferences = CheckBoxCustomText.Checked ? AppConfig.Display.CustomTexts : [null, null, null],
+                Preferences = AppConfig.Display.CustomTexts,
                 ShowWarning = !CheckBoxCustomText.Checked
             };
 
@@ -457,7 +457,7 @@ namespace CEETimerCSharpWinForms.Forms
             Close();
         }
 
-        protected override void OnTrackableFormClosing(FormClosingEventArgs e)
+        protected override void OnClosing(FormClosingEventArgs e)
         {
             if (IsSyncingTime)
             {
@@ -473,7 +473,7 @@ namespace CEETimerCSharpWinForms.Forms
             }
         }
 
-        protected override void OnTrackableFormClosed()
+        protected override void OnClosed()
         {
             if (InvokeChangeRequired)
             {
@@ -481,7 +481,7 @@ namespace CEETimerCSharpWinForms.Forms
             }
 
             ChangeWorkingStyle(WorkingArea.Funny, false);
-            base.OnTrackableFormClosed();
+            base.OnClosed();
         }
 
         private void ChangeCustomTextStyle(object sender)

@@ -1,23 +1,23 @@
-﻿using CEETimerCSharpWinForms.Modules;
+﻿using CEETimerCSharpWinForms.Controls;
+using CEETimerCSharpWinForms.Modules;
 using CEETimerCSharpWinForms.Modules.Configuration;
 using System;
-using System.Collections.Generic;
-using System.Windows.Forms;
 
 namespace CEETimerCSharpWinForms.Dialogs
 {
-    public partial class ExamInfoManager : Form
+    public partial class ExamInfoManager : DialogEx
     {
         public ExamInfoObject[] ExamInfo { get; set; }
         public int PeriodIndex { get; set; }
         public bool AutoSwitch { get; set; }
 
-        public ExamInfoManager()
+        public ExamInfoManager() : base(DialogExProp.BindButtons | DialogExProp.KeyPreview)
         {
+            CompositedStyle = true;
             InitializeComponent();
         }
 
-        private void ExamInfoManager_Load(object sender, EventArgs e)
+        protected override void OnLoad()
         {
             LoadStyle();
             LoadData();
@@ -48,13 +48,6 @@ namespace CEETimerCSharpWinForms.Dialogs
         private void ButtonAdd_Click(object sender, EventArgs e)
         {
 
-        }
-
-        private void BindComboData(ComboBox Target, List<ComboData> Data)
-        {
-            Target.DataSource = Data;
-            Target.DisplayMember = "Display";
-            Target.ValueMember = "Value";
         }
 
         private void CheckBoxAutoSwitch_CheckedChanged(object sender, EventArgs e)

@@ -45,7 +45,7 @@ namespace CEETimerCSharpWinForms.Forms
             // 
             this.LabelInfo.AutoSize = true;
             this.LabelInfo.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LabelInfo.Location = new System.Drawing.Point(39, 3);
+            this.LabelInfo.Location = new System.Drawing.Point(40, 3);
             this.LabelInfo.Name = "LabelInfo";
             this.LabelInfo.Size = new System.Drawing.Size(0, 15);
             this.LabelInfo.TabIndex = 1;
@@ -65,7 +65,7 @@ namespace CEETimerCSharpWinForms.Forms
             // 
             this.LabelLicense.AutoSize = true;
             this.LabelLicense.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LabelLicense.Location = new System.Drawing.Point(5, 33);
+            this.LabelLicense.Location = new System.Drawing.Point(5, 34);
             this.LabelLicense.Name = "LabelLicense";
             this.LabelLicense.Size = new System.Drawing.Size(0, 15);
             this.LabelLicense.TabIndex = 7;
@@ -117,7 +117,7 @@ namespace CEETimerCSharpWinForms.Forms
             this.PicBoxLogo.Image = AppLauncher.AppIcon.ToBitmap();
             this.PicBoxLogo.Location = new System.Drawing.Point(6, 3);
             this.PicBoxLogo.Name = "PicBoxLogo";
-            this.PicBoxLogo.Size = new System.Drawing.Size(31, 31);
+            this.PicBoxLogo.Size = new System.Drawing.Size(32, 32);
             this.PicBoxLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.PicBoxLogo.TabIndex = 9;
             this.PicBoxLogo.TabStop = false;

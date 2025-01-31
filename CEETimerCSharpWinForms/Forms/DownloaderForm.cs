@@ -31,7 +31,7 @@ namespace CEETimerCSharpWinForms.Forms
             AlignControlsREx(ButtonRetry, ButtonCancel, ProgressBarMain);
         }
 
-        protected override async void OnTrackableFormLoad()
+        protected override async void OnLoad()
         {
             string LatestVersion = Updater.LatestVersion;
             string SelectedVersion = ManualVersion;
@@ -162,7 +162,7 @@ namespace CEETimerCSharpWinForms.Forms
             ProgressBarMain.Value = Progress;
         }
 
-        protected override void OnTrackableFormClosing(FormClosingEventArgs e)
+        protected override void OnClosing(FormClosingEventArgs e)
         {
             e.Cancel = !IsCancelled;
         }

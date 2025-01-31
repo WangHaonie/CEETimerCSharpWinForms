@@ -16,7 +16,7 @@ namespace CEETimerCSharpWinForms.Forms
             InitializeComponent();
         }
 
-        protected override void OnTrackableFormLoad()
+        protected override void OnLoad()
         {
             LabelInfo.Text = $"{AppLauncher.AppName}\n版本 v{AppLauncher.AppVersion} x64 ({AppLauncher.AppBuildDate})";
             LabelLicense.Text = $"Licensed under the GNU GPL, v3.\n{AppLauncher.CopyrightInfo}";
@@ -57,7 +57,7 @@ namespace CEETimerCSharpWinForms.Forms
             Close();
         }
 
-        protected override void OnTrackableFormClosing(FormClosingEventArgs e)
+        protected override void OnClosing(FormClosingEventArgs e)
         {
             e.Cancel = IsCheckingUpdate;
         }

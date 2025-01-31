@@ -1,13 +1,12 @@
 ﻿using CEETimerCSharpWinForms.Controls;
 using CEETimerCSharpWinForms.Modules;
 using System;
-using System.Windows.Forms;
 
 namespace CEETimerCSharpWinForms.Dialogs
 {
     public partial class CustomTextDialog : DialogEx
     {
-        public string[] CustomText { get; set; }
+        public string[] CustomText { get; set; } = [];
 
         private string P1TextRaw;
         private string P2TextRaw;
@@ -18,7 +17,7 @@ namespace CEETimerCSharpWinForms.Dialogs
             InitializeComponent();
         }
 
-        protected override void OnDialogLoad()
+        protected override void OnLoad()
         {
             TextBoxP1.Text = CustomText[0];
             TextBoxP2.Text = CustomText[1];
@@ -33,7 +32,6 @@ namespace CEETimerCSharpWinForms.Dialogs
         protected override void AdjustUI()
         {
             SetLabelAutoWrap(LabelInfo, PanelMain);
-            EnablePanelAutoSize(AutoSizeMode.GrowOnly);
             AdjustPanel();
             AlignControlsL(ButtonReset, ButtonA, LabelP3);
             AlignControlsX(TextBoxP1, LabelP1);
@@ -54,7 +52,7 @@ namespace CEETimerCSharpWinForms.Dialogs
             TextBoxP3.Text = Placeholders.PH_P3;
         }
 
-        protected override void OnButtonAClicked()
+        protected override void ButtonA_Click()
         {
             P1TextRaw = RemoveInvalid(TextBoxP1.Text);
             P2TextRaw = RemoveInvalid(TextBoxP2.Text);
@@ -68,7 +66,7 @@ namespace CEETimerCSharpWinForms.Dialogs
             }
 
             CustomText = tmp;
-            base.OnButtonAClicked();
+            base.ButtonA_Click();
         }
 
         private string RemoveInvalid(string s)

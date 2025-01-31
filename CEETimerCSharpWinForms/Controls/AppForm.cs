@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace CEETimerCSharpWinForms.Controls
 {
-    public abstract class AppForm : Form
+    public class AppForm : Form
     {
         /// <summary>
         /// 获取或设置一个值，该值指示窗体是否应在加载之前就先开始调整 UI。
@@ -20,6 +20,9 @@ namespace CEETimerCSharpWinForms.Controls
         /// </summary>
         protected bool CompositedStyle { get; set; }
 
+        /// <summary>
+        /// 获取当前的消息框实例以向用户显示消息框。
+        /// </summary>
         protected MessageBoxHelper MessageX { get; private set; }
 
         private bool IsLoading = true;
@@ -40,14 +43,14 @@ namespace CEETimerCSharpWinForms.Controls
         {
             if (AdjustBeforeLoad)
             {
-                StartAdjustingUI();
+                AdjustUI();
             }
 
-            OnAppFormLoad();
+            OnLoad();
 
             if (!AdjustBeforeLoad)
             {
-                StartAdjustingUI();
+                AdjustUI();
             }
 
             base.OnLoad(e);
@@ -56,19 +59,19 @@ namespace CEETimerCSharpWinForms.Controls
         protected sealed override void OnShown(EventArgs e)
         {
             IsLoading = false;
-            OnAppFormShown();
+            OnShown();
             base.OnShown(e);
         }
 
         protected sealed override void OnFormClosing(FormClosingEventArgs e)
         {
-            OnAppFormClosing(e);
+            OnClosing(e);
             base.OnFormClosing(e);
         }
 
         protected sealed override void OnClosed(EventArgs e)
         {
-            OnAppFormClosed();
+            OnClosed();
             base.OnClosed(e);
             Dispose(true);
         }
@@ -117,15 +120,45 @@ namespace CEETimerCSharpWinForms.Controls
         }
         #endregion
 
-        protected virtual void AdjustUI() { }
+        /// <summary>
+        /// 用于计算并调整 UI 控件布局。该方法没有默认实现，可不调用 base.AdjustUI();
+        /// </summary>
+        protected virtual void AdjustUI()
+        {
 
-        protected abstract void OnAppFormLoad();
+        }
 
-        protected abstract void OnAppFormShown();
+        /// <summary>
+        /// 在 AppForm 加载时触发。该方法没有默认实现，可不调用 base.OnLoad();
+        /// </summary>
+        protected virtual void OnLoad()
+        {
 
-        protected abstract void OnAppFormClosing(FormClosingEventArgs e);
+        }
 
-        protected virtual void OnAppFormClosed() { }
+        /// <summary>
+        /// 在 AppForm 已向用户显示时触发。该方法没有默认实现，可不调用 base.OnShown();
+        /// </summary>
+        protected virtual void OnShown()
+        {
+
+        }
+
+        /// <summary>
+        /// 在 AppForm 被关闭时触发。该方法没有默认实现，可不调用 base.OnClosing(e);
+        /// </summary>
+        protected virtual void OnClosing(FormClosingEventArgs e)
+        {
+
+        }
+
+        /// <summary>
+        /// 在 AppForm 关闭后触发。该方法没有默认实现，可不调用 base.OnClosed();
+        /// </summary>
+        protected virtual void OnClosed()
+        {
+
+        }
 
         private void ValidExecute(Action Method)
         {
@@ -342,8 +375,8 @@ namespace CEETimerCSharpWinForms.Controls
             https://stackoverflow.com/a/3680595/21094697
 
             */
-            Target.AutoSize = true;
             Target.MaximumSize = NewSize;
+            Target.AutoSize = true;
             #endregion
         }
 
@@ -351,11 +384,6 @@ namespace CEETimerCSharpWinForms.Controls
         {
             Btn2.Location = new(Main.Location.X + Main.Width - Btn2.Width, yTweak);
             Btn1.Location = new(Btn2.Location.X - Btn1.Width - 6.WithDpi(Main), Btn2.Location.Y);
-        }
-
-        private void StartAdjustingUI()
-        {
-            AdjustUI();
         }
     }
 }

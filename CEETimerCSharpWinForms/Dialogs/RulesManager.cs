@@ -3,7 +3,6 @@ using CEETimerCSharpWinForms.Modules;
 using CEETimerCSharpWinForms.Modules.Configuration;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -16,22 +15,64 @@ namespace CEETimerCSharpWinForms.Dialogs
         public string[] Preferences { get; set; }
         public bool ShowWarning { get; set; }
 
-        private bool IsEditMode;
-        private IEnumerable<ListViewItem> GetAllItems() => ListViewMain.Items.Cast<ListViewItem>();
+        private ContextMenu ContextMenuMain;
+        private MenuItem ContextDelete;
+        private string LastText;
+        private readonly Dictionary<int, string> UserUnsavedText = [];
 
         public RulesManager() : base(DialogExProp.BindButtons | DialogExProp.KeyPreview)
         {
+            CompositedStyle = true;
             InitializeComponent();
+            InitializeExtra();
         }
 
-        protected override void OnDialogLoad()
+        private void InitializeExtra()
+        {
+            ContextMenuMain = CreateNew
+            ([
+                ContextDelete = AddItem("删除(&D)", (sender, e) =>
+                {
+                    if (MessageX.Warn("确认删除所选规则吗？此操作将不可撤销！", Buttons: MessageBoxExButtons.YesNo) == DialogResult.Yes)
+                    {
+                        foreach (ListViewItem Item in GetSelections())
+                        {
+                            DeleteItem(Item);
+                        }
+
+                        UserChanged();
+                    }
+                })
+            ]);
+
+            ContextMenuMain.Popup += ContextMenuMain_Popup;
+            ListViewMain.ContextMenu = ContextMenuMain;
+            ListViewMain.MouseDown += ListViewMain_MouseUpDown;
+            ListViewMain.MouseUp += ListViewMain_MouseUpDown;
+            ListViewMain.ColumnWidthChanging += ListViewMain_ColumnWidthChanging;
+            ListViewMain.SelectedIndexChanged += ListViewMain_SelectedIndexChanged;
+
+            BindComboData(ComboBoxRuleType,
+            [
+                new(Placeholders.PH_START, 0),
+                new(Placeholders.PH_LEFT, 1),
+                new(Placeholders.PH_PAST, 2)
+            ]);
+
+            ComboBoxRuleType.SelectedIndexChanged += ComboBoxRuleType_SelectedIndexChanged;
+            LabelFore.Click += ColorLabels_Click;
+            LabelBack.Click += ColorLabels_Click;
+            LinkReset.Click += LinkReset_Click;
+            TextBoxCustomText.TextChanged += TextBoxCustomText_TextChanged;
+        }
+
+        protected override void OnLoad()
         {
             if (CustomRules != null)
             {
                 if (CustomRules.Count() == 0)
                 {
                     AddItem("文本测试", "65535天23时59分59秒", "255,255,255", "255,255,255", Placeholders.PH_P1);
-                    AdjustColumnWidth();
                     DeleteAllItems();
                 }
                 else
@@ -40,42 +81,36 @@ namespace CEETimerCSharpWinForms.Dialogs
                     {
                         foreach (var Rule in CustomRules)
                         {
-                            AddItem(Rule.Phase, CustomRuleHelper.GetExamTickText(Rule.Tick), Rule.Fore, Rule.Back, Rule.Text);
+                            AddItem(Rule);
                         }
                     });
                 }
             }
+
+            var CustomText = TextBoxCustomText.Text;
+
+            if (string.IsNullOrEmpty(CustomText))
+            {
+                ResetCustomText();
+            }
+            else if (CustomText != CustomRuleHelper.GetCustomTextDefault(ComboBoxRuleType.SelectedIndex, Preferences))
+            {
+                SaveUserUnsavedText();
+            }
+
+            UpdateColorLabels(Color.Black, Color.White);
         }
 
         protected override void AdjustUI()
         {
-            AlignControlsR(ButtonA, ButtonB, ListViewMain);
-            CompactControlsY(ButtonA, ListViewMain, 3);
-            CompactControlsY(ButtonB, ListViewMain, 3);
-            AlignControlsL(LabelWarning, ButtonA, ListViewMain);
-            LabelWarning.Visible = ShowWarning;
+            SetLabelAutoWrap(LabelWarning, GroupBoxWarning);
         }
 
-        private void ContextAdd_Click(object sender, EventArgs e)
+        private void RulesManager_KeyDown(object sender, KeyEventArgs e)
         {
-            RuleDialog RuleDialogMain = new();
-
-            if (ShowRuleDialog(RuleDialogMain) == DialogResult.OK)
+            if (e.KeyCode == Keys.Delete && GetSelections().Count != 0)
             {
-                AddItem(RuleDialogMain.RuleType, RuleDialogMain.ExamTick, RuleDialogMain.Fore, RuleDialogMain.Back, RuleDialogMain.CustomText);
-            }
-        }
-
-        private void ContextEdit_Click(object sender, EventArgs e)
-        {
-            EditCustomRule(ListViewMain.SelectedItems[0]);
-        }
-
-        private void ListViewMain_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Delete && ListViewMain.SelectedItems.Count != 0)
-            {
-                ContextDelete_Click(sender, e);
+                ContextDelete.PerformClick();
             }
             else if (e.Control && e.KeyCode == Keys.A)
             {
@@ -85,23 +120,43 @@ namespace CEETimerCSharpWinForms.Dialogs
             e.Handled = true;
         }
 
-        private void ContextDelete_Click(object sender, EventArgs e)
+        protected override void OnShown()
         {
-            if (MessageX.Warn("确认删除所选规则吗？此操作将不可撤销！", Buttons: MessageBoxExButtons.YesNo) == DialogResult.Yes)
+            if (ShowWarning)
             {
-                foreach (ListViewItem Item in ListViewMain.SelectedItems)
-                {
-                    DeleteItem(Item);
-                }
-
-                UserChanged();
+                MessageX.Warn("检测到未在设置里勾选 自定义文本，在此添加的任何规则将不会生效！");
             }
         }
 
-        private void ContextMenuMain_Opening(object sender, CancelEventArgs e)
+        private void ContextMenuMain_Popup(object sender, EventArgs e)
         {
-            ContextDelete.Enabled = ListViewMain.SelectedItems.Count != 0;
-            ContextEdit.Enabled = ListViewMain.SelectedItems.Count == 1;
+            ContextDelete.Enabled = GetSelections().Count != 0;
+        }
+
+        private void ListViewMain_MouseUpDown(object sender, MouseEventArgs e)
+        {
+            UpdateButtonChangeState(ListViewMain.GetItemAt(e.X, e.Y) != null);
+        }
+
+        private void ListViewMain_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var Selections = GetSelections();
+
+            if (Selections.Count > 0)
+            {
+                UpdateButtonChangeState(Selections.Count == 1);
+
+                var Selected = Selections[0].SubItems;
+                var Tick = CustomRuleHelper.GetExamTick(Selected[1].Text);
+
+                ComboBoxRuleType.SelectedIndex = (int)CustomRuleHelper.GetPhase(Selected[0].Text);
+                NUDDays.Value = Tick.Days;
+                NUDHours.Value = Tick.Hours;
+                NUDMinutes.Value = Tick.Minutes;
+                NUDSeconds.Value = Tick.Seconds;
+                UpdateColorLabels(ColorHelper.GetColor(Selected[2].Text), ColorHelper.GetColor(Selected[3].Text));
+                TextBoxCustomText.Text = Selected[4].Text;
+            }
         }
 
         private void ListViewMain_ColumnWidthChanging(object sender, ColumnWidthChangingEventArgs e)
@@ -110,150 +165,149 @@ namespace CEETimerCSharpWinForms.Dialogs
             e.Cancel = true;
         }
 
-        private void ListViewMain_MouseDoubleClick(object sender, MouseEventArgs e)
+        private void ComboBoxRuleType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (e.Button == MouseButtons.Left && ListViewMain.HitTest(e.X, e.Y).Item != null && ListViewMain.SelectedItems.Count == 1)
+            Execute(() =>
             {
-                EditCustomRule(ListViewMain.GetItemAt(e.X, e.Y));
-            }
-        }
+                var UserSelected = ComboBoxRuleType.SelectedIndex;
 
-        protected override void OnButtonAClicked()
-        {
-            CustomRules = GetAllItems().Select(Item => new RulesManagerObject()
-            {
-                Phase = CustomRuleHelper.GetPhase(Item.SubItems[0].Text),
-                Tick = CustomRuleHelper.GetExamTick(Item.SubItems[1].Text),
-                Text = Item.SubItems[4].Text,
-                Fore = ColorHelper.GetColor(Item.SubItems[2].Text),
-                Back = ColorHelper.GetColor(Item.SubItems[3].Text)
-            }).ToArray();
-
-            base.OnButtonAClicked();
-        }
-
-        private void AddItem(CountdownPhase RuleTypeIndex, string ExamTick, Color Fore, Color Back, string CustomText, ListViewItem Item = null)
-        {
-            UserChanged();
-
-            var RuleTypeText = CustomRuleHelper.GetRuleTypeText(RuleTypeIndex);
-            var _Fore = Fore.ToRgb();
-            var _Back = Back.ToRgb();
-
-            if (!IsEditMode)
-            {
-                var Duplicate = GetDuplicate(RuleTypeText, ExamTick);
-
-                if (Duplicate != null)
+                if (UserUnsavedText.ContainsKey(UserSelected))
                 {
-                    Execute(() =>
+                    if (TextBoxCustomText.Text != LastText)
                     {
-                        if (MessageX.Warn("检测到即将添加的规则与现有的重复，是否覆盖？", Buttons: MessageBoxExButtons.YesNo) == DialogResult.Yes)
-                        {
-                            ModifyOrOverrideItem(Duplicate);
-                            return;
-                        }
-                    });
+                        LastText = TextBoxCustomText.Text;
+                    }
 
+                    TextBoxCustomText.Text = UserUnsavedText[UserSelected];
                     return;
                 }
+
+                ResetCustomText();
+            });
+        }
+
+        private void ColorLabels_Click(object sender, EventArgs e)
+        {
+            var LabelSender = (Label)sender;
+            var ColorDialogMain = new ColorDialogEx();
+
+            if (ColorDialogMain.ShowDialog(LabelSender.BackColor) == DialogResult.OK)
+            {
+                LabelSender.BackColor = ColorDialogMain.Color;
             }
 
-            if (Item != null)
+            LabelColorPreview.ForeColor = LabelFore.BackColor;
+            LabelColorPreview.BackColor = LabelBack.BackColor;
+
+            ColorDialogMain.Dispose();
+        }
+
+        private void TextBoxCustomText_TextChanged(object sender, EventArgs e)
+        {
+            Execute(SaveUserUnsavedText);
+        }
+
+        private void LinkReset_Click(object sender, EventArgs e)
+        {
+            ResetCustomText();
+        }
+
+        private void ButtonAdd_Click(object sender, EventArgs e)
+        {
+            var _Fore = LabelFore.BackColor;
+            var _Back = LabelBack.BackColor;
+
+            if (!ColorHelper.IsNiceContrast(_Fore, _Back))
             {
-                ModifyOrOverrideItem(Item);
+                MessageX.Error("选择的颜色相似或对比度较低，将无法看清文字。\n\n请尝试更换其它背景颜色或文字颜色！");
                 return;
             }
 
-            AddItem(RuleTypeText, ExamTick, _Fore, _Back, CustomText);
-            IDontKnowWhatToNameThis();
-
-            void ModifyOrOverrideItem(ListViewItem Item)
+            if (NUDDays.Value == 0 && NUDHours.Value == 0 && NUDMinutes.Value == 0 && NUDSeconds.Value == 0)
             {
-                Item.SubItems[0].Text = RuleTypeText;
-                Item.SubItems[1].Text = ExamTick;
-                Item.SubItems[2].Text = _Fore;
-                Item.SubItems[3].Text = _Back;
-                Item.SubItems[4].Text = CustomText;
-                IDontKnowWhatToNameThis();
+                MessageX.Error("时刻不能为0，请重新设置！");
+                return;
             }
 
-            void IDontKnowWhatToNameThis()
+            if (!(bool)CustomRuleHelper.CheckCustomText([TextBoxCustomText.Text], out string ErrorMsg, ToBoolean: true) && !string.IsNullOrWhiteSpace(ErrorMsg))
             {
-                AdjustColumnWidth();
-                SortItems();
+                MessageX.Error(ErrorMsg);
+                return;
             }
-        }
 
-        private ListViewItem GetDuplicate(string Column1Text, string Column2Text)
-        {
-            foreach (ListViewItem Item in GetAllItems())
+            var RuleTypeText = CustomRuleHelper.GetRuleTypeText((CountdownPhase)ComboBoxRuleType.SelectedIndex);
+            var TickText = $"{NUDDays.Value}天{NUDHours.Value}时{NUDMinutes.Value}分{NUDSeconds.Value}秒";
+            ListViewItem Existing = null;
+
+            foreach (var Item in GetAllItems())
             {
-                if (Item.SubItems[0].Text == Column1Text && Item.SubItems[1].Text == Column2Text)
+                if (Item.SubItems[0].Text == RuleTypeText && Item.SubItems[1].Text == TickText)
                 {
-                    return Item;
+                    Existing = Item;
+                    break;
                 }
             }
 
-            return null;
-        }
-
-        private void EditCustomRule(ListViewItem Item)
-        {
-            IsEditMode = true;
-
-            RuleDialog RuleDialogMain = new()
+            if (Existing != null)
             {
-                RuleType = CustomRuleHelper.GetPhase(Item.SubItems[0].Text),
-                ExamTick = Item.SubItems[1].Text,
-                Fore = ColorHelper.TryParseRGB(Item.SubItems[2].Text, out Color color1) ? color1 : Color.White,
-                Back = ColorHelper.TryParseRGB(Item.SubItems[3].Text, out Color color2) ? color2 : Color.White,
-                CustomText = Item.SubItems[4].Text
-            };
-
-            if (ShowRuleDialog(RuleDialogMain) == DialogResult.OK)
-            {
-                AddItem(RuleDialogMain.RuleType, RuleDialogMain.ExamTick, RuleDialogMain.Fore, RuleDialogMain.Back, RuleDialogMain.CustomText, Item);
-                RemoveDuplicates();
-            }
-
-            IsEditMode = false;
-        }
-
-        private DialogResult ShowRuleDialog(RuleDialog Dialog)
-        {
-            Dialog.CustomTextPreferences = Preferences;
-            return Dialog.ShowDialog();
-        }
-
-        private void AdjustColumnWidth()
-        {
-            foreach (ColumnHeader column in ListViewMain.Columns)
-            {
-                column.Width = -2;
-            }
-        }
-
-        private void RemoveDuplicates()
-        {
-            var Uniques = new HashSet<string>();
-            var Duplicates = new List<ListViewItem>();
-
-            for (int i = 0; i < GetAllItems().Count(); i++)
-            {
-                var CurrentItem = ListViewMain.Items[i];
-                string CurrentSubItemText = CurrentItem.SubItems[0].Text + CurrentItem.SubItems[1].Text;
-
-                if (!Uniques.Add(CurrentSubItemText))
+                if (MessageX.Warn("检测到即将添加的规则与现有的某个规则重复！\n\n是否覆盖? (是 则覆盖, 否 则取消添加)", Buttons: MessageBoxExButtons.YesNo)
+                    == DialogResult.Yes)
                 {
-                    Duplicates.Add(CurrentItem);
+                    EditItem(Existing);
                 }
+
+                return;
             }
 
-            foreach (var Item in Duplicates)
+            AddItem(
+                RuleTypeText,
+                TickText,
+                _Fore.ToRgb(),
+                _Back.ToRgb(),
+                TextBoxCustomText.Text.RemoveIllegalChars());
+        }
+
+        private void ButtonChange_Click(object sender, EventArgs e)
+        {
+            var Selections = GetSelections();
+            if (Selections.Count > 0)
             {
-                DeleteItem(Item);
+                EditItem(Selections[0]);
             }
+        }
+
+        protected override void ButtonA_Click()
+        {
+            CustomRules = [.. GetAllItems().Select(x => (RulesManagerObject)x.Tag)];
+            base.ButtonA_Click();
+        }
+
+        private IEnumerable<ListViewItem> GetAllItems()
+            => ListViewMain.Items.Cast<ListViewItem>();
+
+        private ListView.SelectedListViewItemCollection GetSelections()
+            => ListViewMain.SelectedItems;
+
+        private void UpdateColorLabels(Color Fore, Color Back)
+        {
+            LabelColorPreview.ForeColor = LabelFore.BackColor = Fore;
+            LabelColorPreview.BackColor = LabelBack.BackColor = Back;
+        }
+
+        private void SaveUserUnsavedText()
+        {
+            UserUnsavedText[ComboBoxRuleType.SelectedIndex] = TextBoxCustomText.Text;
+            LastText = TextBoxCustomText.Text;
+        }
+
+        private void ResetCustomText()
+        {
+            TextBoxCustomText.Text = CustomRuleHelper.GetCustomTextDefault(ComboBoxRuleType.SelectedIndex, Preferences);
+        }
+
+        private void UpdateButtonChangeState(bool Enabled)
+        {
+            ButtonChange.Enabled = Enabled;
         }
 
         private void SelectAllItems()
@@ -271,24 +325,79 @@ namespace CEETimerCSharpWinForms.Dialogs
 
         private void SortItems()
         {
-            List<ListViewItem> Items = GetAllItems().ToList();
+            var Items = GetAllItems().ToList();
             Items.Sort(new ListViewItemComparer());
 
             SuspendListView(() =>
             {
                 DeleteAllItems();
                 AddItems(Items);
+                AutoAdjustColumnWidth();
             });
+
+            UserChanged();
         }
 
-        private void AddItem(string Column1, string Column2, string Column3, string Column4, string Column5)
+        private void AddItem(string Type, string Tick, string Fore, string Back, string Custom, RulesManagerObject Data = null)
         {
-            ListViewMain.Items.Add(new ListViewItem([Column1, Column2, Column3, Column4, Column5]));
+            var Item = new ListViewItem([Type, Tick, Fore, Back, Custom])
+            {
+                Tag = Data ?? new()
+                {
+                    Phase = CustomRuleHelper.GetPhase(Type),
+                    Tick = CustomRuleHelper.GetExamTick(Tick),
+                    Fore = ColorHelper.GetColor(Fore),
+                    Back = ColorHelper.GetColor(Back),
+                    Text = Custom
+                }
+            };
+
+            ListViewMain.Items.Add(Item);
+            SortItems();
+        }
+
+        private void AddItem(RulesManagerObject Rule)
+        {
+            AddItem(
+                CustomRuleHelper.GetRuleTypeText(Rule.Phase),
+                CustomRuleHelper.GetExamTickText(Rule.Tick),
+                Rule.Fore.ToRgb(),
+                Rule.Back.ToRgb(),
+                Rule.Text,
+                Rule);
         }
 
         private void AddItems(IEnumerable<ListViewItem> Items)
         {
             ListViewMain.Items.AddRange([.. Items]);
+        }
+
+        private void EditItem(ListViewItem Item)
+        {
+            var SubItems = Item.SubItems;
+
+            var Phase = (CountdownPhase)ComboBoxRuleType.SelectedIndex;
+            var Tick = new TimeSpan((int)NUDDays.Value, (int)NUDHours.Value, (int)NUDMinutes.Value, (int)NUDSeconds.Value);
+            var Fore = LabelFore.BackColor;
+            var Back = LabelBack.BackColor;
+            var Text = TextBoxCustomText.Text.RemoveIllegalChars();
+
+            SubItems[0].Text = CustomRuleHelper.GetRuleTypeText(Phase);
+            SubItems[1].Text = CustomRuleHelper.GetExamTickText(Tick);
+            SubItems[2].Text = Fore.ToRgb();
+            SubItems[3].Text = Back.ToRgb();
+            SubItems[4].Text = Text;
+
+            Item.Tag = new RulesManagerObject()
+            {
+                Phase = Phase,
+                Tick = Tick,
+                Fore = Fore,
+                Back = Back,
+                Text = Text
+            };
+
+            SortItems();
         }
 
         private void DeleteItem(ListViewItem Item)
@@ -299,6 +408,14 @@ namespace CEETimerCSharpWinForms.Dialogs
         private void DeleteAllItems()
         {
             ListViewMain.Items.Clear();
+        }
+
+        private void AutoAdjustColumnWidth()
+        {
+            foreach (ColumnHeader column in ListViewMain.Columns)
+            {
+                column.Width = -2;
+            }
         }
 
         private void SuspendListView(Action Operation)

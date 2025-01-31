@@ -23,11 +23,14 @@ namespace CEETimerCSharpWinForms.Modules
             ErrorIcon = GetIcon(93);
         }
 
-        public DialogResult Info(string Message, TabControl ParentTabControl = null, TabPage ParentTabPage = null, MessageBoxExButtons Buttons = MessageBoxExButtons.OK, FormStartPosition Position = FormStartPosition.CenterParent, bool AutoClose = false) => Popup(Message, MessageLevel.Info, ParentTabControl, ParentTabPage, Buttons, Position, AutoClose);
+        public DialogResult Info(string Message, TabControl ParentTabControl = null, TabPage ParentTabPage = null, MessageBoxExButtons Buttons = MessageBoxExButtons.OK, FormStartPosition Position = FormStartPosition.CenterParent, bool AutoClose = false)
+            => Popup(Message, MessageLevel.Info, ParentTabControl, ParentTabPage, Buttons, Position, AutoClose);
 
-        public DialogResult Warn(string Message, TabControl ParentTabControl = null, TabPage ParentTabPage = null, MessageBoxExButtons Buttons = MessageBoxExButtons.OK, FormStartPosition Position = FormStartPosition.CenterParent, bool AutoClose = false) => Popup(Message, MessageLevel.Warning, ParentTabControl, ParentTabPage, Buttons, Position, AutoClose);
+        public DialogResult Warn(string Message, TabControl ParentTabControl = null, TabPage ParentTabPage = null, MessageBoxExButtons Buttons = MessageBoxExButtons.OK, FormStartPosition Position = FormStartPosition.CenterParent, bool AutoClose = false)
+            => Popup(Message, MessageLevel.Warning, ParentTabControl, ParentTabPage, Buttons, Position, AutoClose);
 
-        public DialogResult Error(string Message, TabControl ParentTabControl = null, TabPage ParentTabPage = null, MessageBoxExButtons Buttons = MessageBoxExButtons.OK, FormStartPosition Position = FormStartPosition.CenterParent, bool AutoClose = false) => Popup(Message, MessageLevel.Error, ParentTabControl, ParentTabPage, Buttons, Position, AutoClose);
+        public DialogResult Error(string Message, TabControl ParentTabControl = null, TabPage ParentTabPage = null, MessageBoxExButtons Buttons = MessageBoxExButtons.OK, FormStartPosition Position = FormStartPosition.CenterParent, bool AutoClose = false)
+            => Popup(Message, MessageLevel.Error, ParentTabControl, ParentTabPage, Buttons, Position, AutoClose);
 
         private DialogResult Popup(string Message, MessageLevel Level, TabControl ParentTabControl, TabPage ParentTabPage, MessageBoxExButtons Buttons, FormStartPosition Position, bool AutoClose)
         {

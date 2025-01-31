@@ -1,6 +1,7 @@
 ﻿using CEETimerCSharpWinForms.Modules.JsonConverters;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -20,7 +21,32 @@ namespace CEETimerCSharpWinForms.Modules.Configuration
         public RulesManagerObject[] CustomRules
         {
             get => field ?? [];
-            set => field = value ?? [];
+            set
+            {
+                if (value == null)
+                {
+                    field = [];
+                }
+                else
+                {
+                    ConfigHandler.Validate(() =>
+                    {
+                        var HashSet = new HashSet<RulesManagerObject>();
+
+                        foreach (var Item in value)
+                        {
+                            if (!HashSet.Add(Item))
+                            {
+                                throw new Exception();
+                            }
+                        }
+
+                        Array.Sort(value);
+                    });
+
+                    field = value;
+                }
+            }
         }
 
         public int[] CustomColors { get; set; } = [.. Enumerable.Repeat(16777215, 16)];
@@ -36,14 +62,19 @@ namespace CEETimerCSharpWinForms.Modules.Configuration
             get => field ?? [];
             set
             {
-                var tmp = value ?? [];
-
-                ConfigHandler.Validate(() =>
+                if (value == null)
                 {
-                    Array.Sort(tmp);
-                });
+                    field = [];
+                }
+                else
+                {
+                    ConfigHandler.Validate(() =>
+                    {
+                        Array.Sort(value);
+                    });
 
-                field = tmp;
+                    field = value;
+                }
             }
         }
 
@@ -233,7 +264,7 @@ namespace CEETimerCSharpWinForms.Modules.Configuration
     }
 
     [JsonConverter(typeof(CustomRulesConverter))]
-    public sealed class RulesManagerObject
+    public sealed class RulesManagerObject : IComparable<RulesManagerObject>, IEquatable<RulesManagerObject>
     {
         public CountdownPhase Phase { get; set; }
 
@@ -244,6 +275,32 @@ namespace CEETimerCSharpWinForms.Modules.Configuration
         public Color Fore { get; set; }
 
         public Color Back { get; set; }
+
+        int IComparable<RulesManagerObject>.CompareTo(RulesManagerObject other)
+        {
+            if (other == null)
+            {
+                return 1;
+            }
+
+            var PhaseComparer = Phase.CompareTo(other.Phase);
+            if (PhaseComparer != 0)
+            {
+                return PhaseComparer;
+            }
+
+            return Tick.CompareTo(other.Tick);
+        }
+
+        bool IEquatable<RulesManagerObject>.Equals(RulesManagerObject other)
+        {
+            if (other == null)
+            {
+                return false;
+            }
+
+            return Phase == other.Phase && Tick == other.Tick;
+        }
     }
 
     [JsonConverter(typeof(ColorSetConverter))]

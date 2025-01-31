@@ -28,14 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
+            //this.PanelMain = new System.Windows.Forms.Panel();
+            //this.ButtonA = new System.Windows.Forms.Button();
+            //this.ButtonB = new System.Windows.Forms.Button();
             this.LabelInfo = new System.Windows.Forms.Label();
-            this.PanelMain = new System.Windows.Forms.Panel();
             this.ListViewMain = new CEETimerCSharpWinForms.Controls.ListViewEx();
             this.ColumnHeadExamName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ColumnHeadStart = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ColumnHeadEnd = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.GroupBoxEdit = new System.Windows.Forms.GroupBox();
-            this.ButtonDelete = new System.Windows.Forms.Button();
             this.ButtonChange = new System.Windows.Forms.Button();
             this.ButtonAdd = new System.Windows.Forms.Button();
             this.LabelEnd = new System.Windows.Forms.Label();
@@ -44,8 +45,6 @@
             this.DTPStart = new System.Windows.Forms.DateTimePicker();
             this.LabelName = new System.Windows.Forms.Label();
             this.TextBoxName = new System.Windows.Forms.TextBox();
-            this.ButtonSave = new System.Windows.Forms.Button();
-            this.ButtonCancel = new System.Windows.Forms.Button();
             this.GroupBoxAutoSwitch = new System.Windows.Forms.GroupBox();
             this.ComboBoxSwitchPeriod = new System.Windows.Forms.ComboBox();
             this.LabelSwitchPeriod = new System.Windows.Forms.Label();
@@ -107,7 +106,6 @@
             // 
             // GroupBoxEdit
             // 
-            this.GroupBoxEdit.Controls.Add(this.ButtonDelete);
             this.GroupBoxEdit.Controls.Add(this.ButtonChange);
             this.GroupBoxEdit.Controls.Add(this.ButtonAdd);
             this.GroupBoxEdit.Controls.Add(this.LabelEnd);
@@ -123,18 +121,9 @@
             this.GroupBoxEdit.TabStop = false;
             this.GroupBoxEdit.Text = "编辑考试信息";
             // 
-            // ButtonDelete
-            // 
-            this.ButtonDelete.Location = new System.Drawing.Point(280, 104);
-            this.ButtonDelete.Name = "ButtonDelete";
-            this.ButtonDelete.Size = new System.Drawing.Size(75, 23);
-            this.ButtonDelete.TabIndex = 7;
-            this.ButtonDelete.Text = "删除(&D)";
-            this.ButtonDelete.UseVisualStyleBackColor = true;
-            // 
             // ButtonChange
             // 
-            this.ButtonChange.Location = new System.Drawing.Point(199, 104);
+            this.ButtonChange.Location = new System.Drawing.Point(280, 104);
             this.ButtonChange.Name = "ButtonChange";
             this.ButtonChange.Size = new System.Drawing.Size(75, 23);
             this.ButtonChange.TabIndex = 8;
@@ -143,7 +132,7 @@
             // 
             // ButtonAdd
             // 
-            this.ButtonAdd.Location = new System.Drawing.Point(118, 104);
+            this.ButtonAdd.Location = new System.Drawing.Point(199, 104);
             this.ButtonAdd.Name = "ButtonAdd";
             this.ButtonAdd.Size = new System.Drawing.Size(75, 23);
             this.ButtonAdd.TabIndex = 7;
@@ -203,23 +192,23 @@
             this.TextBoxName.Size = new System.Drawing.Size(286, 23);
             this.TextBoxName.TabIndex = 0;
             // 
-            // ButtonSave
+            // ButtonA
             // 
-            this.ButtonSave.Location = new System.Drawing.Point(376, 276);
-            this.ButtonSave.Name = "ButtonSave";
-            this.ButtonSave.Size = new System.Drawing.Size(75, 23);
-            this.ButtonSave.TabIndex = 4;
-            this.ButtonSave.Text = "保存(&S)";
-            this.ButtonSave.UseVisualStyleBackColor = true;
+            this.ButtonA.Location = new System.Drawing.Point(376, 276);
+            this.ButtonA.Name = "ButtonA";
+            this.ButtonA.Size = new System.Drawing.Size(75, 23);
+            this.ButtonA.TabIndex = 4;
+            this.ButtonA.Text = "保存(&S)";
+            this.ButtonA.UseVisualStyleBackColor = true;
             // 
-            // ButtonCancel
+            // ButtonB
             // 
-            this.ButtonCancel.Location = new System.Drawing.Point(457, 276);
-            this.ButtonCancel.Name = "ButtonCancel";
-            this.ButtonCancel.Size = new System.Drawing.Size(75, 23);
-            this.ButtonCancel.TabIndex = 5;
-            this.ButtonCancel.Text = "取消(&C)";
-            this.ButtonCancel.UseVisualStyleBackColor = true;
+            this.ButtonB.Location = new System.Drawing.Point(457, 276);
+            this.ButtonB.Name = "ButtonB";
+            this.ButtonB.Size = new System.Drawing.Size(75, 23);
+            this.ButtonB.TabIndex = 5;
+            this.ButtonB.Text = "取消(&C)";
+            this.ButtonB.UseVisualStyleBackColor = true;
             // 
             // GroupBoxAutoSwitch
             // 
@@ -271,8 +260,8 @@
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(540, 308);
             this.Controls.Add(this.GroupBoxAutoSwitch);
-            this.Controls.Add(this.ButtonCancel);
-            this.Controls.Add(this.ButtonSave);
+            this.Controls.Add(this.ButtonB);
+            this.Controls.Add(this.ButtonA);
             this.Controls.Add(this.GroupBoxEdit);
             this.Controls.Add(this.PanelMain);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -282,7 +271,6 @@
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "管理考试信息 - 高考倒计时";
-            this.Load += new System.EventHandler(this.ExamInfoManager_Load);
             this.PanelMain.ResumeLayout(false);
             this.PanelMain.PerformLayout();
             this.GroupBoxEdit.ResumeLayout(false);
@@ -300,7 +288,6 @@
         private System.Windows.Forms.ColumnHeader ColumnHeadStart;
         private System.Windows.Forms.ColumnHeader ColumnHeadEnd;
         private System.Windows.Forms.Label LabelInfo;
-        private System.Windows.Forms.Panel PanelMain;
         private System.Windows.Forms.GroupBox GroupBoxEdit;
         private System.Windows.Forms.Label LabelEnd;
         private System.Windows.Forms.DateTimePicker DTPEnd;
@@ -308,14 +295,14 @@
         private System.Windows.Forms.DateTimePicker DTPStart;
         private System.Windows.Forms.Label LabelName;
         private System.Windows.Forms.TextBox TextBoxName;
-        private System.Windows.Forms.Button ButtonSave;
-        private System.Windows.Forms.Button ButtonCancel;
         private System.Windows.Forms.GroupBox GroupBoxAutoSwitch;
         private System.Windows.Forms.Label LabelSwitchPeriod;
         private System.Windows.Forms.CheckBox CheckBoxAutoSwitch;
         private System.Windows.Forms.ComboBox ComboBoxSwitchPeriod;
         private System.Windows.Forms.Button ButtonAdd;
         private System.Windows.Forms.Button ButtonChange;
-        private System.Windows.Forms.Button ButtonDelete;
+        //private System.Windows.Forms.Panel PanelMain;
+        //private System.Windows.Forms.Button ButtonA;
+        //private System.Windows.Forms.Button ButtonB;
     }
 }

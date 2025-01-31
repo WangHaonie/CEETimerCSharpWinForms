@@ -33,7 +33,14 @@ namespace CEETimerCSharpWinForms.Dialogs
             return Result;
         }
 
-        protected override void OnDialogLoad()
+        protected override void AdjustUI()
+        {
+            EnablePanelAutoSize(AutoSizeMode.GrowAndShrink);
+            SetLabelAutoWrap(LabelMessage);
+            AdjustPanel();
+        }
+
+        protected override void OnLoad()
         {
             switch (ButtonsEx)
             {
@@ -48,25 +55,19 @@ namespace CEETimerCSharpWinForms.Dialogs
             }
         }
 
-        protected override void AdjustUI()
-        {
-            AdjustPanel();
-            SetLabelAutoWrap(LabelMessage);
-        }
-
-        protected override void OnDialogShown()
+        protected override void OnShown()
         {
             DialogSound.Play();
             AutoCloseAsync();
         }
 
-        protected override void OnButtonAClicked()
+        protected override void ButtonA_Click()
         {
             Result = ButtonsEx == MessageBoxExButtons.YesNo ? DialogResult.Yes : DialogResult.None;
             Close();
         }
 
-        protected override void OnButtonBClicked()
+        protected override void ButtonB_Click()
         {
             Result = ButtonsEx == MessageBoxExButtons.YesNo ? DialogResult.No : DialogResult.OK;
             Close();
@@ -84,19 +85,8 @@ namespace CEETimerCSharpWinForms.Dialogs
         {
             if (AutoCloseRequired)
             {
-                await Task.Run(async () =>
-                {
-                    await Task.Delay(3000);
-
-                    if (InvokeRequired)
-                    {
-                        Invoke(Close);
-                    }
-                    else
-                    {
-                        Close();
-                    }
-                });
+                await Task.Delay(3000);
+                Close();
             }
         }
     }

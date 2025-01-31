@@ -30,7 +30,6 @@ namespace CEETimerCSharpWinForms.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.LabelCountdown = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
@@ -63,8 +62,7 @@ namespace CEETimerCSharpWinForms.Forms
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
-            this.Text = AppLauncher.AppName;
-            this.TopMost = true;
+            this.Text = "高考倒计时 by WangHaonie";
             this.ResumeLayout(false);
             this.PerformLayout();
 

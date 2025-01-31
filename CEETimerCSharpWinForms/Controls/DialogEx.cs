@@ -1,10 +1,9 @@
 ﻿using CEETimerCSharpWinForms.Modules;
-using System.Drawing;
 using System.Windows.Forms;
 
 namespace CEETimerCSharpWinForms.Controls
 {
-    public abstract class DialogEx : AppForm
+    public class DialogEx : AppForm
     {
         protected Panel PanelMain { get; private set; }
         protected Button ButtonB { get; private set; }
@@ -24,80 +23,41 @@ namespace CEETimerCSharpWinForms.Controls
 
         private void InitializeComponent()
         {
-            SuspendLayout();
-
             PanelMain = new();
             ButtonA = new();
             ButtonB = new();
-
-            AutoScaleMode = AutoScaleMode.Dpi;
-            AutoSize = true;
-            AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            DoubleBuffered = true;
-            Font = new("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            FormBorderStyle = FormBorderStyle.FixedSingle;
-            Margin = new(4);
-            MaximizeBox = false;
-            MinimizeBox = false;
-            ShowIcon = false;
-            StartPosition = FormStartPosition.CenterParent;
-
-            Controls.AddRange([ButtonA, ButtonB]);
-
-            ButtonA.Click += (sender, e) => OnButtonAClicked();
-            ButtonB.Click += (sender, e) => OnButtonBClicked();
-
-            ResumeLayout(false);
+            ButtonA.Click += (sender, e) => ButtonA_Click();
+            ButtonB.Click += (sender, e) => ButtonB_Click();
         }
 
-        protected sealed override void OnAppFormLoad()
+        protected override void OnClosing(FormClosingEventArgs e)
         {
-            KeepProperties();
-            OnDialogLoad();
+            if (IsUserChanged)
+            {
+                ShowUnsavedWarning("是否保存当前更改？", e, ButtonA_Click, () =>
+                {
+                    IsUserChanged = false;
+                    Close();
+                });
+            }
         }
 
-        protected sealed override void OnAppFormShown()
-        {
-            OnDialogShown();
-        }
-
-        protected sealed override void OnAppFormClosing(FormClosingEventArgs e)
-        {
-            OnDialogClosing(e);
-        }
-
-        protected abstract void OnDialogLoad();
-
-        protected virtual void OnDialogShown() { }
-
-        protected void AdjustPanel()
-        {
-            AlignControlsR(ButtonA, ButtonB, PanelMain);
-        }
-
-        protected virtual void OnButtonAClicked()
+        protected virtual void ButtonA_Click()
         {
             IsUserChanged = false;
             DialogResult = DialogResult.OK;
             Close();
         }
 
-        protected virtual void OnButtonBClicked()
+        protected virtual void ButtonB_Click()
         {
             DialogResult = DialogResult.Cancel;
             Close();
         }
 
-        protected virtual void OnDialogClosing(FormClosingEventArgs e)
+        protected void AdjustPanel()
         {
-            if (IsUserChanged)
-            {
-                ShowUnsavedWarning("是否保存当前更改？", e, OnButtonAClicked, () =>
-                {
-                    IsUserChanged = false;
-                    Close();
-                });
-            }
+            AlignControlsR(ButtonA, ButtonB, PanelMain);
         }
 
         protected void EnablePanelAutoSize(AutoSizeMode Mode)
@@ -130,11 +90,6 @@ namespace CEETimerCSharpWinForms.Controls
             {
                 KeyPreview = true;
             }
-        }
-
-        private void KeepProperties()
-        {
-            AutoScaleDimensions = new(96F, 96F);
         }
     }
 }

@@ -82,7 +82,7 @@ namespace CEETimerCSharpWinForms.Forms
             InitializeComponent();
         }
 
-        protected override void OnTrackableFormLoad()
+        protected override void OnLoad()
         {
             Config = new ConfigHandler(this);
             AppConfig = Config.Read();
@@ -460,7 +460,7 @@ namespace CEETimerCSharpWinForms.Forms
             if (e.Button == MouseButtons.Left) AppLauncher.OnTrayMenuShowAllClicked();
         }
 
-        protected override void OnTrackableFormClosing(FormClosingEventArgs e)
+        protected override void OnClosing(FormClosingEventArgs e)
         {
             e.Cancel = e.CloseReason != CloseReason.WindowsShutDown;
         }
