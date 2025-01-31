@@ -166,7 +166,6 @@ namespace CEETimerCSharpWinForms.Forms
             Console.WriteLine("##########################");
 #endif
 
-            ShowInTaskbar = !TopMost;
             IsCountdownReady = !string.IsNullOrWhiteSpace(ExamName) && ExamStartTime.IsValid() && ExamEndTime.IsValid() && (ExamEndTime > ExamStartTime || !IsShowEnd);
 
             SelectedState = CountdownState.Normal;
@@ -216,6 +215,7 @@ namespace CEETimerCSharpWinForms.Forms
             ValidateNeeded = false;
             TopMost = false;
             TopMost = TopMostTmp;
+            ShowInTaskbar = !TopMost;
             await StartCountdown();
         }
 
