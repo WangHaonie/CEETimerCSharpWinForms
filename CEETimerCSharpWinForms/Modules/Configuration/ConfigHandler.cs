@@ -1,5 +1,4 @@
 ﻿using CEETimerCSharpWinForms.Controls;
-using CEETimerCSharpWinForms.Forms;
 using Newtonsoft.Json;
 using System;
 using System.IO;
@@ -47,15 +46,5 @@ namespace CEETimerCSharpWinForms.Modules.Configuration
                 return new();
             }
         }
-
-        public static void Validate(Action Method)
-        {
-            if (MainForm.ValidateNeeded)
-            {
-                Method();
-            }
-        }
-
-        public static bool ValidateEndPast(int SelectedIndex) => SelectedIndex is 1 or 2;
     }
 }

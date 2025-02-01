@@ -190,6 +190,8 @@ namespace CEETimerCSharpWinForms.Controls
             }
         }
 
+        protected bool ValidateEndPast(int SelectedIndex) => SelectedIndex is 1 or 2;
+
         /// <summary>
         /// 在用户未保存更改并尝试关闭窗体时显示警告。同时防止直接关闭警告时也窗体会随之关闭。
         /// </summary>

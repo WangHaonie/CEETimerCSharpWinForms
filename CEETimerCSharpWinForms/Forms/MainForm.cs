@@ -147,7 +147,7 @@ namespace CEETimerCSharpWinForms.Forms
             var TopMostTmp = AppConfig.General.TopMost;
             IsShowXOnly = AppConfig.Display.ShowXOnly;
             IsRounding = AppConfig.Display.Rounding;
-            IsShowEnd = ConfigHandler.ValidateEndPast(AppConfig.Display.EndIndex);
+            IsShowEnd = ValidateEndPast(AppConfig.Display.EndIndex);
             IsShowPast = AppConfig.Display.EndIndex == 2;
             IsDraggable = AppConfig.Display.Draggable;
             UniTopMost = AppConfig.General.UniTopMost;

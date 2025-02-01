@@ -46,7 +46,7 @@ namespace CEETimerCSharpWinForms.Forms
             RefreshSettings();
             ChangeWorkingStyle(WorkingArea.LastColor);
             ChangeWorkingStyle(WorkingArea.Funny, false);
-            ChangeWorkingStyle(WorkingArea.ShowLeftPast, ConfigHandler.ValidateEndPast(AppConfig.Display.EndIndex));
+            ChangeWorkingStyle(WorkingArea.ShowLeftPast, ValidateEndPast(AppConfig.Display.EndIndex));
         }
 
         private void InitializeExtra()
@@ -151,7 +151,7 @@ namespace CEETimerCSharpWinForms.Forms
             CheckBoxCustomText.Checked = AppConfig.Display.CustomText;
             CheckBoxRounding.Checked = AppConfig.Display.Rounding;
             ComboBoxCountdownEnd.SelectedIndex = AppConfig.Display.EndIndex;
-            DtpExamEnd.Enabled = ConfigHandler.ValidateEndPast(AppConfig.Display.EndIndex);
+            DtpExamEnd.Enabled = ValidateEndPast(AppConfig.Display.EndIndex);
             CheckBoxPptSvc.Checked = AppConfig.Display.SeewoPptsvc;
             CheckBoxUniTopMost.Checked = MainForm.UniTopMost;
             ComboBoxScreens.SelectedIndex = AppConfig.Display.ScreenIndex;
@@ -213,7 +213,7 @@ namespace CEETimerCSharpWinForms.Forms
         private void ComboBoxCountdownEnd_SelectedIndexChanged(object sender, EventArgs e)
         {
             SettingsChanged(sender, e);
-            var Condition = ConfigHandler.ValidateEndPast(ComboBoxCountdownEnd.SelectedIndex);
+            var Condition = ValidateEndPast(ComboBoxCountdownEnd.SelectedIndex);
             ChangeWorkingStyle(WorkingArea.ShowLeftPast, Condition);
             DtpExamEnd.Enabled = Condition;
 
