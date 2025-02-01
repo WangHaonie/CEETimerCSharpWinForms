@@ -257,8 +257,7 @@ namespace CEETimerCSharpWinForms.Forms
                 FontMustExist = true,
                 MinSize = ConfigPolicy.MinFontSize,
                 MaxSize = ConfigPolicy.MaxFontSize,
-                ScriptsOnly = true,
-                ShowEffects = false
+                ScriptsOnly = true
             };
 
             if (FontDialogMain.ShowDialog() == DialogResult.OK)
@@ -670,7 +669,7 @@ namespace CEETimerCSharpWinForms.Forms
                     break;
                 case WorkingArea.ChangeFont:
                     SelectedFont = NewFont;
-                    LabelFont.Text = $"当前字体: {NewFont.Name}, {NewFont.Style}, {NewFont.Size}pt";
+                    LabelFont.Text = $"当前字体: {NewFont.Name}, {NewFont.Size}pt, {NewFont.Style}";
                     break;
                 case WorkingArea.LastColor:
                     var CountdownColors = AppConfig.Appearance.Colors;

@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Drawing;
+using System.Linq;
 
 namespace CEETimerCSharpWinForms.Modules.JsonConverters
 {
@@ -10,8 +11,8 @@ namespace CEETimerCSharpWinForms.Modules.JsonConverters
         {
             string[] FontParts = reader.Value.ToString().Split(ConfigPolicy.ValueSeperator);
 
-            var FontPart1 = (Font)new FontConverter().ConvertFromString($"{FontParts[0]}, {FontParts[1]}");
-            var FontPart2 = (FontStyle)Enum.Parse(typeof(FontStyle), FontParts[2]);
+            var FontPart1 = (Font)new FontConverter().ConvertFromString(string.Join(ConfigPolicy.ValueSeperatorString, FontParts.Take(2)));
+            var FontPart2 = (FontStyle)Enum.Parse(typeof(FontStyle), string.Join(ConfigPolicy.ValueSeperatorString, FontParts.Skip(2)));
 
             if (FontPart1.Size is >= ConfigPolicy.MinFontSize or <= ConfigPolicy.MaxFontSize)
             {
