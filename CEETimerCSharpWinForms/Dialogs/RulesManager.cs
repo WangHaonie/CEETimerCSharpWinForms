@@ -45,7 +45,6 @@ namespace CEETimerCSharpWinForms.Dialogs
                 })
             ]);
 
-            ContextMenuMain.Popup += ContextMenuMain_Popup;
             ListViewMain.ContextMenu = ContextMenuMain;
             ListViewMain.MouseDown += ListViewMain_MouseUpDown;
             ListViewMain.MouseUp += ListViewMain_MouseUpDown;
@@ -128,14 +127,11 @@ namespace CEETimerCSharpWinForms.Dialogs
             }
         }
 
-        private void ContextMenuMain_Popup(object sender, EventArgs e)
-        {
-            ContextDelete.Enabled = GetSelections().Count != 0;
-        }
-
         private void ListViewMain_MouseUpDown(object sender, MouseEventArgs e)
         {
-            UpdateButtonChangeState(ListViewMain.GetItemAt(e.X, e.Y) != null);
+            var SelectionCount = GetSelections().Count;
+            ContextDelete.Enabled = SelectionCount != 0;
+            ButtonChange.Enabled = SelectionCount == 1;
         }
 
         private void ListViewMain_SelectedIndexChanged(object sender, EventArgs e)
@@ -144,8 +140,6 @@ namespace CEETimerCSharpWinForms.Dialogs
 
             if (Selections.Count > 0)
             {
-                UpdateButtonChangeState(Selections.Count == 1);
-
                 var Selected = Selections[0].SubItems;
                 var Tick = CustomRuleHelper.GetExamTick(Selected[1].Text);
 
@@ -303,11 +297,6 @@ namespace CEETimerCSharpWinForms.Dialogs
         private void ResetCustomText()
         {
             TextBoxCustomText.Text = CustomRuleHelper.GetCustomTextDefault(ComboBoxRuleType.SelectedIndex, Preferences);
-        }
-
-        private void UpdateButtonChangeState(bool Enabled)
-        {
-            ButtonChange.Enabled = Enabled;
         }
 
         private void SelectAllItems()
