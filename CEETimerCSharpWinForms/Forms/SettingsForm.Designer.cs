@@ -360,6 +360,7 @@
             // GBoxContent
             // 
             this.GBoxContent.Controls.Add(this.LabelCountdownEnd);
+            this.GBoxContent.Controls.Add(this.ButtonRulesMan);
             this.GBoxContent.Controls.Add(this.ComboBoxCountdownEnd);
             this.GBoxContent.Controls.Add(this.CheckBoxCustomText);
             this.GBoxContent.Controls.Add(this.ButtonCustomText);
@@ -871,7 +872,7 @@
             // ButtonRulesMan
             // 
             this.ButtonRulesMan.AutoSize = true;
-            this.ButtonRulesMan.Location = new System.Drawing.Point(4, 313);
+            this.ButtonRulesMan.Location = new System.Drawing.Point(215, 68);
             this.ButtonRulesMan.Name = "ButtonRulesMan";
             this.ButtonRulesMan.Size = new System.Drawing.Size(101, 25);
             this.ButtonRulesMan.TabIndex = 20;
@@ -889,7 +890,6 @@
             this.CancelButton = this.ButtonCancel;
             this.ClientSize = new System.Drawing.Size(359, 344);
             this.Controls.Add(this.TabControlMain);
-            this.Controls.Add(this.ButtonRulesMan);
             this.Controls.Add(this.ButtonSave);
             this.Controls.Add(this.ButtonCancel);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -928,7 +928,6 @@
             this.GBoxSyncTime.ResumeLayout(false);
             this.GBoxSyncTime.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
