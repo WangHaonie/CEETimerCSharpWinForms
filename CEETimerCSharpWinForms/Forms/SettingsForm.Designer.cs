@@ -872,6 +872,7 @@
             // ButtonRulesMan
             // 
             this.ButtonRulesMan.AutoSize = true;
+            this.ButtonRulesMan.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ButtonRulesMan.Location = new System.Drawing.Point(215, 68);
             this.ButtonRulesMan.Name = "ButtonRulesMan";
             this.ButtonRulesMan.Size = new System.Drawing.Size(101, 25);

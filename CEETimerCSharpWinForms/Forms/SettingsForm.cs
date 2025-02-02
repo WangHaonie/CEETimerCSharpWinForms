@@ -127,7 +127,7 @@ namespace CEETimerCSharpWinForms.Forms
 
             Adjust(() =>
             {
-                AlignControlsL(ButtonRulesMan, ButtonSave, TabControlMain);
+                AlignControlsR(ButtonRulesMan, ComboBoxCountdownEnd);
                 AlignControlsX(ComboBoxShowXOnly, CheckBoxShowXOnly, -1);
                 AlignControlsX(ComboBoxScreens, LabelScreens);
                 AlignControlsX(ComboBoxPosition, LabelChar1);
