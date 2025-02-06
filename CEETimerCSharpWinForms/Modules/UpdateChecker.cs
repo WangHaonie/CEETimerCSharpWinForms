@@ -9,7 +9,7 @@ namespace CEETimerCSharpWinForms.Modules
 {
     public static class UpdateChecker
     {
-        public static void CheckUpdate(bool IsProgramStart, TrackableForm OwnerForm)
+        public static void CheckUpdate(bool IsProgramStart, AppForm OwnerForm)
         {
             new Updater().CheckUpdate(IsProgramStart, new(OwnerForm));
         }
@@ -38,7 +38,7 @@ namespace CEETimerCSharpWinForms.Modules
 
                 if (Version.Parse(CurrentLatest) > Version.Parse(AppLauncher.AppVersion))
                 {
-                    if (MessageX.Info($"检测到新版本，是否下载并安装？\n\n当前版本: v{AppLauncher.AppVersion}\n最新版本: v{CurrentLatest}\n发布日期: {PublishTime}\n\nv{CurrentLatest}更新日志: {UpdateLog}", Buttons: MessageBoxExButtons.YesNo, Position: IsProgramStart ? FormStartPosition.CenterScreen : FormStartPosition.CenterParent) == DialogResult.Yes)
+                    if (MessageX.Info($"检测到新版本，是否下载并安装？\n\n当前版本: v{AppLauncher.AppVersion}\n最新版本: v{CurrentLatest}\n发布日期: {PublishTime}\n\nv{CurrentLatest}更新日志: {UpdateLog}", Buttons: MessageBoxExButtons.YesNo) == DialogResult.Yes)
                     {
                         if (FormDownloader == null || FormDownloader.IsDisposed)
                         {

@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace CEETimerCSharpWinForms.Modules
@@ -35,41 +33,6 @@ namespace CEETimerCSharpWinForms.Modules
             else
             {
                 return Color.FromArgb(R, G, B);
-            }
-        }
-
-        public static string GetStringFromArgbArray(IEnumerable<int> arr)
-        {
-            return string.Join(",", arr);
-        }
-
-        public static int[] GetArgbArray(string s)
-        {
-            try
-            {
-                var input = s.Split(',');
-                var arr = new int[16];
-
-                for (int i = 0; i < Math.Min(input.Length, 16); i++)
-                {
-                    if (!int.TryParse(input[i], out int tmp))
-                    {
-                        ConfigPolicy.NotAllowed<int[]>();
-                    }
-
-                    arr[i] = tmp;
-                }
-
-                for (int i = input.Length; i < 16; i++)
-                {
-                    arr[i] = 16777215;
-                }
-
-                return arr;
-            }
-            catch
-            {
-                return [.. Enumerable.Repeat(16777215, 16)];
             }
         }
 

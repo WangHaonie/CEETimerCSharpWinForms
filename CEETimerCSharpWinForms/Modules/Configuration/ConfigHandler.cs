@@ -1,5 +1,4 @@
-﻿using CEETimerCSharpWinForms.Controls;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.IO;
 
@@ -10,7 +9,7 @@ namespace CEETimerCSharpWinForms.Modules.Configuration
         private readonly JsonSerializerSettings Settings;
         private readonly MessageBoxHelper MessageX;
 
-        public ConfigHandler(TrackableForm Owner)
+        public ConfigHandler()
         {
             Settings = new JsonSerializerSettings()
             {
@@ -20,7 +19,7 @@ namespace CEETimerCSharpWinForms.Modules.Configuration
                 TypeNameHandling = TypeNameHandling.Auto
             };
 
-            MessageX = new(Owner);
+            MessageX = new();
         }
 
         public void Save(ConfigObject Config)

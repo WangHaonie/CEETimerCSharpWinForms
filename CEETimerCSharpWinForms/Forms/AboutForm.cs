@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace CEETimerCSharpWinForms.Forms
 {
-    public partial class AboutForm : TrackableForm
+    public partial class AboutForm : AppForm
     {
         private bool IsCheckingUpdate = false;
 

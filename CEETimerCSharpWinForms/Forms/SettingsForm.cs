@@ -13,7 +13,7 @@ using System.Windows.Forms;
 
 namespace CEETimerCSharpWinForms.Forms
 {
-    public partial class SettingsForm : TrackableForm
+    public partial class SettingsForm : AppForm
     {
         private Font SelectedFont;
         private RulesManagerObject[] EditedCustomRules;
@@ -398,8 +398,8 @@ namespace CEETimerCSharpWinForms.Forms
         private void CheckBoxDraggable_CheckedChanged(object sender, EventArgs e)
         {
             ChangePptsvcStyle(sender, e);
-            ComboBoxScreens.SelectedValue = CheckBoxDraggable.Checked ? 0 : AppConfig.Display.ScreenIndex;
-            ComboBoxPosition.SelectedValue = CheckBoxDraggable.Checked ? 0 : (int)AppConfig.Display.Position;
+            ComboBoxScreens.SelectedIndex = CheckBoxDraggable.Checked ? 0 : AppConfig.Display.ScreenIndex;
+            ComboBoxPosition.SelectedIndex = CheckBoxDraggable.Checked ? 0 : (int)AppConfig.Display.Position;
             LabelScreens.Enabled = LabelChar1.Enabled = ComboBoxScreens.Enabled = !CheckBoxDraggable.Checked;
         }
 
@@ -480,7 +480,6 @@ namespace CEETimerCSharpWinForms.Forms
             }
 
             ChangeWorkingStyle(WorkingArea.Funny, false);
-            base.OnClosed();
         }
 
         private void ChangeCustomTextStyle(object sender)
@@ -708,8 +707,8 @@ namespace CEETimerCSharpWinForms.Forms
                 case WorkingArea.ShowLeftPast:
                     GBoxExamEnd.Visible = IsWorking;
                     GBoxOthers.Location = IsWorking ?
-                                          new(GBoxExamEnd.Location.X, GBoxExamEnd.Location.Y + GBoxExamEnd.Height + 6.WithDpi(this)) :
-                                          new(GBoxOthers.Location.X, GBoxExamStart.Location.Y + GBoxExamStart.Height + 6.WithDpi(this));
+                                          new(GBoxExamEnd.Location.X, GBoxExamEnd.Location.Y + GBoxExamEnd.Height + 6.ScaleTo(this)) :
+                                          new(GBoxOthers.Location.X, GBoxExamStart.Location.Y + GBoxExamStart.Height + 6.ScaleTo(this));
                     break;
             }
         }

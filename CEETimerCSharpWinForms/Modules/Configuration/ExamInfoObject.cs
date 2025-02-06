@@ -23,10 +23,10 @@ namespace CEETimerCSharpWinForms.Modules.Configuration
             }
         } = "";
 
-        [JsonConverter(typeof(DateTimeConverter))]
+        [JsonConverter(typeof(ExamTimeConverter))]
         public DateTime ExamStartTime { get; set; } = DateTime.Now;
 
-        [JsonConverter(typeof(DateTimeConverter))]
+        [JsonConverter(typeof(ExamTimeConverter))]
         public DateTime ExamEndTime { get; set; } = DateTime.Now;
 
         public override string ToString()

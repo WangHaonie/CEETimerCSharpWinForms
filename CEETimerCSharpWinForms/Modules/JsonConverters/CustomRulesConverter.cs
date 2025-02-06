@@ -18,14 +18,7 @@ namespace CEETimerCSharpWinForms.Modules.JsonConverters
             }
 
             var Phase = (CountdownPhase)PhaseValue;
-
-            var TimeSpanParts = Json[nameof(existingValue.Tick)].ToString().Split(ConfigPolicy.ValueSeperator);
-            var Tick = new TimeSpan(
-                    int.Parse(TimeSpanParts[0]),
-                    int.Parse(TimeSpanParts[1]),
-                    int.Parse(TimeSpanParts[2]),
-                    int.Parse(TimeSpanParts[3]));
-
+            var Tick = Json[nameof(existingValue.Tick)].ToString().ToTimeSpan(ConfigPolicy.ValueSeperator);
             var Fore = ColorHelper.GetColor(Json[nameof(existingValue.Fore)].ToString());
             var Back = ColorHelper.GetColor(Json[nameof(existingValue.Back)].ToString());
 

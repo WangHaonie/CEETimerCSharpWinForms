@@ -13,7 +13,7 @@ using System.Windows.Forms;
 
 namespace CEETimerCSharpWinForms.Forms
 {
-    public partial class MainForm : TrackableForm
+    public partial class MainForm : AppForm
     {
         public static bool UniTopMost { get; private set; } = true;
         public static bool IsNormalStart { get; set; }
@@ -28,6 +28,8 @@ namespace CEETimerCSharpWinForms.Forms
                 AppLauncher.OnAppConfigChanged();
             }
         }
+
+        public static Screen CurrentScreen { get; private set; } = null;
 
         private bool MemClean;
         private bool IsShowXOnly;
@@ -50,17 +52,17 @@ namespace CEETimerCSharpWinForms.Forms
         private bool IsReadyToMove;
         private bool IsCountdownReady;
         private bool IsCountdownRunning;
-        private bool IsWin10BelowRounded;
+        private bool IsWin10BelowRound;
         private bool ShowTrayIcon;
         private bool ShowTrayText;
         private readonly int PptsvcThreshold = 1;
         private readonly int BorderRadius = 13;
         private CountdownState SelectedState;
         private System.Windows.Forms.Timer LocationWatcher;
-        private System.Threading.Timer MemoryOptimizer;
+        private System.Threading.Timer MemCleaner;
         private Point LastLocation;
         private Point LastMouseLocation;
-        private Rectangle SelectedScreen;
+        private Rectangle CurrentScreenRect;
         private SettingsForm FormSettings;
         private AboutForm FormAbout;
         private NotifyIcon TrayIcon;
@@ -84,7 +86,7 @@ namespace CEETimerCSharpWinForms.Forms
 
         protected override void OnLoad()
         {
-            Config = new ConfigHandler(this);
+            Config = new ConfigHandler();
             AppConfig = Config.Read();
             AppLauncher.AppConfigChanged += (sender, e) =>
             {
@@ -102,15 +104,15 @@ namespace CEETimerCSharpWinForms.Forms
             LocationWatcher.Start();
 
             Task.Run(() => UpdateChecker.CheckUpdate(true, this));
-            _ = 1.WithDpi(this);
+            _ = 1.ScaleTo(this);
             IsNormalStart = true;
         }
 
         private void MainForm_SizeChanged(object sender, EventArgs e)
         {
-            if (IsWin10BelowRounded)
+            if (IsWin10BelowRound)
             {
-                var _BorderRadius = BorderRadius.WithDpi(this);
+                var _BorderRadius = BorderRadius.ScaleTo(this);
                 var HRgn = NativeInterop.CreateRoundRectRgn(0, 0, Width, Height, _BorderRadius, _BorderRadius);
                 Region = Region.FromHrgn(HRgn);
                 NativeInterop.DeleteObject(HRgn);
@@ -153,7 +155,7 @@ namespace CEETimerCSharpWinForms.Forms
             UniTopMost = AppConfig.General.UniTopMost;
             IsPPTService = AppConfig.Display.SeewoPptsvc;
             IsCustomText = AppConfig.Display.CustomText;
-            ScreenIndex = AppConfig.Display.ScreenIndex;
+            ScreenIndex = AppConfig.Display.ScreenIndex - 1;
             CountdownPos = AppConfig.Display.Position;
             ShowXOnlyIndex = AppConfig.Display.X;
             ShowTrayIcon = AppConfig.Tools.TrayIcon;
@@ -205,10 +207,10 @@ namespace CEETimerCSharpWinForms.Forms
 
             AppLauncher.OnUniTopMostStateChanged();
 
-            MemoryOptimizer?.Dispose();
+            MemCleaner?.Dispose();
             if (MemClean)
             {
-                MemoryOptimizer = new(OptimizeMemory, null, TimeSpan.Zero, TimeSpan.FromMinutes(5));
+                MemCleaner = new(CleanMemory, null, TimeSpan.Zero, TimeSpan.FromMinutes(5));
             }
 
             SetLabelCountdownAutoWrap();
@@ -323,6 +325,7 @@ namespace CEETimerCSharpWinForms.Forms
                             ])
                         ]))
                     };
+
                     TrayIcon.MouseClick += TrayIcon_MouseClick;
 
                     if (!ShowTrayText)
@@ -540,23 +543,23 @@ namespace CEETimerCSharpWinForms.Forms
                 Location = CountdownPos switch
                 {
                     CountdownPosition.LeftCenter
-                        => new(SelectedScreen.Left, SelectedScreen.Top + SelectedScreen.Height / 2 - Height / 2),
+                        => new(CurrentScreenRect.Left, CurrentScreenRect.Top + CurrentScreenRect.Height / 2 - Height / 2),
                     CountdownPosition.BottomLeft
-                        => new(SelectedScreen.Left, SelectedScreen.Bottom - Height),
+                        => new(CurrentScreenRect.Left, CurrentScreenRect.Bottom - Height),
                     CountdownPosition.TopCenter
-                        => new(SelectedScreen.Left + SelectedScreen.Width / 2 - Width / 2, SelectedScreen.Top),
+                        => new(CurrentScreenRect.Left + CurrentScreenRect.Width / 2 - Width / 2, CurrentScreenRect.Top),
                     CountdownPosition.Center
-                        => new(SelectedScreen.Left + SelectedScreen.Width / 2 - Width / 2, SelectedScreen.Top + SelectedScreen.Height / 2 - Height / 2),
+                        => new(CurrentScreenRect.Left + CurrentScreenRect.Width / 2 - Width / 2, CurrentScreenRect.Top + CurrentScreenRect.Height / 2 - Height / 2),
                     CountdownPosition.BottomCenter
-                        => new(SelectedScreen.Left + SelectedScreen.Width / 2 - Width / 2, SelectedScreen.Bottom - Height),
+                        => new(CurrentScreenRect.Left + CurrentScreenRect.Width / 2 - Width / 2, CurrentScreenRect.Bottom - Height),
                     CountdownPosition.TopRight
-                        => new(SelectedScreen.Right - Width, SelectedScreen.Top),
+                        => new(CurrentScreenRect.Right - Width, CurrentScreenRect.Top),
                     CountdownPosition.RightCenter
-                        => new(SelectedScreen.Right - Width, SelectedScreen.Top + SelectedScreen.Height / 2 - Height / 2),
+                        => new(CurrentScreenRect.Right - Width, CurrentScreenRect.Top + CurrentScreenRect.Height / 2 - Height / 2),
                     CountdownPosition.BottomRight
-                        => new(SelectedScreen.Right - Width, SelectedScreen.Bottom - Height),
+                        => new(CurrentScreenRect.Right - Width, CurrentScreenRect.Bottom - Height),
                     _
-                        => IsPPTService ? new(SelectedScreen.Location.X + PptsvcThreshold, SelectedScreen.Location.Y) : SelectedScreen.Location
+                        => IsPPTService ? new(CurrentScreenRect.Location.X + PptsvcThreshold, CurrentScreenRect.Location.Y) : CurrentScreenRect.Location
                 };
             }
         }
@@ -626,7 +629,7 @@ namespace CEETimerCSharpWinForms.Forms
         {
             if (IsPPTService)
             {
-                var ValidArea = GetScreenWorkingArea();
+                var ValidArea = GetScreenRect();
 
                 if (Left == ValidArea.Left && Top == ValidArea.Top)
                 {
@@ -642,13 +645,13 @@ namespace CEETimerCSharpWinForms.Forms
 
         private void RefreshScreen()
         {
-            var SelectedIndex = ScreenIndex - 1;
-            SelectedScreen = GetScreenWorkingArea(SelectedIndex == -1 ? 0 : SelectedIndex);
+            CurrentScreenRect = GetScreenRect(ScreenIndex);
+            CurrentScreen = Screen.FromControl(this);
         }
 
         private void KeepOnScreen()
         {
-            var ValidArea = GetScreenWorkingArea();
+            var ValidArea = GetScreenRect();
 
             if (Left < ValidArea.Left) Left = ValidArea.Left;
             if (Top < ValidArea.Top) Top = ValidArea.Top;
@@ -662,7 +665,7 @@ namespace CEETimerCSharpWinForms.Forms
             Config.Save(AppConfig);
         }
 
-        private void OptimizeMemory(object state)
+        private void CleanMemory(object state)
         {
             try
             {
@@ -679,7 +682,7 @@ namespace CEETimerCSharpWinForms.Forms
             }
         }
 
-        private void SetRoundedCorners()
+        private void SetRoundCorners()
         {
             if (Environment.OSVersion.Version > new Version(10, 0, 21999))
             {
@@ -689,11 +692,11 @@ namespace CEETimerCSharpWinForms.Forms
             }
             else
             {
-                IsWin10BelowRounded = true;
+                IsWin10BelowRound = true;
             }
         }
 
-        private Rectangle GetScreenWorkingArea(int Index = -1)
+        private Rectangle GetScreenRect(int Index = -1)
         {
             if (Index >= 0)
             {
@@ -705,8 +708,8 @@ namespace CEETimerCSharpWinForms.Forms
 
         protected override void OnHandleCreated(EventArgs e)
         {
-            SetRoundedCorners();
             base.OnHandleCreated(e);
+            SetRoundCorners();
         }
     }
 }

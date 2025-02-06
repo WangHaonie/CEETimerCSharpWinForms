@@ -150,9 +150,6 @@
     <Compile Include="Controls\ListViewEx.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\TrackableForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Dialogs\CustomTextDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -219,17 +216,15 @@
     <Compile Include="Modules\Configuration\ValidatableConfigObject.cs" />
     <Compile Include="Modules\CustomRuleHelper.cs" />
     <Compile Include="Modules\Enums.cs" />
-    <Compile Include="Modules\FormManager.cs" />
     <Compile Include="Modules\JsonConverters\ColorSetConverter.cs" />
     <Compile Include="Modules\JsonConverters\CustomRulesConverter.cs" />
-    <Compile Include="Modules\JsonConverters\DateTimeConverter.cs" />
+    <Compile Include="Modules\JsonConverters\ExamTimeConverter.cs" />
     <Compile Include="Modules\JsonConverters\FontFormatConverter.cs" />
     <Compile Include="Modules\JsonConverters\PointFormatConverter.cs" />
     <Compile Include="Modules\ListViewItemComparer.cs" />
     <Compile Include="Modules\ComboData.cs" />
     <Compile Include="Modules\Placeholders.cs" />
     <Compile Include="Modules\ProcessHelper.cs" />
-    <Compile Include="Modules\UIHelper.cs" />
     <Compile Include="Modules\UpdateChecker.cs" />
     <Compile Include="Modules\Extensions.cs" />
     <Compile Include="Modules\AppLauncher.cs" />

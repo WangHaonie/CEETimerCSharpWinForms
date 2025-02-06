@@ -15,6 +15,8 @@ namespace CEETimerCSharpWinForms.Modules
         public static double ToLuminance(this Color color) => color.R * 0.299 + color.G * 0.587 + color.B * 0.114;
         public static string ToRgb(this Color color) => $"{color.R},{color.G},{color.B}";
         public static string ToStr(this TimeSpan Tick) => $"{Tick.Days},{Tick.Hours},{Tick.Minutes},{Tick.Seconds}";
+        public static TimeSpan ToTimeSpan(this string timespan, char[] separator) => GetTimeSpan(timespan.Split(separator));
+        public static TimeSpan ToTimeSpan(this string timespan, char separator) => GetTimeSpan(timespan.Split(separator));
         public static string ToMessage(this Exception ex) => $"\n\n错误信息: \n{ex.Message}\n\n错误详情: \n{ex}";
         public static string FormatLog(this string updateLog, string latestVersion)
             => $"{Regex.Replace(updateLog.RemoveIllegalChars(), @"[#\>]", "").Replace($"v{latestVersion}更新日志新功能修复移除", "").Replace("+", "\n● ")}";
@@ -32,7 +34,7 @@ namespace CEETimerCSharpWinForms.Modules
             => new(s.Trim().Replace(" ", "").Where(c => char.IsLetterOrDigit(c) || (c >= ' ' && c <= byte.MaxValue)).Where(x => !ConfigPolicy.CharsNotAllowed.Contains(x)).ToArray());
         #endregion
 
-        public static int WithDpi(this int px, Control control)
+        public static int ScaleTo(this int px, Control control)
         {
             Graphics g = null;
             int pxScaled;
@@ -61,5 +63,22 @@ namespace CEETimerCSharpWinForms.Modules
 
         public static bool IsValid(this int ExamLength)
             => ExamLength <= ConfigPolicy.MaxExamNameLength && ExamLength >= ConfigPolicy.MinExamNameLength;
+
+        private static TimeSpan GetTimeSpan(string[] Splited)
+        {
+            int d = int.Parse(Splited[0]);
+            int h = int.Parse(Splited[1]);
+            int m = int.Parse(Splited[2]);
+            int s = int.Parse(Splited[3]);
+
+            var ts = new TimeSpan(d, h, m, s);
+
+            if (ts >= ConfigPolicy.TsMinAllowed || ts <= ConfigPolicy.TsMaxAllowed)
+            {
+                return ts;
+            }
+
+            throw new Exception();
+        }
     }
 }

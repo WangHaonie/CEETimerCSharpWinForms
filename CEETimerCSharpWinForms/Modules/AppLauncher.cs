@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.IO.Pipes;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -35,7 +34,7 @@ namespace CEETimerCSharpWinForms.Modules
 
         private static readonly string PipeName = $"{AppNameEng}_[34c14833-98da-49f7-a2ab-369e88e73b95]";
         private static readonly string CurrentExecutableName = Path.GetFileName(CurrentExecutablePath);
-        private static readonly MessageBoxHelper MessageX = new(FormManager.OpenForms.LastOrDefault());
+        private static readonly MessageBoxHelper MessageX = new();
 
         public static event EventHandler TrayMenuShowAllClicked;
         public static void OnTrayMenuShowAllClicked() => TrayMenuShowAllClicked?.Invoke(null, EventArgs.Empty);
@@ -67,7 +66,7 @@ namespace CEETimerCSharpWinForms.Modules
 
                 if (!CurrentExecutableName.Equals(OriginalFileName, StringComparison.OrdinalIgnoreCase))
                 {
-                    MessageX.Error($"为了您的使用体验，请不要更改程序文件名! 程序将在该消息框自动关闭后尝试自动恢复到原文件名，若自动恢复失败请手动改回。\n\n当前文件名: {CurrentExecutableName}\n原始文件名: {OriginalFileName}", Position: FormStartPosition.CenterScreen, AutoClose: true);
+                    MessageX.Error($"为了您的使用体验，请不要更改程序文件名! 程序将在该消息框自动关闭后尝试自动恢复到原文件名，若自动恢复失败请手动改回。\n\n当前文件名: {CurrentExecutableName}\n原始文件名: {OriginalFileName}", AutoClose: true);
                     ProcessHelper.RunProcess("cmd.exe", $"/c ren \"{CurrentExecutablePath}\" {OriginalFileName} & start \"\" \"{CurrentExecutableDir}{OriginalFileName}\" {AllArgs}");
                     Exit(ExitReason.InvalidExeName);
                 }

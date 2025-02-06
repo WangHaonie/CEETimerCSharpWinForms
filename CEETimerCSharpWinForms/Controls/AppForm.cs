@@ -245,7 +245,7 @@ namespace CEETimerCSharpWinForms.Controls
         /// <param name="FullWidth">[可选] 默认 false。true 则按屏幕宽度减10px作为最大长度，false 则屏幕宽度的3/4。</param>
         protected void SetLabelAutoWrap(Label Target, bool FullWidth = false)
         {
-            var CurrentScreenWidth = UIHelper.GetCurrentScreen().WorkingArea.Width;
+            var CurrentScreenWidth = GetCurrentScreen().WorkingArea.Width;
             SetLabelAutoWrapCore(Target, new(FullWidth ? CurrentScreenWidth - 10 : (int)(CurrentScreenWidth * 0.75), 0));
         }
 
@@ -289,7 +289,7 @@ namespace CEETimerCSharpWinForms.Controls
         /// <param name="Container">容器类控件</param>
         protected void AlignControlsR(Button Btn1, Button Btn2, Control Container)
         {
-            AlignControlsRCore(Btn1, Btn2, Container, Container.Height + 6.WithDpi(Container));
+            AlignControlsRCore(Btn1, Btn2, Container, Container.Height + 6.ScaleTo(Container));
         }
 
         /// <summary>
@@ -311,7 +311,7 @@ namespace CEETimerCSharpWinForms.Controls
         /// <param name="Tweak">[可选] 微调</param>
         protected void AlignControlsX(Control Target, Control Reference, int Tweak = 0)
         {
-            Target.Top = Reference.Top + Reference.Height / 2 - Target.Height / 2 + Tweak.WithDpi(Reference);
+            Target.Top = Reference.Top + Reference.Height / 2 - Target.Height / 2 + Tweak.ScaleTo(Reference);
         }
 
         /// <summary>
@@ -336,7 +336,7 @@ namespace CEETimerCSharpWinForms.Controls
         /// <param name="Tweak">[可选] 微调</param>
         protected void CompactControlsX(Control Target, Control Reference, int Tweak = 0)
         {
-            Target.Left = Reference.Left + Reference.Width + Tweak.WithDpi(Target);
+            Target.Left = Reference.Left + Reference.Width + Tweak.ScaleTo(Target);
         }
 
         /// <summary>
@@ -347,7 +347,7 @@ namespace CEETimerCSharpWinForms.Controls
         /// <param name="Tweak">[可选] 微调</param>
         protected void CompactControlsY(Control Target, Control Reference, int Tweak = 0)
         {
-            Target.Top = Reference.Top + Reference.Height + Tweak.WithDpi(Target);
+            Target.Top = Reference.Top + Reference.Height + Tweak.ScaleTo(Target);
         }
 
         protected ContextMenu CreateNew(MenuItem[] Items) => new(Items);
@@ -382,10 +382,12 @@ namespace CEETimerCSharpWinForms.Controls
             #endregion
         }
 
+        public Screen GetCurrentScreen() => MainForm.CurrentScreen ?? Screen.FromPoint(Cursor.Position);
+
         private void AlignControlsRCore(Button Btn1, Button Btn2, Control Main, int yTweak)
         {
             Btn2.Location = new(Main.Location.X + Main.Width - Btn2.Width, yTweak);
-            Btn1.Location = new(Btn2.Location.X - Btn1.Width - 6.WithDpi(Main), Btn2.Location.Y);
+            Btn1.Location = new(Btn2.Location.X - Btn1.Width - 6.ScaleTo(Main), Btn2.Location.Y);
         }
     }
 }

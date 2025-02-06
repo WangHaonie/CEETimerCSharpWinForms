@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace CEETimerCSharpWinForms.Forms
 {
-    public partial class DownloaderForm : TrackableForm
+    public partial class DownloaderForm : AppForm
     {
         public static string ManualVersion { get; set; } = AppLauncher.AppVersion;
 

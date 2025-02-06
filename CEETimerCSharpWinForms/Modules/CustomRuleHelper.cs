@@ -9,7 +9,7 @@ namespace CEETimerCSharpWinForms.Modules
         private static readonly string[] AllPHs = [Placeholders.PH_EXAMNAME, Placeholders.PH_DAYS, Placeholders.PH_HOURS, Placeholders.PH_MINUTES, Placeholders.PH_SECONDS, Placeholders.PH_ROUNDEDDAYS, Placeholders.PH_TOTALHOURS, Placeholders.PH_TOTALMINUTES, Placeholders.PH_TOTALSECONDS];
 
         public static char[] TsSeparator => ['天', '时', '分', '秒'];
-        public static TimeSpan GetExamTick(string str) => GetExamTickCore(str, TsSeparator);
+        public static TimeSpan GetExamTick(string str) => str.ToTimeSpan(TsSeparator);
         public static string GetExamTickText(TimeSpan timeSpan)
             => $"{timeSpan.Days}{TsSeparator[0]}{timeSpan.Hours}{TsSeparator[1]}{timeSpan.Minutes}{TsSeparator[2]}{timeSpan.Seconds}{TsSeparator[3]}";
 
@@ -17,7 +17,7 @@ namespace CEETimerCSharpWinForms.Modules
         {
             Placeholders.PH_LEFT => CountdownPhase.P2,
             Placeholders.PH_PAST => CountdownPhase.P3,
-            _ => 0
+            _ => CountdownPhase.P1
         };
 
         public static string GetRuleTypeText(CountdownPhase i) => i switch
@@ -82,29 +82,9 @@ namespace CEETimerCSharpWinForms.Modules
             return Result;
         }
 
-        private static TimeSpan GetExamTickCore(string str, char[] Separator)
-        {
-            var _TimeSpan = str.Split(Separator);
-
-            int d = int.Parse(_TimeSpan[0]);
-            int h = int.Parse(_TimeSpan[1]);
-            int m = int.Parse(_TimeSpan[2]);
-            int s = int.Parse(_TimeSpan[3]);
-
-            var ts = new TimeSpan(d, h, m, s);
-
-            if (ts < ConfigPolicy.TsMinAllowed || ts > ConfigPolicy.TsMaxAllowed)
-            {
-                ConfigPolicy.NotAllowed<TimeSpan>();
-            }
-
-            return ts;
-        }
-
         private static void VerifyCustomText(int Index, string CustomText, out bool IsValid, out string Warning)
         {
             var IndexHint = GetIndexHint(Index);
-            var Matches = Regex.Matches(CustomText, @"\{.*?\}");
 
             if (string.IsNullOrWhiteSpace(CustomText))
             {
@@ -112,6 +92,8 @@ namespace CEETimerCSharpWinForms.Modules
                 IsValid = false;
                 return;
             }
+
+            var Matches = Regex.Matches(CustomText, @"\{.*?\}");
 
             foreach (Match m in Matches)
             {
