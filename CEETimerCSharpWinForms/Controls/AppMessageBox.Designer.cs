@@ -1,6 +1,6 @@
-﻿namespace CEETimerCSharpWinForms.Dialogs
+﻿namespace CEETimerCSharpWinForms.Controls
 {
-    partial class MessageBoxEx
+    partial class AppMessageBox
     {
         /// <summary>
         /// Required designer variable.

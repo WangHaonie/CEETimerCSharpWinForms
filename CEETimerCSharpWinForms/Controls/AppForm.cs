@@ -1,5 +1,4 @@
-﻿using CEETimerCSharpWinForms.Dialogs;
-using CEETimerCSharpWinForms.Forms;
+﻿using CEETimerCSharpWinForms.Forms;
 using CEETimerCSharpWinForms.Modules;
 using System;
 using System.Collections.Generic;
@@ -29,7 +28,7 @@ namespace CEETimerCSharpWinForms.Controls
 
         protected AppForm()
         {
-            if (this is not MessageBoxEx)
+            if (this is not AppMessageBox)
             {
                 MessageX = new(this);
             }

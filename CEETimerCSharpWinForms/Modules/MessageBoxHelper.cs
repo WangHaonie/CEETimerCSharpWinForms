@@ -1,5 +1,4 @@
 ﻿using CEETimerCSharpWinForms.Controls;
-using CEETimerCSharpWinForms.Dialogs;
 using CEETimerCSharpWinForms.Interop;
 using System;
 using System.Drawing;
@@ -35,7 +34,7 @@ namespace CEETimerCSharpWinForms.Modules
         private DialogResult Popup(string Message, MessageLevel Level, TabControl ParentTabControl, TabPage ParentTabPage, MessageBoxExButtons Buttons, bool AutoClose)
         {
             var (Title, MessageBoxExIcon, Sound) = GetStuff(Level);
-            var _MessageBoxEx = new MessageBoxEx(Sound, Buttons, AutoClose);
+            var _MessageBoxEx = new AppMessageBox(Sound, Buttons, AutoClose);
 
             if (Parent != null)
             {

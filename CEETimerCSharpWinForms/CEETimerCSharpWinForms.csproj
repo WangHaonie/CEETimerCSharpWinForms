@@ -162,11 +162,11 @@
     <Compile Include="Dialogs\ExamInfoManager.Designer.cs">
       <DependentUpon>ExamInfoManager.cs</DependentUpon>
     </Compile>
-    <Compile Include="Dialogs\MessageBoxEx.cs">
+    <Compile Include="Controls\AppMessageBox.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Dialogs\MessageBoxEx.Designer.cs">
-      <DependentUpon>MessageBoxEx.cs</DependentUpon>
+    <Compile Include="Controls\AppMessageBox.Designer.cs">
+      <DependentUpon>AppMessageBox.cs</DependentUpon>
     </Compile>
     <Compile Include="Dialogs\RulesManager.cs">
       <SubType>Form</SubType>

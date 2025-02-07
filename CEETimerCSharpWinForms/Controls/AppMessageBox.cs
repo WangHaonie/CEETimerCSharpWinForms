@@ -1,21 +1,20 @@
-﻿using CEETimerCSharpWinForms.Controls;
-using CEETimerCSharpWinForms.Forms;
+﻿using CEETimerCSharpWinForms.Forms;
 using CEETimerCSharpWinForms.Modules;
 using System.Drawing;
 using System.Media;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace CEETimerCSharpWinForms.Dialogs
+namespace CEETimerCSharpWinForms.Controls
 {
-    public partial class MessageBoxEx : DialogEx
+    public partial class AppMessageBox : DialogEx
     {
         private DialogResult Result;
         private readonly MessageBoxExButtons ButtonsEx;
         private readonly SystemSound DialogSound;
         private readonly bool AutoCloseRequired;
 
-        public MessageBoxEx(SystemSound Sound, MessageBoxExButtons Buttons, bool AutoClose) : base(DialogExProp.KeyPreview)
+        public AppMessageBox(SystemSound Sound, MessageBoxExButtons Buttons, bool AutoClose) : base(DialogExProp.KeyPreview)
         {
             InitializeComponent();
             DialogSound = Sound;
