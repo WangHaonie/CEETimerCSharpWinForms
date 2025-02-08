@@ -8,7 +8,7 @@
 </div>
 
 ## 简介
-PlainCEETimer，一个纯粹的高考倒计时，专为 Windows 平台设计，支持自定义考试名称和时间等。
+PlainCEETimer, 一个纯粹的高考倒计时, 适用于 Windows 平台, 支持自定义考试名称和时间等。
 
 > 本项目原名 CEETimerCSharpWinForms, 当前最新版 v3.0.8 及以前仍使用原名，新名将在 v3.0.9 及以后被应用。
 
