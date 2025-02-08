@@ -2,4 +2,4 @@ blank_issues_enabled: false
 contact_links:
   - name: 📢 获取帮助
     about: 提出您遇到的所有有关使用上的问题。比如：不清楚使用方法 (可以先看看首页 README)、无法理解某些功能的含义等
-    url: https://github.com/WangHaonie/CEETimerCSharpWinForms/discussions/new/choose
+    url: https://github.com/WangHaonie/PlainCEETimer/discussions/new/choose

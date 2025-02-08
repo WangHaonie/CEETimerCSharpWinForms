@@ -1,14 +1,14 @@
-<h4>⚠️注意⚠️本程序完全免费，且仅通过此 GitHub 仓库进行发布。任何其他网站或个人提供的下载链接均未获得授权，可能存在安全风险及功能不完整。为了保障您的权益，请直接从此仓库获取软件及其最新版本。支持正版，拒绝盗版！<a href="https://github.com/WangHaonie/CEETimerCSharpWinForms/issues/new/choose" target="_blank">举报盗版</a></h4>
+<h4>⚠️注意⚠️本程序完全免费，且仅通过此 GitHub 仓库进行发布。任何其他网站或个人提供的下载链接均未获得授权，可能存在安全风险及功能不完整。为了保障您的权益，请直接从此仓库获取软件及其最新版本。支持正版，拒绝盗版！<a href="https://github.com/WangHaonie/PlainCEETimer/issues/new/choose" target="_blank">举报盗版</a></h4>
 <div align="center">
-    <img src="./CEETimerCSharpWinForms/Properties/AppIcon256px.png" height="128px"/>
+    <img src="./PlainCEETimer/Properties/AppIcon256px.png" height="128px"/>
     <h2>高考倒计时 by WangHaonie</h2>
 
-[![GitHub all releases](https://img.shields.io/github/downloads/WangHaonie/CEETimerCSharpWinForms/total?logo=github&label=%E4%B8%8B%E8%BD%BD%E9%87%8F&color=%23DC67A5)](#) [![GitHub release (with filter)](https://img.shields.io/github/v/release/WangHaonie/CEETimerCSharpWinForms?logo=github&label=%E6%9C%80%E6%96%B0%E7%89%88&color=%23178600)](https://github.com/WangHaonie/CEETimerCSharpWinForms/releases/latest/) [![GitHub Repo stars](https://img.shields.io/github/stars/WangHaonie/CEETimerCSharpWinForms?logo=github&label=Stars&color=%23E5B84E)](#) [![GitHub](https://img.shields.io/github/license/WangHaonie/CEETimerCSharpWinForms?logo=github&label=%E8%AE%B8%E5%8F%AF%E8%AF%81&color=%233C9DF8)](#GPL-3.0-1-ov-file)
+[![GitHub all releases](https://img.shields.io/github/downloads/WangHaonie/PlainCEETimer/total?logo=github&label=%E4%B8%8B%E8%BD%BD%E9%87%8F&color=%23DC67A5)](#) [![GitHub release (with filter)](https://img.shields.io/github/v/release/WangHaonie/PlainCEETimer?logo=github&label=%E6%9C%80%E6%96%B0%E7%89%88&color=%23178600)](https://github.com/WangHaonie/PlainCEETimer/releases/latest/) [![GitHub Repo stars](https://img.shields.io/github/stars/WangHaonie/PlainCEETimer?logo=github&label=Stars&color=%23E5B84E)](#) [![GitHub](https://img.shields.io/github/license/WangHaonie/PlainCEETimer?logo=github&label=%E8%AE%B8%E5%8F%AF%E8%AF%81&color=%233C9DF8)](#GPL-3.0-1-ov-file)
 
 </div>
 
 ## 简介
-CEETimerCSharpWinForms，适用于 Windows 系统的高考倒计时，支持自定义考试名称。
+PlainCEETimer，适用于 Windows 系统的高考倒计时，支持自定义考试名称。
 ## 主要功能
 + ✅ 自定义考试名称；
 + ✅ 自定义考试开始、结束日期和时间；
@@ -36,14 +36,14 @@ CEETimerCSharpWinForms，适用于 Windows 系统的高考倒计时，支持自�
 ### 下载安装
 + 仅适用于 Windows 7 及以上的 x64 系统；
 + 先安装 [.NET Framework 4.7.2](https://dotnet.microsoft.com/zh-cn/download/dotnet-framework/thank-you/net472-offline-installer) (新版 Windows 10/11 可能内置了 .NET Framework 4.8 或更高版本，可以不用安装)
-+ 到 [Releases](https://github.com/WangHaonie/CEETimerCSharpWinForms/releases/latest) 下载安装程序 CEETimerCSharpWinForms_X.X_x64_Setup.exe，按照提示安装就行；
++ 到 [Releases](https://github.com/WangHaonie/PlainCEETimer/releases/latest) 下载安装程序 PlainCEETimer_X.X_x64_Setup.exe，按照提示安装就行；
 + 右键倒计时会出现右键菜单 (具体设置项说明请看[这里](#设置界面介绍))。
 ### 使用方法
 + [点此](./.github/Manual.md)查看详情
 ## 开发环境
 Windows 11 Pro x64 (22635.4005)，Visual Studio 2022 (17.10.5)，C# (12.0)，WinForms，.NET Framework 4.7.2
 ## 开源许可证
-CEETimerCSharpWinForms is licensed under the GNU General Public License v3.0 (GPL-3.0)
+PlainCEETimer is licensed under the GNU General Public License v3.0 (GPL-3.0)
 ## 其他链接
 [CSDN 博客](https://blog.csdn.net/WHNdeCSDN/article/details/139425056)
 ## 打赏作者

@@ -4,3 +4,9 @@ CEETimerCSharpWinForms/obj/
 CEETimerCSharpWinForms/packages/
 NSIS/*.exe
 CEETimerCSharpWinForms/app.config
+PlainCEETimer/.vs/
+PlainCEETimer/bin/
+PlainCEETimer/obj/
+PlainCEETimer/packages/
+NSIS/*.exe
+PlainCEETimer/app.config

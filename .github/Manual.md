@@ -36,7 +36,7 @@
 + **同步网络时钟**：一键同步网络时钟，需要管理员权限，同时会将系统默认网络时钟服务器设置为 ntp1.aliyun.com (国内的)，并且还会将 Windows Time 服务设置为自动启动
 + **重启倒计时**：一键重新启动倒计时，由于本程序在更改了屏幕缩放后并不会自动调整而使得窗口文字显示模糊，故可以快速重新启动程序确保文字清晰 (右键可关闭倒计时)
 ## 命令行选项
-目前功能有点少，暂时想不到其它功能，欢迎在 [Issues](https://github.com/WangHaonie/CEETimerCSharpWinForms/issues/new/choose) 里留言
+目前功能有点少，暂时想不到其它功能，欢迎在 [Issues](https://github.com/WangHaonie/PlainCEETimer/issues/new/choose) 里留言
 + **/h, /?**: 显示帮助信息
 + **/ac**：检测当前用户是否具有管理员权限
 + **/fr <版本号>**: 强制下载并安装指定的版本，留空则当前版本，推荐在特殊情况下使用，不支持老版本
@@ -44,4 +44,4 @@
 + 此高考倒计时程序是本人在高三时应班级要求编写的，如有雷同，纯属巧合；
 + 软件目前所有功能均按照个人和老师及同学的要求开发，可能存在一些不足和瑕疵，还请各位用户多多谅解；
 + 本项目是我第一次 C# 实践，我会尽可能在不影响用户体验下把我所学的全部知识都应用在这个项目中，所以可能会有一些屎山或冗余代码，欢迎各位对源代码进行批评和指点；
-+ 当然也欢迎各位用户在 GitHub [Issues](https://github.com/WangHaonie/CEETimerCSharpWinForms/issues/new/choose)/[Discussions](https://github.com/WangHaonie/CEETimerCSharpWinForms/discussions) 里分享您的观点和想法，虽然能力和时间有限，但我也会尽量去完成每一个用户提出的问题，感谢您的理解和支持！
++ 当然也欢迎各位用户在 GitHub [Issues](https://github.com/WangHaonie/PlainCEETimer/issues/new/choose)/[Discussions](https://github.com/WangHaonie/PlainCEETimer/discussions) 里分享您的观点和想法，虽然能力和时间有限，但我也会尽量去完成每一个用户提出的问题，感谢您的理解和支持！
