@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 
 namespace PlainCEETimer.Modules.Configuration
 {
@@ -42,6 +43,7 @@ namespace PlainCEETimer.Modules.Configuration
 
         public bool MemClean { get; set; }
 
+        [DefaultValue(true)]
         public bool TopMost { get; set; } = true;
 
         public bool UniTopMost { get; set; }
