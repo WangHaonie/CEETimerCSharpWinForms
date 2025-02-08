@@ -52,9 +52,12 @@ namespace PlainCEETimer.Modules
 
         public static void ReActivate(this AppForm form)
         {
+            var tmp = form.TopMost;
+            form.TopMost = true;
             form.WindowState = FormWindowState.Normal;
             form.Show();
             form.Activate();
+            form.TopMost = tmp;
         }
 
 
