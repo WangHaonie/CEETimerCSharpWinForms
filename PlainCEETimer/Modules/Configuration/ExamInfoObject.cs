@@ -19,7 +19,7 @@ namespace PlainCEETimer.Modules.Configuration
                     }
                 });
 
-                field = value;
+                field = value.RemoveIllegalChars();
             }
         } = "";
 

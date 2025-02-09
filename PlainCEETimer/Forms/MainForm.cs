@@ -86,23 +86,26 @@ namespace PlainCEETimer.Forms
 
         protected override void OnLoad()
         {
+            LocationWatcher = new() { Interval = 1000 };
+            LocationWatcher.Tick += LocationWatcher_Tick;
+            LocationWatcher.Start();
+            SizeChanged += MainForm_SizeChanged;
+            SystemEvents.DisplaySettingsChanged += SystemEvents_DisplaySettingsChanged;
+        }
+
+        protected override void OnShown()
+        {
             Config = new ConfigHandler();
             AppConfig = Config.Read();
+
             AppLauncher.AppConfigChanged += (sender, e) =>
             {
                 Config.Save(AppConfig);
                 RefreshSettings();
             };
 
-            SizeChanged += MainForm_SizeChanged;
-            SystemEvents.DisplaySettingsChanged += SystemEvents_DisplaySettingsChanged;
-
             RefreshSettings();
-
-            LocationWatcher = new() { Interval = 1000 };
-            LocationWatcher.Tick += LocationWatcher_Tick;
-            LocationWatcher.Start();
-
+            ValidateNeeded = false;
             Task.Run(() => UpdateChecker.CheckUpdate(true, this));
             _ = 1.ScaleTo(this);
             IsNormalStart = true;
@@ -214,7 +217,6 @@ namespace PlainCEETimer.Forms
             }
 
             SetLabelCountdownAutoWrap();
-            ValidateNeeded = false;
             TopMost = false;
             TopMost = TopMostTmp;
             ShowInTaskbar = !TopMost;
@@ -365,7 +367,6 @@ namespace PlainCEETimer.Forms
             {
                 ExamIndex = (int)Item.Tag;
                 RefreshSettings();
-                Console.WriteLine(ExamIndex);
             }
         }
 
