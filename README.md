@@ -41,11 +41,11 @@ PlainCEETimer, 一个纯粹的高考倒计时, 适用于 Windows 平台, 支持�
 + 仅适用于 Windows 7 及以上的 x64 系统；
 + 先安装 [.NET Framework 4.7.2](https://dotnet.microsoft.com/zh-cn/download/dotnet-framework/thank-you/net472-offline-installer) (新版 Windows 10/11 可能内置了 .NET Framework 4.8 或更高版本，可以不用安装)
 + 到 [Releases](https://github.com/WangHaonie/PlainCEETimer/releases/latest) 下载安装程序 PlainCEETimer_X.X_x64_Setup.exe，按照提示安装就行；
-+ 右键倒计时会出现右键菜单 (具体设置项说明请看[这里](#设置界面介绍))。
++ 右键倒计时会出现右键菜单 (具体设置项说明请看[这里](./.github/Manual.md#设置界面介绍))。
 ### 使用方法
 + [点此](./.github/Manual.md)查看详情
 ## 开发环境
-Windows 11 Pro x64 (22635.4005)，Visual Studio 2022 (17.10.5)，C# (12.0)，WinForms，.NET Framework 4.7.2
+Windows 11 Pro x64 (26120.3073)，Visual Studio 2022 (17.12.4)，C# (13.0 Preview)，WinForms，.NET Framework (4.7.2).
 ## 开源许可证
 Both PlainCEETimer and CEETimerCSharpWinForms are licensed under the GNU General Public License v3.0 (GPL-3.0).
 ## 其他链接
