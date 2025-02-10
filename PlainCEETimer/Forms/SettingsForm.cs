@@ -271,7 +271,7 @@ namespace PlainCEETimer.Forms
 
         private void ButtonDefaultFont_Click(object sender, EventArgs e)
         {
-            ChangeWorkingStyle(WorkingArea.ChangeFont, NewFont: new((Font)fontConverter.ConvertFromString(ConfigPolicy.DefaultFont), FontStyle.Bold));
+            ChangeWorkingStyle(WorkingArea.ChangeFont, NewFont: DefaultValues.CountdownDefaultFont);
             SettingsChanged(sender, e);
         }
 
@@ -672,15 +672,22 @@ namespace PlainCEETimer.Forms
                     break;
                 case WorkingArea.LastColor:
                     var CountdownColors = AppConfig.Appearance.Colors;
-
-                    LabelPreviewColor1.ForeColor = LabelColor11.BackColor = CountdownColors[0].Fore;
-                    LabelPreviewColor2.ForeColor = LabelColor21.BackColor = CountdownColors[1].Fore;
-                    LabelPreviewColor3.ForeColor = LabelColor31.BackColor = CountdownColors[2].Fore;
-                    LabelPreviewColor4.ForeColor = LabelColor41.BackColor = CountdownColors[3].Fore;
-                    LabelPreviewColor1.BackColor = LabelColor12.BackColor = CountdownColors[0].Back;
-                    LabelPreviewColor2.BackColor = LabelColor22.BackColor = CountdownColors[1].Back;
-                    LabelPreviewColor3.BackColor = LabelColor32.BackColor = CountdownColors[2].Back;
-                    LabelPreviewColor4.BackColor = LabelColor42.BackColor = CountdownColors[3].Back;
+                    LabelColor11.BackColor = CountdownColors[0].Fore;
+                    LabelPreviewColor1.ForeColor = CountdownColors[0].Fore;
+                    LabelColor21.BackColor = CountdownColors[1].Fore;
+                    LabelPreviewColor2.ForeColor = CountdownColors[1].Fore;
+                    LabelColor31.BackColor = CountdownColors[2].Fore;
+                    LabelPreviewColor3.ForeColor = CountdownColors[2].Fore;
+                    LabelColor41.BackColor = CountdownColors[3].Fore;
+                    LabelPreviewColor4.ForeColor = CountdownColors[3].Fore;
+                    LabelColor12.BackColor = CountdownColors[0].Back;
+                    LabelPreviewColor1.BackColor = CountdownColors[0].Back;
+                    LabelColor22.BackColor = CountdownColors[1].Back;
+                    LabelPreviewColor2.BackColor = CountdownColors[1].Back;
+                    LabelColor32.BackColor = CountdownColors[2].Back;
+                    LabelPreviewColor3.BackColor = CountdownColors[2].Back;
+                    LabelColor42.BackColor = CountdownColors[3].Back;
+                    LabelPreviewColor4.BackColor = CountdownColors[3].Back;
                     break;
                 case WorkingArea.SelectedColor:
                     LabelPreviewColor1.BackColor = LabelColor12.BackColor;
@@ -693,16 +700,23 @@ namespace PlainCEETimer.Forms
                     LabelPreviewColor4.ForeColor = LabelColor41.BackColor;
                     break;
                 case WorkingArea.DefaultColor:
-                    var DefaultColors = new ConfigObject().Appearance.Colors;
-
-                    LabelPreviewColor1.ForeColor = LabelColor11.BackColor = DefaultColors[0].Fore;
-                    LabelPreviewColor2.ForeColor = LabelColor21.BackColor = DefaultColors[1].Fore;
-                    LabelPreviewColor3.ForeColor = LabelColor31.BackColor = DefaultColors[2].Fore;
-                    LabelPreviewColor4.ForeColor = LabelColor41.BackColor = DefaultColors[3].Fore;
-                    LabelPreviewColor1.BackColor = LabelColor12.BackColor = DefaultColors[0].Back;
-                    LabelPreviewColor2.BackColor = LabelColor22.BackColor = DefaultColors[1].Back;
-                    LabelPreviewColor3.BackColor = LabelColor32.BackColor = DefaultColors[2].Back;
-                    LabelPreviewColor4.BackColor = LabelColor42.BackColor = DefaultColors[3].Back;
+                    var DefaultColors = DefaultValues.CountdownDefaultColors;
+                    LabelColor11.BackColor = DefaultColors[0].Fore;
+                    LabelPreviewColor1.ForeColor = DefaultColors[0].Fore;
+                    LabelColor21.BackColor = DefaultColors[1].Fore;
+                    LabelPreviewColor2.ForeColor = DefaultColors[1].Fore;
+                    LabelColor31.BackColor = DefaultColors[2].Fore;
+                    LabelPreviewColor3.ForeColor = DefaultColors[2].Fore;
+                    LabelColor41.BackColor = DefaultColors[3].Fore;
+                    LabelPreviewColor4.ForeColor = DefaultColors[3].Fore;
+                    LabelColor12.BackColor = DefaultColors[0].Back;
+                    LabelPreviewColor1.BackColor = DefaultColors[0].Back;
+                    LabelColor22.BackColor = DefaultColors[1].Back;
+                    LabelPreviewColor2.BackColor = DefaultColors[1].Back;
+                    LabelColor32.BackColor = DefaultColors[2].Back;
+                    LabelPreviewColor3.BackColor = DefaultColors[2].Back;
+                    LabelColor42.BackColor = DefaultColors[3].Back;
+                    LabelPreviewColor4.BackColor = DefaultColors[3].Back;
                     break;
                 case WorkingArea.ShowLeftPast:
                     GBoxExamEnd.Visible = IsWorking;

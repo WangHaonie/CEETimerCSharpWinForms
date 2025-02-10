@@ -8,7 +8,7 @@ namespace PlainCEETimer.Modules.Configuration
     public sealed class AppearanceObject : ValidatableConfigObject
     {
         [JsonConverter(typeof(FontFormatConverter))]
-        public Font Font { get; set; } = new((Font)new FontConverter().ConvertFromString(ConfigPolicy.DefaultFont), FontStyle.Bold);
+        public Font Font { get; set; } = DefaultValues.CountdownDefaultFont;
 
         public ColorSetObject[] Colors
         {
@@ -33,6 +33,6 @@ namespace PlainCEETimer.Modules.Configuration
 
                 field = value;
             }
-        } = [new(Color.Red, Color.White), new(Color.Green, Color.White), new(Color.Black, Color.White), new(Color.Black, Color.White)];
+        } = DefaultValues.CountdownDefaultColors;
     }
 }

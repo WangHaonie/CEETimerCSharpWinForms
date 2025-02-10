@@ -545,20 +545,28 @@ namespace PlainCEETimer.Forms
                 {
                     CountdownPosition.LeftCenter
                         => new(CurrentScreenRect.Left, CurrentScreenRect.Top + CurrentScreenRect.Height / 2 - Height / 2),
+
                     CountdownPosition.BottomLeft
                         => new(CurrentScreenRect.Left, CurrentScreenRect.Bottom - Height),
+
                     CountdownPosition.TopCenter
                         => new(CurrentScreenRect.Left + CurrentScreenRect.Width / 2 - Width / 2, CurrentScreenRect.Top),
+
                     CountdownPosition.Center
                         => new(CurrentScreenRect.Left + CurrentScreenRect.Width / 2 - Width / 2, CurrentScreenRect.Top + CurrentScreenRect.Height / 2 - Height / 2),
+
                     CountdownPosition.BottomCenter
                         => new(CurrentScreenRect.Left + CurrentScreenRect.Width / 2 - Width / 2, CurrentScreenRect.Bottom - Height),
+
                     CountdownPosition.TopRight
                         => new(CurrentScreenRect.Right - Width, CurrentScreenRect.Top),
+
                     CountdownPosition.RightCenter
                         => new(CurrentScreenRect.Right - Width, CurrentScreenRect.Top + CurrentScreenRect.Height / 2 - Height / 2),
+
                     CountdownPosition.BottomRight
                         => new(CurrentScreenRect.Right - Width, CurrentScreenRect.Bottom - Height),
+
                     _
                         => IsPPTService ? new(CurrentScreenRect.Location.X + PptsvcThreshold, CurrentScreenRect.Location.Y) : CurrentScreenRect.Location
                 };
@@ -584,12 +592,23 @@ namespace PlainCEETimer.Forms
 
         private string GetCountdown(TimeSpan Span, string Name, string Hint) => SelectedState switch
         {
-            CountdownState.DaysOnly => $"{Placeholders.PH_JULI}{Name}{Hint}{Span.Days}天",
-            CountdownState.DaysOnlyWithRounding => $"{Placeholders.PH_JULI}{Name}{Hint}{Span.Days + 1}天",
-            CountdownState.HoursOnly => $"{Placeholders.PH_JULI}{Name}{Hint}{Span.TotalHours:0}小时",
-            CountdownState.MinutesOnly => $"{Placeholders.PH_JULI}{Name}{Hint}{Span.TotalMinutes:0}分钟",
-            CountdownState.SecondsOnly => $"{Placeholders.PH_JULI}{Name}{Hint}{Span.TotalSeconds:0}秒",
-            _ => $"{Placeholders.PH_JULI}{Name}{Hint}{Span.Days}天{Span.Hours:00}时{Span.Minutes:00}分{Span.Seconds:00}秒"
+            CountdownState.DaysOnly
+                => string.Format("{0}{1}{2}{3}天", Placeholders.PH_JULI, Name, Hint, Span.Days),
+
+            CountdownState.DaysOnlyWithRounding
+                => string.Format("{0}{1}{2}{3}天", Placeholders.PH_JULI, Name, Hint, Span.Days + 1),
+
+            CountdownState.HoursOnly
+                => string.Format("{0}{1}{2}{3:0}小时", Placeholders.PH_JULI, Name, Hint, Span.TotalHours),
+
+            CountdownState.MinutesOnly
+                => string.Format("{0}{1}{2}{3:0}分钟", Placeholders.PH_JULI, Name, Hint, Span.TotalMinutes),
+
+            CountdownState.SecondsOnly
+                => string.Format("{0}{1}{2}{3:0}秒", Placeholders.PH_JULI, Name, Hint, Span.TotalSeconds),
+
+            _
+                => string.Format("{0}{1}{2}{3}天{4:00}时{5:00}分{6:00}秒", Placeholders.PH_JULI, Name, Hint, Span.Days, Span.Hours, Span.Minutes, Span.Seconds)
         };
 
 
