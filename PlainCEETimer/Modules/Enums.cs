@@ -72,4 +72,13 @@ namespace PlainCEETimer.Modules
         RightCenter,
         BottomRight
     }
+
+    public enum TaskbarProgressState
+    {
+        None,
+        Indeterminate,
+        Normal,
+        Error = 4,
+        Paused = 8
+    }
 }

@@ -17,6 +17,8 @@ namespace PlainCEETimer.Modules
         public static string ConfigFilePath => $"{CurrentExecutableDir}{AppNameEng}.config";
         public static bool IsAdmin { get; private set; }
         public static Icon AppIcon { get; private set; }
+        public static bool IsWindows7Above => Environment.OSVersion.Version >= new Version(6, 1, 7600);
+        public static bool IsWindows11 => Environment.OSVersion.Version >= new Version(10, 0, 22000);
 
         public const string AppName = "高考倒计时 by WangHaonie";
         public const string AppNameEng = "PlainCEETimer";

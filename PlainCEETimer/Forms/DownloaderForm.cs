@@ -1,4 +1,5 @@
 ﻿using PlainCEETimer.Controls;
+using PlainCEETimer.Interop;
 using PlainCEETimer.Modules;
 using System;
 using System.Diagnostics;
@@ -15,6 +16,7 @@ namespace PlainCEETimer.Forms
         public static string ManualVersion { get; set; } = AppLauncher.AppVersion;
 
         private bool IsCancelled;
+        private bool IsWindows7Above = AppLauncher.IsWindows7Above;
         private CancellationTokenSource cts;
         private string DownloadUrl;
         private string DownloadPath;
@@ -41,6 +43,8 @@ namespace PlainCEETimer.Forms
                 LatestVersion = SelectedVersion.IsVersionNumber() ? SelectedVersion : AppLauncher.AppVersion;
             }
 
+            TaskbarProgress.InitilizeTaskbarListEx(Handle);
+            TaskbarProgress.SetTaskbarListStateEx(TaskbarProgressState.Normal);
             DownloadUrl = string.Format(AppLauncher.UpdateURL, LatestVersion);
             DownloadPath = Path.Combine(Path.GetTempPath(), Path.GetFileName(new Uri(DownloadUrl).AbsolutePath));
 
@@ -88,14 +92,18 @@ namespace PlainCEETimer.Forms
                         }
                     }
                 }
+
                 if (!IsCancelled)
                 {
                     ButtonCancel.Enabled = false;
                     ButtonRetry.Enabled = false;
                     LinkBrowser.Enabled = false;
                     ProgressBarMain.Value = 100;
-
+                    TaskbarProgress.SetTaskbarListProgressEx(100UL, 100UL);
+                    TaskbarProgress.SetTaskbarListStateEx(TaskbarProgressState.Indeterminate);
                     await Task.Delay(1800);
+                    TaskbarProgress.SetTaskbarListStateEx(TaskbarProgressState.None);
+                    TaskbarProgress.ReleaseTaskbarListEx();
                     ProcessHelper.RunProcess("cmd.exe", $"/c start \"\" \"{DownloadPath}\" /S");
                     Close();
                     AppLauncher.Exit(ExitReason.AppUpdating);
@@ -114,6 +122,7 @@ namespace PlainCEETimer.Forms
                     ButtonRetry.Enabled = true;
                 }
 
+                TaskbarProgress.SetTaskbarListStateEx(TaskbarProgressState.Error);
                 return;
             }
             finally
@@ -160,6 +169,11 @@ namespace PlainCEETimer.Forms
             LabelSize.Text = $"已下载/总共: {Downloaded} KB / {Total} KB";
             LabelSpeed.Text = $"下载速度: {Speed:0.00} KB/s";
             ProgressBarMain.Value = Progress;
+
+            if (IsWindows7Above)
+            {
+                TaskbarProgress.SetTaskbarListProgressEx((ulong)Downloaded, (ulong)Total);
+            }
         }
 
         protected override void OnClosing(FormClosingEventArgs e)

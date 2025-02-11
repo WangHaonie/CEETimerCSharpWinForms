@@ -704,7 +704,7 @@ namespace PlainCEETimer.Forms
 
         private void SetRoundCorners()
         {
-            if (Environment.OSVersion.Version > new Version(10, 0, 21999))
+            if (AppLauncher.IsWindows11)
             {
                 var attribute = DWMWINDOWATTRIBUTE.DWMWA_WINDOW_CORNER_PREFERENCE;
                 var preference = DWM_WINDOW_CORNER_PREFERENCE.DWMWCP_ROUND;
