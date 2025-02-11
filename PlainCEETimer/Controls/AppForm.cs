@@ -1,7 +1,6 @@
 ﻿using PlainCEETimer.Forms;
 using PlainCEETimer.Modules;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -220,7 +219,7 @@ namespace PlainCEETimer.Controls
         /// </summary>
         /// <param name="Target">目标 ComboBox 控件</param>
         /// <param name="Data">DataSource</param>
-        protected void BindComboData(ComboBox Target, List<ComboData> Data)
+        protected void BindComboData(ComboBox Target, ComboData[] Data)
         {
             Target.DataSource = Data;
             Target.DisplayMember = "Display";

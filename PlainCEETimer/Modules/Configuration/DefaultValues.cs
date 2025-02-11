@@ -28,7 +28,7 @@ namespace PlainCEETimer.Modules.Configuration
             {
                 if (field == null)
                 {
-                    field = new((Font)new FontConverter().ConvertFromString(ConfigPolicy.DefaultFont), FontStyle.Bold);
+                    field = new("Microsoft YaHei", 17.25F, FontStyle.Bold, GraphicsUnit.Point);
                 }
 
                 return field;

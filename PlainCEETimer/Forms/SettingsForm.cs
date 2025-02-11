@@ -4,10 +4,10 @@ using PlainCEETimer.Dialogs;
 using PlainCEETimer.Modules;
 using PlainCEETimer.Modules.Configuration;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -25,9 +25,9 @@ namespace PlainCEETimer.Forms
         private bool IsFunny;
         private bool IsFunnyClick;
         private bool ChangingCheckBox;
-        private List<Label> ColorLabels;
-        private List<ColorSetObject> SelectedColors;
-        private readonly FontConverter fontConverter = new();
+        private Label[] ColorLabels;
+        private Label[] ColorPreviewLabels;
+        private ColorSetObject[] SelectedColors;
         private readonly ConfigObject AppConfig = MainForm.AppConfigPub;
 
         public string ExamName { get; set; }
@@ -60,18 +60,23 @@ namespace PlainCEETimer.Forms
             LabelExamNameCounter.ForeColor = Color.Red;
             SetTextBoxMax(TextBoxExamName, ConfigPolicy.MaxExamNameLength);
 
-            BindComboData(ComboBoxShowXOnly, [
+            BindComboData(ComboBoxShowXOnly,
+            [
                 new("天", 0),
                 new("时", 1),
                 new("分", 2),
                 new("秒", 3)
-                ]);
-            BindComboData(ComboBoxCountdownEnd, [
-                new("<不执行任何操作>", 0),
+            ]);
+
+            BindComboData(ComboBoxCountdownEnd,
+            [
+                new("<程序欢迎界面>", 0),
                 new("考试还有多久结束", 1),
                 new("考试还有多久结束 和 已过去了多久", 2)
-                ]);
-            BindComboData(ComboBoxPosition, [
+            ]);
+
+            BindComboData(ComboBoxPosition,
+            [
                 new("左上角", 0),
                 new("左侧中央", 1),
                 new("左下角", 2),
@@ -81,31 +86,36 @@ namespace PlainCEETimer.Forms
                 new("右上角", 6),
                 new("右侧中央", 7),
                 new("右下角", 8)
-                ]);
-            BindComboData(ComboBoxNtpServers, [
+            ]);
+
+            BindComboData(ComboBoxNtpServers,
+            [
                 new("time.windows.com", 0),
                 new("ntp.aliyun.com", 1),
                 new("ntp.tencent.com", 2),
                 new("time.cloudflare.com", 3)
-                ]);
+            ]);
 
-            List<ComboData> Monitors = [new("<请选择>", 0)];
-            Screen[] CurrentScreens = Screen.AllScreens;
-            for (int i = 0; i < CurrentScreens.Length; i++)
+            var CurrentScreens = Screen.AllScreens;
+            var Length = CurrentScreens.Length + 1;
+            var Monitors = new ComboData[Length];
+            Monitors[0] = new("<请选择>", 0);
+            for (int i = 1; i < Length; i++)
             {
-                var CurrentScreen = CurrentScreens[i];
-                Monitors.Add(new($"{i + 1} {CurrentScreen.DeviceName} ({CurrentScreen.Bounds.Width}x{CurrentScreen.Bounds.Height})", i + 1));
+                var CurrentScreen = CurrentScreens[i - 1];
+                Monitors[i] = new(string.Format("{0} {1} ({2}x{3})", i, CurrentScreen.DeviceName, CurrentScreen.Bounds.Width, CurrentScreen.Bounds.Height), i);
             }
             BindComboData(ComboBoxScreens, Monitors);
 
-            ColorLabels = [LabelColor12, LabelColor22, LabelColor32, LabelColor42, LabelColor11, LabelColor21, LabelColor31, LabelColor41];
-            foreach (var l in ColorLabels)
+            ColorLabels = [LabelColor11, LabelColor21, LabelColor31, LabelColor41, LabelColor12, LabelColor22, LabelColor32, LabelColor42];
+            foreach (Label ColorLabel in ColorLabels)
             {
-                l.Click += ColorLabels_Click;
-                l.MouseDown += ColorLabels_MouseDown;
-                l.MouseMove += ColorLabels_MouseMove;
-                l.MouseUp += ColorLabels_MouseUp;
+                ColorLabel.Click += ColorLabels_Click;
+                ColorLabel.MouseDown += ColorLabels_MouseDown;
+                ColorLabel.MouseMove += ColorLabels_MouseMove;
+                ColorLabel.MouseUp += ColorLabels_MouseUp;
             }
+            ColorPreviewLabels = [LabelPreviewColor1, LabelPreviewColor2, LabelPreviewColor3, LabelPreviewColor4];
         }
 
         protected override void AdjustUI()
@@ -579,15 +589,21 @@ namespace PlainCEETimer.Forms
             }
 
             int ColorCheckMsg = 0;
-            SelectedColors = GetSelectedColors();
+            var Length = 4;
+            SelectedColors = new ColorSetObject[Length];
 
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < Length; i++)
             {
-                if (!ColorHelper.IsNiceContrast(SelectedColors[i].Fore, SelectedColors[i].Back))
+                var Fore = ColorLabels[i].BackColor;
+                var Back = ColorLabels[i + Length].BackColor;
+
+                if (!ColorHelper.IsNiceContrast(Fore, Back))
                 {
                     ColorCheckMsg = i + 1;
                     break;
                 }
+
+                SelectedColors[i] = new(Fore, Back);
             }
 
 #if DEBUG
@@ -635,14 +651,6 @@ namespace PlainCEETimer.Forms
             }
         }
 
-        private List<ColorSetObject> GetSelectedColors()
-        {
-            return [new(LabelColor11.BackColor, LabelColor12.BackColor),
-                    new(LabelColor21.BackColor, LabelColor22.BackColor),
-                    new(LabelColor31.BackColor, LabelColor32.BackColor),
-                    new(LabelColor41.BackColor, LabelColor42.BackColor)];
-        }
-
         private void ChangeWorkingStyle(WorkingArea Where, bool IsWorking = true, int SubCase = 0, Font NewFont = null)
         {
             switch (Where)
@@ -671,23 +679,7 @@ namespace PlainCEETimer.Forms
                     LabelFont.Text = $"当前字体: {NewFont.Name}, {NewFont.Size}pt, {NewFont.Style}";
                     break;
                 case WorkingArea.LastColor:
-                    var CountdownColors = AppConfig.Appearance.Colors;
-                    LabelColor11.BackColor = CountdownColors[0].Fore;
-                    LabelPreviewColor1.ForeColor = CountdownColors[0].Fore;
-                    LabelColor21.BackColor = CountdownColors[1].Fore;
-                    LabelPreviewColor2.ForeColor = CountdownColors[1].Fore;
-                    LabelColor31.BackColor = CountdownColors[2].Fore;
-                    LabelPreviewColor3.ForeColor = CountdownColors[2].Fore;
-                    LabelColor41.BackColor = CountdownColors[3].Fore;
-                    LabelPreviewColor4.ForeColor = CountdownColors[3].Fore;
-                    LabelColor12.BackColor = CountdownColors[0].Back;
-                    LabelPreviewColor1.BackColor = CountdownColors[0].Back;
-                    LabelColor22.BackColor = CountdownColors[1].Back;
-                    LabelPreviewColor2.BackColor = CountdownColors[1].Back;
-                    LabelColor32.BackColor = CountdownColors[2].Back;
-                    LabelPreviewColor3.BackColor = CountdownColors[2].Back;
-                    LabelColor42.BackColor = CountdownColors[3].Back;
-                    LabelPreviewColor4.BackColor = CountdownColors[3].Back;
+                    SetLabelColors(AppConfig.Appearance.Colors);
                     break;
                 case WorkingArea.SelectedColor:
                     LabelPreviewColor1.BackColor = LabelColor12.BackColor;
@@ -700,23 +692,7 @@ namespace PlainCEETimer.Forms
                     LabelPreviewColor4.ForeColor = LabelColor41.BackColor;
                     break;
                 case WorkingArea.DefaultColor:
-                    var DefaultColors = DefaultValues.CountdownDefaultColors;
-                    LabelColor11.BackColor = DefaultColors[0].Fore;
-                    LabelPreviewColor1.ForeColor = DefaultColors[0].Fore;
-                    LabelColor21.BackColor = DefaultColors[1].Fore;
-                    LabelPreviewColor2.ForeColor = DefaultColors[1].Fore;
-                    LabelColor31.BackColor = DefaultColors[2].Fore;
-                    LabelPreviewColor3.ForeColor = DefaultColors[2].Fore;
-                    LabelColor41.BackColor = DefaultColors[3].Fore;
-                    LabelPreviewColor4.ForeColor = DefaultColors[3].Fore;
-                    LabelColor12.BackColor = DefaultColors[0].Back;
-                    LabelPreviewColor1.BackColor = DefaultColors[0].Back;
-                    LabelColor22.BackColor = DefaultColors[1].Back;
-                    LabelPreviewColor2.BackColor = DefaultColors[1].Back;
-                    LabelColor32.BackColor = DefaultColors[2].Back;
-                    LabelPreviewColor3.BackColor = DefaultColors[2].Back;
-                    LabelColor42.BackColor = DefaultColors[3].Back;
-                    LabelPreviewColor4.BackColor = DefaultColors[3].Back;
+                    SetLabelColors(DefaultValues.CountdownDefaultColors);
                     break;
                 case WorkingArea.ShowLeftPast:
                     GBoxExamEnd.Visible = IsWorking;
@@ -724,6 +700,17 @@ namespace PlainCEETimer.Forms
                                           new(GBoxExamEnd.Location.X, GBoxExamEnd.Location.Y + GBoxExamEnd.Height + 6.ScaleTo(this)) :
                                           new(GBoxOthers.Location.X, GBoxExamStart.Location.Y + GBoxExamStart.Height + 6.ScaleTo(this));
                     break;
+            }
+        }
+
+        private void SetLabelColors(ColorSetObject[] Colors)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                ColorLabels[i].BackColor = Colors[i].Fore;
+                ColorPreviewLabels[i].ForeColor = Colors[i].Fore;
+                ColorLabels[i + 4].BackColor = Colors[i].Back;
+                ColorPreviewLabels[i].BackColor = Colors[i].Back;
             }
         }
 
@@ -783,10 +770,7 @@ namespace PlainCEETimer.Forms
                 AppConfig.Appearance = new()
                 {
                     Font = SelectedFont,
-                    Colors = [new(LabelColor11.BackColor,LabelColor12.BackColor),
-                            new(LabelColor21.BackColor,LabelColor22.BackColor),
-                            new(LabelColor31.BackColor,LabelColor32.BackColor),
-                            new(LabelColor41.BackColor,LabelColor42.BackColor)],
+                    Colors = SelectedColors,
                 };
 
                 AppConfig.Tools = new()

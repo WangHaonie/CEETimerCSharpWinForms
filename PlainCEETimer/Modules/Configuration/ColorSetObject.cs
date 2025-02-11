@@ -7,8 +7,8 @@ namespace PlainCEETimer.Modules.Configuration
     [JsonConverter(typeof(ColorSetConverter))]
     public sealed class ColorSetObject(Color fore, Color back)
     {
-        public Color Fore { get; set; } = fore;
+        public Color Fore => fore;
 
-        public Color Back { get; set; } = back;
+        public Color Back => back;
     }
 }

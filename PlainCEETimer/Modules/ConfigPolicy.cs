@@ -10,7 +10,6 @@ namespace PlainCEETimer.Modules
         public const int MaxCustomTextLength = 50;
         public const int MinFontSize = 10;
         public const int MaxFontSize = 28;
-        public const string DefaultFont = "Microsoft YaHei, 17.25pt";
         public static char[] CharsNotAllowed => ['\\', '/', '*', '?', '"', '\'', '<', '>', '|'];
         public static char ValueSeperator => ',';
         public static string ValueSeperatorString => ", ";
