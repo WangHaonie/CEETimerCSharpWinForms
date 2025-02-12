@@ -6,3 +6,4 @@ PlainCEETimer.Natives/x64/
 NSIS/*.exe
 PlainCEETimer.Setup/*.exe
 *.aps
+/MigrationBackup
