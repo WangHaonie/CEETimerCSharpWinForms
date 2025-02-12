@@ -2,3 +2,6 @@
 *.jpg binary
 *.png binary
 *.ico binary
+
+*.cpp linguist-language=C++
+*.h linguist-language=C++

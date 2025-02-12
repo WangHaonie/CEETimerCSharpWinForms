@@ -16,10 +16,10 @@ namespace PlainCEETimer.Forms
         public static string ManualVersion { get; set; } = AppLauncher.AppVersion;
 
         private bool IsCancelled;
-        private bool IsWindows7Above = AppLauncher.IsWindows7Above;
         private CancellationTokenSource cts;
         private string DownloadUrl;
         private string DownloadPath;
+        private TaskbarProgress TaskbarProgress;
 
         public DownloaderForm()
         {
@@ -35,6 +35,7 @@ namespace PlainCEETimer.Forms
 
         protected override async void OnLoad()
         {
+            TaskbarProgress = new(Handle);
             string LatestVersion = Updater.LatestVersion;
             string SelectedVersion = ManualVersion;
 
@@ -43,7 +44,6 @@ namespace PlainCEETimer.Forms
                 LatestVersion = SelectedVersion.IsVersionNumber() ? SelectedVersion : AppLauncher.AppVersion;
             }
 
-            TaskbarProgress.InitilizeTaskbarListEx(Handle);
             TaskbarProgress.SetTaskbarListStateEx(TaskbarProgressState.Normal);
             DownloadUrl = string.Format(AppLauncher.UpdateURL, LatestVersion);
             DownloadPath = Path.Combine(Path.GetTempPath(), Path.GetFileName(new Uri(DownloadUrl).AbsolutePath));
@@ -169,11 +169,7 @@ namespace PlainCEETimer.Forms
             LabelSize.Text = $"已下载/总共: {Downloaded} KB / {Total} KB";
             LabelSpeed.Text = $"下载速度: {Speed:0.00} KB/s";
             ProgressBarMain.Value = Progress;
-
-            if (IsWindows7Above)
-            {
-                TaskbarProgress.SetTaskbarListProgressEx((ulong)Downloaded, (ulong)Total);
-            }
+            TaskbarProgress.SetTaskbarListProgressEx((ulong)Downloaded, (ulong)Total);
         }
 
         protected override void OnClosing(FormClosingEventArgs e)
