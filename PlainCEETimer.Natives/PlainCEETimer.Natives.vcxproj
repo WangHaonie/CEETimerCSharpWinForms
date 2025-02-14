@@ -151,6 +151,7 @@
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="RoundCorner\RoundCorner.h" />
     <ClInclude Include="TaskbarProgress\TaskbarProgress.h" />
   </ItemGroup>
   <ItemGroup>
@@ -160,6 +161,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="RoundCorner\RoundCorner.cpp" />
     <ClCompile Include="TaskbarProgress\TaskbarProgress.cpp" />
   </ItemGroup>
   <ItemGroup>

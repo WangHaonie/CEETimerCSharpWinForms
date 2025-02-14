@@ -115,10 +115,7 @@ namespace PlainCEETimer.Forms
         {
             if (IsWin10BelowRound)
             {
-                var _BorderRadius = BorderRadius.ScaleTo(this);
-                var HRgn = NativeInterop.CreateRoundRectRgn(0, 0, Width, Height, _BorderRadius, _BorderRadius);
-                Region = Region.FromHrgn(HRgn);
-                NativeInterop.DeleteObject(HRgn);
+                RoundCorner.SetRoundCornerRegion(Handle, Width, Height, BorderRadius.ScaleTo(this));
             }
         }
 
@@ -706,9 +703,7 @@ namespace PlainCEETimer.Forms
         {
             if (AppLauncher.IsWindows11)
             {
-                var attribute = DWMWINDOWATTRIBUTE.DWMWA_WINDOW_CORNER_PREFERENCE;
-                var preference = DWM_WINDOW_CORNER_PREFERENCE.DWMWCP_ROUND;
-                NativeInterop.DwmSetWindowAttribute(Handle, attribute, ref preference, sizeof(uint));
+                RoundCorner.SetRoundCornerModern(Handle);
             }
             else
             {

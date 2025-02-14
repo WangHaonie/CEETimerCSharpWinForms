@@ -1,6 +1,7 @@
 #pragma once
-#include <Windows.h>
+
 #include <ShObjIdl.h>
+#include <Windows.h>
 
 extern "C"
 {

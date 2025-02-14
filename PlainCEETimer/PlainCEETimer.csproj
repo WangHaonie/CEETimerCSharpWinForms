@@ -163,7 +163,7 @@
     <Compile Include="Controls\ColorDialogEx.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Interop\Enums.cs" />
+    <Compile Include="Interop\RoundCorner.cs" />
     <Compile Include="Interop\TaskbarProgress.cs" />
     <Compile Include="Modules\ConfigPolicy.cs" />
     <Compile Include="Modules\Configuration\AppearanceObject.cs" />
