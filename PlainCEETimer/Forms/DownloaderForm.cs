@@ -44,7 +44,7 @@ namespace PlainCEETimer.Forms
                 LatestVersion = SelectedVersion.IsVersionNumber() ? SelectedVersion : AppLauncher.AppVersion;
             }
 
-            TaskbarProgress.SetTaskbarListStateEx(TaskbarProgressState.Normal);
+            TaskbarProgress.SetTaskbarProgressStateEx(TaskbarProgressState.Normal);
             DownloadUrl = string.Format(AppLauncher.UpdateURL, LatestVersion);
             DownloadPath = Path.Combine(Path.GetTempPath(), Path.GetFileName(new Uri(DownloadUrl).AbsolutePath));
 
@@ -99,10 +99,10 @@ namespace PlainCEETimer.Forms
                     ButtonRetry.Enabled = false;
                     LinkBrowser.Enabled = false;
                     ProgressBarMain.Value = 100;
-                    TaskbarProgress.SetTaskbarListProgressEx(100UL, 100UL);
-                    TaskbarProgress.SetTaskbarListStateEx(TaskbarProgressState.Indeterminate);
+                    TaskbarProgress.SetTaskbarProgressValueEx(100UL, 100UL);
+                    TaskbarProgress.SetTaskbarProgressStateEx(TaskbarProgressState.Indeterminate);
                     await Task.Delay(1800);
-                    TaskbarProgress.SetTaskbarListStateEx(TaskbarProgressState.None);
+                    TaskbarProgress.SetTaskbarProgressStateEx(TaskbarProgressState.None);
                     TaskbarProgress.ReleaseTaskbarListEx();
                     ProcessHelper.RunProcess("cmd.exe", $"/c start \"\" \"{DownloadPath}\" /S");
                     Close();
@@ -122,7 +122,7 @@ namespace PlainCEETimer.Forms
                     ButtonRetry.Enabled = true;
                 }
 
-                TaskbarProgress.SetTaskbarListStateEx(TaskbarProgressState.Error);
+                TaskbarProgress.SetTaskbarProgressStateEx(TaskbarProgressState.Error);
                 return;
             }
             finally
@@ -169,7 +169,7 @@ namespace PlainCEETimer.Forms
             LabelSize.Text = $"已下载/总共: {Downloaded} KB / {Total} KB";
             LabelSpeed.Text = $"下载速度: {Speed:0.00} KB/s";
             ProgressBarMain.Value = Progress;
-            TaskbarProgress.SetTaskbarListProgressEx((ulong)Downloaded, (ulong)Total);
+            TaskbarProgress.SetTaskbarProgressValueEx((ulong)Downloaded, (ulong)Total);
         }
 
         protected override void OnClosing(FormClosingEventArgs e)

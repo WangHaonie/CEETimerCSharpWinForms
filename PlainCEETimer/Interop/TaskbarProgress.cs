@@ -21,19 +21,19 @@ namespace PlainCEETimer.Interop
             IsWindows7Above = AppLauncher.IsWindows7Above;
         }
 
-        public void SetTaskbarListStateEx(TaskbarProgressState State)
+        public void SetTaskbarProgressStateEx(TaskbarProgressState State)
         {
             if (IsWindows7Above)
             {
-                SetTaskbarListState((int)State);
+                SetTaskbarProgressState((int)State);
             }
         }
 
-        public void SetTaskbarListProgressEx(ulong ullCompleted, ulong ullTotal)
+        public void SetTaskbarProgressValueEx(ulong ullCompleted, ulong ullTotal)
         {
             if (IsWindows7Above)
             {
-                SetTaskbarListProgress(ullCompleted, ullTotal);
+                SetTaskbarProgressValue(ullCompleted, ullTotal);
             }
         }
 
@@ -74,10 +74,10 @@ namespace PlainCEETimer.Interop
         private static extern void InitilizeTaskbarList(IntPtr hWnd);
 
         [DllImport("PlainCEETimer.Natives.dll", CallingConvention = CallingConvention.StdCall)]
-        private static extern void SetTaskbarListState(int tbpFlags);
+        private static extern void SetTaskbarProgressState(int tbpFlags);
 
         [DllImport("PlainCEETimer.Natives.dll", CallingConvention = CallingConvention.StdCall)]
-        private static extern void SetTaskbarListProgress(ulong ullCompleted, ulong ullTotal);
+        private static extern void SetTaskbarProgressValue(ulong ullCompleted, ulong ullTotal);
 
         [DllImport("PlainCEETimer.Natives.dll", CallingConvention = CallingConvention.StdCall)]
         private static extern void ReleaseTaskbarList();

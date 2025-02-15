@@ -15,7 +15,7 @@ void InitilizeTaskbarList(HWND hWnd)
 	}
 }
 
-void SetTaskbarListState(int tbpFlags)
+void SetTaskbarProgressState(int tbpFlags)
 {
 	if (_TaskbarList && WindowHandle)
 	{
@@ -23,7 +23,7 @@ void SetTaskbarListState(int tbpFlags)
 	}
 }
 
-void SetTaskbarListProgress(ULONGLONG ullCompleted, ULONGLONG ullTotal)
+void SetTaskbarProgressValue(ULONGLONG ullCompleted, ULONGLONG ullTotal)
 {
 	if (_TaskbarList && WindowHandle)
 	{
