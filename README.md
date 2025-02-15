@@ -50,7 +50,7 @@ PlainCEETimer, 一个纯粹的高考倒计时, 适用于 Windows 平台, 支持�
 + .NET Framework (4.7.2)
 + WinForms
 + C# (13.0 Preview)
-+ C++ 17
++ C++ 17 (Toolset v143)
 ## ⚖️ 开源许可证
 Both **PlainCEETimer** and **CEETimerCSharpWinForms** are licensed under the **GNU General Public License v3.0 (GPL-3.0)**.
 ## 🔗 其他链接
