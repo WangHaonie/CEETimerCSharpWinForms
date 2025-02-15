@@ -18,6 +18,8 @@ namespace PlainCEETimer.Modules
         public static bool IsAdmin { get; private set; }
         public static Icon AppIcon { get; private set; }
         public static bool IsWindows7Above => Environment.OSVersion.Version >= new Version(6, 1, 7600);
+        //public static bool IsWindows81Above => Environment.OSVersion.Version >= new Version(6, 3, 9600);
+        //public static bool IsWindows10Build1607Above => Environment.OSVersion.Version >= new Version(10, 0, 14393);
         public static bool IsWindows11 => Environment.OSVersion.Version >= new Version(10, 0, 22000);
 
         public const string AppName = "高考倒计时 by WangHaonie";
@@ -51,6 +53,7 @@ namespace PlainCEETimer.Modules
         {
             AppIcon = Icon.ExtractAssociatedIcon(CurrentExecutablePath);
 
+            //int WindowsID;
             var Args = Array.ConvertAll(args, x => x.ToLower());
             var AllArgs = string.Join(" ", args);
 
@@ -59,6 +62,21 @@ namespace PlainCEETimer.Modules
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
             Application.ThreadException += (sender, e) => HandleException(e.Exception);
             AppDomain.CurrentDomain.UnhandledException += (sender, e) => HandleException((Exception)e.ExceptionObject);
+
+            //if (IsWindows10Build1607Above)
+            //{
+            //    WindowsID = 2;
+            //}
+            //else if (IsWindows81Above)
+            //{
+            //    WindowsID = 1;
+            //}
+            //else
+            //{
+            //    WindowsID = 0;
+            //}
+
+            //DpiAwareness.SetProcessDpiAwarenessEx(WindowsID);
 
             using var MutexMain = new Mutex(true, $"{AppNameEng}_MUTEX_61c0097d-3682-421c-84e6-70ca37dc31dd_[A3F8B92E6D14]", out bool IsNewProcess);
 

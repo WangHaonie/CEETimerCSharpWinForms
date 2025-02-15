@@ -2,3 +2,4 @@
 #define PCH_H
 #include "framework.h"
 #endif 
+#include <sdkddkver.h>
