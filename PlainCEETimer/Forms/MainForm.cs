@@ -210,7 +210,7 @@ namespace PlainCEETimer.Forms
             MemCleaner?.Dispose();
             if (MemClean)
             {
-                MemCleaner = new(CleanMemory, null, TimeSpan.Zero, TimeSpan.FromMinutes(5));
+                MemCleaner = new(CleanMemory, null, TimeSpan.FromSeconds(30), TimeSpan.FromMinutes(5));
             }
 
             SetLabelCountdownAutoWrap();
@@ -684,19 +684,7 @@ namespace PlainCEETimer.Forms
 
         private void CleanMemory(object state)
         {
-            try
-            {
-                int MemoryUsage = int.Parse(ProcessHelper.GetProcessOutput(ProcessHelper.RunProcess("powershell.exe", $"-Command (Get-Counter \\\"\\Process({AppLauncher.AppNameEng})\\Working Set - Private\\\").CounterSamples.CookedValue", RedirectOutput: true)));
-
-                if (MemoryUsage > 9437184)
-                {
-                    ConfigPolicy.NotAllowed<int>();
-                }
-            }
-            catch
-            {
-                NativeInterop.EmptyWorkingSet(Process.GetCurrentProcess().Handle);
-            }
+            MemoryCleaner.CleanMemory(9437184);
         }
 
         private void SetRoundCorners()
