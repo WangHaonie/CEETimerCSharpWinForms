@@ -5,8 +5,8 @@
 
 extern "C"
 {
-	__declspec(dllexport) void InitilizeTaskbarList(HWND hWnd);
-	__declspec(dllexport) void SetTaskbarListState(int tbpFlags);
-	__declspec(dllexport) void SetTaskbarListProgress(ULONGLONG ullCompleted, ULONGLONG ullTotal);
-	__declspec(dllexport) void ReleaseTaskbarList();
+	__declspec(dllexport) void __stdcall InitilizeTaskbarList(HWND hWnd);
+	__declspec(dllexport) void __stdcall SetTaskbarListState(int tbpFlags);
+	__declspec(dllexport) void __stdcall SetTaskbarListProgress(ULONGLONG ullCompleted, ULONGLONG ullTotal);
+	__declspec(dllexport) void __stdcall ReleaseTaskbarList();
 }
