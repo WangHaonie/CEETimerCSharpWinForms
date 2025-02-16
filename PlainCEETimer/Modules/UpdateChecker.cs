@@ -39,15 +39,18 @@ namespace PlainCEETimer.Modules
 
                 if (Version.Parse(CurrentLatest) > Version.Parse(AppLauncher.AppVersion))
                 {
-                    if (MessageX.Info($"检测到新版本，是否下载并安装？\n\n当前版本: v{AppLauncher.AppVersion}\n最新版本: v{CurrentLatest}\n发布日期: {PublishTime}\n\nv{CurrentLatest}更新日志: {UpdateLog}", Buttons: MessageBoxExButtons.YesNo) == DialogResult.Yes)
+                    OwnerForm.BeginInvoke(() =>
                     {
-                        if (FormDownloader == null || FormDownloader.IsDisposed)
+                        if (MessageX.Info($"检测到新版本，是否下载并安装？\n\n当前版本: v{AppLauncher.AppVersion}\n最新版本: v{CurrentLatest}\n发布日期: {PublishTime}\n\nv{CurrentLatest}更新日志: {UpdateLog}", Buttons: MessageBoxExButtons.YesNo) == DialogResult.Yes)
                         {
-                            FormDownloader = new();
-                        }
+                            if (FormDownloader == null || FormDownloader.IsDisposed)
+                            {
+                                FormDownloader = new();
+                            }
 
-                        FormDownloader.ReActivate(OwnerForm);
-                    }
+                            FormDownloader.ReActivate();
+                        }
+                    });
                 }
                 else if (!IsProgramStart)
                 {

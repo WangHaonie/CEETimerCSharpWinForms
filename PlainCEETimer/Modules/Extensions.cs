@@ -48,11 +48,7 @@ namespace PlainCEETimer.Modules
             return pxScaled;
         }
 
-        public static void ReActivate(this AppForm form) => ReActivateCore(form);
-
-        public static void ReActivate(this AppForm form, AppForm parent) => parent.BeginInvoke(() => ReActivateCore(form));
-
-        private static void ReActivateCore(AppForm form)
+        public static void ReActivate(this AppForm form)
         {
             var tmp = form.TopMost;
             form.TopMost = true;
