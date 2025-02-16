@@ -24,7 +24,7 @@ namespace PlainCEETimer.Modules
 
         public const string AppName = "高考倒计时 by WangHaonie";
         public const string AppNameEng = "PlainCEETimer";
-        public const string AppVersion = "3.0.8";
+        public const string AppVersion = "3.0.7";
         public const string AppBuildDate = "2024/08/06";
         public const string CopyrightInfo = "Copyright © 2023-2024 WangHaonie";
         public const string OriginalFileName = $"{AppNameEng}.exe";
@@ -32,8 +32,8 @@ namespace PlainCEETimer.Modules
         public const string WarnMsg = "警告 - 高考倒计时";
         public const string ErrMsg = "错误 - 高考倒计时";
         public const string DateTimeFormat = "yyyy-MM-dd dddd HH:mm:ss";
-        public const string UpdateAPI = "https://gitee.com/WangHaonie/PlainCEETimer/raw/main/api/github.json";
-        public const string UpdateURL = "https://gitee.com/WangHaonie/PlainCEETimer/raw/main/download/PlainCEETimer_{0}_x64_Setup.exe";
+        public const string UpdateAPI = "https://gitee.com/WangHaonie/CEETimerCSharpWinForms/raw/main/api/github.json";
+        public const string UpdateURL = "https://gitee.com/WangHaonie/CEETimerCSharpWinForms/raw/main/download/CEETimerCSharpWinForms_{0}_x64_Setup.exe";
         public const string RequestUA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36";
 
         private static readonly string PipeName = $"{AppNameEng}_[34c14833-98da-49f7-a2ab-369e88e73b95]";

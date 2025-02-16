@@ -48,7 +48,11 @@ namespace PlainCEETimer.Modules
             return pxScaled;
         }
 
-        public static void ReActivate(this AppForm form)
+        public static void ReActivate(this AppForm form) => ReActivateCore(form);
+
+        public static void ReActivate(this AppForm form, AppForm parent) => parent.BeginInvoke(() => ReActivateCore(form));
+
+        private static void ReActivateCore(AppForm form)
         {
             var tmp = form.TopMost;
             form.TopMost = true;
@@ -57,7 +61,6 @@ namespace PlainCEETimer.Modules
             form.Activate();
             form.TopMost = tmp;
         }
-
 
         public static bool IsValid(this DateTime dateTime)
             => dateTime >= new DateTime(1753, 1, 1, 0, 0, 0) || dateTime <= new DateTime(9998, 12, 31, 23, 59, 59);

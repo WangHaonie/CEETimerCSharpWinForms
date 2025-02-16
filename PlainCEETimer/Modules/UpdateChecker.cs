@@ -11,7 +11,7 @@ namespace PlainCEETimer.Modules
     {
         public static void CheckUpdate(bool IsProgramStart, AppForm OwnerForm)
         {
-            new Updater().CheckUpdate(IsProgramStart, new(OwnerForm));
+            new Updater().CheckUpdate(IsProgramStart, OwnerForm);
         }
     }
 
@@ -22,8 +22,9 @@ namespace PlainCEETimer.Modules
 
         private DownloaderForm FormDownloader;
 
-        public void CheckUpdate(bool IsProgramStart, MessageBoxHelper MessageX)
+        public void CheckUpdate(bool IsProgramStart, AppForm OwnerForm)
         {
+            var MessageX = new MessageBoxHelper(OwnerForm);
             using var _HttpClient = new HttpClient();
             _HttpClient.DefaultRequestHeaders.UserAgent.ParseAdd(AppLauncher.RequestUA);
 
@@ -45,7 +46,7 @@ namespace PlainCEETimer.Modules
                             FormDownloader = new();
                         }
 
-                        FormDownloader.ReActivate();
+                        FormDownloader.ReActivate(OwnerForm);
                     }
                 }
                 else if (!IsProgramStart)
