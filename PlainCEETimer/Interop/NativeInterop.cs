@@ -17,5 +17,8 @@ namespace PlainCEETimer.Interop
         [DllImport("shell32.dll", EntryPoint = "ExtractIconExW", CharSet = CharSet.Unicode, ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
         public static extern int ExtractIconEx(string lpszFile, int nIconIndex, out IntPtr phiconLarge, out IntPtr phiconSmall, int nIcons);
         #endregion
+
+        [DllImport("user32.dll", CallingConvention = CallingConvention.StdCall)]
+        public static extern int GetDpiForSystem();
     }
 }

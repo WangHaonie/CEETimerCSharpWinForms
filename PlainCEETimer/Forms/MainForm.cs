@@ -106,7 +106,7 @@ namespace PlainCEETimer.Forms
             RefreshSettings();
             ValidateNeeded = false;
             Task.Run(() => UpdateChecker.CheckUpdate(true, this));
-            _ = 1.ScaleTo(this);
+            _ = 1.ScaleToDpi();
             IsNormalStart = true;
         }
 
@@ -114,7 +114,7 @@ namespace PlainCEETimer.Forms
         {
             if (SetRoundCornerRegion)
             {
-                RoundCorner.SetRoundCornerRegion(Handle, Width, Height, BorderRadius.ScaleTo(this));
+                RoundCorner.SetRoundCornerRegion(Handle, Width, Height, BorderRadius.ScaleToDpi());
             }
         }
 

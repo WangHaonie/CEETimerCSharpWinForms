@@ -1,4 +1,5 @@
 ﻿using PlainCEETimer.Controls;
+using PlainCEETimer.Interop;
 using System;
 using System.Drawing;
 using System.Linq;
@@ -34,19 +35,16 @@ namespace PlainCEETimer.Modules
             => new(s.Trim().Replace(" ", "").Where(c => char.IsLetterOrDigit(c) || (c >= ' ' && c <= byte.MaxValue)).Where(x => !ConfigPolicy.CharsNotAllowed.Contains(x)).ToArray());
         #endregion
 
-        public static int ScaleTo(this int px, Control control)
+        public static int ScaleToDpi(this int px)
         {
-            Graphics g = null;
             int pxScaled;
 
             if (DpiRatio == 0)
             {
-                g = control.CreateGraphics();
-                DpiRatio = g.DpiX / 96;
+                DpiRatio = NativeInterop.GetDpiForSystem() / 96D;
             }
 
             pxScaled = (int)(px * DpiRatio);
-            g?.Dispose();
             return pxScaled;
         }
 

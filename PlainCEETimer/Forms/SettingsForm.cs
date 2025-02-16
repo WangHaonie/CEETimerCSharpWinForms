@@ -697,8 +697,8 @@ namespace PlainCEETimer.Forms
                 case WorkingArea.ShowLeftPast:
                     GBoxExamEnd.Visible = IsWorking;
                     GBoxOthers.Location = IsWorking ?
-                                          new(GBoxExamEnd.Location.X, GBoxExamEnd.Location.Y + GBoxExamEnd.Height + 6.ScaleTo(this)) :
-                                          new(GBoxOthers.Location.X, GBoxExamStart.Location.Y + GBoxExamStart.Height + 6.ScaleTo(this));
+                                          new(GBoxExamEnd.Location.X, GBoxExamEnd.Location.Y + GBoxExamEnd.Height + 6.ScaleToDpi()) :
+                                          new(GBoxOthers.Location.X, GBoxExamStart.Location.Y + GBoxExamStart.Height + 6.ScaleToDpi());
                     break;
             }
         }
