@@ -51,7 +51,7 @@ namespace PlainCEETimer.Forms
         private bool IsReadyToMove;
         private bool IsCountdownReady;
         private bool IsCountdownRunning;
-        private bool IsWin10BelowRound;
+        private bool SetRoundCornerRegion;
         private bool ShowTrayIcon;
         private bool ShowTrayText;
         private readonly int PptsvcThreshold = 1;
@@ -112,7 +112,7 @@ namespace PlainCEETimer.Forms
 
         private void MainForm_SizeChanged(object sender, EventArgs e)
         {
-            if (IsWin10BelowRound)
+            if (SetRoundCornerRegion)
             {
                 RoundCorner.SetRoundCornerRegion(Handle, Width, Height, BorderRadius.ScaleTo(this));
             }
@@ -694,7 +694,7 @@ namespace PlainCEETimer.Forms
             }
             else
             {
-                IsWin10BelowRound = true;
+                SetRoundCornerRegion = true;
             }
         }
 

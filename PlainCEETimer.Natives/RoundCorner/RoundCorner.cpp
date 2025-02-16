@@ -11,18 +11,6 @@ void SetRoundCornerRegion(HWND hWnd, int nRightRect, int nBottomRect, int radius
 
 void SetRoundCornerModern(HWND hWnd)
 {
-    HMODULE hDwmApi = LoadLibrary(L"dwmapi.dll");
-    if (hDwmApi)
-    {
-        DwmSetWindowAttributeProc pDwmSetWindowAttribute = (DwmSetWindowAttributeProc)GetProcAddress(hDwmApi, "DwmSetWindowAttribute");
-
-        if (pDwmSetWindowAttribute)
-        {
-            const int DWMWA_WINDOW_CORNER_PREFERENCE = 33;
-            const int DWMWCP_ROUND = 2;
-            pDwmSetWindowAttribute(hWnd, DWMWA_WINDOW_CORNER_PREFERENCE, &DWMWCP_ROUND, sizeof(DWMWCP_ROUND));
-        }
-
-        FreeLibrary(hDwmApi);
-    }
+    DWM_WINDOW_CORNER_PREFERENCE preference = DWMWCP_ROUND;
+    DwmSetWindowAttribute(hWnd, DWMWA_WINDOW_CORNER_PREFERENCE, &preference, sizeof(preference));
 }

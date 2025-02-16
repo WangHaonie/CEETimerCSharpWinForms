@@ -1,6 +1,6 @@
 #pragma once
 
-typedef HRESULT(__stdcall* DwmSetWindowAttributeProc)(HWND, DWORD, LPCVOID, DWORD);
+#include <dwmapi.h>
 
 extern "C"
 {
