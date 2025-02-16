@@ -24,8 +24,8 @@ namespace PlainCEETimer.Modules
 
         public const string AppName = "高考倒计时 by WangHaonie";
         public const string AppNameEng = "PlainCEETimer";
-        public const string AppVersion = "3.0.7";
-        public const string AppBuildDate = "2024/08/06";
+        public const string AppVersion = "3.0.9";
+        public const string AppBuildDate = "2025/02/17";
         public const string CopyrightInfo = "Copyright © 2023-2024 WangHaonie";
         public const string OriginalFileName = $"{AppNameEng}.exe";
         public const string InfoMsg = "提示 - 高考倒计时";

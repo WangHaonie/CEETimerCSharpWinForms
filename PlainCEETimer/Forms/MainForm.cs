@@ -105,7 +105,7 @@ namespace PlainCEETimer.Forms
 
             RefreshSettings();
             ValidateNeeded = false;
-            Task.Run(() => UpdateChecker.CheckUpdate(true, this));
+            Task.Run(() => new Updater().CheckForUpdate(true, this));
             _ = 1.ScaleToDpi();
             IsNormalStart = true;
         }

@@ -7,14 +7,6 @@ using System.Windows.Forms;
 
 namespace PlainCEETimer.Modules
 {
-    public static class UpdateChecker
-    {
-        public static void CheckUpdate(bool IsProgramStart, AppForm OwnerForm)
-        {
-            new Updater().CheckUpdate(IsProgramStart, OwnerForm);
-        }
-    }
-
     public class Updater
     {
         public static string LatestVersion { get; private set; }
@@ -22,7 +14,7 @@ namespace PlainCEETimer.Modules
 
         private DownloaderForm FormDownloader;
 
-        public void CheckUpdate(bool IsProgramStart, AppForm OwnerForm)
+        public void CheckForUpdate(bool IsProgramStart, AppForm OwnerForm)
         {
             var MessageX = new MessageBoxHelper(OwnerForm);
             using var _HttpClient = new HttpClient();

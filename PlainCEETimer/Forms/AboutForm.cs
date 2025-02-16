@@ -33,7 +33,7 @@ namespace PlainCEETimer.Forms
                 {
                     var OriginalVersionString = LabelInfo.Text;
                     LabelInfo.Text = $"{AppLauncher.AppName}\n正在检查更新，请稍候...";
-                    await Task.Run(() => UpdateChecker.CheckUpdate(false, this));
+                    await Task.Run(() => new Updater().CheckForUpdate(false, this));
                     LabelInfo.Text = OriginalVersionString;
                 }
                 finally
