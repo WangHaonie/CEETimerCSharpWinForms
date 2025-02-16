@@ -9,9 +9,9 @@ namespace PlainCEETimer.Modules.JsonConverters
     {
         public override ColorSetObject ReadJson(JsonReader reader, Type objectType, ColorSetObject existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
-            var jsonObject = JObject.Load(reader);
-            var Fore = ColorHelper.GetColor(jsonObject[nameof(existingValue.Fore)].ToString());
-            var Back = ColorHelper.GetColor(jsonObject[nameof(existingValue.Back)].ToString());
+            var Json = JObject.Load(reader);
+            var Fore = ColorHelper.GetColor(Json, 0);
+            var Back = ColorHelper.GetColor(Json, 1);
 
             if (ColorHelper.IsNiceContrast(Fore, Back))
             {

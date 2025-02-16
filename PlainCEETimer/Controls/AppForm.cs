@@ -222,8 +222,8 @@ namespace PlainCEETimer.Controls
         protected void BindComboData(ComboBox Target, ComboData[] Data)
         {
             Target.DataSource = Data;
-            Target.DisplayMember = "Display";
-            Target.ValueMember = "Value";
+            Target.DisplayMember = nameof(ComboData.Display);
+            Target.ValueMember = nameof(ComboData.Value);
         }
 
         /// <summary>

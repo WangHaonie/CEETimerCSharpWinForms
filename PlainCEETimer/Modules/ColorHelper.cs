@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using PlainCEETimer.Modules.Configuration;
+using System;
 using System.Drawing;
 using System.Text.RegularExpressions;
 
@@ -35,6 +37,12 @@ namespace PlainCEETimer.Modules
                 return Color.FromArgb(R, G, B);
             }
         }
+
+        public static Color GetColor(JObject Json, int Index) => Index switch
+        {
+            0 => GetColor(Json[nameof(ColorSetObject.Fore)].ToString()),
+            _ => GetColor(Json[nameof(ColorSetObject.Back)].ToString())
+        };
 
         public static bool IsNiceContrast(Color Fore, Color Back)
         {

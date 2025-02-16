@@ -38,6 +38,8 @@ namespace PlainCEETimer.Modules.Configuration
                         throw new Exception();
                     }
                 });
+
+                field = value;
             }
         }
 
