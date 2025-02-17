@@ -13,18 +13,29 @@ namespace PlainCEETimer.Forms
 {
     public partial class DownloaderForm : AppForm
     {
-        public static string ManualVersion { get; set; } = AppLauncher.AppVersion;
-
         private bool IsCancelled;
         private CancellationTokenSource cts;
         private string DownloadUrl;
         private string DownloadPath;
         private TaskbarProgress TaskbarProgress;
+        private string TargetVersion = AppLauncher.AppVersion;
+        private long UpdateSize;
 
-        public DownloaderForm()
+        private DownloaderForm()
         {
             InitializeComponent();
             AdjustBeforeLoad = true;
+        }
+
+        public DownloaderForm(string ManualVersion) : this()
+        {
+            TargetVersion = Version.TryParse(ManualVersion, out _) ? ManualVersion : AppLauncher.AppVersion;
+        }
+
+        public DownloaderForm(string Version, long Size) : this()
+        {
+            TargetVersion = Version;
+            UpdateSize = Size;
         }
 
         protected override void AdjustUI()
@@ -36,16 +47,8 @@ namespace PlainCEETimer.Forms
         protected override async void OnLoad()
         {
             TaskbarProgress = new(Handle);
-            string LatestVersion = Updater.LatestVersion;
-            string SelectedVersion = ManualVersion;
-
-            if (string.IsNullOrWhiteSpace(LatestVersion))
-            {
-                LatestVersion = SelectedVersion.IsVersionNumber() ? SelectedVersion : AppLauncher.AppVersion;
-            }
-
             TaskbarProgress.SetTaskbarProgressStateEx(TaskbarProgressState.Normal);
-            DownloadUrl = string.Format(AppLauncher.UpdateURL, LatestVersion);
+            DownloadUrl = string.Format(AppLauncher.UpdateURL, TargetVersion);
             DownloadPath = Path.Combine(Path.GetTempPath(), Path.GetFileName(new Uri(DownloadUrl).AbsolutePath));
 
             await DownloadUpdate();
@@ -70,8 +73,7 @@ namespace PlainCEETimer.Forms
                     var totalBytesRead = 0L;
                     var bytesRead = 0L;
                     var sw = Stopwatch.StartNew();
-                    var size = Updater.UpdateSize;
-                    var totalBytes = response.Content.Headers.ContentLength ?? (size == 0 ? 378880L : size);
+                    var totalBytes = response.Content.Headers.ContentLength ?? (UpdateSize == 0 ? 378880L : UpdateSize);
 
                     while ((bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length)) > 0)
                     {

@@ -34,7 +34,7 @@ namespace PlainCEETimer.Modules
         public const string DateTimeFormat = "yyyy-MM-dd dddd HH:mm:ss";
         public const string UpdateAPI = "https://gitee.com/WangHaonie/CEETimerCSharpWinForms/raw/main/api/github.json";
         public const string UpdateURL = "https://gitee.com/WangHaonie/CEETimerCSharpWinForms/raw/main/download/CEETimerCSharpWinForms_{0}_x64_Setup.exe";
-        public const string RequestUA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36";
+        public const string RequestUA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36";
 
         private static readonly string PipeName = $"{AppNameEng}_[34c14833-98da-49f7-a2ab-369e88e73b95]";
         private static readonly string CurrentExecutableName = Path.GetFileName(CurrentExecutablePath);
@@ -110,8 +110,8 @@ namespace PlainCEETimer.Modules
                                 MessageX.Info($"当前用户 {UserName} {(IsAdmin ? "" : "不")}具有管理员权限。");
                                 break;
                             case "/fr":
-                                if (Args.Length > 1) DownloaderForm.ManualVersion = Args[1];
-                                Application.Run(new DownloaderForm());
+                                var version = Args.Length > 1 ? Args[1] : null;
+                                Application.Run(new DownloaderForm(version));
                                 break;
                             default:
                                 MessageX.Error($"无法解析的命令行参数: \n{AllArgs}", AutoClose: true);

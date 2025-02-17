@@ -191,7 +191,7 @@
     <Compile Include="Modules\ComboData.cs" />
     <Compile Include="Modules\Placeholders.cs" />
     <Compile Include="Modules\ProcessHelper.cs" />
-    <Compile Include="Modules\UpdateChecker.cs" />
+    <Compile Include="Modules\Updater.cs" />
     <Compile Include="Modules\Extensions.cs" />
     <Compile Include="Modules\AppLauncher.cs" />
     <Compile Include="Modules\MessageBoxHelper.cs" />
