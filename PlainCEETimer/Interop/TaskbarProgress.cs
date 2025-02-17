@@ -21,7 +21,7 @@ namespace PlainCEETimer.Interop
             IsWindows7Above = AppLauncher.IsWindows7Above;
         }
 
-        public void SetTaskbarProgressStateEx(TaskbarProgressState State)
+        public void SetState(TaskbarProgressState State)
         {
             if (IsWindows7Above)
             {
@@ -29,7 +29,7 @@ namespace PlainCEETimer.Interop
             }
         }
 
-        public void SetTaskbarProgressValueEx(ulong ullCompleted, ulong ullTotal)
+        public void SetValue(ulong ullCompleted, ulong ullTotal)
         {
             if (IsWindows7Above)
             {
@@ -37,7 +37,7 @@ namespace PlainCEETimer.Interop
             }
         }
 
-        public void ReleaseTaskbarListEx()
+        public void Release()
         {
             if (IsWindows7Above)
             {

@@ -18,8 +18,8 @@ namespace PlainCEETimer.Forms
         private string DownloadUrl;
         private string DownloadPath;
         private TaskbarProgress TaskbarProgress;
-        private string TargetVersion = AppLauncher.AppVersion;
-        private long UpdateSize;
+        private readonly string TargetVersion;
+        private readonly long UpdateSize;
 
         private DownloaderForm()
         {
@@ -47,7 +47,7 @@ namespace PlainCEETimer.Forms
         protected override async void OnLoad()
         {
             TaskbarProgress = new(Handle);
-            TaskbarProgress.SetTaskbarProgressStateEx(TaskbarProgressState.Normal);
+            TaskbarProgress.SetState(TaskbarProgressState.Normal);
             DownloadUrl = string.Format(AppLauncher.UpdateURL, TargetVersion);
             DownloadPath = Path.Combine(Path.GetTempPath(), Path.GetFileName(new Uri(DownloadUrl).AbsolutePath));
 
@@ -56,8 +56,8 @@ namespace PlainCEETimer.Forms
 
         private async Task DownloadUpdate()
         {
+            TaskbarProgress.SetValue(0UL, 100UL);
             IsCancelled = false;
-
             using var httpClient = new HttpClient();
             cts = new();
             httpClient.DefaultRequestHeaders.UserAgent.ParseAdd(AppLauncher.RequestUA);
@@ -101,8 +101,8 @@ namespace PlainCEETimer.Forms
                     ButtonRetry.Enabled = false;
                     LinkBrowser.Enabled = false;
                     ProgressBarMain.Value = 100;
-                    TaskbarProgress.SetTaskbarProgressValueEx(100UL, 100UL);
-                    TaskbarProgress.SetTaskbarProgressStateEx(TaskbarProgressState.Indeterminate);
+                    TaskbarProgress.SetValue(100UL, 100UL);
+                    TaskbarProgress.SetState(TaskbarProgressState.Indeterminate);
                     UpdateLabels("下载完成，请稍侯...", null, null);
                     await Task.Delay(2500);
                     IsCancelled = true;
@@ -122,7 +122,8 @@ namespace PlainCEETimer.Forms
                     ButtonRetry.Enabled = true;
                 }
 
-                TaskbarProgress.SetTaskbarProgressStateEx(TaskbarProgressState.Error);
+                TaskbarProgress.SetValue(100UL, 100UL);
+                TaskbarProgress.SetState(TaskbarProgressState.Error);
                 return;
             }
             finally
@@ -148,7 +149,7 @@ namespace PlainCEETimer.Forms
                 cts?.Cancel();
                 UpdateLabels("用户已取消下载。", null, null);
                 IsCancelled = true;
-                TaskbarProgress.SetTaskbarProgressStateEx(TaskbarProgressState.Error);
+                TaskbarProgress.SetState(TaskbarProgressState.Error);
                 MessageX.Warn("你已取消下载！\n\n稍后可以在 关于 窗口点击图标来再次检查更新。");
             }
 
@@ -167,7 +168,7 @@ namespace PlainCEETimer.Forms
         {
             UpdateLabels(null, $"已下载/总共: {Downloaded} KB / {Total} KB", $"下载速度: {Speed:0.00} KB/s");
             ProgressBarMain.Value = Progress;
-            TaskbarProgress.SetTaskbarProgressValueEx((ulong)Downloaded, (ulong)Total);
+            TaskbarProgress.SetValue((ulong)Downloaded, (ulong)Total);
         }
 
         private void UpdateLabels(string Info, string Size, string Speed)
@@ -197,8 +198,8 @@ namespace PlainCEETimer.Forms
         {
             if (IsCancelled)
             {
-                TaskbarProgress.SetTaskbarProgressStateEx(TaskbarProgressState.None);
-                TaskbarProgress.ReleaseTaskbarListEx();
+                TaskbarProgress.SetState(TaskbarProgressState.None);
+                TaskbarProgress.Release();
             }
         }
     }
