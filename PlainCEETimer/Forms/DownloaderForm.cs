@@ -29,7 +29,7 @@ namespace PlainCEETimer.Forms
 
         public DownloaderForm(string ManualVersion) : this()
         {
-            TargetVersion = Version.TryParse(ManualVersion, out _) ? ManualVersion : AppLauncher.AppVersion;
+            TargetVersion = Version.TryParse(ManualVersion, out _) ? ManualVersion : App.AppVersion;
         }
 
         public DownloaderForm(string Version, long Size) : this()
@@ -48,7 +48,7 @@ namespace PlainCEETimer.Forms
         {
             TaskbarProgress = new(Handle);
             TaskbarProgress.SetState(TaskbarProgressState.Normal);
-            DownloadUrl = string.Format(AppLauncher.UpdateURL, TargetVersion);
+            DownloadUrl = string.Format(App.UpdateURL, TargetVersion);
             DownloadPath = Path.Combine(Path.GetTempPath(), Path.GetFileName(new Uri(DownloadUrl).AbsolutePath));
 
             await DownloadUpdate();
@@ -60,7 +60,7 @@ namespace PlainCEETimer.Forms
             IsCancelled = false;
             using var httpClient = new HttpClient();
             cts = new();
-            httpClient.DefaultRequestHeaders.UserAgent.ParseAdd(AppLauncher.RequestUA);
+            httpClient.DefaultRequestHeaders.UserAgent.ParseAdd(App.RequestUA);
 
             try
             {
@@ -108,7 +108,7 @@ namespace PlainCEETimer.Forms
                     IsCancelled = true;
                     Close();
                     ProcessHelper.RunProcess("cmd.exe", $"/c start \"\" \"{DownloadPath}\" /S");
-                    AppLauncher.Exit(ExitReason.AppUpdating);
+                    App.Exit(ExitReason.AppUpdating);
                 }
             }
             catch (Exception ex)

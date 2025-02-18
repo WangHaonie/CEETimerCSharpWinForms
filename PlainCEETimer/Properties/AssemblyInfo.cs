@@ -2,12 +2,12 @@
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle(AppLauncher.AppName)]
-[assembly: AssemblyDescription(AppLauncher.AppName)]
+[assembly: AssemblyTitle(App.AppName)]
+[assembly: AssemblyDescription(App.AppName)]
 [assembly: AssemblyCompany("WangHaonie")]
-[assembly: AssemblyProduct(AppLauncher.AppName)]
-[assembly: AssemblyCopyright(AppLauncher.CopyrightInfo)]
+[assembly: AssemblyProduct(App.AppName)]
+[assembly: AssemblyCopyright(App.CopyrightInfo)]
 [assembly: ComVisible(false)]
 [assembly: Guid("ba4d9680-5e05-4fdb-b198-f16e3a64b582")]
-[assembly: AssemblyVersion(AppLauncher.AppVersion)]
-[assembly: AssemblyFileVersion(AppLauncher.AppVersion)]
+[assembly: AssemblyVersion(App.AppVersion)]
+[assembly: AssemblyFileVersion(App.AppVersion)]

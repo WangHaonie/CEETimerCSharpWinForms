@@ -18,8 +18,8 @@ namespace PlainCEETimer.Forms
 
         protected override void OnLoad()
         {
-            LabelInfo.Text = $"{AppLauncher.AppName}\n版本 v{AppLauncher.AppVersion} x64 ({AppLauncher.AppBuildDate})";
-            LabelLicense.Text = $"Licensed under the GNU GPL, v3.\n{AppLauncher.CopyrightInfo}";
+            LabelInfo.Text = $"{App.AppName}\n版本 v{App.AppVersion} x64 ({App.AppBuildDate})";
+            LabelLicense.Text = $"Licensed under the GNU GPL, v3.\n{App.CopyrightInfo}";
         }
 
         private async void PicBoxLogo_MouseClick(object sender, MouseEventArgs e)
@@ -32,7 +32,7 @@ namespace PlainCEETimer.Forms
                 try
                 {
                     var OriginalVersionString = LabelInfo.Text;
-                    LabelInfo.Text = $"{AppLauncher.AppName}\n正在检查更新，请稍候...";
+                    LabelInfo.Text = $"{App.AppName}\n正在检查更新，请稍候...";
                     await Task.Run(() => new Updater().CheckForUpdate(false, this));
                     LabelInfo.Text = OriginalVersionString;
                 }

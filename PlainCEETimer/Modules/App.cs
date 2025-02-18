@@ -5,27 +5,68 @@ using System.Drawing;
 using System.IO;
 using System.IO.Pipes;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace PlainCEETimer.Modules
 {
-    public static class AppLauncher
+    public static class App
     {
-        public static string CurrentExecutableDir => AppDomain.CurrentDomain.BaseDirectory;
-        public static string CurrentExecutablePath => Application.ExecutablePath;
-        public static string ConfigFilePath => $"{CurrentExecutableDir}{AppNameEng}.config";
         public static bool IsAdmin { get; private set; }
-        public static Icon AppIcon { get; private set; }
+        public static bool AllowClosing { get; private set; } = false;
         public static bool IsWindows7Above => Environment.OSVersion.Version >= new Version(6, 1, 7600);
-        //public static bool IsWindows81Above => Environment.OSVersion.Version >= new Version(6, 3, 9600);
-        //public static bool IsWindows10Build1607Above => Environment.OSVersion.Version >= new Version(10, 0, 14393);
         public static bool IsWindows11 => Environment.OSVersion.Version >= new Version(10, 0, 22000);
+        public static event EventHandler TrayMenuShowAllClicked;
+        public static event EventHandler UniTopMostStateChanged;
+        public static event EventHandler AppConfigChanged;
+        public static Icon AppIcon { get; private set; }
+        public static void OnTrayMenuShowAllClicked() => TrayMenuShowAllClicked?.Invoke(null, EventArgs.Empty);
+        public static void OnUniTopMostStateChanged() => UniTopMostStateChanged?.Invoke(null, EventArgs.Empty);
+        public static void OnAppConfigChanged() => AppConfigChanged?.Invoke(null, EventArgs.Empty);
+
+        public static string CurrentExecutableDir
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(field))
+                {
+                    field = AppDomain.CurrentDomain.BaseDirectory;
+                }
+
+                return field;
+            }
+        }
+
+        public static string CurrentExecutablePath
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(field))
+                {
+                    field = Application.ExecutablePath;
+                }
+
+                return field;
+            }
+        }
+
+        public static string ConfigFilePath
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(field))
+                {
+                    field = $"{CurrentExecutableDir}{AppNameEng}.config";
+                }
+
+                return field;
+            }
+        }
 
         public const string AppName = "高考倒计时 by WangHaonie";
         public const string AppNameEng = "PlainCEETimer";
+        public const string AppNameEngBak = "CEETimerCSharpWinForms";
         public const string AppVersion = "3.0.9";
-        public const string AppBuildDate = "2025/02/17";
+        public const string AppBuildDate = "2025/02/18";
         public const string CopyrightInfo = "Copyright © 2023-2024 WangHaonie";
         public const string OriginalFileName = $"{AppNameEng}.exe";
         public const string InfoMsg = "提示 - 高考倒计时";
@@ -36,52 +77,27 @@ namespace PlainCEETimer.Modules
         public const string UpdateURL = "https://gitee.com/WangHaonie/CEETimerCSharpWinForms/raw/main/download/CEETimerCSharpWinForms_{0}_x64_Setup.exe";
         public const string RequestUA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36";
 
-        private static readonly string PipeName = $"CEETimerCSharpWinForms_[34c14833-98da-49f7-a2ab-369e88e73b95]";
+        private static bool MainInstance;
+        private static readonly string PipeName = $"{AppNameEngBak}_[34c14833-98da-49f7-a2ab-369e88e73b95]";
         private static readonly string CurrentExecutableName = Path.GetFileName(CurrentExecutablePath);
         private static readonly MessageBoxHelper MessageX = new();
-
-        public static event EventHandler TrayMenuShowAllClicked;
-        public static void OnTrayMenuShowAllClicked() => TrayMenuShowAllClicked?.Invoke(null, EventArgs.Empty);
-
-        public static event EventHandler UniTopMostStateChanged;
-        public static void OnUniTopMostStateChanged() => UniTopMostStateChanged?.Invoke(null, EventArgs.Empty);
-
-        public static event EventHandler AppConfigChanged;
-        public static void OnAppConfigChanged() => AppConfigChanged?.Invoke(null, EventArgs.Empty);
+        private static Mutex MainMutex;
 
         public static void StartProgram(string[] args)
         {
             AppIcon = Icon.ExtractAssociatedIcon(CurrentExecutablePath);
-
-            //int WindowsID;
             var Args = Array.ConvertAll(args, x => x.ToLower());
             var AllArgs = string.Join(" ", args);
-
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
             Application.ThreadException += (sender, e) => HandleException(e.Exception);
             AppDomain.CurrentDomain.UnhandledException += (sender, e) => HandleException((Exception)e.ExceptionObject);
-
-            //if (IsWindows10Build1607Above)
-            //{
-            //    WindowsID = 2;
-            //}
-            //else if (IsWindows81Above)
-            //{
-            //    WindowsID = 1;
-            //}
-            //else
-            //{
-            //    WindowsID = 0;
-            //}
-
-            //DpiAwareness.SetProcessDpiAwarenessEx(WindowsID);
-
-            using var MutexMain = new Mutex(true, $"{AppNameEng}_MUTEX_61c0097d-3682-421c-84e6-70ca37dc31dd_[A3F8B92E6D14]", out bool IsNewProcess);
+            MainMutex = new Mutex(true, $"{AppNameEngBak}_MUTEX_61c0097d-3682-421c-84e6-70ca37dc31dd_[A3F8B92E6D14]", out bool IsNewProcess);
 
             if (IsNewProcess)
             {
+                MainInstance = true;
                 new Thread(StartPipeServer).Start();
 
                 if (!CurrentExecutableName.Equals(OriginalFileName, StringComparison.OrdinalIgnoreCase))
@@ -94,7 +110,7 @@ namespace PlainCEETimer.Modules
                 {
                     if (Args.Length == 0)
                     {
-                        Task.Run(() => CheckAdmin(out _));
+                        new Thread(() => CheckAdmin(out _)).Start();
                         Application.Run(new MainForm());
                     }
                     else
@@ -136,8 +152,20 @@ namespace PlainCEETimer.Modules
 
         public static void Shutdown(bool Restart = false)
         {
-            ProcessHelper.RunProcess("cmd.exe", $"/c taskkill /f /fi \"PID eq {Process.GetCurrentProcess().Id}\" /im {CurrentExecutableName} {(Restart ? $"& start \"\" \"{CurrentExecutablePath}\"" : "")}");
-            Exit(ExitReason.UserShutdownOrRestart);
+            AllowClosing = true;
+
+            if (Restart)
+            {
+                ClearMutex();
+                ProcessHelper.RunProcess(CurrentExecutablePath, null);
+                Exit(ExitReason.UserRestart);
+            }
+            else
+            {
+                Exit(ExitReason.UserShutdown);
+            }
+
+            AllowClosing = false;
         }
 
         public static void CheckAdmin(out string UserName, bool QueryUserName = false)
@@ -151,6 +179,17 @@ namespace PlainCEETimer.Modules
             {
                 UserName = ProcessHelper.GetProcessOutput(ProcessHelper.RunProcess("cmd.exe", "/c whoami", RedirectOutput: true));
             }
+        }
+
+        public static void OpenInstallDir()
+        {
+            Process.Start(CurrentExecutableDir);
+        }
+
+        public static void Exit(ExitReason Reason)
+        {
+            ClearMutex();
+            Environment.Exit((int)Reason);
         }
 
         private static void StartPipeServer()
@@ -186,20 +225,19 @@ namespace PlainCEETimer.Modules
             Clipboard.SetText(ExOutput);
             File.AppendAllText(ExFilePath, ExOutput);
 
-            var _DialogResult = MessageX.Error($"程序出现意外错误，无法继续运行，非常抱歉给您带来不便，相关错误信息已写入到安装文件夹中的 {ExFileName} 文件和系统剪切板，建议您将相关信息并发送给软件开发者以便我们更好的定位并解决问题。或者您也可以点击 \"是\" 来重启应用程序，\"否\" 关闭应用程序{ex.ToMessage()}", Buttons: MessageBoxExButtons.YesNo);
-
-            OpenInstallDir();
+            var _DialogResult = MessageX.Error($"程序出现意外错误，无法继续运行，非常抱歉给您带来不便，相关错误信息已写入到安装文件夹中的 {ExFileName} 文件和系统剪切板，建议您将相关信息并发送给软件开发者以便我们更好地定位并解决问题。\n现在您也可以点击【是】来重启应用程序，【否】关闭应用程序{ex.ToMessage()}", Buttons: MessageBoxExButtons.YesNo);
             Shutdown(Restart: _DialogResult == DialogResult.Yes);
         }
 
-        public static void OpenInstallDir()
+        private static void ClearMutex()
         {
-            Process.Start(CurrentExecutableDir);
-        }
+            if (MainInstance)
+            {
+                MainMutex?.ReleaseMutex();
+            }
 
-        public static void Exit(ExitReason Reason)
-        {
-            Environment.Exit((int)Reason);
+            MainMutex?.Dispose();
+            MainMutex = null;
         }
     }
 }

@@ -114,7 +114,7 @@ namespace PlainCEETimer.Forms
             // PicBoxLogo
             // 
             this.PicBoxLogo.Cursor = System.Windows.Forms.Cursors.Help;
-            this.PicBoxLogo.Image = AppLauncher.AppIcon.ToBitmap();
+            this.PicBoxLogo.Image = App.AppIcon.ToBitmap();
             this.PicBoxLogo.Location = new System.Drawing.Point(6, 3);
             this.PicBoxLogo.Name = "PicBoxLogo";
             this.PicBoxLogo.Size = new System.Drawing.Size(32, 32);

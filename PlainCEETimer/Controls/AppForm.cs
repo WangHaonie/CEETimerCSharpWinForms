@@ -33,8 +33,8 @@ namespace PlainCEETimer.Controls
             }
 
             TopMost = MainForm.UniTopMost;
-            AppLauncher.TrayMenuShowAllClicked += AppLauncher_TrayMenuShowAllClicked;
-            AppLauncher.UniTopMostStateChanged += AppLauncher_UniTopMostStateChanged;
+            App.TrayMenuShowAllClicked += AppLauncher_TrayMenuShowAllClicked;
+            App.UniTopMostStateChanged += AppLauncher_UniTopMostStateChanged;
         }
 
         protected sealed override void OnLoad(EventArgs e)

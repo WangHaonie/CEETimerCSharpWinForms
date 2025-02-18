@@ -26,7 +26,7 @@ namespace PlainCEETimer.Modules.Configuration
         {
             try
             {
-                File.WriteAllText(AppLauncher.ConfigFilePath, JsonConvert.SerializeObject(Config, Settings));
+                File.WriteAllText(App.ConfigFilePath, JsonConvert.SerializeObject(Config, Settings));
             }
             catch (Exception ex)
             {
@@ -38,7 +38,7 @@ namespace PlainCEETimer.Modules.Configuration
         {
             try
             {
-                return JsonConvert.DeserializeObject<ConfigObject>(File.ReadAllText(AppLauncher.ConfigFilePath));
+                return JsonConvert.DeserializeObject<ConfigObject>(File.ReadAllText(App.ConfigFilePath));
             }
             catch
             {

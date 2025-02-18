@@ -93,9 +93,9 @@ namespace PlainCEETimer.Modules
 
             */
 
-            MessageLevel.Warning => (AppLauncher.WarnMsg, WarningIcon, SystemSounds.Exclamation),
-            MessageLevel.Error => (AppLauncher.ErrMsg, ErrorIcon, SystemSounds.Hand),
-            _ => (AppLauncher.InfoMsg, InfoIcon, SystemSounds.Asterisk)
+            MessageLevel.Warning => (App.WarnMsg, WarningIcon, SystemSounds.Exclamation),
+            MessageLevel.Error => (App.ErrMsg, ErrorIcon, SystemSounds.Hand),
+            _ => (App.InfoMsg, InfoIcon, SystemSounds.Asterisk)
 
             #endregion
         };

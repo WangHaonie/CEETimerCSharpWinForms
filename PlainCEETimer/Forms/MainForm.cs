@@ -24,7 +24,7 @@ namespace PlainCEETimer.Forms
             set
             {
                 AppConfig = value;
-                AppLauncher.OnAppConfigChanged();
+                App.OnAppConfigChanged();
             }
         }
 
@@ -97,7 +97,7 @@ namespace PlainCEETimer.Forms
             Config = new ConfigHandler();
             AppConfig = Config.Read();
 
-            AppLauncher.AppConfigChanged += (sender, e) =>
+            App.AppConfigChanged += (sender, e) =>
             {
                 Config.Save(AppConfig);
                 RefreshSettings();
@@ -204,7 +204,7 @@ namespace PlainCEETimer.Forms
             CompatibleWithPPTService();
             InitializeContextMenuAndTrayIcon();
 
-            AppLauncher.OnUniTopMostStateChanged();
+            App.OnUniTopMostStateChanged();
 
             MemCleaner?.Dispose();
             if (MemClean)
@@ -243,7 +243,7 @@ namespace PlainCEETimer.Forms
                 AddItem("设置(&S)", ContextSettings_Click),
                 AddItem("关于(&A)", ContextAbout_Click),
                 AddSeparator(),
-                AddItem("安装目录(&D)", (sender, e) => AppLauncher.OpenInstallDir())
+                AddItem("安装目录(&D)", (sender, e) => App.OpenInstallDir())
             ]);
             #endregion
 
@@ -299,7 +299,7 @@ namespace PlainCEETimer.Forms
                     {
                         if (MessageX.Warn("由于系统限制，重新开关托盘图标需要重启应用程序后方可正常显示。\n\n是否立即重启？", Buttons: MessageBoxExButtons.YesNo) == DialogResult.Yes)
                         {
-                            AppLauncher.Shutdown(true);
+                            App.Shutdown(true);
                         }
                         else
                         {
@@ -311,15 +311,15 @@ namespace PlainCEETimer.Forms
                     {
                         Visible = true,
                         Text = Text,
-                        Icon = AppLauncher.AppIcon,
+                        Icon = App.AppIcon,
                         ContextMenu = Merge(ContextMenuTray, CreateNew
                         ([
                             AddSeparator(),
-                            AddItem("显示界面(&S)", (sender, e) => AppLauncher.OnTrayMenuShowAllClicked()),
+                            AddItem("显示界面(&S)", (sender, e) => App.OnTrayMenuShowAllClicked()),
                             AddSubMenu("关闭(&C)",
                             [
-                                AddItem("重启(&R)", (sender, e) => AppLauncher.Shutdown(true)),
-                                AddItem("退出(&Q)", (sender, e) => AppLauncher.Shutdown())
+                                AddItem("重启(&R)", (sender, e) => App.Shutdown(true)),
+                                AddItem("退出(&Q)", (sender, e) => App.Shutdown())
                             ])
                         ]))
                     };
@@ -328,7 +328,7 @@ namespace PlainCEETimer.Forms
 
                     if (!ShowTrayText)
                     {
-                        UpdateTrayIconText(AppLauncher.AppName, false);
+                        UpdateTrayIconText(App.AppName, false);
                     }
                 }
             }
@@ -344,7 +344,7 @@ namespace PlainCEETimer.Forms
                 {
                     if (!ShowTrayText)
                     {
-                        UpdateTrayIconText(AppLauncher.AppName, false);
+                        UpdateTrayIconText(App.AppName, false);
                     }
                 }
             }
@@ -457,12 +457,19 @@ namespace PlainCEETimer.Forms
 
         private void TrayIcon_MouseClick(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left) AppLauncher.OnTrayMenuShowAllClicked();
+            if (e.Button == MouseButtons.Left) App.OnTrayMenuShowAllClicked();
         }
 
         protected override void OnClosing(FormClosingEventArgs e)
         {
-            e.Cancel = e.CloseReason != CloseReason.WindowsShutDown;
+            if (!App.AllowClosing)
+            {
+                e.Cancel = e.CloseReason != CloseReason.WindowsShutDown;
+            }
+            else
+            {
+                e.Cancel = false;
+            }
         }
 
         private void LocationWatcher_Tick(object sender, EventArgs e)
@@ -507,7 +514,7 @@ namespace PlainCEETimer.Forms
 
             IsCountdownRunning = false;
             UpdateCountdown("欢迎使用高考倒计时", CountdownColors[3].Fore, CountdownColors[3].Back);
-            UpdateTrayIconText(AppLauncher.AppName);
+            UpdateTrayIconText(App.AppName);
         }
 
         private void ApplyColorRule(int Phase, TimeSpan Span, string Name, string Hint)
@@ -688,7 +695,7 @@ namespace PlainCEETimer.Forms
 
         private void SetRoundCorners()
         {
-            if (AppLauncher.IsWindows11)
+            if (App.IsWindows11)
             {
                 RoundCorner.SetRoundCornerModern(Handle);
             }

@@ -8,7 +8,7 @@ namespace PlainCEETimer
         [STAThread]
         private static void Main(string[] args)
         {
-            AppLauncher.StartProgram(args);
+            App.StartProgram(args);
         }
     }
 }

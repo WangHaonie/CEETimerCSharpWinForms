@@ -54,8 +54,8 @@ namespace PlainCEETimer.Forms
             LabelPreviewColor1.Text = $"{Placeholders.PH_JULI}...{Placeholders.PH_START}...";
             LabelPreviewColor2.Text = $"{Placeholders.PH_JULI}...{Placeholders.PH_LEFT}...";
             LabelPreviewColor3.Text = $"{Placeholders.PH_JULI}...{Placeholders.PH_PAST}...";
-            DtpExamStart.CustomFormat = AppLauncher.DateTimeFormat;
-            DtpExamEnd.CustomFormat = AppLauncher.DateTimeFormat;
+            DtpExamStart.CustomFormat = App.DateTimeFormat;
+            DtpExamEnd.CustomFormat = App.DateTimeFormat;
             LabelExamNameCounter.Text = $"0/{ConfigPolicy.MaxExamNameLength}";
             LabelExamNameCounter.ForeColor = Color.Red;
             SetTextBoxMax(TextBoxExamName, ConfigPolicy.MaxExamNameLength);
@@ -150,7 +150,7 @@ namespace PlainCEETimer.Forms
 
         private void RefreshSettings()
         {
-            CheckBoxStartup.Checked = (Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true)?.GetValue(AppLauncher.AppNameEng) is string regvalue) && regvalue.Equals($"\"{AppLauncher.CurrentExecutablePath}\"", StringComparison.OrdinalIgnoreCase);
+            CheckBoxStartup.Checked = (Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true)?.GetValue(App.AppNameEng) is string regvalue) && regvalue.Equals($"\"{App.CurrentExecutablePath}\"", StringComparison.OrdinalIgnoreCase);
             CheckBoxTopMost.Checked = AppConfig.General.TopMost;
             TextBoxExamName.Text = ExamName;
             DtpExamStart.Value = ExamStartTime;
@@ -378,7 +378,7 @@ namespace PlainCEETimer.Forms
 
         private void ButtonRestart_Click(object sender, EventArgs e)
         {
-            AppLauncher.Shutdown(!IsFunny);
+            App.Shutdown(!IsFunny);
         }
 
         private async void ButtonSyncTime_Click(object sender, EventArgs e)
@@ -623,7 +623,7 @@ namespace PlainCEETimer.Forms
         {
             try
             {
-                if (!AppLauncher.IsAdmin) MessageX.Warn("检测到当前用户不具有管理员权限，运行该操作会发生错误。\n\n程序将在此消息框关闭后尝试弹出 UAC 提示框，前提要把系统的 UAC 设置为 \"仅当应用尝试更改我的计算机时通知我\" 或及以上，否则将无法进行授权。\n\n稍后若没有看见提示框，请更改 UAC 设置: 开始菜单搜索 uac");
+                if (!App.IsAdmin) MessageX.Warn("检测到当前用户不具有管理员权限，运行该操作会发生错误。\n\n程序将在此消息框关闭后尝试弹出 UAC 提示框，前提要把系统的 UAC 设置为 \"仅当应用尝试更改我的计算机时通知我\" 或及以上，否则将无法进行授权。\n\n稍后若没有看见提示框，请更改 UAC 设置: 开始菜单搜索 uac");
 
                 Process SyncTimeProcess = ProcessHelper.RunProcess("cmd.exe", $"/c net stop w32time & sc config w32time start= auto & net start w32time && w32tm /config /manualpeerlist:{Server} /syncfromflags:manual /reliable:YES /update && w32tm /resync && w32tm /resync", AdminRequired: true);
 
@@ -721,9 +721,9 @@ namespace PlainCEETimer.Forms
                 using var reg = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
 
                 if (CheckBoxStartup.Checked)
-                    reg.SetValue(AppLauncher.AppNameEng, $"\"{AppLauncher.CurrentExecutablePath}\"");
+                    reg.SetValue(App.AppNameEng, $"\"{App.CurrentExecutablePath}\"");
                 else
-                    reg.DeleteValue(AppLauncher.AppNameEng, false);
+                    reg.DeleteValue(App.AppNameEng, false);
 
                 var Exams = AppConfig.General.ExamInfo;
                 var Index = AppConfig.General.ExamIndex;

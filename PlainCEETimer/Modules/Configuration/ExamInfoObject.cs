@@ -30,7 +30,7 @@ namespace PlainCEETimer.Modules.Configuration
         public DateTime ExamEndTime { get; set; } = DateTime.Now;
 
         public override string ToString()
-            => string.Format("{0} - {1}", ExamName, ExamStartTime.ToString(AppLauncher.DateTimeFormat));
+            => string.Format("{0} - {1}", ExamName, ExamStartTime.ToString(App.DateTimeFormat));
 
         int IComparable<ExamInfoObject>.CompareTo(ExamInfoObject other)
         {
