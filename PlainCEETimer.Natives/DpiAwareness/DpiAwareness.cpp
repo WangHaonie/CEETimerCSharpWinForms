@@ -2,9 +2,9 @@
 #include "DpiAwareness.h"
 
 //
-//通过代码设置 DPI 感知 参考：
+// 通过代码设置 DPI 感知 参考：
 //
-//为进程设置默认 DPI 感知 (Windows) - Win32 apps | Microsoft Learn
+// 为进程设置默认 DPI 感知 (Windows) - Win32 apps | Microsoft Learn
 // https://learn.microsoft.com/zh-cn/windows/win32/hidpi/setting-the-default-dpi-awareness-for-a-process
 //
 
@@ -13,17 +13,14 @@ void SetProcessDpiAwarenessEx(int windowsid)
 	switch (windowsid)
 	{
 		case 1:
-			/*SetProcessDpiAwareness(PROCESS_PER_MONITOR_DPI_AWARE);
-			break;*/
+			SetProcessDpiAwareness(PROCESS_PER_MONITOR_DPI_AWARE);
+			break;
 		case 2:
-			/*SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
-			break;*/
-
-			// WinForms 不支持 Per-Monitor V2！！！！！（悲
-			// 留着以后备用
+			SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
+			break;
 		case 0:
 		default:
-			/*SetProcessDPIAware();*/
+			SetProcessDPIAware();
 			break;
 	}
 }
