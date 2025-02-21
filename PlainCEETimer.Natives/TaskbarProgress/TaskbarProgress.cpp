@@ -1,26 +1,26 @@
-#include <objbase.h>
+ï»¿#include <objbase.h>
 #include "pch.h"
 #include "TaskbarProgress.h"
 
 //
-// ÊµÏÖÈÎÎñÀ¸Í¼±êÉÏµÄ½ø¶ÈÌõ ²Î¿¼£º
+// å®ç°ä»»åŠ¡æ å›¾æ ‡ä¸Šçš„è¿›åº¦æ¡ å‚è€ƒï¼š
 //
-// ÈÎÎñÀ¸À©Õ¹ - Win32 apps | Microsoft Learn
+// ä»»åŠ¡æ æ‰©å±• - Win32 apps | Microsoft Learn
 // https://learn.microsoft.com/zh-cn/windows/win32/shell/taskbar-extensions#progress-bars
 //
 // ITaskbarList3(shobjidl_core.h) - Win32 apps | Microsoft Learn
 // https://learn.microsoft.com/zh-cn/windows/win32/api/shobjidl_core/nn-shobjidl_core-itaskbarlist3
 //
-// ITaskbarList3£º£ºSetProgressState(shobjidl_core.h) - Win32 apps | Microsoft Learn
+// ITaskbarList3ï¼šï¼šSetProgressState(shobjidl_core.h) - Win32 apps | Microsoft Learn
 // https://learn.microsoft.com/zh-cn/windows/win32/api/shobjidl_core/nf-shobjidl_core-itaskbarlist3-setprogressstate
 //
-// ITaskbarList3£º£ºSetProgressValue(shobjidl_core.h) - Win32 apps | Microsoft Learn
+// ITaskbarList3ï¼šï¼šSetProgressValue(shobjidl_core.h) - Win32 apps | Microsoft Learn
 // https://learn.microsoft.com/zh-cn/windows/win32/api/shobjidl_core/nf-shobjidl_core-itaskbarlist3-setprogressvalue
 //
-// ITaskbarList£º£ºHrInit(shobjidl_core.h) - Win32 apps | Microsoft Learn
+// ITaskbarListï¼šï¼šHrInit(shobjidl_core.h) - Win32 apps | Microsoft Learn
 // https://learn.microsoft.com/zh-cn/windows/win32/api/shobjidl_core/nf-shobjidl_core-itaskbarlist-hrinit
 //
-// IUnknown£º£ºRelease - Win32 apps | Microsoft Learn
+// IUnknownï¼šï¼šRelease - Win32 apps | Microsoft Learn
 // https://learn.microsoft.com/zh-cn/windows/win32/api/unknwn/nf-unknwn-iunknown-release
 //
 

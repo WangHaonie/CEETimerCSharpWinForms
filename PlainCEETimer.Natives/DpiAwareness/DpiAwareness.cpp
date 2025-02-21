@@ -1,10 +1,10 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "DpiAwareness.h"
 
 //
-// Í¨¹ı´úÂëÉèÖÃ DPI ¸ĞÖª ²Î¿¼£º
+// é€šè¿‡ä»£ç è®¾ç½® DPI æ„ŸçŸ¥ å‚è€ƒï¼š
 //
-// Îª½ø³ÌÉèÖÃÄ¬ÈÏ DPI ¸ĞÖª (Windows) - Win32 apps | Microsoft Learn
+// ä¸ºè¿›ç¨‹è®¾ç½®é»˜è®¤ DPI æ„ŸçŸ¥ (Windows) - Win32 apps | Microsoft Learn
 // https://learn.microsoft.com/zh-cn/windows/win32/hidpi/setting-the-default-dpi-awareness-for-a-process
 //
 

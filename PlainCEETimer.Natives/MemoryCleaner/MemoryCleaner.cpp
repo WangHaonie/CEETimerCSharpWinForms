@@ -1,8 +1,8 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "MemoryCleaner.h"
 
 //
-// Í¨¹ıÇå¿Õ¹¤×÷¼¯À´ÊµÏÖ¼õÉÙÄÚ´æÕ¼ÓÃ²Î¿¼:
+// é€šè¿‡æ¸…ç©ºå·¥ä½œé›†æ¥å®ç°å‡å°‘å†…å­˜å ç”¨å‚è€ƒ:
 //
 // .NET EXE memory footprint - Stack Overflow
 // https://stackoverflow.com/a/223300/21094697

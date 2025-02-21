@@ -1,8 +1,8 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "RoundCorner.h"
 
 //
-// WinForms ÎŞ±ß¿ò´°Ìå×Ô¶¯Ô²½Ç ²Î¿¼ :
+// WinForms æ— è¾¹æ¡†çª—ä½“è‡ªåŠ¨åœ†è§’ å‚è€ƒ :
 //
 // Rounded Corners in C# windows forms - Stack Overflow
 // https://stackoverflow.com/a/18822204/21094697
