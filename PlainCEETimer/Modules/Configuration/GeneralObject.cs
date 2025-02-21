@@ -1,9 +1,10 @@
-﻿using System;
+﻿using PlainCEETimer.Forms;
+using System;
 using System.ComponentModel;
 
 namespace PlainCEETimer.Modules.Configuration
 {
-    public sealed class GeneralObject : ValidatableConfigObject
+    public sealed class GeneralObject
     {
         public ExamInfoObject[] ExamInfo
         {
@@ -16,10 +17,10 @@ namespace PlainCEETimer.Modules.Configuration
                 }
                 else
                 {
-                    Validate(() =>
+                    if (MainForm.ValidateNeeded)
                     {
                         Array.Sort(value);
-                    });
+                    }
 
                     field = value;
                 }
@@ -31,13 +32,13 @@ namespace PlainCEETimer.Modules.Configuration
             get => field;
             set
             {
-                Validate(() =>
+                if (MainForm.ValidateNeeded)
                 {
                     if (value < 0 || value > ExamInfo.Length)
                     {
                         throw new Exception();
                     }
-                });
+                }
 
                 field = value;
             }

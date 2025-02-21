@@ -381,12 +381,11 @@ namespace PlainCEETimer.Forms
             App.Shutdown(!IsFunny);
         }
 
-        private async void ButtonSyncTime_Click(object sender, EventArgs e)
+        private void ButtonSyncTime_Click(object sender, EventArgs e)
         {
             var server = ((ComboData)ComboBoxNtpServers.SelectedItem).Display;
             ChangeWorkingStyle(WorkingArea.SyncTime);
-            await Task.Run(() => StartSyncTime(server));
-            ChangeWorkingStyle(WorkingArea.SyncTime, false);
+            Task.Run(() => StartSyncTime(server)).ContinueWith(t => BeginInvoke(() => ChangeWorkingStyle(WorkingArea.SyncTime, false)));
         }
 
         private void ButtonSave_Click(object sender, EventArgs e)

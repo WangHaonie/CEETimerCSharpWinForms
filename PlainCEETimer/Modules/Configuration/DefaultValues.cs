@@ -8,15 +8,11 @@ namespace PlainCEETimer.Modules.Configuration
         {
             get
             {
-                if (field == null)
-                {
-                    field = [
-                        new(Color.Red, Color.White),
-                        new(Color.Green, Color.White),
-                        new(Color.Black, Color.White),
-                        new(Color.Black, Color.White)
-                    ];
-                }
+                field ??= [
+                    new(Color.Red, Color.White),
+                    new(Color.Green, Color.White),
+                    new(Color.Black, Color.White),
+                    new(Color.Black, Color.White)];
 
                 return field;
             }
@@ -26,11 +22,7 @@ namespace PlainCEETimer.Modules.Configuration
         {
             get
             {
-                if (field == null)
-                {
-                    field = new("Microsoft YaHei", 17.25F, FontStyle.Bold, GraphicsUnit.Point);
-                }
-
+                field ??= new("Microsoft YaHei", 17.25F, FontStyle.Bold, GraphicsUnit.Point);
                 return field;
             }
         }

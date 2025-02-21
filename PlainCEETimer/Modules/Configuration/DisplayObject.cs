@@ -1,9 +1,10 @@
-﻿using System;
+﻿using PlainCEETimer.Forms;
+using System;
 using System.Windows.Forms;
 
 namespace PlainCEETimer.Modules.Configuration
 {
-    public sealed class DisplayObject : ValidatableConfigObject
+    public sealed class DisplayObject
     {
         public bool ShowXOnly { get; set; }
 
@@ -12,13 +13,13 @@ namespace PlainCEETimer.Modules.Configuration
             get => field;
             set
             {
-                Validate(() =>
+                if (MainForm.ValidateNeeded)
                 {
                     if (value is < 0 or > 3)
                     {
                         throw new Exception();
                     }
-                });
+                }
 
                 field = value;
             }
@@ -31,13 +32,13 @@ namespace PlainCEETimer.Modules.Configuration
             get => field;
             set
             {
-                Validate(() =>
+                if (MainForm.ValidateNeeded)
                 {
                     if (value is < 0 or > 2)
                     {
                         throw new Exception();
                     }
-                });
+                }
 
                 field = value;
             }
@@ -53,13 +54,13 @@ namespace PlainCEETimer.Modules.Configuration
             get => field;
             set
             {
-                Validate(() =>
+                if (MainForm.ValidateNeeded)
                 {
                     if (value < 0 || value > Screen.AllScreens.Length)
                     {
                         throw new Exception();
                     }
-                });
+                }
 
                 field = value;
             }

@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using PlainCEETimer.Forms;
 using PlainCEETimer.Modules.JsonConverters;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Linq;
 
 namespace PlainCEETimer.Modules.Configuration
 {
-    public sealed class ConfigObject : ValidatableConfigObject
+    public sealed class ConfigObject
     {
         public GeneralObject General { get; set; } = new();
 
@@ -28,7 +29,7 @@ namespace PlainCEETimer.Modules.Configuration
                 }
                 else
                 {
-                    Validate(() =>
+                    if (MainForm.ValidateNeeded)
                     {
                         var HashSet = new HashSet<RulesManagerObject>();
 
@@ -41,7 +42,7 @@ namespace PlainCEETimer.Modules.Configuration
                         }
 
                         Array.Sort(value);
-                    });
+                    }
 
                     field = value;
                 }

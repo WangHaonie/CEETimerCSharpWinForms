@@ -76,12 +76,15 @@ namespace PlainCEETimer.Controls
 
         private void AppLauncher_TrayMenuShowAllClicked(object sender, EventArgs e)
         {
-            ValidExecute(this.ReActivate);
+            if (!IsDisposed)
+            {
+                this.ReActivate();
+            }
         }
 
         private void AppLauncher_UniTopMostStateChanged(object sender, EventArgs e)
         {
-            ValidExecute(() =>
+            if (!IsDisposed)
             {
                 if (this is MainForm)
                 {
@@ -89,7 +92,7 @@ namespace PlainCEETimer.Controls
                 }
 
                 TopMost = MainForm.UniTopMost;
-            });
+            }
         }
 
         #region
@@ -156,14 +159,6 @@ namespace PlainCEETimer.Controls
         protected virtual void OnClosed()
         {
 
-        }
-
-        private void ValidExecute(Action Method)
-        {
-            if (!IsDisposed)
-            {
-                Method();
-            }
         }
 
         /// <summary>

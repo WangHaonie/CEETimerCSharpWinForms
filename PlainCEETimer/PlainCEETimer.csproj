@@ -179,7 +179,6 @@
     <Compile Include="Modules\Configuration\GeneralObject.cs" />
     <Compile Include="Modules\Configuration\RulesManagerObject.cs" />
     <Compile Include="Modules\Configuration\ToolsObject.cs" />
-    <Compile Include="Modules\Configuration\ValidatableConfigObject.cs" />
     <Compile Include="Modules\CustomRuleHelper.cs" />
     <Compile Include="Modules\Enums.cs" />
     <Compile Include="Modules\JsonConverters\ColorSetConverter.cs" />

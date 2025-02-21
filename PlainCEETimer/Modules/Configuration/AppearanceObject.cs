@@ -1,11 +1,12 @@
 ﻿using Newtonsoft.Json;
+using PlainCEETimer.Forms;
 using PlainCEETimer.Modules.JsonConverters;
 using System;
 using System.Drawing;
 
 namespace PlainCEETimer.Modules.Configuration
 {
-    public sealed class AppearanceObject : ValidatableConfigObject
+    public sealed class AppearanceObject
     {
         [JsonConverter(typeof(FontFormatConverter))]
         public Font Font { get; set; } = DefaultValues.CountdownDefaultFont;
@@ -15,7 +16,7 @@ namespace PlainCEETimer.Modules.Configuration
             get => field;
             set
             {
-                Validate(() =>
+                if (MainForm.ValidateNeeded)
                 {
                     if (value.Length > 4)
                     {
@@ -29,7 +30,7 @@ namespace PlainCEETimer.Modules.Configuration
                             throw new Exception();
                         }
                     }
-                });
+                }
 
                 field = value;
             }

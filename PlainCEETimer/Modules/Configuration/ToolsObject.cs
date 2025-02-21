@@ -1,21 +1,22 @@
-﻿using System;
+﻿using PlainCEETimer.Forms;
+using System;
 
 namespace PlainCEETimer.Modules.Configuration
 {
-    public sealed class ToolsObject : ValidatableConfigObject
+    public sealed class ToolsObject
     {
         public int NtpServer
         {
             get => field;
             set
             {
-                Validate(() =>
+                if (MainForm.ValidateNeeded)
                 {
                     if (value is < 0 or > 3)
                     {
                         throw new Exception();
                     }
-                });
+                }
 
                 field = value;
             }

@@ -1,23 +1,24 @@
 ﻿using Newtonsoft.Json;
+using PlainCEETimer.Forms;
 using PlainCEETimer.Modules.JsonConverters;
 using System;
 
 namespace PlainCEETimer.Modules.Configuration
 {
-    public sealed class ExamInfoObject : ValidatableConfigObject, IComparable<ExamInfoObject>
+    public sealed class ExamInfoObject : IComparable<ExamInfoObject>
     {
         public string ExamName
         {
             get => field;
             set
             {
-                Validate(() =>
+                if (MainForm.ValidateNeeded)
                 {
                     if (!value.Length.IsValid())
                     {
                         throw new Exception();
                     }
-                });
+                }
 
                 field = value.RemoveIllegalChars();
             }
@@ -34,12 +35,7 @@ namespace PlainCEETimer.Modules.Configuration
 
         int IComparable<ExamInfoObject>.CompareTo(ExamInfoObject other)
         {
-            if (other == null)
-            {
-                return 1;
-            }
-
-            return ExamStartTime.CompareTo(other.ExamStartTime);
+            return other == null ? 1 : ExamStartTime.CompareTo(other.ExamStartTime);
         }
     }
 }
