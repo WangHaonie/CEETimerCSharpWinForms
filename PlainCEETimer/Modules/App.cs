@@ -229,12 +229,14 @@ namespace PlainCEETimer.Modules
             var ExOutput = $"\n\n================== v{AppVersion} - {DateTime.Now.ToString(DateTimeFormat)} =================={ex.ToMessage()}";
             var ExFileName = "UnhandledException.txt";
             var ExFilePath = $"{CurrentExecutableDir}{ExFileName}";
-
-            Clipboard.SetText(ExOutput);
             File.AppendAllText(ExFilePath, ExOutput);
 
-            var _DialogResult = MessageX.Error($"程序出现意外错误，无法继续运行，非常抱歉给您带来不便，相关错误信息已写入到安装文件夹中的 {ExFileName} 文件和系统剪切板，建议您将相关信息并发送给软件开发者以便我们更好地定位并解决问题。\n现在您也可以点击【是】来重启应用程序，【否】关闭应用程序{ex.ToMessage()}", Buttons: MessageBoxExButtons.YesNo);
-            Shutdown(Restart: _DialogResult == DialogResult.Yes);
+            var _DialogResult = MessageX.Error(string.Format("程序出现意外错误，非常抱歉给您带来不便！相关错误信息已写入到安装文件夹中的 {0} 文件，建议您将相关信息发送给开发者以帮助我们定位并解决问题。\n现在您可以点击右上角【关闭】来忽略本次错误,【是】重启应用程序,【否】关闭应用程序。{1}", ExFileName, ex.ToMessage()), Buttons: MessageBoxExButtons.YesNo);
+
+            if (_DialogResult != DialogResult.None)
+            {
+                Shutdown(Restart: _DialogResult == DialogResult.Yes);
+            }
         }
 
         private static void ClearMutex()
