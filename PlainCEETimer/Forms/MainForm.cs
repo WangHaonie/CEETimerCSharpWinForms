@@ -99,7 +99,7 @@ namespace PlainCEETimer.Forms
 
             App.AppConfigChanged += (sender, e) =>
             {
-                Config.Save(AppConfig);
+                SaveConfig();
                 RefreshSettings();
             };
 
@@ -235,9 +235,7 @@ namespace PlainCEETimer.Forms
             ([
                 AddSubMenu("切换(&Q)",
                 [
-                    AddItem("暂无考试信息"),
-                    AddSeparator(),
-                    AddItem("管理(&M)", ExamSwitchManage_Click)
+                    AddItem("暂无考试信息")
                 ]),
                 AddSeparator(),
                 AddItem("设置(&S)", ContextSettings_Click),
@@ -248,48 +246,46 @@ namespace PlainCEETimer.Forms
             #endregion
 
             ContextMenuMain = BaseContextMenu();
-            ContextMenuTray = BaseContextMenu();
-
             ExamSwitchMain = ContextMenuMain.MenuItems[0].MenuItems;
-            ExamSwitchTray = ContextMenuTray.MenuItems[0].MenuItems;
-
             ContextMenu = ContextMenuMain;
             LabelCountdown.ContextMenu = ContextMenuMain;
+            ExamSwitchTray = null;
+            if (ShowTrayIcon)
+            {
+                ContextMenuTray = BaseContextMenu();
+                ExamSwitchTray = ContextMenuTray.MenuItems[0].MenuItems;
+            }
+            else
+            {
+                ContextMenuTray?.Dispose();
+                ContextMenuTray = null;
+            }
 
             if (Exams.Length != 0)
             {
-                ExamSwitchMain.RemoveAt(0);
-                ExamSwitchTray.RemoveAt(0);
-
+                ExamSwitchMain.Clear();
+                ExamSwitchTray?.Clear();
                 var ItemIndex = 0;
+
                 foreach (var Exam in Exams)
                 {
-                    var ItemMain = new MenuItem()
+                    LoadContextMenu(ExamSwitchMain, Exam, ItemIndex);
+
+                    if (ContextMenuTray != null)
                     {
-                        Text = Exam.ToString(),
-                        Tag = ItemIndex,
-                        RadioCheck = true
-                    };
-
-                    var ItemTray = new MenuItem()
-                    {
-                        Text = Exam.ToString(),
-                        Tag = ItemIndex,
-                        RadioCheck = true
-                    };
-
-                    ItemMain.Click += ExamItems_Click;
-                    ItemTray.Click += ExamItems_Click;
-
-                    ExamSwitchMain.Add(0, ItemMain);
-                    ExamSwitchTray.Add(0, ItemTray);
+                        LoadContextMenu(ExamSwitchTray, Exam, ItemIndex);
+                    }
 
                     ItemIndex++;
                 }
             }
 
             ExamSwitchMain[ExamIndex].Checked = true;
-            ExamSwitchTray[ExamIndex].Checked = true;
+
+            if (ContextMenuTray != null)
+            {
+                ExamSwitchTray[ExamIndex].Checked = true;
+            }
 
             if (TrayIcon == null)
             {
@@ -324,6 +320,7 @@ namespace PlainCEETimer.Forms
                         ]))
                     };
 
+                    TrayIcon.MouseClick -= TrayIcon_MouseClick;
                     TrayIcon.MouseClick += TrayIcon_MouseClick;
 
                     if (!ShowTrayText)
@@ -350,19 +347,42 @@ namespace PlainCEETimer.Forms
             }
         }
 
+        private void LoadContextMenu(Menu.MenuItemCollection Menu, ExamInfoObject Exam, int ItemIndex)
+        {
+            var Item = new MenuItem()
+            {
+                Text = Exam.ToString(),
+                RadioCheck = true,
+                Checked = ItemIndex == ExamIndex,
+            };
+
+            Item.Click += ExamItems_Click;
+            Menu.Add(Item);
+        }
+
         private void ExamItems_Click(object sender, EventArgs e)
         {
-            var Item = (MenuItem)sender;
+            var Sender = (MenuItem)sender;
+            var ItemIndex = Sender.Index;
 
-            if (!Item.Checked)
+            if (!Sender.Checked)
             {
-                Item.Checked = true;
-            }
+                foreach (MenuItem Item in ExamSwitchMain)
+                {
+                    Item.Checked = false;
+                }
 
-            if (Item.Checked)
-            {
-                ExamIndex = (int)Item.Tag;
-                RefreshSettings();
+                if (ExamSwitchTray != null)
+                {
+                    foreach (MenuItem Item in ExamSwitchTray)
+                    {
+                        Item.Checked = false;
+                    }
+                }
+
+                ExamIndex = ItemIndex;
+                AppConfig.General.ExamIndex = ItemIndex;
+                AppConfigPub = AppConfig;
             }
         }
 
@@ -409,7 +429,8 @@ namespace PlainCEETimer.Forms
                 KeepOnScreen();
                 CompatibleWithPPTService();
                 SetLabelCountdownAutoWrap();
-                SaveLocation();
+                AppConfig.Pos = Location;
+                SaveConfig();
             }
 
             IsReadyToMove = false;
@@ -508,7 +529,7 @@ namespace PlainCEETimer.Forms
                 {
                     break;
                 }
-
+                Console.WriteLine(ExamSwitchTray[ExamIndex].Checked);
                 await Task.Delay(1000);
             }
 
@@ -682,9 +703,8 @@ namespace PlainCEETimer.Forms
             if (Bottom > ValidArea.Bottom) Top = ValidArea.Bottom - Height;
         }
 
-        private void SaveLocation()
+        private void SaveConfig()
         {
-            AppConfig.Pos = Location;
             Config.Save(AppConfig);
         }
 
