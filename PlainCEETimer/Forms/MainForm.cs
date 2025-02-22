@@ -54,6 +54,7 @@ namespace PlainCEETimer.Forms
         private bool SetRoundCornerRegion;
         private bool ShowTrayIcon;
         private bool ShowTrayText;
+        private bool LoadedMemCleaner;
         private readonly int PptsvcThreshold = 1;
         private readonly int BorderRadius = 13;
         private CountdownState SelectedState;
@@ -87,8 +88,12 @@ namespace PlainCEETimer.Forms
             LocationWatcher = new() { Interval = 1000 };
             LocationWatcher.Tick += LocationWatcher_Tick;
             LocationWatcher.Start();
-            SizeChanged += MainForm_SizeChanged;
             SystemEvents.DisplaySettingsChanged += SystemEvents_DisplaySettingsChanged;
+
+            if (SetRoundCornerRegion)
+            {
+                SizeChanged += MainForm_SizeChanged;
+            }
         }
 
         protected override void OnShown()
@@ -111,13 +116,27 @@ namespace PlainCEETimer.Forms
 
         private void MainForm_SizeChanged(object sender, EventArgs e)
         {
-            if (SetRoundCornerRegion)
-            {
-                RoundCorner.SetRoundCornerRegion(Handle, Width, Height, BorderRadius.ScaleToDpi());
-            }
+            RoundCorner.SetRoundCornerRegion(Handle, Width, Height, BorderRadius.ScaleToDpi());
         }
 
         private async void RefreshSettings()
+        {
+            ValidateConfig();
+            LoadConfig();
+            PrepareCountdown();
+            ApplyLocation();
+            CompatibleWithPPTService();
+            LoadContextMenu();
+            LoadTrayIcon();
+            App.OnUniTopMostStateChanged();
+            SetLabelCountdownAutoWrap();
+            TopMost = false;
+            TopMost = AppConfig.General.TopMost;
+            ShowInTaskbar = !TopMost;
+            await StartCountdown();
+        }
+
+        private void ValidateConfig()
         {
             if (ValidateNeeded)
             {
@@ -126,28 +145,16 @@ namespace PlainCEETimer.Forms
                 AppConfig.Display.SeewoPptsvc = AppConfig.Display.SeewoPptsvc && ((AppConfig.General.TopMost && AppConfig.Display.X == 0) || AppConfig.Display.Draggable);
                 AppConfig.Tools.TrayText = AppConfig.Tools.TrayText && AppConfig.Tools.TrayIcon;
             }
+        }
 
-            Exams = AppConfig.General.ExamInfo;
-            ExamIndex = AppConfig.General.ExamIndex;
-
-            try
-            {
-                CurrentExam = Exams[ExamIndex];
-            }
-            catch
-            {
-                CurrentExam = new();
-            }
-
-            ExamName = CurrentExam.ExamName;
+        private void LoadConfig()
+        {
+            LoadExams();
             CustomText = AppConfig.Display.CustomTexts;
-            ExamStartTime = CurrentExam.ExamStartTime;
-            ExamEndTime = CurrentExam.ExamEndTime;
             MemClean = AppConfig.General.MemClean;
-            var TopMostTmp = AppConfig.General.TopMost;
             IsShowXOnly = AppConfig.Display.ShowXOnly;
             IsRounding = AppConfig.Display.Rounding;
-            IsShowEnd = ValidateEndPast(AppConfig.Display.EndIndex);
+            IsShowEnd = GetEndPast(AppConfig.Display.EndIndex);
             IsShowPast = AppConfig.Display.EndIndex == 2;
             IsDraggable = AppConfig.Display.Draggable;
             UniTopMost = AppConfig.General.UniTopMost;
@@ -161,13 +168,30 @@ namespace PlainCEETimer.Forms
             CustomRules = AppConfig.CustomRules;
             ColorDialogEx.CustomColorCollection = AppConfig.CustomColors;
             CountdownColors = AppConfig.Appearance.Colors;
+        }
 
-#if DEBUG
-            Console.WriteLine("##########################");
-#endif
+        private void LoadExams()
+        {
+            Exams = AppConfig.General.ExamInfo;
+            ExamIndex = AppConfig.General.ExamIndex;
 
+            try
+            {
+                CurrentExam = Exams[ExamIndex];
+            }
+            catch
+            {
+                CurrentExam = new();
+            }
+
+            ExamName = CurrentExam.ExamName;
+            ExamStartTime = CurrentExam.ExamStartTime;
+            ExamEndTime = CurrentExam.ExamEndTime;
             IsCountdownReady = !string.IsNullOrWhiteSpace(ExamName) && ExamStartTime.IsValid() && ExamEndTime.IsValid() && (ExamEndTime > ExamStartTime || !IsShowEnd);
+        }
 
+        private void PrepareCountdown()
+        {
             SelectedState = CountdownState.Normal;
 
             if (IsShowXOnly)
@@ -199,53 +223,30 @@ namespace PlainCEETimer.Forms
                 RefreshScreen();
             }
 
-            ApplyLocation();
-            CompatibleWithPPTService();
-            InitializeContextMenuAndTrayIcon();
-
-            App.OnUniTopMostStateChanged();
-
-            MemCleaner?.Dispose();
-            if (MemClean)
+            if (MemClean && !LoadedMemCleaner)
             {
                 MemCleaner = new(CleanMemory, null, TimeSpan.FromSeconds(30), TimeSpan.FromMinutes(5));
+                LoadedMemCleaner = true;
             }
 
-            SetLabelCountdownAutoWrap();
-            TopMost = false;
-            TopMost = TopMostTmp;
-            ShowInTaskbar = !TopMost;
-            await StartCountdown();
+            if (!MemClean && LoadedMemCleaner)
+            {
+                MemCleaner.Dispose();
+            }
         }
 
-        private void InitializeContextMenuAndTrayIcon()
+        private void LoadContextMenu()
         {
-            #region 来自网络
-            /*
-            
-            克隆 (重用) 现有 ContextMenuStrip 实例 参考：
-
-            .net - C# - Duplicate ContextMenuStrip Items into another - Stack Overflow
-            https://stackoverflow.com/questions/37884815/c-sharp-duplicate-contextmenustrip-items-into-another
-
-            */
-
-            ContextMenu BaseContextMenu() => CreateNew
-            ([
-                AddSubMenu("切换(&Q)",
-                [
-                    AddItem("暂无考试信息")
-                ]),
-                AddSeparator(),
-                AddItem("设置(&S)", ContextSettings_Click),
-                AddItem("关于(&A)", ContextAbout_Click),
-                AddSeparator(),
-                AddItem("安装目录(&D)", (sender, e) => App.OpenInstallDir())
-            ]);
-            #endregion
-
             ContextMenuMain = BaseContextMenu();
             ExamSwitchMain = ContextMenuMain.MenuItems[0].MenuItems;
+
+            if (ShowTrayIcon)
+            {
+                var tmp = BaseContextMenu();
+                tmp.MenuItems.RemoveAt(0);
+                tmp.MenuItems.RemoveAt(0);
+                ContextMenuTray = tmp;
+            }
 
             ContextMenu = ContextMenuMain;
             LabelCountdown.ContextMenu = ContextMenuMain;
@@ -270,16 +271,35 @@ namespace PlainCEETimer.Forms
                 }
             }
 
-            ExamSwitchMain[ExamIndex].Checked = true;
+            UpdateExamSelection();
 
-            if (ShowTrayIcon)
-            {
-                var tmp = BaseContextMenu();
-                tmp.MenuItems.RemoveAt(0);
-                tmp.MenuItems.RemoveAt(0);
-                ContextMenuTray = tmp;
-            }
+            #region 来自网络
+            /*
 
+            克隆 (重用) 现有 ContextMenuStrip 实例 参考：
+
+            .net - C# - Duplicate ContextMenuStrip Items into another - Stack Overflow
+            https://stackoverflow.com/questions/37884815/c-sharp-duplicate-contextmenustrip-items-into-another
+
+            */
+
+            ContextMenu BaseContextMenu() => CreateNew
+            ([
+                AddSubMenu("切换(&Q)",
+                [
+                    AddItem("暂无考试信息")
+                ]),
+                AddSeparator(),
+                AddItem("设置(&S)", ContextSettings_Click),
+                AddItem("关于(&A)", ContextAbout_Click),
+                AddSeparator(),
+                AddItem("安装目录(&D)", (sender, e) => App.OpenInstallDir())
+            ]);
+            #endregion
+        }
+
+        private void LoadTrayIcon()
+        {
             if (TrayIcon == null)
             {
                 if (ShowTrayIcon)
@@ -330,14 +350,16 @@ namespace PlainCEETimer.Forms
                     TrayIcon = null;
                     TrayIconReopen = true;
                 }
-                else
+                else if (!ShowTrayText)
                 {
-                    if (!ShowTrayText)
-                    {
-                        UpdateTrayIconText(App.AppName, false);
-                    }
+                    UpdateTrayIconText(App.AppName, false);
                 }
             }
+        }
+
+        private void UpdateExamSelection()
+        {
+            ExamSwitchMain[ExamIndex].Checked = true;
         }
 
         private void ExamItems_Click(object sender, EventArgs e)
@@ -354,7 +376,9 @@ namespace PlainCEETimer.Forms
 
                 ExamIndex = ItemIndex;
                 AppConfig.General.ExamIndex = ItemIndex;
-                AppConfigPub = AppConfig;
+                SaveConfig();
+                UpdateExamSelection();
+                LoadExams();
             }
         }
 
@@ -539,32 +563,15 @@ namespace PlainCEETimer.Forms
             {
                 Location = CountdownPos switch
                 {
-                    CountdownPosition.LeftCenter
-                        => new(CurrentScreenRect.Left, CurrentScreenRect.Top + CurrentScreenRect.Height / 2 - Height / 2),
-
-                    CountdownPosition.BottomLeft
-                        => new(CurrentScreenRect.Left, CurrentScreenRect.Bottom - Height),
-
-                    CountdownPosition.TopCenter
-                        => new(CurrentScreenRect.Left + CurrentScreenRect.Width / 2 - Width / 2, CurrentScreenRect.Top),
-
-                    CountdownPosition.Center
-                        => new(CurrentScreenRect.Left + CurrentScreenRect.Width / 2 - Width / 2, CurrentScreenRect.Top + CurrentScreenRect.Height / 2 - Height / 2),
-
-                    CountdownPosition.BottomCenter
-                        => new(CurrentScreenRect.Left + CurrentScreenRect.Width / 2 - Width / 2, CurrentScreenRect.Bottom - Height),
-
-                    CountdownPosition.TopRight
-                        => new(CurrentScreenRect.Right - Width, CurrentScreenRect.Top),
-
-                    CountdownPosition.RightCenter
-                        => new(CurrentScreenRect.Right - Width, CurrentScreenRect.Top + CurrentScreenRect.Height / 2 - Height / 2),
-
-                    CountdownPosition.BottomRight
-                        => new(CurrentScreenRect.Right - Width, CurrentScreenRect.Bottom - Height),
-
-                    _
-                        => IsPPTService ? new(CurrentScreenRect.Location.X + PptsvcThreshold, CurrentScreenRect.Location.Y) : CurrentScreenRect.Location
+                    CountdownPosition.LeftCenter => new(CurrentScreenRect.Left, CurrentScreenRect.Top + CurrentScreenRect.Height / 2 - Height / 2),
+                    CountdownPosition.BottomLeft => new(CurrentScreenRect.Left, CurrentScreenRect.Bottom - Height),
+                    CountdownPosition.TopCenter => new(CurrentScreenRect.Left + CurrentScreenRect.Width / 2 - Width / 2, CurrentScreenRect.Top),
+                    CountdownPosition.Center => new(CurrentScreenRect.Left + CurrentScreenRect.Width / 2 - Width / 2, CurrentScreenRect.Top + CurrentScreenRect.Height / 2 - Height / 2),
+                    CountdownPosition.BottomCenter => new(CurrentScreenRect.Left + CurrentScreenRect.Width / 2 - Width / 2, CurrentScreenRect.Bottom - Height),
+                    CountdownPosition.TopRight => new(CurrentScreenRect.Right - Width, CurrentScreenRect.Top),
+                    CountdownPosition.RightCenter => new(CurrentScreenRect.Right - Width, CurrentScreenRect.Top + CurrentScreenRect.Height / 2 - Height / 2),
+                    CountdownPosition.BottomRight => new(CurrentScreenRect.Right - Width, CurrentScreenRect.Bottom - Height),
+                    _ => IsPPTService ? new(CurrentScreenRect.Location.X + PptsvcThreshold, CurrentScreenRect.Location.Y) : CurrentScreenRect.Location
                 };
             }
         }
@@ -588,23 +595,12 @@ namespace PlainCEETimer.Forms
 
         private string GetCountdown(TimeSpan Span, string Name, string Hint) => SelectedState switch
         {
-            CountdownState.DaysOnly
-                => string.Format("{0}{1}{2}{3}天", Placeholders.PH_JULI, Name, Hint, Span.Days),
-
-            CountdownState.DaysOnlyWithRounding
-                => string.Format("{0}{1}{2}{3}天", Placeholders.PH_JULI, Name, Hint, Span.Days + 1),
-
-            CountdownState.HoursOnly
-                => string.Format("{0}{1}{2}{3:0}小时", Placeholders.PH_JULI, Name, Hint, Span.TotalHours),
-
-            CountdownState.MinutesOnly
-                => string.Format("{0}{1}{2}{3:0}分钟", Placeholders.PH_JULI, Name, Hint, Span.TotalMinutes),
-
-            CountdownState.SecondsOnly
-                => string.Format("{0}{1}{2}{3:0}秒", Placeholders.PH_JULI, Name, Hint, Span.TotalSeconds),
-
-            _
-                => string.Format("{0}{1}{2}{3}天{4:00}时{5:00}分{6:00}秒", Placeholders.PH_JULI, Name, Hint, Span.Days, Span.Hours, Span.Minutes, Span.Seconds)
+            CountdownState.DaysOnly => string.Format("{0}{1}{2}{3}天", Placeholders.PH_JULI, Name, Hint, Span.Days),
+            CountdownState.DaysOnlyWithRounding => string.Format("{0}{1}{2}{3}天", Placeholders.PH_JULI, Name, Hint, Span.Days + 1),
+            CountdownState.HoursOnly => string.Format("{0}{1}{2}{3:0}小时", Placeholders.PH_JULI, Name, Hint, Span.TotalHours),
+            CountdownState.MinutesOnly => string.Format("{0}{1}{2}{3:0}分钟", Placeholders.PH_JULI, Name, Hint, Span.TotalMinutes),
+            CountdownState.SecondsOnly => string.Format("{0}{1}{2}{3:0}秒", Placeholders.PH_JULI, Name, Hint, Span.TotalSeconds),
+            _ => string.Format("{0}{1}{2}{3}天{4:00}时{5:00}分{6:00}秒", Placeholders.PH_JULI, Name, Hint, Span.Days, Span.Hours, Span.Minutes, Span.Seconds)
         };
 
 

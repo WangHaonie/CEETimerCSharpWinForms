@@ -46,7 +46,7 @@ namespace PlainCEETimer.Forms
             RefreshSettings();
             ChangeWorkingStyle(WorkingArea.LastColor);
             ChangeWorkingStyle(WorkingArea.Funny, false);
-            ChangeWorkingStyle(WorkingArea.ShowLeftPast, ValidateEndPast(AppConfig.Display.EndIndex));
+            ChangeWorkingStyle(WorkingArea.ShowLeftPast, GetEndPast(AppConfig.Display.EndIndex));
         }
 
         private void InitializeExtra()
@@ -161,7 +161,7 @@ namespace PlainCEETimer.Forms
             CheckBoxCustomText.Checked = AppConfig.Display.CustomText;
             CheckBoxRounding.Checked = AppConfig.Display.Rounding;
             ComboBoxCountdownEnd.SelectedIndex = AppConfig.Display.EndIndex;
-            DtpExamEnd.Enabled = ValidateEndPast(AppConfig.Display.EndIndex);
+            DtpExamEnd.Enabled = GetEndPast(AppConfig.Display.EndIndex);
             CheckBoxPptSvc.Checked = AppConfig.Display.SeewoPptsvc;
             CheckBoxUniTopMost.Checked = MainForm.UniTopMost;
             ComboBoxScreens.SelectedIndex = AppConfig.Display.ScreenIndex;
@@ -223,7 +223,7 @@ namespace PlainCEETimer.Forms
         private void ComboBoxCountdownEnd_SelectedIndexChanged(object sender, EventArgs e)
         {
             SettingsChanged(sender, e);
-            var Condition = ValidateEndPast(ComboBoxCountdownEnd.SelectedIndex);
+            var Condition = GetEndPast(ComboBoxCountdownEnd.SelectedIndex);
             ChangeWorkingStyle(WorkingArea.ShowLeftPast, Condition);
             DtpExamEnd.Enabled = Condition;
 
