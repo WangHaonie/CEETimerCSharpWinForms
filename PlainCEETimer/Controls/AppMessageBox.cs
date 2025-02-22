@@ -57,7 +57,11 @@ namespace PlainCEETimer.Controls
         protected override void OnShown()
         {
             DialogSound.Play();
-            AutoCloseAsync();
+
+            if (AutoCloseRequired)
+            {
+                Task.Run(() => Task.Delay(3200)).ContinueWith(t => BeginInvoke(Close));
+            }
         }
 
         protected override void ButtonA_Click()
@@ -76,15 +80,6 @@ namespace PlainCEETimer.Controls
         {
             if (e.KeyCode == Keys.Escape)
             {
-                Close();
-            }
-        }
-
-        private async void AutoCloseAsync()
-        {
-            if (AutoCloseRequired)
-            {
-                await Task.Delay(3000);
                 Close();
             }
         }

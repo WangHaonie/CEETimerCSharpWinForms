@@ -22,25 +22,20 @@ namespace PlainCEETimer.Forms
             LabelLicense.Text = $"Licensed under the GNU GPL, v3.\n{App.CopyrightInfo}";
         }
 
-        private async void PicBoxLogo_MouseClick(object sender, MouseEventArgs e)
+        private void PicBoxLogo_MouseClick(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
+            if (e.Button == MouseButtons.Left && !IsCheckingUpdate)
             {
+                var OriginalVersionString = LabelInfo.Text;
                 IsCheckingUpdate = true;
                 PicBoxLogo.Enabled = false;
-
-                try
+                LabelInfo.Text = $"{App.AppName}\n正在检查更新，请稍候...";
+                Task.Run(() => new Updater().CheckForUpdate(false, this)).ContinueWith(t => BeginInvoke(() =>
                 {
-                    var OriginalVersionString = LabelInfo.Text;
-                    LabelInfo.Text = $"{App.AppName}\n正在检查更新，请稍候...";
-                    await Task.Run(() => new Updater().CheckForUpdate(false, this));
                     LabelInfo.Text = OriginalVersionString;
-                }
-                finally
-                {
-                    IsCheckingUpdate = false;
                     PicBoxLogo.Enabled = true;
-                }
+                    IsCheckingUpdate = false;
+                }));
             }
         }
 
