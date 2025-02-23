@@ -44,6 +44,10 @@ namespace PlainCEETimer.Modules.Configuration
             }
         }
 
+        public bool AutoSwitch { get; set; }
+
+        public int Interval { get; set; }
+
         public bool MemClean { get; set; }
 
         [DefaultValue(true)]

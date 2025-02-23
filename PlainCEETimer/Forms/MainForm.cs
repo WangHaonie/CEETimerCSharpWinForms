@@ -1,6 +1,5 @@
 ﻿using Microsoft.Win32;
 using PlainCEETimer.Controls;
-using PlainCEETimer.Dialogs;
 using PlainCEETimer.Interop;
 using PlainCEETimer.Modules;
 using PlainCEETimer.Modules.Configuration;
@@ -55,11 +54,15 @@ namespace PlainCEETimer.Forms
         private bool ShowTrayIcon;
         private bool ShowTrayText;
         private bool LoadedMemCleaner;
+        private bool AutoSwitch;
         private readonly int PptsvcThreshold = 1;
         private readonly int BorderRadius = 13;
         private CountdownState SelectedState;
-        private System.Windows.Forms.Timer LocationWatcher;
+        private Timer LocationWatcher;
         private System.Threading.Timer MemCleaner;
+        private System.Threading.Timer AutoSwitchHandler;
+        private TimeSpan MemCleanerInterval = TimeSpan.FromMinutes(5);
+        private TimeSpan AutoSwitchInterval;
         private Point LastLocation;
         private Point LastMouseLocation;
         private Rectangle CurrentScreenRect;
@@ -122,6 +125,7 @@ namespace PlainCEETimer.Forms
         private async void RefreshSettings()
         {
             ValidateConfig();
+            LoadExams();
             LoadConfig();
             PrepareCountdown();
             ApplyLocation();
@@ -149,7 +153,6 @@ namespace PlainCEETimer.Forms
 
         private void LoadConfig()
         {
-            LoadExams();
             CustomText = AppConfig.Display.CustomTexts;
             MemClean = AppConfig.General.MemClean;
             IsShowXOnly = AppConfig.Display.ShowXOnly;
@@ -172,9 +175,11 @@ namespace PlainCEETimer.Forms
 
         private void LoadExams()
         {
+            AutoSwitch = AppConfig.General.AutoSwitch;
+            AutoSwitchInterval = ConfigHandler.GetAutoSwitchInterval(AppConfig.General.Interval);
             Exams = AppConfig.General.ExamInfo;
-            ExamIndex = AppConfig.General.ExamIndex;
-
+            var i = AppConfig.General.ExamIndex;
+            ExamIndex = i < Exams.Length ? i : 0;
             try
             {
                 CurrentExam = Exams[ExamIndex];
@@ -225,7 +230,7 @@ namespace PlainCEETimer.Forms
 
             if (MemClean && !LoadedMemCleaner)
             {
-                MemCleaner = new(CleanMemory, null, TimeSpan.FromSeconds(30), TimeSpan.FromMinutes(5));
+                MemCleaner = new(CleanMemory, null, MemCleanerInterval, MemCleanerInterval);
                 LoadedMemCleaner = true;
             }
 
@@ -357,11 +362,6 @@ namespace PlainCEETimer.Forms
             }
         }
 
-        private void UpdateExamSelection()
-        {
-            ExamSwitchMain[ExamIndex].Checked = true;
-        }
-
         private void ExamItems_Click(object sender, EventArgs e)
         {
             var Sender = (MenuItem)sender;
@@ -369,16 +369,12 @@ namespace PlainCEETimer.Forms
 
             if (!Sender.Checked)
             {
-                foreach (MenuItem Item in ExamSwitchMain)
-                {
-                    Item.Checked = false;
-                }
-
+                UnselectAllExamItems();
                 ExamIndex = ItemIndex;
                 AppConfig.General.ExamIndex = ItemIndex;
                 SaveConfig();
-                UpdateExamSelection();
                 LoadExams();
+                UpdateExamSelection();
             }
         }
 
@@ -433,20 +429,6 @@ namespace PlainCEETimer.Forms
         }
         #endregion
 
-        private void ExamSwitchManage_Click(object sender, EventArgs e)
-        {
-            ExamInfoManager ExamInfoMan = new()
-            {
-                ExamInfo = Exams,
-                PeriodIndex = ExamIndex
-            };
-
-            if (ExamInfoMan.ShowDialog() == DialogResult.OK)
-            {
-
-            }
-        }
-
         private void ContextSettings_Click(object sender, EventArgs e)
         {
             if (FormSettings == null || FormSettings.IsDisposed)
@@ -495,6 +477,25 @@ namespace PlainCEETimer.Forms
             {
                 ApplyLocation();
                 KeepOnScreen();
+            }
+        }
+
+        private void UnselectAllExamItems()
+        {
+            foreach (MenuItem Item in ExamSwitchMain)
+            {
+                Item.Checked = false;
+            }
+        }
+
+        private void UpdateExamSelection(bool UpdateOnly = false)
+        {
+            ExamSwitchMain[ExamIndex].Checked = true;
+
+            if (!UpdateOnly && AutoSwitch)
+            {
+                AutoSwitchHandler?.Dispose();
+                AutoSwitchHandler = new(ExamAutoSwitch, null, AutoSwitchInterval, AutoSwitchInterval);
             }
         }
 
@@ -679,6 +680,15 @@ namespace PlainCEETimer.Forms
         private void CleanMemory(object state)
         {
             MemoryCleaner.CleanMemory(9437184);
+        }
+
+        private void ExamAutoSwitch(object state)
+        {
+            AppConfig.General.ExamIndex = (ExamIndex + 1) % Exams.Length;
+            SaveConfig();
+            LoadExams();
+            UnselectAllExamItems();
+            UpdateExamSelection(true);
         }
 
         private void SetRoundCorners()
