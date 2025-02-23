@@ -731,16 +731,16 @@ namespace PlainCEETimer.Forms
                 {
                     Exams = [new()
                     {
-                        ExamName = TextBoxExamName.Text,
-                        ExamStartTime = DtpExamStart.Value,
-                        ExamEndTime = DtpExamEnd.Value,
+                        Name = TextBoxExamName.Text,
+                        Start = DtpExamStart.Value,
+                        End = DtpExamEnd.Value,
                     }];
                 }
                 else
                 {
-                    Exams[Index].ExamName = TextBoxExamName.Text;
-                    Exams[Index].ExamStartTime = DtpExamStart.Value;
-                    Exams[Index].ExamEndTime = DtpExamEnd.Value;
+                    Exams[Index].Name = TextBoxExamName.Text;
+                    Exams[Index].Start = DtpExamStart.Value;
+                    Exams[Index].End = DtpExamEnd.Value;
                 }
 
                 AppConfig.General = new()

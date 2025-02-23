@@ -189,9 +189,9 @@ namespace PlainCEETimer.Forms
                 CurrentExam = new();
             }
 
-            ExamName = CurrentExam.ExamName;
-            ExamStartTime = CurrentExam.ExamStartTime;
-            ExamEndTime = CurrentExam.ExamEndTime;
+            ExamName = CurrentExam.Name;
+            ExamStartTime = CurrentExam.Start;
+            ExamEndTime = CurrentExam.End;
             IsCountdownReady = !string.IsNullOrWhiteSpace(ExamName) && ExamStartTime.IsValid() && ExamEndTime.IsValid() && (ExamEndTime > ExamStartTime || !IsShowEnd);
         }
 

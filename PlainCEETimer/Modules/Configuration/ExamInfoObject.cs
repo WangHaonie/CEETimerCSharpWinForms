@@ -7,7 +7,7 @@ namespace PlainCEETimer.Modules.Configuration
 {
     public sealed class ExamInfoObject : IComparable<ExamInfoObject>
     {
-        public string ExamName
+        public string Name
         {
             get => field;
             set
@@ -25,17 +25,17 @@ namespace PlainCEETimer.Modules.Configuration
         } = "";
 
         [JsonConverter(typeof(ExamTimeConverter))]
-        public DateTime ExamStartTime { get; set; } = DateTime.Now;
+        public DateTime Start { get; set; } = DateTime.Now;
 
         [JsonConverter(typeof(ExamTimeConverter))]
-        public DateTime ExamEndTime { get; set; } = DateTime.Now;
+        public DateTime End { get; set; } = DateTime.Now;
 
         public override string ToString()
-            => string.Format("{0} - {1}", ExamName, ExamStartTime.ToString(App.DateTimeFormat));
+            => string.Format("{0} - {1}", Name, Start.ToString(App.DateTimeFormat));
 
         int IComparable<ExamInfoObject>.CompareTo(ExamInfoObject other)
         {
-            return other == null ? 1 : ExamStartTime.CompareTo(other.ExamStartTime);
+            return other == null ? 1 : Start.CompareTo(other.Start);
         }
     }
 }
