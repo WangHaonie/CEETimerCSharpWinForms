@@ -46,21 +46,21 @@ namespace PlainCEETimer.Modules.Configuration
             }
         }
 
-        public static TimeSpan GetAutoSwitchInterval(int Index) => Index switch
+        public static int GetAutoSwitchInterval(int Index) => Index switch
         {
-            1 => TimeSpan.FromSeconds(15),
-            2 => TimeSpan.FromSeconds(30),
-            3 => TimeSpan.FromSeconds(45),
-            4 => TimeSpan.FromMinutes(1),
-            5 => TimeSpan.FromMinutes(2),
-            6 => TimeSpan.FromMinutes(3),
-            7 => TimeSpan.FromMinutes(5),
-            8 => TimeSpan.FromMinutes(10),
-            9 => TimeSpan.FromMinutes(15),
-            10 => TimeSpan.FromMinutes(30),
-            11 => TimeSpan.FromMinutes(45),
-            12 => TimeSpan.FromHours(1),
-            _ => TimeSpan.FromSeconds(10)
+            1 => 15_000, // 15 s
+            2 => 30_000, // 30 s
+            3 => 45_000, // 45 s
+            4 => 60_000, // 1 min
+            5 => 120_000, // 2 min
+            6 => 180_000, // 3 min
+            7 => 300_000, // 5 min
+            8 => 600_000, // 10 min
+            9 => 900_000, // 15 min
+            10 => 1_800_000, // 30 min
+            11 => 2_700_000, // 45 min
+            12 => 3_600_000, // 1 h
+            _ => 1_000 // 1 s
         };
     }
 }

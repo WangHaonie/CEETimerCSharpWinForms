@@ -61,8 +61,9 @@ namespace PlainCEETimer.Forms
         private Timer LocationWatcher;
         private System.Threading.Timer MemCleaner;
         private System.Threading.Timer AutoSwitchHandler;
-        private TimeSpan MemCleanerInterval = TimeSpan.FromMinutes(5);
-        private TimeSpan AutoSwitchInterval;
+        private System.Threading.Timer Countdown;
+        private readonly int MemCleanerInterval = 300_000; // 5 min
+        private int AutoSwitchInterval;
         private Point LastLocation;
         private Point LastMouseLocation;
         private Rectangle CurrentScreenRect;
@@ -122,7 +123,7 @@ namespace PlainCEETimer.Forms
             RoundCorner.SetRoundCornerRegion(Handle, Width, Height, BorderRadius.ScaleToDpi());
         }
 
-        private async void RefreshSettings()
+        private void RefreshSettings()
         {
             ValidateConfig();
             LoadExams();
@@ -140,7 +141,8 @@ namespace PlainCEETimer.Forms
 
             if (!IsCountdownRunning)
             {
-                await StartCountdown();
+                IsCountdownRunning = true;
+                Countdown = new(StartCountdown, null, 0, 1000);
             }
         }
 
@@ -234,7 +236,7 @@ namespace PlainCEETimer.Forms
 
             if (MemClean && !LoadedMemCleaner)
             {
-                MemCleaner = new(CleanMemory, null, MemCleanerInterval, MemCleanerInterval);
+                MemCleaner = new((state) => MemoryCleaner.CleanMemory(9437184), null, MemCleanerInterval, MemCleanerInterval);
                 LoadedMemCleaner = true;
             }
 
@@ -499,39 +501,35 @@ namespace PlainCEETimer.Forms
             if (!UpdateOnly && AutoSwitch)
             {
                 AutoSwitchHandler?.Dispose();
-                AutoSwitchHandler = new(ExamAutoSwitch, null, AutoSwitchInterval, AutoSwitchInterval);
+
+                if (IsCountdownReady)
+                {
+                    AutoSwitchHandler = new(ExamAutoSwitch, null, AutoSwitchInterval, AutoSwitchInterval);
+                }
             }
         }
 
-        private async Task StartCountdown()
+        private void StartCountdown(object state)
         {
-            IsCountdownRunning = true;
-
-            while (true)
+            if (IsCountdownReady && DateTime.Now < ExamStartTime)
             {
-                if (IsCountdownReady && DateTime.Now < ExamStartTime)
-                {
-                    ApplyColorRule(0, ExamStartTime - DateTime.Now, ExamName, Placeholders.PH_START);
-                }
-                else if (IsCountdownReady && DateTime.Now < ExamEndTime && IsShowEnd)
-                {
-                    ApplyColorRule(1, ExamEndTime - DateTime.Now, ExamName, Placeholders.PH_LEFT);
-                }
-                else if (IsCountdownReady && DateTime.Now > ExamEndTime && IsShowEnd && IsShowPast)
-                {
-                    ApplyColorRule(2, DateTime.Now - ExamEndTime, ExamName, Placeholders.PH_PAST);
-                }
-                else
-                {
-                    break;
-                }
-
-                await Task.Delay(1000);
+                ApplyColorRule(0, ExamStartTime - DateTime.Now, ExamName, Placeholders.PH_START);
             }
-
-            IsCountdownRunning = false;
-            UpdateCountdown("欢迎使用高考倒计时", CountdownColors[3].Fore, CountdownColors[3].Back);
-            UpdateTrayIconText(App.AppName);
+            else if (IsCountdownReady && DateTime.Now < ExamEndTime && IsShowEnd)
+            {
+                ApplyColorRule(1, ExamEndTime - DateTime.Now, ExamName, Placeholders.PH_LEFT);
+            }
+            else if (IsCountdownReady && DateTime.Now > ExamEndTime && IsShowEnd && IsShowPast)
+            {
+                ApplyColorRule(2, DateTime.Now - ExamEndTime, ExamName, Placeholders.PH_PAST);
+            }
+            else
+            {
+                Countdown.Dispose();
+                UpdateCountdown("欢迎使用高考倒计时", CountdownColors[3].Fore, CountdownColors[3].Back);
+                UpdateTrayIconText(App.AppName);
+                IsCountdownRunning = false;
+            }
         }
 
         private void ApplyColorRule(int Phase, TimeSpan Span, string Name, string Hint)
@@ -664,11 +662,6 @@ namespace PlainCEETimer.Forms
         private void SaveConfig()
         {
             Config.Save(AppConfig);
-        }
-
-        private void CleanMemory(object state)
-        {
-            MemoryCleaner.CleanMemory(9437184);
         }
 
         private void ExamAutoSwitch(object state)
