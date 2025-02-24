@@ -661,16 +661,6 @@ namespace PlainCEETimer.Forms
             CurrentScreen = Screen.FromControl(this);
         }
 
-        private void KeepOnScreen()
-        {
-            var ValidArea = GetScreenRect();
-
-            if (Left < ValidArea.Left) Left = ValidArea.Left;
-            if (Top < ValidArea.Top) Top = ValidArea.Top;
-            if (Right > ValidArea.Right) Left = ValidArea.Right - Width;
-            if (Bottom > ValidArea.Bottom) Top = ValidArea.Bottom - Height;
-        }
-
         private void SaveConfig()
         {
             Config.Save(AppConfig);
@@ -700,16 +690,6 @@ namespace PlainCEETimer.Forms
             {
                 SetRoundCornerRegion = true;
             }
-        }
-
-        private Rectangle GetScreenRect(int Index = -1)
-        {
-            if (Index >= 0)
-            {
-                return Screen.AllScreens[Index].WorkingArea;
-            }
-
-            return Screen.GetWorkingArea(this);
         }
 
         protected override void OnHandleCreated(EventArgs e)

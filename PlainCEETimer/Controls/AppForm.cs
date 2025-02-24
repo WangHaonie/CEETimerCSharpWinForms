@@ -79,6 +79,7 @@ namespace PlainCEETimer.Controls
             if (!IsDisposed)
             {
                 this.ReActivate();
+                KeepOnScreen();
             }
         }
 
@@ -358,6 +359,26 @@ namespace PlainCEETimer.Controls
         protected MenuItem AddSeparator() => new("-");
 
         protected MenuItem AddSubMenu(string Text, MenuItem[] Items) => new(Text, Items);
+
+        protected void KeepOnScreen()
+        {
+            var ValidArea = GetScreenRect();
+
+            if (Left < ValidArea.Left) Left = ValidArea.Left;
+            if (Top < ValidArea.Top) Top = ValidArea.Top;
+            if (Right > ValidArea.Right) Left = ValidArea.Right - Width;
+            if (Bottom > ValidArea.Bottom) Top = ValidArea.Bottom - Height;
+        }
+
+        protected Rectangle GetScreenRect(int Index = -1)
+        {
+            if (Index >= 0)
+            {
+                return Screen.AllScreens[Index].WorkingArea;
+            }
+
+            return Screen.GetWorkingArea(this);
+        }
 
         private void SetLabelAutoWrapCore(Label Target, Size NewSize)
         {
