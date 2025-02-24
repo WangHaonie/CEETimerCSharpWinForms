@@ -34,6 +34,6 @@ namespace PlainCEETimer.Modules.Configuration
 
                 field = value;
             }
-        } = DefaultValues.CountdownDefaultColors;
+        } = DefaultValues.CountdownDefaultColorsLight;
     }
 }

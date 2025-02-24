@@ -4,7 +4,7 @@ namespace PlainCEETimer.Modules.Configuration
 {
     public static class DefaultValues
     {
-        public static ColorSetObject[] CountdownDefaultColors
+        public static ColorSetObject[] CountdownDefaultColorsLight
         {
             get
             {
@@ -13,6 +13,20 @@ namespace PlainCEETimer.Modules.Configuration
                     new(Color.Green, Color.White),
                     new(Color.Black, Color.White),
                     new(Color.Black, Color.White)];
+
+                return field;
+            }
+        }
+
+        public static ColorSetObject[] CountdownDefaultColorsDark
+        {
+            get
+            {
+                field ??= [
+                    new(Color.Red, Color.Black),
+                    new(Color.Lime, Color.Black),
+                    new(Color.White, Color.Black),
+                    new(Color.White, Color.Black)];
 
                 return field;
             }

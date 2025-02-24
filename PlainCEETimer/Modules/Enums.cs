@@ -19,7 +19,6 @@ namespace PlainCEETimer.Modules
         SetPPTService,
         LastColor,
         SelectedColor,
-        DefaultColor,
         ChangeFont,
         ShowLeftPast
     }

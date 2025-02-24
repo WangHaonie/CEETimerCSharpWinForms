@@ -748,7 +748,7 @@
             this.ButtonDefaultFont.Name = "ButtonDefaultFont";
             this.ButtonDefaultFont.Size = new System.Drawing.Size(85, 25);
             this.ButtonDefaultFont.TabIndex = 4;
-            this.ButtonDefaultFont.Text = "恢复默认(&D)";
+            this.ButtonDefaultFont.Text = "恢复默认(&H)";
             this.ButtonDefaultFont.UseVisualStyleBackColor = true;
             this.ButtonDefaultFont.Click += new System.EventHandler(this.ButtonDefaultFont_Click);
             // 

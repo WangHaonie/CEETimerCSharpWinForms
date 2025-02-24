@@ -25,6 +25,7 @@ namespace PlainCEETimer.Forms
         private bool IsFunny;
         private bool IsFunnyClick;
         private bool ChangingCheckBox;
+        private ContextMenu ContextMenuDefaultColor;
         private Label[] ColorLabels;
         private Label[] ColorPreviewLabels;
         private ColorSetObject[] SelectedColors;
@@ -51,6 +52,12 @@ namespace PlainCEETimer.Forms
 
         private void InitializeExtra()
         {
+            ContextMenuDefaultColor = CreateNew
+            ([
+                AddItem("白底(&L)", MenuItemLight_Click),
+                AddItem("黑底(&D)", MenuItemDark_Click)
+            ]);
+
             LabelPreviewColor1.Text = $"{Placeholders.PH_JULI}...{Placeholders.PH_START}...";
             LabelPreviewColor2.Text = $"{Placeholders.PH_JULI}...{Placeholders.PH_LEFT}...";
             LabelPreviewColor3.Text = $"{Placeholders.PH_JULI}...{Placeholders.PH_PAST}...";
@@ -340,8 +347,19 @@ namespace PlainCEETimer.Forms
 
         private void ButtonDefaultColor_Click(object sender, EventArgs e)
         {
+            ContextMenuDefaultColor.Show(ButtonDefaultColor, new(0, ButtonDefaultColor.Height));
+        }
+
+        private void MenuItemDark_Click(object sender, EventArgs e)
+        {
+            SetLabelColors(DefaultValues.CountdownDefaultColorsDark);
             SettingsChanged(sender, e);
-            ChangeWorkingStyle(WorkingArea.DefaultColor);
+        }
+
+        private void MenuItemLight_Click(object sender, EventArgs e)
+        {
+            SetLabelColors(DefaultValues.CountdownDefaultColorsLight);
+            SettingsChanged(sender, e);
         }
 
         private void ButtonRulesMan_Click(object sender, EventArgs e)
@@ -689,9 +707,6 @@ namespace PlainCEETimer.Forms
                     LabelPreviewColor2.ForeColor = LabelColor21.BackColor;
                     LabelPreviewColor3.ForeColor = LabelColor31.BackColor;
                     LabelPreviewColor4.ForeColor = LabelColor41.BackColor;
-                    break;
-                case WorkingArea.DefaultColor:
-                    SetLabelColors(DefaultValues.CountdownDefaultColors);
                     break;
                 case WorkingArea.ShowLeftPast:
                     GBoxExamEnd.Visible = IsWorking;
