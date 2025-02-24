@@ -18,7 +18,7 @@ namespace PlainCEETimer.Modules.JsonConverters
             }
 
             var Phase = (CountdownPhase)PhaseValue;
-            var Tick = Json[nameof(existingValue.Tick)].ToString().ToTimeSpan(ConfigPolicy.ValueSeperator);
+            var Tick = Json[nameof(existingValue.Tick)].ToString().ToTimeSpan(ConfigPolicy.ValueSeparator);
             var Fore = ColorHelper.GetColor(Json, 0);
             var Back = ColorHelper.GetColor(Json, 1);
 

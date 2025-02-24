@@ -8,7 +8,7 @@ namespace PlainCEETimer.Modules.JsonConverters
     {
         public override Point ReadJson(JsonReader reader, Type objectType, Point existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
-            string[] PointParts = reader.Value.ToString().Split(ConfigPolicy.ValueSeperator);
+            string[] PointParts = reader.Value.ToString().Split(ConfigPolicy.ValueSeparator);
 
             if (PointParts.Length == 2)
             {

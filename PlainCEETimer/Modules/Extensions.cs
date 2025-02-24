@@ -15,8 +15,8 @@ namespace PlainCEETimer.Modules
         public static double ToLuminance(this Color color) => color.R * 0.299 + color.G * 0.587 + color.B * 0.114;
         public static string ToRgb(this Color color) => $"{color.R},{color.G},{color.B}";
         public static string ToStr(this TimeSpan Tick) => $"{Tick.Days},{Tick.Hours},{Tick.Minutes},{Tick.Seconds}";
-        public static TimeSpan ToTimeSpan(this string timespan, char[] separator) => GetTimeSpan(timespan.Split(separator));
-        public static TimeSpan ToTimeSpan(this string timespan, char separator) => GetTimeSpan(timespan.Split(separator));
+        public static TimeSpan ToTimeSpan(this string timespan, char[] Separator) => GetTimeSpan(timespan.Split(Separator));
+        public static TimeSpan ToTimeSpan(this string timespan, char Separator) => GetTimeSpan(timespan.Split(Separator));
         public static string ToMessage(this Exception ex) => $"\n\n错误信息: \n{ex.Message}\n\n错误详情: \n{ex}";
         public static string FormatLog(this string updateLog, string latestVersion)
             => $"{Regex.Replace(updateLog.RemoveIllegalChars(), @"[#\>]", "").Replace($"v{latestVersion}更新日志新功能修复移除", "").Replace("+", "\n● ")}";
