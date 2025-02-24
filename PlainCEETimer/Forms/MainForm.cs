@@ -82,6 +82,10 @@ namespace PlainCEETimer.Forms
         private ContextMenu ContextMenuTray;
         private Menu.MenuItemCollection ExamSwitchMain;
 
+        private ContextMenuStrip ContextMenuStripMain;
+        private ContextMenuStrip ContextMenuStripTray;
+        private ToolStripItemCollection ExamSwitchMainStrip;
+
         public MainForm()
         {
             InitializeComponent();
@@ -248,41 +252,82 @@ namespace PlainCEETimer.Forms
 
         private void LoadContextMenu()
         {
-            ContextMenuMain = BaseContextMenu();
-            ExamSwitchMain = ContextMenuMain.MenuItems[0].MenuItems;
-
-            if (ShowTrayIcon)
+            if (UseClassicContextMenu)
             {
-                var tmp = BaseContextMenu();
-                tmp.MenuItems.RemoveAt(0);
-                tmp.MenuItems.RemoveAt(0);
-                ContextMenuTray = tmp;
-            }
+                ContextMenuMain = BaseContextMenu();
+                ExamSwitchMain = ContextMenuMain.MenuItems[0].MenuItems;
 
-            ContextMenu = ContextMenuMain;
-            LabelCountdown.ContextMenu = ContextMenuMain;
-
-            if (Exams.Length != 0)
-            {
-                ExamSwitchMain.Clear();
-                var ItemIndex = 0;
-
-                foreach (var Exam in Exams)
+                if (ShowTrayIcon)
                 {
-                    var Item = new MenuItem()
-                    {
-                        Text = $"{ItemIndex + 1}. {Exam}",
-                        RadioCheck = true,
-                        Checked = ItemIndex == ExamIndex,
-                    };
-
-                    Item.Click += ExamItems_Click;
-                    ExamSwitchMain.Add(Item);
-                    ItemIndex++;
+                    var tmp = BaseContextMenu();
+                    tmp.MenuItems.RemoveAt(0);
+                    tmp.MenuItems.RemoveAt(0);
+                    ContextMenuTray = tmp;
                 }
-            }
 
-            UpdateExamSelection();
+                ContextMenu = ContextMenuMain;
+                LabelCountdown.ContextMenu = ContextMenuMain;
+
+                if (Exams.Length != 0)
+                {
+                    ExamSwitchMain.Clear();
+                    var ItemIndex = 0;
+
+                    foreach (var Exam in Exams)
+                    {
+                        var Item = new MenuItem()
+                        {
+                            Text = $"{ItemIndex + 1}. {Exam}",
+                            RadioCheck = true,
+                            Checked = ItemIndex == ExamIndex
+                        };
+
+                        Item.Click += ExamItems_Click;
+                        ExamSwitchMain.Add(Item);
+                        ItemIndex++;
+                    }
+                }
+
+                UpdateExamSelection();
+            }
+            else
+            {
+                ContextMenuStripMain = BaseContextMenuStrip();
+                ExamSwitchMainStrip = ((ToolStripMenuItem)ContextMenuStripMain.Items[0]).DropDownItems;
+
+                if (ShowTrayIcon)
+                {
+                    var tmp = BaseContextMenuStrip();
+                    tmp.Items.RemoveAt(0);
+                    tmp.Items.RemoveAt(0);
+                    ContextMenuStripTray = tmp;
+                }
+
+                ContextMenuStrip = ContextMenuStripMain;
+                LabelCountdown.ContextMenuStrip = ContextMenuStripMain;
+
+                if (Exams.Length != 0)
+                {
+                    ExamSwitchMainStrip.Clear();
+                    var ItemIndex = 0;
+
+                    foreach (var Exam in Exams)
+                    {
+                        var Item = new ToolStripMenuItem()
+                        {
+                            Text = $"{ItemIndex + 1}. {Exam}",
+                            Checked = ItemIndex == ExamIndex,
+                            Tag = ItemIndex
+                        };
+
+                        Item.Click += ExamItems_Click;
+                        ExamSwitchMainStrip.Add(Item);
+                        ItemIndex++;
+                    }
+                }
+
+                UpdateExamSelection();
+            }
 
             #region 来自网络
             /*
@@ -305,6 +350,19 @@ namespace PlainCEETimer.Forms
                 AddItem("关于(&A)", ContextAbout_Click),
                 AddSeparator(),
                 AddItem("安装目录(&D)", (sender, e) => App.OpenInstallDir())
+            ]);
+
+            ContextMenuStrip BaseContextMenuStrip() => CreateNewStrip
+            ([
+                AddSubStrip("切换(&Q)",
+                [
+                    AddStripItem("暂无考试信息")
+                ]),
+                AddStripSeparator(),
+                AddStripItem("设置(&S)", ContextSettings_Click),
+                AddStripItem("关于(&A)", ContextAbout_Click),
+                AddStripSeparator(),
+                AddStripItem("安装目录(&D)", (sender, e) => App.OpenInstallDir())
             ]);
             #endregion
         }
@@ -332,7 +390,11 @@ namespace PlainCEETimer.Forms
                         Visible = true,
                         Text = Text,
                         Icon = App.AppIcon,
-                        ContextMenu = Merge(ContextMenuTray, CreateNew
+                    };
+
+                    if (UseClassicContextMenu)
+                    {
+                        TrayIcon.ContextMenu = Merge(ContextMenuTray, CreateNew
                         ([
                             AddSeparator(),
                             AddItem("显示界面(&S)", (sender, e) => App.OnTrayMenuShowAllClicked()),
@@ -341,8 +403,21 @@ namespace PlainCEETimer.Forms
                                 AddItem("重启(&R)", (sender, e) => App.Shutdown(true)),
                                 AddItem("退出(&Q)", (sender, e) => App.Shutdown())
                             ])
-                        ]))
-                    };
+                        ]));
+                    }
+                    else
+                    {
+                        TrayIcon.ContextMenuStrip = MergeStrip(ContextMenuStripTray,
+                        [
+                            AddStripSeparator(),
+                            AddStripItem("显示界面(&S)", (sender, e) => App.OnTrayMenuShowAllClicked()),
+                            AddSubStrip("关闭(&C)",
+                            [
+                                AddStripItem("重启(&R)", (sender, e) => App.Shutdown(true)),
+                                AddStripItem("退出(&Q)", (sender, e) => App.Shutdown())
+                            ])
+                        ]);
+                    }
 
                     TrayIcon.MouseClick -= TrayIcon_MouseClick;
                     TrayIcon.MouseClick += TrayIcon_MouseClick;
@@ -370,10 +445,30 @@ namespace PlainCEETimer.Forms
 
         private void ExamItems_Click(object sender, EventArgs e)
         {
-            var Sender = (MenuItem)sender;
-            var ItemIndex = Sender.Index;
+            int ItemIndex;
+            MenuItem Sender = null;
+            ToolStripMenuItem SenderStrip = null;
 
-            if (!Sender.Checked)
+            if (UseClassicContextMenu)
+            {
+                Sender = (MenuItem)sender;
+                ItemIndex = Sender.Index;
+            }
+            else
+            {
+                SenderStrip = (ToolStripMenuItem)sender;
+                ItemIndex = (int)SenderStrip.Tag;
+            }
+
+            bool IsSenderStripNotNull = SenderStrip != null;
+            bool IsSenderStripChecked = SenderStrip.Checked;
+
+            if (IsSenderStripNotNull && IsSenderStripChecked)
+            {
+                SenderStrip.Checked = true;
+            }
+
+            if ((IsSenderStripNotNull && !IsSenderStripChecked) || (Sender != null && !Sender.Checked))
             {
                 UnselectAllExamItems();
                 ExamIndex = ItemIndex;
@@ -488,15 +583,35 @@ namespace PlainCEETimer.Forms
 
         private void UnselectAllExamItems()
         {
-            foreach (MenuItem Item in ExamSwitchMain)
+            if (UseClassicContextMenu)
             {
-                Item.Checked = false;
+                foreach (MenuItem Item in ExamSwitchMain)
+                {
+                    Item.Checked = false;
+                }
+            }
+            else
+            {
+                BeginInvoke(() =>
+                {
+                    foreach (ToolStripMenuItem Item in ExamSwitchMainStrip)
+                    {
+                        Item.Checked = false;
+                    }
+                });
             }
         }
 
         private void UpdateExamSelection(bool UpdateOnly = false)
         {
-            ExamSwitchMain[ExamIndex].Checked = true;
+            if (UseClassicContextMenu)
+            {
+                ExamSwitchMain[ExamIndex].Checked = true;
+            }
+            else
+            {
+                BeginInvoke(() => ((ToolStripMenuItem)ExamSwitchMainStrip[ExamIndex]).Checked = true);
+            }
 
             if (!UpdateOnly && AutoSwitch)
             {

@@ -26,6 +26,7 @@ namespace PlainCEETimer.Forms
         private bool IsFunnyClick;
         private bool ChangingCheckBox;
         private ContextMenu ContextMenuDefaultColor;
+        private ContextMenuStrip ContextMenuStripDefaultColor;
         private Label[] ColorLabels;
         private Label[] ColorPreviewLabels;
         private ColorSetObject[] SelectedColors;
@@ -52,11 +53,22 @@ namespace PlainCEETimer.Forms
 
         private void InitializeExtra()
         {
-            ContextMenuDefaultColor = CreateNew
-            ([
-                AddItem("白底(&L)", MenuItemLight_Click),
-                AddItem("黑底(&D)", MenuItemDark_Click)
-            ]);
+            if (UseClassicContextMenu)
+            {
+                ContextMenuDefaultColor = CreateNew
+                ([
+                    AddItem("白底(&L)", MenuItemLight_Click),
+                    AddItem("黑底(&D)", MenuItemDark_Click)
+                ]);
+            }
+            else
+            {
+                ContextMenuStripDefaultColor = CreateNewStrip
+                ([
+                    AddStripItem("白底(&L)", MenuItemLight_Click),
+                    AddStripItem("黑底(&D)", MenuItemDark_Click)
+                ]);
+            }
 
             LabelPreviewColor1.Text = $"{Placeholders.PH_JULI}...{Placeholders.PH_START}...";
             LabelPreviewColor2.Text = $"{Placeholders.PH_JULI}...{Placeholders.PH_LEFT}...";
@@ -347,7 +359,16 @@ namespace PlainCEETimer.Forms
 
         private void ButtonDefaultColor_Click(object sender, EventArgs e)
         {
-            ContextMenuDefaultColor.Show(ButtonDefaultColor, new(0, ButtonDefaultColor.Height));
+            var Pos = new Point(0, ButtonDefaultColor.Height);
+
+            if (UseClassicContextMenu)
+            {
+                ContextMenuDefaultColor.Show(ButtonDefaultColor, Pos);
+            }
+            else
+            {
+                ContextMenuStripDefaultColor.Show(ButtonDefaultColor, Pos);
+            }
         }
 
         private void MenuItemDark_Click(object sender, EventArgs e)

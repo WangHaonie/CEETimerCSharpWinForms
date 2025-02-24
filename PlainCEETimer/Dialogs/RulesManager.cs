@@ -17,6 +17,8 @@ namespace PlainCEETimer.Dialogs
 
         private ContextMenu ContextMenuMain;
         private MenuItem ContextDelete;
+        private ContextMenuStrip ContextMenuStripMain;
+        private ToolStripMenuItem ContextDeleteStrip;
         private string LastText;
         private readonly Dictionary<int, string> UserUnsavedText = [];
 
@@ -27,25 +29,40 @@ namespace PlainCEETimer.Dialogs
             InitializeExtra();
         }
 
+        private void ContextDelete_Click(object sender, EventArgs e)
+        {
+            if (MessageX.Warn("确认删除所选规则吗？此操作将不可撤销！", Buttons: MessageBoxExButtons.YesNo) == DialogResult.Yes)
+            {
+                foreach (ListViewItem Item in GetSelections())
+                {
+                    DeleteItem(Item);
+                }
+
+                UserChanged();
+            }
+        }
+
         private void InitializeExtra()
         {
-            ContextMenuMain = CreateNew
-            ([
-                ContextDelete = AddItem("删除(&D)", (sender, e) =>
-                {
-                    if (MessageX.Warn("确认删除所选规则吗？此操作将不可撤销！", Buttons: MessageBoxExButtons.YesNo) == DialogResult.Yes)
-                    {
-                        foreach (ListViewItem Item in GetSelections())
-                        {
-                            DeleteItem(Item);
-                        }
+            if (UseClassicContextMenu)
+            {
+                ContextMenuMain = CreateNew
+                ([
+                    ContextDelete = AddItem("删除(&D)", ContextDelete_Click)
+                ]);
 
-                        UserChanged();
-                    }
-                })
-            ]);
+                ListViewMain.ContextMenu = ContextMenuMain;
+            }
+            else
+            {
+                ContextMenuStripMain = CreateNewStrip
+                ([
+                    ContextDeleteStrip = AddStripItem("删除(&D)", ContextDelete_Click)
+                ]);
 
-            ListViewMain.ContextMenu = ContextMenuMain;
+                ListViewMain.ContextMenuStrip = ContextMenuStripMain;
+            }
+
             ListViewMain.MouseDown += ListViewMain_MouseUpDown;
             ListViewMain.MouseUp += ListViewMain_MouseUpDown;
             ListViewMain.ColumnWidthChanging += ListViewMain_ColumnWidthChanging;
@@ -109,7 +126,7 @@ namespace PlainCEETimer.Dialogs
         {
             if (e.KeyCode == Keys.Delete && GetSelections().Count != 0)
             {
-                ContextDelete.PerformClick();
+                ContextDelete_Click(sender, e);
             }
             else if (e.Control && e.KeyCode == Keys.A)
             {
@@ -130,7 +147,17 @@ namespace PlainCEETimer.Dialogs
         private void ListViewMain_MouseUpDown(object sender, MouseEventArgs e)
         {
             var SelectionCount = GetSelections().Count;
-            ContextDelete.Enabled = SelectionCount != 0;
+            bool EnableContextDelete = SelectionCount != 0;
+
+            if (UseClassicContextMenu)
+            {
+                ContextDelete.Enabled = EnableContextDelete;
+            }
+            else
+            {
+                ContextDeleteStrip.Enabled = EnableContextDelete;
+            }
+
             ButtonChange.Enabled = SelectionCount == 1;
         }
 

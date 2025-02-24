@@ -23,10 +23,14 @@ namespace PlainCEETimer.Controls
         /// </summary>
         protected MessageBoxHelper MessageX { get; private set; }
 
+        protected bool UseClassicContextMenu { get; }
+
         private bool IsLoading = true;
 
         protected AppForm()
         {
+            ToolStripManager.RenderMode = ToolStripManagerRenderMode.Professional;
+
             if (this is not AppMessageBox)
             {
                 MessageX = new(this);
@@ -346,19 +350,45 @@ namespace PlainCEETimer.Controls
 
         protected ContextMenu CreateNew(MenuItem[] Items) => new(Items);
 
+        protected MenuItem AddItem(string Text) => new(Text);
+
+        protected MenuItem AddItem(string Text, EventHandler OnClickHandler) => new(Text, OnClickHandler);
+
+        protected MenuItem AddSubMenu(string Text, MenuItem[] Items) => new(Text, Items);
+
+        protected MenuItem AddSeparator() => new("-");
+
         protected ContextMenu Merge(ContextMenu Target, ContextMenu Reference)
         {
             Target.MergeMenu(Reference);
             return Target;
         }
 
-        protected MenuItem AddItem(string Text) => new(Text);
+        protected ContextMenuStrip CreateNewStrip(ToolStripItem[] Items)
+        {
+            var Strip = new ContextMenuStrip();
+            Strip.Items.AddRange(Items);
+            return Strip;
+        }
 
-        protected MenuItem AddItem(string Text, EventHandler OnClickHandler) => new(Text, OnClickHandler);
+        protected ToolStripMenuItem AddStripItem(string Text) => new(Text);
 
-        protected MenuItem AddSeparator() => new("-");
+        protected ToolStripMenuItem AddStripItem(string Text, EventHandler OnClickHandler) => new(Text, null, OnClickHandler);
 
-        protected MenuItem AddSubMenu(string Text, MenuItem[] Items) => new(Text, Items);
+        protected ToolStripMenuItem AddSubStrip(string Text, ToolStripItem[] SubItems)
+        {
+            var Item = new ToolStripMenuItem(Text);
+            Item.DropDownItems.AddRange(SubItems);
+            return Item;
+        }
+
+        protected ToolStripItem AddStripSeparator() => new ToolStripSeparator();
+
+        protected ContextMenuStrip MergeStrip(ContextMenuStrip Target, ToolStripItem[] Reference)
+        {
+            Target.Items.AddRange(Reference);
+            return Target;
+        }
 
         protected void KeepOnScreen()
         {
