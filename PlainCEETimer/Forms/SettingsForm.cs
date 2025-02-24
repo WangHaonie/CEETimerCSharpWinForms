@@ -724,32 +724,15 @@ namespace PlainCEETimer.Forms
                 else
                     reg.DeleteValue(App.AppNameEng, false);
 
-                var Exams = AppConfig.General.ExamInfo;
-                var Index = AppConfig.General.ExamIndex;
-
-                if (Exams.Length == 0)
-                {
-                    Exams = [new()
-                    {
-                        Name = TextBoxExamName.Text,
-                        Start = DtpExamStart.Value,
-                        End = DtpExamEnd.Value,
-                    }];
-                }
-                else
-                {
-                    Exams[Index].Name = TextBoxExamName.Text;
-                    Exams[Index].Start = DtpExamStart.Value;
-                    Exams[Index].End = DtpExamEnd.Value;
-                }
-
                 AppConfig.General = new()
                 {
-                    ExamInfo = Exams,
-                    ExamIndex = Index,
+                    ExamInfo = AppConfig.General.ExamInfo,
+                    ExamIndex = AppConfig.General.ExamIndex,
                     MemClean = CheckBoxMemClean.Checked,
                     TopMost = CheckBoxTopMost.Checked,
-                    UniTopMost = CheckBoxUniTopMost.Checked
+                    UniTopMost = CheckBoxUniTopMost.Checked,
+                    AutoSwitch = AppConfig.General.AutoSwitch,
+                    Interval = AppConfig.General.Interval
                 };
 
                 AppConfig.Display = new()
@@ -763,20 +746,20 @@ namespace PlainCEETimer.Forms
                     ScreenIndex = ComboBoxScreens.SelectedIndex,
                     Position = (CountdownPosition)ComboBoxPosition.SelectedIndex,
                     Draggable = CheckBoxDraggable.Checked,
-                    SeewoPptsvc = CheckBoxPptSvc.Checked,
+                    SeewoPptsvc = CheckBoxPptSvc.Checked
                 };
 
                 AppConfig.Appearance = new()
                 {
                     Font = SelectedFont,
-                    Colors = SelectedColors,
+                    Colors = SelectedColors
                 };
 
                 AppConfig.Tools = new()
                 {
                     NtpServer = ComboBoxNtpServers.SelectedIndex,
                     TrayIcon = CheckBoxTrayIcon.Checked,
-                    TrayText = CheckBoxTrayText.Checked,
+                    TrayText = CheckBoxTrayText.Checked
                 };
 
                 AppConfig.CustomRules = EditedCustomRules;

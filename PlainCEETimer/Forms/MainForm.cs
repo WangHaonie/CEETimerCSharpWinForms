@@ -137,7 +137,11 @@ namespace PlainCEETimer.Forms
             TopMost = false;
             TopMost = AppConfig.General.TopMost;
             ShowInTaskbar = !TopMost;
-            await StartCountdown();
+
+            if (!IsCountdownRunning)
+            {
+                await StartCountdown();
+            }
         }
 
         private void ValidateConfig()
@@ -501,11 +505,6 @@ namespace PlainCEETimer.Forms
 
         private async Task StartCountdown()
         {
-            if (IsCountdownRunning)
-            {
-                return;
-            }
-
             IsCountdownRunning = true;
 
             while (true)
