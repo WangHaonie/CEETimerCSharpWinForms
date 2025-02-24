@@ -269,7 +269,7 @@ namespace PlainCEETimer.Forms
                 {
                     var Item = new MenuItem()
                     {
-                        Text = Exam.ToString(),
+                        Text = $"{ItemIndex + 1}. {Exam}",
                         RadioCheck = true,
                         Checked = ItemIndex == ExamIndex,
                     };
