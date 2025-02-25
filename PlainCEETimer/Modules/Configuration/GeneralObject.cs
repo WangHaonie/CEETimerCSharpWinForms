@@ -58,5 +58,7 @@ namespace PlainCEETimer.Modules.Configuration
         public bool TopMost { get; set; } = true;
 
         public bool UniTopMost { get; set; }
+
+        public bool WCCMS { get; set; }
     }
 }

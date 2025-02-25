@@ -23,8 +23,6 @@ namespace PlainCEETimer.Controls
         /// </summary>
         protected MessageBoxHelper MessageX { get; private set; }
 
-        protected bool UseClassicContextMenu { get; }
-
         private bool IsLoading = true;
 
         protected AppForm()

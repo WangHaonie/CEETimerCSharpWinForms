@@ -16,6 +16,7 @@ namespace PlainCEETimer.Forms
         public static bool UniTopMost { get; private set; } = true;
         public static bool IsNormalStart { get; set; }
         public static bool ValidateNeeded { get; private set; } = true;
+        public static bool UseClassicContextMenu { get; private set; }
 
         public static ConfigObject AppConfigPub
         {
@@ -74,6 +75,8 @@ namespace PlainCEETimer.Forms
         private ConfigHandler Config;
         private static ConfigObject AppConfig;
         private bool TrayIconReopen;
+        private bool ContextMenuStyleChanged;
+        private bool UseClassicContextMenuBak;
         private ExamInfoObject CurrentExam;
         private ExamInfoObject[] Exams;
         private int ExamIndex;
@@ -157,12 +160,21 @@ namespace PlainCEETimer.Forms
                 AppConfig.Display.Rounding = AppConfig.Display.Rounding && AppConfig.Display.ShowXOnly && AppConfig.Display.X == 0;
                 AppConfig.Display.CustomText = AppConfig.Display.CustomText && !AppConfig.Display.ShowXOnly;
                 AppConfig.Display.SeewoPptsvc = AppConfig.Display.SeewoPptsvc && ((AppConfig.General.TopMost && AppConfig.Display.X == 0) || AppConfig.Display.Draggable);
-                AppConfig.Tools.TrayText = AppConfig.Tools.TrayText && AppConfig.Tools.TrayIcon;
+                AppConfig.General.TrayText = AppConfig.General.TrayText && AppConfig.General.TrayIcon;
             }
         }
 
         private void LoadConfig()
         {
+            var tmp = AppConfig.General.WCCMS;
+
+            if (UseClassicContextMenu != tmp && !ValidateNeeded)
+            {
+                UseClassicContextMenuBak = UseClassicContextMenu;
+                ContextMenuStyleChanged = true;
+            }
+
+            UseClassicContextMenu = tmp;
             CustomText = AppConfig.Display.CustomTexts;
             MemClean = AppConfig.General.MemClean;
             IsShowXOnly = AppConfig.Display.ShowXOnly;
@@ -176,8 +188,8 @@ namespace PlainCEETimer.Forms
             ScreenIndex = AppConfig.Display.ScreenIndex - 1;
             CountdownPos = AppConfig.Display.Position;
             ShowXOnlyIndex = AppConfig.Display.X;
-            ShowTrayIcon = AppConfig.Tools.TrayIcon;
-            ShowTrayText = AppConfig.Tools.TrayText;
+            ShowTrayIcon = AppConfig.General.TrayIcon;
+            ShowTrayText = AppConfig.General.TrayText;
             CustomRules = AppConfig.CustomRules;
             ColorDialogEx.CustomColorCollection = AppConfig.CustomColors;
             CountdownColors = AppConfig.Appearance.Colors;
@@ -252,6 +264,18 @@ namespace PlainCEETimer.Forms
 
         private void LoadContextMenu()
         {
+            if (ContextMenuStyleChanged)
+            {
+                if (MessageX.Warn("由于系统限制，切换右键菜单样式需要重启应用程序后方可正常显示。\n\n是否立即重启？", Buttons: MessageBoxExButtons.YesNo) == DialogResult.Yes)
+                {
+                    App.Shutdown(true);
+                }
+                else
+                {
+                    UseClassicContextMenu = UseClassicContextMenuBak;
+                }
+            }
+
             if (UseClassicContextMenu)
             {
                 ContextMenuMain = BaseContextMenu();

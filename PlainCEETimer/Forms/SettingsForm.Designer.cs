@@ -42,6 +42,7 @@
             this.CheckBoxTrayText = new System.Windows.Forms.CheckBox();
             this.CheckBoxTrayIcon = new System.Windows.Forms.CheckBox();
             this.GBoxOthers = new System.Windows.Forms.GroupBox();
+            this.CheckBoxWCCMS = new System.Windows.Forms.CheckBox();
             this.CheckBoxMemClean = new System.Windows.Forms.CheckBox();
             this.CheckBoxUniTopMost = new System.Windows.Forms.CheckBox();
             this.CheckBoxTopMost = new System.Windows.Forms.CheckBox();
@@ -260,6 +261,7 @@
             // 
             // GBoxOthers
             // 
+            this.GBoxOthers.Controls.Add(this.CheckBoxWCCMS);
             this.GBoxOthers.Controls.Add(this.CheckBoxMemClean);
             this.GBoxOthers.Controls.Add(this.CheckBoxUniTopMost);
             this.GBoxOthers.Controls.Add(this.CheckBoxTopMost);
@@ -270,6 +272,17 @@
             this.GBoxOthers.TabIndex = 44;
             this.GBoxOthers.TabStop = false;
             this.GBoxOthers.Text = "其它";
+            // 
+            // CheckBoxWCCMS
+            // 
+            this.CheckBoxWCCMS.AutoSize = true;
+            this.CheckBoxWCCMS.Location = new System.Drawing.Point(9, 72);
+            this.CheckBoxWCCMS.Name = "CheckBoxWCCMS";
+            this.CheckBoxWCCMS.Size = new System.Drawing.Size(228, 19);
+            this.CheckBoxWCCMS.TabIndex = 19;
+            this.CheckBoxWCCMS.Text = "启用 Windows 经典右键菜单样式(&Q)";
+            this.CheckBoxWCCMS.UseVisualStyleBackColor = true;
+            this.CheckBoxWCCMS.CheckedChanged += new System.EventHandler(this.SettingsChanged);
             // 
             // CheckBoxMemClean
             // 

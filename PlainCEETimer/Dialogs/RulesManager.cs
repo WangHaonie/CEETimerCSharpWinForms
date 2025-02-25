@@ -1,4 +1,5 @@
 ﻿using PlainCEETimer.Controls;
+using PlainCEETimer.Forms;
 using PlainCEETimer.Modules;
 using PlainCEETimer.Modules.Configuration;
 using System;
@@ -15,6 +16,7 @@ namespace PlainCEETimer.Dialogs
         public string[] Preferences { get; set; }
         public bool ShowWarning { get; set; }
 
+        private readonly bool UseClassicContextMenu = MainForm.UseClassicContextMenu;
         private ContextMenu ContextMenuMain;
         private MenuItem ContextDelete;
         private ContextMenuStrip ContextMenuStripMain;

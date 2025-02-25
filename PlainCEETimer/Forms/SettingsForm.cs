@@ -25,6 +25,7 @@ namespace PlainCEETimer.Forms
         private bool IsFunny;
         private bool IsFunnyClick;
         private bool ChangingCheckBox;
+        private readonly bool UseClassicContextMenu = MainForm.UseClassicContextMenu;
         private ContextMenu ContextMenuDefaultColor;
         private ContextMenuStrip ContextMenuStripDefaultColor;
         private Label[] ColorLabels;
@@ -168,6 +169,7 @@ namespace PlainCEETimer.Forms
             CheckBoxTopMost.Checked = AppConfig.General.TopMost;
             LabelExamInfo.Text = $"考试名称:【{ExamName}】\n考试开始时间和日期:【{ExamStartTime.ToString(App.DateTimeFormat)}】\n考试结束时间和日期:【{ExamEndTime.ToString(App.DateTimeFormat)}】";
             CheckBoxMemClean.Checked = AppConfig.General.MemClean;
+            CheckBoxWCCMS.Checked = AppConfig.General.WCCMS;
             CheckBoxDraggable.Checked = AppConfig.Display.Draggable;
             CheckBoxShowXOnly.Checked = AppConfig.Display.ShowXOnly;
             CheckBoxCustomText.Checked = AppConfig.Display.CustomText;
@@ -693,6 +695,7 @@ namespace PlainCEETimer.Forms
                     UniTopMost = CheckBoxUniTopMost.Checked,
                     TrayIcon = CheckBoxTrayIcon.Checked,
                     TrayText = CheckBoxTrayText.Checked,
+                    WCCMS = CheckBoxWCCMS.Checked
                 };
 
                 AppConfig.Display = new()
