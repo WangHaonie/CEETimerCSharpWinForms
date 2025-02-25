@@ -646,6 +646,10 @@ namespace PlainCEETimer.Forms
                     AutoSwitchHandler = new(ExamAutoSwitch, null, AutoSwitchInterval, AutoSwitchInterval);
                 }
             }
+            else if (!AutoSwitch)
+            {
+                AutoSwitchHandler?.Dispose();
+            }
         }
 
         private void StartCountdown(object state)
