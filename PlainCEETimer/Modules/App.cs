@@ -67,8 +67,8 @@ namespace PlainCEETimer.Modules
         public const string AppNameEng = "PlainCEETimer";
         public const string AppNameEngBak = "CEETimerCSharpWinForms";
         public const string AppVersion = "3.0.9";
-        public const string AppBuildDate = "2025/02/18";
-        public const string CopyrightInfo = "Copyright © 2023-2024 WangHaonie";
+        public const string AppBuildDate = "2025/02/25";
+        public const string CopyrightInfo = "Copyright © 2023-2025 WangHaonie";
         public const string OriginalFileName = $"{AppNameEng}.exe";
         public const string InfoMsg = "提示 - 高考倒计时";
         public const string WarnMsg = "警告 - 高考倒计时";

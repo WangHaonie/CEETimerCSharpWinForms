@@ -170,7 +170,7 @@ namespace PlainCEETimer.Forms
         {
             CheckBoxStartup.Checked = (Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true)?.GetValue(App.AppNameEng) is string regvalue) && regvalue.Equals($"\"{App.CurrentExecutablePath}\"", StringComparison.OrdinalIgnoreCase);
             CheckBoxTopMost.Checked = AppConfig.General.TopMost;
-            LabelExamInfo.Text = $"考试名称:【{ExamName}】\n考试开始时间和日期:【{ExamStartTime.ToString(App.DateTimeFormat)}】\n考试结束时间和日期:【{ExamEndTime.ToString(App.DateTimeFormat)}】";
+            LabelExamInfo.Text = $"考试名称：{ExamName}\n考试开始时间和日期：{ExamStartTime.ToString(App.DateTimeFormat)}\n考试结束时间和日期：{ExamEndTime.ToString(App.DateTimeFormat)}";
             CheckBoxMemClean.Checked = AppConfig.General.MemClean;
             CheckBoxWCCMS.Checked = AppConfig.General.WCCMS;
             CheckBoxDraggable.Checked = AppConfig.Display.Draggable;
@@ -646,7 +646,7 @@ namespace PlainCEETimer.Forms
                 case WorkingArea.Funny:
                     GBoxRestart.Text = IsWorking ? "关闭倒计时" : "重启倒计时";
                     LabelRestart.Text = $"用于更改了屏幕缩放之后, 可以点击此按钮来重启程序以确保 UI 正常显示。{(IsWorking ? "(●'◡'●)" : "")}";
-                    ButtonRestart.Text = IsWorking ? "点击关闭(&L)" : "点击重启(&R)";
+                    ButtonRestart.Text = IsWorking ? "点击关闭(&G)" : "点击重启(&R)";
                     break;
                 case WorkingArea.SetPPTService:
                     CheckBoxPptSvc.Enabled = IsWorking;
