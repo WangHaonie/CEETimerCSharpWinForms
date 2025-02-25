@@ -11,21 +11,6 @@ namespace PlainCEETimer.Modules
     {
         private DownloaderForm FormDownloader;
 
-        private sealed class ResponseObject
-        {
-            [JsonProperty("name")]
-            public string Version { get; set; }
-
-            [JsonProperty("published_at")]
-            public DateTime PublishDate { get; set; }
-
-            [JsonProperty("size")]
-            public long UpdateSize { get; set; }
-
-            [JsonProperty("body")]
-            public string UpdateLog { get; set; }
-        }
-
         public void CheckForUpdate(bool IsProgramStart, AppForm OwnerForm)
         {
             var MessageX = new MessageBoxHelper(OwnerForm);
@@ -34,15 +19,7 @@ namespace PlainCEETimer.Modules
 
             try
             {
-                var Response = JsonConvert.DeserializeObject<ResponseObject>
-                (_HttpClient
-                    .GetAsync(App.UpdateAPI)
-                    .Result
-                    .EnsureSuccessStatusCode()
-                    .Content
-                    .ReadAsStringAsync()
-                    .Result
-                );
+                var Response = JsonConvert.DeserializeObject<ResponseObject>(_HttpClient.GetAsync(App.UpdateAPI).Result.EnsureSuccessStatusCode().Content.ReadAsStringAsync().Result);
 
                 var LatestVersion = Response.Version;
                 var PublishDate = Response.PublishDate;
@@ -76,5 +53,20 @@ namespace PlainCEETimer.Modules
                 }
             }
         }
+    }
+
+    public sealed class ResponseObject
+    {
+        [JsonProperty("name")]
+        public string Version { get; set; }
+
+        [JsonProperty("published_at")]
+        public DateTime PublishDate { get; set; }
+
+        [JsonProperty("size")]
+        public long UpdateSize { get; set; }
+
+        [JsonProperty("body")]
+        public string UpdateLog { get; set; }
     }
 }

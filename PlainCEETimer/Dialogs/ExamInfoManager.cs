@@ -2,7 +2,6 @@
 using PlainCEETimer.Modules;
 using PlainCEETimer.Modules.Configuration;
 using System;
-using System.Drawing;
 
 namespace PlainCEETimer.Dialogs
 {
