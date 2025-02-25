@@ -9,8 +9,9 @@ namespace PlainCEETimer.Dialogs
     public partial class ExamInfoManager : DialogEx
     {
         public ExamInfoObject[] ExamInfo { get; set; }
-        public int PeriodIndex { get; set; }
         public bool AutoSwitch { get; set; }
+        public bool ExamsChanged { get; set; }
+        public int PeriodIndex { get; set; }
 
         public ExamInfoManager() : base(DialogExProp.BindButtons | DialogExProp.KeyPreview)
         {
@@ -46,7 +47,7 @@ namespace PlainCEETimer.Dialogs
 
         private void LoadData()
         {
-            CheckBoxAutoSwitch.Checked = true;
+            CheckBoxAutoSwitch.Checked = AutoSwitch;
             ComboBoxSwitchPeriod.SelectedIndex = PeriodIndex;
         }
 
@@ -58,6 +59,13 @@ namespace PlainCEETimer.Dialogs
         private void CheckBoxAutoSwitch_CheckedChanged(object sender, EventArgs e)
         {
             ComboBoxSwitchPeriod.Enabled = CheckBoxAutoSwitch.Checked;
+        }
+
+        protected override void ButtonA_Click()
+        {
+            AutoSwitch = CheckBoxAutoSwitch.Checked;
+            PeriodIndex = ComboBoxSwitchPeriod.SelectedIndex;
+            base.ButtonA_Click();
         }
 
         //private bool Tmp()

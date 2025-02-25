@@ -60,7 +60,7 @@ namespace PlainCEETimer.Modules.Configuration
             10 => 1_800_000, // 30 min
             11 => 2_700_000, // 45 min
             12 => 3_600_000, // 1 h
-            _ => 1_000 // 1 s
+            _ => 10_000 // 10 s
         };
     }
 }

@@ -37,6 +37,9 @@ namespace PlainCEETimer.Forms
         public DateTime ExamStartTime { get; set; }
         public DateTime ExamEndTime { get; set; }
 
+        private bool EIMAutoSwitch;
+        private int EIMInterval;
+
         public SettingsForm()
         {
             InitializeComponent();
@@ -188,6 +191,8 @@ namespace PlainCEETimer.Forms
             EditedCustomRules = AppConfig.CustomRules;
             CheckBoxTrayText.Enabled = CheckBoxTrayIcon.Checked = AppConfig.General.TrayIcon;
             CheckBoxTrayText.Checked = AppConfig.General.TrayText;
+            EIMAutoSwitch = AppConfig.General.AutoSwitch;
+            EIMInterval = AppConfig.General.Interval;
         }
 
         private void SettingsChanged(object sender, EventArgs e)
@@ -201,11 +206,17 @@ namespace PlainCEETimer.Forms
 
         private void ButtonExamInfo_Click(object sender, EventArgs e)
         {
-            ExamInfoManager ExamMan = new() { };
+            ExamInfoManager ExamMan = new()
+            {
+                AutoSwitch = EIMAutoSwitch,
+                PeriodIndex = EIMInterval
+            };
 
             if (ExamMan.ShowDialog() == DialogResult.OK)
             {
-                LabelExamInfoWarning.Visible = true;
+                LabelExamInfoWarning.Visible = ExamMan.ExamsChanged;
+                EIMAutoSwitch = ExamMan.AutoSwitch;
+                EIMInterval = ExamMan.PeriodIndex;
                 SettingsChanged(sender, e);
             }
 
@@ -687,9 +698,9 @@ namespace PlainCEETimer.Forms
                 AppConfig.General = new()
                 {
                     ExamInfo = AppConfig.General.ExamInfo,
-                    AutoSwitch = AppConfig.General.AutoSwitch,
                     ExamIndex = AppConfig.General.ExamIndex,
-                    Interval = AppConfig.General.Interval,
+                    AutoSwitch = EIMAutoSwitch,
+                    Interval = EIMInterval,
                     MemClean = CheckBoxMemClean.Checked,
                     TopMost = CheckBoxTopMost.Checked,
                     UniTopMost = CheckBoxUniTopMost.Checked,

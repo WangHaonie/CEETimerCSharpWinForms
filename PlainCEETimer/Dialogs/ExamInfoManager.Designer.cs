@@ -269,7 +269,7 @@
             this.MaximizeBox = false;
             this.Name = "ExamInfoManager";
             this.ShowIcon = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "管理考试信息 - 高考倒计时";
             this.PanelMain.ResumeLayout(false);
             this.PanelMain.PerformLayout();
