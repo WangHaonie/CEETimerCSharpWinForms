@@ -87,8 +87,8 @@ namespace PlainCEETimer.Modules
         public static void SetDpiAwareness()
         {
             bool IsWindows81Above = Environment.OSVersion.Version >= new Version(6, 3, 9600);
-            bool IsWindows10Build1607Above = Environment.OSVersion.Version >= new Version(10, 0, 14393);
-            DpiAwareness.SetProcessDpiAwarenessEx(IsWindows10Build1607Above ? 2 : (IsWindows81Above ? 1 : 0));
+            bool IsWindows10Build1703Above = Environment.OSVersion.Version >= new Version(10, 0, 15063);
+            DpiAwareness.SetProcessDpiAwarenessEx(IsWindows10Build1703Above ? 2 : (IsWindows81Above ? 1 : 0));
         }
 
         public static void StartProgram(string[] args)
