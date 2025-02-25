@@ -27,8 +27,6 @@ namespace PlainCEETimer.Controls
 
         protected AppForm()
         {
-            ToolStripManager.RenderMode = ToolStripManagerRenderMode.Professional;
-
             if (this is not AppMessageBox)
             {
                 MessageX = new(this);
