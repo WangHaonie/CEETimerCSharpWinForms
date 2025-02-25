@@ -48,6 +48,10 @@ namespace PlainCEETimer.Modules.Configuration
 
         public int Interval { get; set; }
 
+        public bool TrayIcon { get; set; }
+
+        public bool TrayText { get; set; }
+
         public bool MemClean { get; set; }
 
         [DefaultValue(true)]

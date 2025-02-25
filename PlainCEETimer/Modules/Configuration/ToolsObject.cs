@@ -21,9 +21,5 @@ namespace PlainCEETimer.Modules.Configuration
                 field = value;
             }
         }
-
-        public bool TrayIcon { get; set; }
-
-        public bool TrayText { get; set; }
     }
 }

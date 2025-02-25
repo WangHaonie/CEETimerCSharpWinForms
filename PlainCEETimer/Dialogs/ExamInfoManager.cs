@@ -2,6 +2,7 @@
 using PlainCEETimer.Modules;
 using PlainCEETimer.Modules.Configuration;
 using System;
+using System.Drawing;
 
 namespace PlainCEETimer.Dialogs
 {
@@ -58,5 +59,62 @@ namespace PlainCEETimer.Dialogs
         {
             ComboBoxSwitchPeriod.Enabled = CheckBoxAutoSwitch.Checked;
         }
+
+        //private bool Tmp()
+        //{
+        //    var ExamName = TextBoxExamName.Text.RemoveIllegalChars();
+        //    TimeSpan ExamTimeSpan = DtpExamEnd.Value - DtpExamStart.Value;
+        //    string UniMsg = "";
+        //    string TimeMsg = "";
+
+        //    if (string.IsNullOrWhiteSpace(ExamName) || !ExamName.Length.IsValid())
+        //    {
+        //        MessageX.Error("输入的考试名称有误！\n\n请检查输入的考试名称是否太长或太短！", TabControlMain, TabPageGeneral);
+        //        return false;
+        //    }
+
+        //    if (DtpExamEnd.Value <= DtpExamStart.Value)
+        //    {
+        //        MessageX.Error("考试结束时间必须在开始时间之后！", TabControlMain, TabPageGeneral);
+        //        return false;
+        //    }
+        //    else if (ExamTimeSpan.TotalDays > 4)
+        //    {
+        //        TimeMsg = $"{ExamTimeSpan.TotalDays:0} 天";
+        //    }
+        //    else if (ExamTimeSpan.TotalMinutes < 40 && ExamTimeSpan.TotalSeconds > 60)
+        //    {
+        //        TimeMsg = $"{ExamTimeSpan.TotalMinutes:0} 分钟";
+        //    }
+        //    else if (ExamTimeSpan.TotalSeconds < 60)
+        //    {
+        //        TimeMsg = $"{ExamTimeSpan.TotalSeconds:0} 秒";
+        //    }
+
+        //    if (!string.IsNullOrEmpty(TimeMsg))
+        //    {
+        //        UniMsg = $"检测到设置的考试时间太长或太短！\n\n当前考试时长: {TimeMsg}。\n\n如果你确认当前设置的是正确的考试时间，请点击 是，否则请点击 否。";
+        //    }
+
+        //    if (!string.IsNullOrEmpty(UniMsg))
+        //    {
+        //        var _DialogResult = MessageX.Warn(UniMsg, TabControlMain, TabPageGeneral, Buttons: MessageBoxExButtons.YesNo);
+
+        //        if (_DialogResult is DialogResult.No or DialogResult.None)
+        //        {
+        //            return false;
+        //        }
+        //    }
+
+        //    return true;
+        //}
+
+        //private void TextBoxExamName_TextChanged(object sender, EventArgs e)
+        //{
+        //    SettingsChanged(sender, e);
+        //    int CharCount = TextBoxExamName.Text.RemoveIllegalChars().Length;
+        //    LabelExamNameCounter.Text = $"{CharCount}/{ConfigPolicy.MaxExamNameLength}";
+        //    LabelExamNameCounter.ForeColor = (CharCount.IsValid()) ? Color.Black : Color.Red;
+        //}
     }
 }

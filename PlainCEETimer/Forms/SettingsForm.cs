@@ -48,7 +48,6 @@ namespace PlainCEETimer.Forms
             RefreshSettings();
             ChangeWorkingStyle(WorkingArea.LastColor);
             ChangeWorkingStyle(WorkingArea.Funny, false);
-            ChangeWorkingStyle(WorkingArea.ShowLeftPast, GetEndPast(AppConfig.Display.EndIndex));
         }
 
         private void InitializeExtra()
@@ -73,11 +72,6 @@ namespace PlainCEETimer.Forms
             LabelPreviewColor1.Text = $"{Placeholders.PH_JULI}...{Placeholders.PH_START}...";
             LabelPreviewColor2.Text = $"{Placeholders.PH_JULI}...{Placeholders.PH_LEFT}...";
             LabelPreviewColor3.Text = $"{Placeholders.PH_JULI}...{Placeholders.PH_PAST}...";
-            DtpExamStart.CustomFormat = App.DateTimeFormat;
-            DtpExamEnd.CustomFormat = App.DateTimeFormat;
-            LabelExamNameCounter.Text = $"0/{ConfigPolicy.MaxExamNameLength}";
-            LabelExamNameCounter.ForeColor = Color.Red;
-            SetTextBoxMax(TextBoxExamName, ConfigPolicy.MaxExamNameLength);
 
             BindComboData(ComboBoxShowXOnly,
             [
@@ -153,6 +147,7 @@ namespace PlainCEETimer.Forms
             CompactControlsX(ButtonSyncTime, ComboBoxNtpServers, 3);
             CompactControlsY(ButtonSyncTime, LabelSyncTime, 3);
             CompactControlsY(ButtonRestart, LabelRestart, 3);
+            CompactControlsY(ButtonExamInfo, LabelExamInfo, 3);
 
             Adjust(() =>
             {
@@ -160,7 +155,7 @@ namespace PlainCEETimer.Forms
                 AlignControlsX(ComboBoxShowXOnly, CheckBoxShowXOnly, -1);
                 AlignControlsX(ComboBoxScreens, LabelScreens);
                 AlignControlsX(ComboBoxPosition, LabelChar1);
-                AlignControlsX(LabelExamNameCounter, TextBoxExamName);
+                AlignControlsX(ButtonExamInfo, LabelExamInfoWarning);
                 AlignControlsX(ComboBoxCountdownEnd, LabelCountdownEnd);
                 AlignControlsX(ButtonCustomText, CheckBoxCustomText);
                 AlignControlsX(ComboBoxNtpServers, ButtonSyncTime);
@@ -171,16 +166,13 @@ namespace PlainCEETimer.Forms
         {
             CheckBoxStartup.Checked = (Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true)?.GetValue(App.AppNameEng) is string regvalue) && regvalue.Equals($"\"{App.CurrentExecutablePath}\"", StringComparison.OrdinalIgnoreCase);
             CheckBoxTopMost.Checked = AppConfig.General.TopMost;
-            TextBoxExamName.Text = ExamName;
-            DtpExamStart.Value = ExamStartTime;
-            DtpExamEnd.Value = ExamEndTime;
+            LabelExamInfo.Text = $"考试名称:【{ExamName}】\n考试开始时间和日期:【{ExamStartTime.ToString(App.DateTimeFormat)}】\n考试结束时间和日期:【{ExamEndTime.ToString(App.DateTimeFormat)}】";
             CheckBoxMemClean.Checked = AppConfig.General.MemClean;
             CheckBoxDraggable.Checked = AppConfig.Display.Draggable;
             CheckBoxShowXOnly.Checked = AppConfig.Display.ShowXOnly;
             CheckBoxCustomText.Checked = AppConfig.Display.CustomText;
             CheckBoxRounding.Checked = AppConfig.Display.Rounding;
             ComboBoxCountdownEnd.SelectedIndex = AppConfig.Display.EndIndex;
-            DtpExamEnd.Enabled = GetEndPast(AppConfig.Display.EndIndex);
             CheckBoxPptSvc.Checked = AppConfig.Display.SeewoPptsvc;
             CheckBoxUniTopMost.Checked = MainForm.UniTopMost;
             ComboBoxScreens.SelectedIndex = AppConfig.Display.ScreenIndex;
@@ -192,8 +184,8 @@ namespace PlainCEETimer.Forms
             ComboBoxNtpServers.SelectedIndex = AppConfig.Tools.NtpServer;
             EditedCustomTexts = AppConfig.Display.CustomTexts;
             EditedCustomRules = AppConfig.CustomRules;
-            CheckBoxTrayText.Enabled = CheckBoxTrayIcon.Checked = AppConfig.Tools.TrayIcon;
-            CheckBoxTrayText.Checked = AppConfig.Tools.TrayText;
+            CheckBoxTrayText.Enabled = CheckBoxTrayIcon.Checked = AppConfig.General.TrayIcon;
+            CheckBoxTrayText.Checked = AppConfig.General.TrayText;
         }
 
         private void SettingsChanged(object sender, EventArgs e)
@@ -205,12 +197,17 @@ namespace PlainCEETimer.Forms
             });
         }
 
-        private void TextBoxExamName_TextChanged(object sender, EventArgs e)
+        private void ButtonExamInfo_Click(object sender, EventArgs e)
         {
-            SettingsChanged(sender, e);
-            int CharCount = TextBoxExamName.Text.RemoveIllegalChars().Length;
-            LabelExamNameCounter.Text = $"{CharCount}/{ConfigPolicy.MaxExamNameLength}";
-            LabelExamNameCounter.ForeColor = (CharCount.IsValid()) ? Color.Black : Color.Red;
+            ExamInfoManager ExamMan = new() { };
+
+            if (ExamMan.ShowDialog() == DialogResult.OK)
+            {
+                LabelExamInfoWarning.Visible = true;
+                SettingsChanged(sender, e);
+            }
+
+            ExamMan.Dispose();
         }
 
         private void CheckBoxShowXOnly_CheckedChanged(object sender, EventArgs e)
@@ -237,24 +234,6 @@ namespace PlainCEETimer.Forms
                 CheckBoxUniTopMost.Checked = false;
                 CheckBoxUniTopMost.Enabled = false;
             }
-        }
-
-        private void ComboBoxCountdownEnd_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            SettingsChanged(sender, e);
-            var Condition = GetEndPast(ComboBoxCountdownEnd.SelectedIndex);
-            ChangeWorkingStyle(WorkingArea.ShowLeftPast, Condition);
-            DtpExamEnd.Enabled = Condition;
-
-            Execute(() =>
-            {
-                if (Condition)
-                {
-                    MessageX.Info("由于已开启显示考试结束倒计时，请设置考试结束日期和时间。");
-                    TabControlMain.SelectedTab = TabPageGeneral;
-                    DtpExamEnd.Focus();
-                }
-            });
         }
 
         private void CheckBoxCustomText_CheckedChanged(object sender, EventArgs e)
@@ -496,7 +475,7 @@ namespace PlainCEETimer.Forms
         {
             SettingsChanged(sender, e);
             CheckBoxTrayText.Enabled = CheckBoxTrayIcon.Checked;
-            CheckBoxTrayText.Checked = CheckBoxTrayIcon.Checked && AppConfig.Tools.TrayText;
+            CheckBoxTrayText.Checked = CheckBoxTrayIcon.Checked && AppConfig.General.TrayText;
         }
 
         private void ButtonCancel_Click(object sender, EventArgs e)
@@ -579,53 +558,6 @@ namespace PlainCEETimer.Forms
 
         private bool IsSettingsFormatValid()
         {
-            var ExamName = TextBoxExamName.Text.RemoveIllegalChars();
-            TimeSpan ExamTimeSpan = DtpExamEnd.Value - DtpExamStart.Value;
-            string UniMsg = "";
-            string TimeMsg = "";
-
-            if (string.IsNullOrWhiteSpace(ExamName) || !ExamName.Length.IsValid())
-            {
-                MessageX.Error("输入的考试名称有误！\n\n请检查输入的考试名称是否太长或太短！", TabControlMain, TabPageGeneral);
-                return false;
-            }
-
-            if (DtpExamEnd.Enabled)
-            {
-                if (DtpExamEnd.Value <= DtpExamStart.Value)
-                {
-                    MessageX.Error("考试结束时间必须在开始时间之后！", TabControlMain, TabPageGeneral);
-                    return false;
-                }
-                else if (ExamTimeSpan.TotalDays > 4)
-                {
-                    TimeMsg = $"{ExamTimeSpan.TotalDays:0} 天";
-                }
-                else if (ExamTimeSpan.TotalMinutes < 40 && ExamTimeSpan.TotalSeconds > 60)
-                {
-                    TimeMsg = $"{ExamTimeSpan.TotalMinutes:0} 分钟";
-                }
-                else if (ExamTimeSpan.TotalSeconds < 60)
-                {
-                    TimeMsg = $"{ExamTimeSpan.TotalSeconds:0} 秒";
-                }
-
-                if (!string.IsNullOrEmpty(TimeMsg))
-                {
-                    UniMsg = $"检测到设置的考试时间太长或太短！\n\n当前考试时长: {TimeMsg}。\n\n如果你确认当前设置的是正确的考试时间，请点击 是，否则请点击 否。";
-                }
-
-                if (!string.IsNullOrEmpty(UniMsg))
-                {
-                    var _DialogResult = MessageX.Warn(UniMsg, TabControlMain, TabPageGeneral, Buttons: MessageBoxExButtons.YesNo);
-
-                    if (_DialogResult is DialogResult.No or DialogResult.None)
-                    {
-                        return false;
-                    }
-                }
-            }
-
             int ColorCheckMsg = 0;
             var Length = 4;
             SelectedColors = new ColorSetObject[Length];
@@ -643,10 +575,6 @@ namespace PlainCEETimer.Forms
 
                 SelectedColors[i] = new(Fore, Back);
             }
-
-#if DEBUG
-            Console.WriteLine("##########################");
-#endif
 
             if (ColorCheckMsg != 0)
             {
@@ -729,12 +657,6 @@ namespace PlainCEETimer.Forms
                     LabelPreviewColor3.ForeColor = LabelColor31.BackColor;
                     LabelPreviewColor4.ForeColor = LabelColor41.BackColor;
                     break;
-                case WorkingArea.ShowLeftPast:
-                    GBoxExamEnd.Visible = IsWorking;
-                    GBoxOthers.Location = IsWorking ?
-                                          new(GBoxExamEnd.Location.X, GBoxExamEnd.Location.Y + GBoxExamEnd.Height + 6.ScaleToDpi()) :
-                                          new(GBoxOthers.Location.X, GBoxExamStart.Location.Y + GBoxExamStart.Height + 6.ScaleToDpi());
-                    break;
             }
         }
 
@@ -763,12 +685,14 @@ namespace PlainCEETimer.Forms
                 AppConfig.General = new()
                 {
                     ExamInfo = AppConfig.General.ExamInfo,
+                    AutoSwitch = AppConfig.General.AutoSwitch,
                     ExamIndex = AppConfig.General.ExamIndex,
+                    Interval = AppConfig.General.Interval,
                     MemClean = CheckBoxMemClean.Checked,
                     TopMost = CheckBoxTopMost.Checked,
                     UniTopMost = CheckBoxUniTopMost.Checked,
-                    AutoSwitch = AppConfig.General.AutoSwitch,
-                    Interval = AppConfig.General.Interval
+                    TrayIcon = CheckBoxTrayIcon.Checked,
+                    TrayText = CheckBoxTrayText.Checked,
                 };
 
                 AppConfig.Display = new()
@@ -793,9 +717,7 @@ namespace PlainCEETimer.Forms
 
                 AppConfig.Tools = new()
                 {
-                    NtpServer = ComboBoxNtpServers.SelectedIndex,
-                    TrayIcon = CheckBoxTrayIcon.Checked,
-                    TrayText = CheckBoxTrayText.Checked
+                    NtpServer = ComboBoxNtpServers.SelectedIndex
                 };
 
                 AppConfig.CustomRules = EditedCustomRules;

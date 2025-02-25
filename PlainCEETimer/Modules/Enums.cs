@@ -19,8 +19,7 @@ namespace PlainCEETimer.Modules
         SetPPTService,
         LastColor,
         SelectedColor,
-        ChangeFont,
-        ShowLeftPast
+        ChangeFont
     }
 
     public enum MessageLevel
