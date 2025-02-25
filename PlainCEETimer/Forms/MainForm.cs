@@ -484,15 +484,12 @@ namespace PlainCEETimer.Forms
                 ItemIndex = (int)SenderStrip.Tag;
             }
 
-            bool IsSenderStripNotNull = SenderStrip != null;
-            bool IsSenderStripChecked = SenderStrip.Checked;
-
-            if (IsSenderStripNotNull && IsSenderStripChecked)
+            if (SenderStrip != null && SenderStrip.Checked)
             {
                 SenderStrip.Checked = true;
             }
 
-            if ((IsSenderStripNotNull && !IsSenderStripChecked) || (Sender != null && !Sender.Checked))
+            if ((SenderStrip != null && !SenderStrip.Checked) || (Sender != null && !Sender.Checked))
             {
                 UnselectAllExamItems();
                 ExamIndex = ItemIndex;
