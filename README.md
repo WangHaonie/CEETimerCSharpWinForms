@@ -45,8 +45,8 @@ PlainCEETimer, 一个纯粹的高考倒计时, 适用于 Windows 平台, 支持�
 ### 使用方法
 + [点此](./.github/Manual.md)查看详情
 ## 💻 开发环境
-+ Windows 11 Pro x64 (26120.3073)
-+ Visual Studio 2022 (17.12.5)
++ Windows 11 Pro x64 (26120.3291)
++ Visual Studio 2022 (17.13.1)
 + .NET Framework (4.7.2)
 + WinForms
 + C# (13.0 Preview)
